@@ -18,14 +18,6 @@ const appInit = async () => {
   app.listen(app.get('port'), () => {
     console.log('Express server has started on port', app.get('port'));
   });
-
-  const user = await getRepository(User).create({
-    userID: 'test',
-    userName: 'test',
-    password: 'test',
-  });
-  await getRepository(User).save(user);
-  console.log(await getRepository(User).find({ where: { userName: 'test' } }));
 };
 
 appInit();
