@@ -29,13 +29,12 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Change Directory to server/
-        run: cd /home/runner/work/web09-Duxcord/server/
-      
       - name: Install dependencies
+        working-directory: .server
         run: npm install
     
       - name: Create .env file
+        working-directory: .server
         run: |
           touch .env
           echo DB_USER=${{ secrets.DB_USER }}\ >> .env
@@ -43,10 +42,12 @@ jobs:
           cat .env
 
       - name: Rebuild the dist/ directory
+        working-directory: .server
         run:
           npm run build
 
       - name: Compare the expected and actual dist/ directories
+        working-directory: .server
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
