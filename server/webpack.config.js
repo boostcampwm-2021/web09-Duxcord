@@ -9,6 +9,8 @@ module.exports = {
   target: 'node',
   output: {
     path: path.resolve(__dirname, 'dist'),
+    filename: '[name].js',
+    clean: true,
   },
   resolve: {
     extensions: ['.ts', '.js'],
