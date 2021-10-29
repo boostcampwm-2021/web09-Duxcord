@@ -1,0 +1,57 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Check dist/
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the dev branch
+  push:
+    branches:
+      - dev
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches:
+      - dev
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+env:
+  client-directory: ./client
+  server-directory: ./server
+
+jobs:
+  check-dist:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set Node.js 16.x
+        uses: actions/setup-node@v2.4.1
+        with:
+          node-version: 16.x
+
+      - name: Server npm install
+        working-directory: ${{env.server-directory}}
+        run: npm install
+    
+      - name: Create .env file
+        working-directory:  ${{env.server-directory}}
+        run: |
+          touch .env
+          echo DB_USER=${{ secrets.DB_USER }}\ >> .env
+          echo DB_PASSWORD=${{ secrets.DB_PASSWORD }}\ >> .env
+          cat .env
+
+      - name: Rebuild the dist/ directory
+        working-directory:  ${{env.server-directory}}
+        run:
+          npm run build
+      # If index.js was different than expected, upload the expected version as an artifact
+      - uses: actions/upload-artifact@v2
+        if: ${{ failure() && steps.diff.conclusion == 'failure' }}
+        with:
+          name: dist
+          path: dist/
