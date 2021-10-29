@@ -17,6 +17,10 @@ on:
       - '**.md'
   workflow_dispatch:
 
+env:
+  client-directory: ./client
+  server-directory: ./server
+
 jobs:
   check-dist:
     runs-on: ubuntu-latest
