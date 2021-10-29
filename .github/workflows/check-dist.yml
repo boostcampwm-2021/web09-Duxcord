@@ -38,7 +38,7 @@ jobs:
         run: npm install
     
       - name: Create .env file
-        working-directory: .server
+        working-directory:  ${{env.server-directory}}
         run: |
           touch .env
           echo DB_USER=${{ secrets.DB_USER }}\ >> .env
@@ -46,12 +46,12 @@ jobs:
           cat .env
 
       - name: Rebuild the dist/ directory
-        working-directory: .server
+        working-directory:  ${{env.server-directory}}
         run:
           npm run build
 
       - name: Compare the expected and actual dist/ directories
-        working-directory: .server
+        working-directory:  ${{env.server-directory}}
         run: |
           if [ "$(git diff --ignore-space-at-eol dist/ | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
