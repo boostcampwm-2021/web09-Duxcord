@@ -30,7 +30,7 @@ jobs:
           node-version: 16.x
 
       - name: Change Directory to server/
-        run: cd /home/runner/work/web09-Duxcord/web09-Duxcord/server/
+        run: cd /home/runner/work/web09-Duxcord/server/
       
       - name: Install dependencies
         run: npm install
