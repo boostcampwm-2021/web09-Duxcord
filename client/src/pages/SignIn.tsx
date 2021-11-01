@@ -42,7 +42,7 @@ function SignIn() {
         </div>
       </div>
       <div>
-        <img src="duxcord_logo.png"/>
+        <img src="duxcord_logo.png" alt="duxcord_logo"/>
       </div>
     </div>
   );
