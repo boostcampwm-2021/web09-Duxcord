@@ -20,4 +20,15 @@ describe('SignIn은', () => {
     });
     expect(container.querySelectorAll('input')[0]).toHaveValue('Duxcord');
   })
+
+  it('password를 입력하면 Input이 바뀐다.',() => {
+    const { container } = render(<SignIn />);
+    
+    fireEvent.change(container.querySelectorAll('input')[1], {
+      target: {
+        value: '1234',
+      },
+    });
+    expect(container.querySelectorAll('input')[1]).toHaveValue('1234');
+  })
 });
