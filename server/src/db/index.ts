@@ -1,11 +1,14 @@
-import { Connection, createConnection } from 'typeorm';
-import { User } from '../entity/User';
+import { Connection, createConnection, getRepository, Repository } from 'typeorm';
+import { User } from '../entity/user.entity';
 import dotenv from 'dotenv';
+import { Session } from '../entity/session.entity';
 dotenv.config();
 
-let connection: Connection;
+export let connection: Connection;
+export let userRepository: Repository<User>;
+export let sessionRepository;
 
-export const connectDB = async () => {
+const connectDB = async () => {
   connection = await createConnection({
     type: 'mysql',
     host: 'localhost',
@@ -15,8 +18,14 @@ export const connectDB = async () => {
     database: 'duxcord',
     synchronize: true,
     logging: false,
-    entities: [User],
+    entities: [User, Session],
   });
 
   return connection;
+};
+
+export const initORM = async () => {
+  await connectDB();
+  userRepository = await getRepository(User);
+  sessionRepository = await getRepository(Session);
 };
