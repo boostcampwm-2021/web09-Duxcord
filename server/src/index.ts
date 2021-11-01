@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 import express from 'express';
 import morgan from 'morgan';
-import { getRepository } from 'typeorm';
-
-import { connectDB } from './db';
-import { User } from './entity/User';
+import { initORM, sessionRepository } from './db';
+import session from 'express-session';
+import { TypeormStore } from 'typeorm-store';
+import { apiRouter } from './router/api.router';
 
 const appInit = async () => {
-  await connectDB();
+  await initORM();
   const app = express();
   app.set('port', process.env.PORT || 8000);
   if (process.env.NODE_ENV !== 'production') {
@@ -18,6 +18,23 @@ const appInit = async () => {
   app.listen(app.get('port'), () => {
     console.log('Express server has started on port', app.get('port'));
   });
+  app.use(
+    session({
+      secret: process.env.SESSION_COOKIE_SECRET,
+      store: new TypeormStore({ repository: sessionRepository }),
+      cookie: { secure: true },
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
+
+  app.use('/api', apiRouter);
+
+  // 에러 핸들러
+  app.use(function (error, req, res, next) {
+    console.error(error);
+    res.status(500).send(error.message);
+  });
 };
 
-appInit();
+appInit().catch((error) => console.log(error));
