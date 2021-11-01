@@ -1,10 +1,8 @@
 import 'reflect-metadata';
 import express from 'express';
 import morgan from 'morgan';
-import { getRepository } from 'typeorm';
 
 import { connectDB } from './db';
-import { User } from './entity/User';
 
 const appInit = async () => {
   await connectDB();
