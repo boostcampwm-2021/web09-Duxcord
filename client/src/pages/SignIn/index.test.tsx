@@ -13,7 +13,7 @@ describe('SignIn은', () => {
   it('ID를 입력하면 Input이 바뀐다.',() => {
     const { container } = render(<SignIn />);
     
-    fireEvent.change(container.querySelectorAll('input')[0], {
+    fireEvent.input(container.querySelectorAll('input')[0], {
       target: {
         value: 'Duxcord',
       },
@@ -24,7 +24,7 @@ describe('SignIn은', () => {
   it('password를 입력하면 Input이 바뀐다.',() => {
     const { container } = render(<SignIn />);
     
-    fireEvent.change(container.querySelectorAll('input')[1], {
+    fireEvent.input(container.querySelectorAll('input')[1], {
       target: {
         value: '1234',
       },

@@ -28,6 +28,8 @@ function SignIn() {
     password:''
   })
 
+  const { ID, password } = inputState
+
   const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
     setInputState({
       ...inputState,
@@ -38,7 +40,7 @@ function SignIn() {
   const handlePasswordInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
     setInputState({
       ...inputState,
-      ID: event.currentTarget.value
+      password: event.currentTarget.value
     })
   }
 
@@ -51,11 +53,11 @@ function SignIn() {
         </Introduction>
         <InputPart>
           <label htmlFor="user_id">아이디</label>
-          <input type="text" id="user_id" onChange={handleIDInputChange}></input>
+          <input type="text" id="user_id" value={ID} onInput={handleIDInputChange}></input>
         </InputPart>
         <InputPart>
           <label htmlFor="user_password">비밀번호</label>
-          <input type="password" id="user_password" onChange={handlePasswordInputChange}></input>
+          <input type="password" id="user_password" value={password} onInput={handlePasswordInputChange}></input>
         </InputPart>
         <SignUpPart>
           <p>계정이 필요한가요?</p>
