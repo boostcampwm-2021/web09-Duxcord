@@ -53,7 +53,15 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const signOut = (req: Request, res: Response, next: NextFunction) => {
+  return req.session.destroy((error) => {
+    if (error) return next(error);
+    return res.status(200).send('로그아웃 성공!');
+  });
+};
+
 export default {
   signUp,
   signIn,
+  signOut,
 };

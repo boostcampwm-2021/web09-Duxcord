@@ -4,3 +4,4 @@ export const userRouter = Router();
 
 userRouter.post('/signup', userController.signUp);
 userRouter.post('/signin', userController.signIn);
+userRouter.post('/signout', userController.signOut);
