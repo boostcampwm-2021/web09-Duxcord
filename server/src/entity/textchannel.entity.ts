@@ -1,8 +1,8 @@
 import { Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 
 import { Base } from './base/base';
-import { Group } from './Group';
-import { Text } from './Text';
+import { Group } from './group.entity';
+import { Text } from './text.entity';
 
 @Entity()
 export class TextChannel extends Base {

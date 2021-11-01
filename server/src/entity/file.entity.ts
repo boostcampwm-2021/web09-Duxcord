@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base/base';
-import { Text } from './Text';
+import { Text } from './text.entity';
 
 @Entity()
 export class File extends Base {
