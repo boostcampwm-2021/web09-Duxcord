@@ -12,6 +12,6 @@ export class GroupMember extends Base {
   @ManyToOne((type) => Group, (group) => group.members)
   group: Group;
 
-  @Column({ type: 'timestamptz' })
+  @Column()
   lastAccessTime: Date;
 }
