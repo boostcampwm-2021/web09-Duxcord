@@ -1,7 +1,17 @@
 import { Connection, createConnection, getRepository, Repository } from 'typeorm';
-import { User } from '../entity/user.entity';
 import dotenv from 'dotenv';
+
+import { User } from '../entity/user.entity';
+import { Thread } from '../entity/thread.entity';
+import { TextChannel } from '../entity/textchannel.entity';
+import { Text } from '../entity/text.entity';
+import { MeetingChannel } from '../entity/meetingchannel.entity';
+import { Like } from '../entity/like.entity';
+import { GroupMember } from '../entity/groupmember.entity';
+import { Group } from '../entity/group.entity';
+import { File } from '../entity/file.entity';
 import { Session } from '../entity/session.entity';
+
 dotenv.config();
 
 export let connection: Connection;
@@ -18,7 +28,18 @@ const connectDB = async () => {
     database: 'duxcord',
     synchronize: true,
     logging: false,
-    entities: [User, Session],
+    entities: [
+      User,
+      Session,
+      Thread,
+      TextChannel,
+      Text,
+      MeetingChannel,
+      Like,
+      GroupMember,
+      Group,
+      File,
+    ],
   });
 
   return connection;
