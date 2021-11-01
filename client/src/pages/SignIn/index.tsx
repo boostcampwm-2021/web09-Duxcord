@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import useSWR from 'swr'
 import {
   SignInWrapper,
@@ -23,6 +23,25 @@ const fetcher = (url: string) => fetch(url,{
 
 function SignIn() {
   // const { data, error } = useSWR('/api/signin', fetcher)
+  const [inputState,setInputState] = useState({
+    ID:'',
+    password:''
+  })
+
+  const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    setInputState({
+      ...inputState,
+      ID: event.currentTarget.value
+    })
+  }
+
+  const handlePasswordInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    setInputState({
+      ...inputState,
+      ID: event.currentTarget.value
+    })
+  }
+
   return (
     <SignInWrapper className="App">
       <InputPartWrapper>
@@ -32,11 +51,11 @@ function SignIn() {
         </Introduction>
         <InputPart>
           <label htmlFor="user_id">아이디</label>
-          <input type="text" id="user_id"></input>
+          <input type="text" id="user_id" onChange={handleIDInputChange}></input>
         </InputPart>
         <InputPart>
           <label htmlFor="user_password">비밀번호</label>
-          <input type="password" id="user_password"></input>
+          <input type="password" id="user_password" onChange={handlePasswordInputChange}></input>
         </InputPart>
         <SignUpPart>
           <p>계정이 필요한가요?</p>
