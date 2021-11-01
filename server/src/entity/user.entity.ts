@@ -4,10 +4,10 @@ import { Base } from './base.entity';
 @Entity()
 export class User extends Base {
   @Column()
-  userID: string;
+  loginID: string;
 
   @Column()
-  userName: string;
+  username: string;
 
   @Column()
   password: string;
