@@ -1,7 +1,7 @@
 import { Entity, ManyToOne } from 'typeorm';
 
-import { Base } from './base/base';
-import { Group } from './Group';
+import { Base } from './base.entity';
+import { Group } from './group.entity';
 
 @Entity()
 export class MeetingChannel extends Base {

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
-import { Base } from './base/base';
+import { Base } from './base.entity';
 import { File } from './file.entity';
 import { Like } from './like.entity';
 import { TextChannel } from './textchannel.entity';

@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
-import { Base } from './base/base';
+import { Base } from './base.entity';
 import { GroupMember } from './groupmember.entity';
 import { MeetingChannel } from './meetingchannel.entity';
 import { TextChannel } from './textchannel.entity';
