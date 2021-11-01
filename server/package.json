@@ -12,11 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/bcrypt": "^5.0.0",
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/node": "^16.11.6",
-    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
