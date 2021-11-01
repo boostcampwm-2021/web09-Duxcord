@@ -1,3 +1,12 @@
+---
+name: Bug report
+about: Create a report to help us improve
+title: "[BUG]"
+labels: ''
+assignees: ''
+
+---
+
 ## Description
 <!--
 A clear and concise description of what the bug is.
@@ -24,4 +33,3 @@ A clear and concise description of what the bug is.
 버그 만든 사람이 죄책감을 갖도록
 버그 상황의 스샷을 찍어줍시다!
 -->
-
