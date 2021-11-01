@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Check dist/
+name: Check Build Express App/
 
 # Controls when the workflow will run
 on:
@@ -18,7 +18,6 @@ on:
   workflow_dispatch:
 
 env:
-  client-directory: ./client
   server-directory: ./server
 
 jobs:
@@ -49,7 +48,6 @@ jobs:
         working-directory:  ${{env.server-directory}}
         run:
           npm run build
-      # If index.js was different than expected, upload the expected version as an artifact
       - uses: actions/upload-artifact@v2
         if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
