@@ -19,6 +19,7 @@ on:
 
 env:
   client-directory: ./client
+  CI: false
 
 jobs:
   check-dist:
