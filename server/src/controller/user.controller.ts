@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { userRepository } from '../db';
 import { User } from '../entity/user.entity';
