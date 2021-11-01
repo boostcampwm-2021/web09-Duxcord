@@ -19,6 +19,7 @@
     "react-scripts": "4.0.3",
     "redux": "^4.1.2",
     "styled-components": "^5.3.3",
+    "styled-reset": "^4.3.4",
     "swr": "^1.0.1",
     "typescript": "^4.4.4",
     "web-vitals": "^1.1.2"
