@@ -1,12 +1,14 @@
 import 'reflect-metadata';
 import express from 'express';
 import morgan from 'morgan';
-import { initORM, sessionRepository } from './db';
 import session from 'express-session';
 import { TypeormStore } from 'typeorm-store';
-import { apiRouter } from './router/api.router';
 import dotenv from 'dotenv';
+import cors from 'cors';
 dotenv.config();
+
+import { initORM, sessionRepository } from './db';
+import { apiRouter } from './router/api.router';
 
 const appInit = async () => {
   await initORM();
@@ -15,6 +17,7 @@ const appInit = async () => {
   if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
   }
+  app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.listen(app.get('port'), () => {
