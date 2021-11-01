@@ -1,8 +1,8 @@
 import { Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base/base';
-import { Text } from './Text';
-import { User } from './User';
+import { Text } from './text.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Like extends Base {

@@ -1,22 +1,21 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-
-import { Base } from './base/base';
-import { Group } from './Group';
-import { GroupMember } from './GroupMember';
-import { Like } from './Like';
-import { Text } from './Text';
-import { Thread } from './Thread';
+import { Base } from './base.entity';
+import { Group } from './group.entity';
+import { GroupMember } from './groupmember.entity';
+import { Like } from './like.entity';
+import { Text } from './text.entity';
+import { Thread } from './thread.entity';
 
 @Entity()
 export class User extends Base {
   @Column()
-  loginId: string;
-
-  @Column()
-  password: string;
+  loginID: string;
 
   @Column()
   username: string;
+
+  @Column()
+  password: string;
 
   @Column({ nullable: true })
   thumbnail: string;

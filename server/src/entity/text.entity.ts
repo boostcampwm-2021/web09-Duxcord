@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { Base } from './base/base';
-import { File } from './File';
-import { Like } from './Like';
-import { TextChannel } from './TextChannel';
-import { User } from './User';
+import { File } from './file.entity';
+import { Like } from './like.entity';
+import { TextChannel } from './textchannel.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Text extends Base {

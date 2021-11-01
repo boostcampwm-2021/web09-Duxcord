@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { Base } from './base/base';
-import { GroupMember } from './GroupMember';
-import { MeetingChannel } from './MeetingChannel';
-import { TextChannel } from './TextChannel';
-import { User } from './User';
+import { GroupMember } from './groupmember.entity';
+import { MeetingChannel } from './meetingchannel.entity';
+import { TextChannel } from './textchannel.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Group extends Base {

@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base/base';
-import { Group } from './Group';
-import { User } from './User';
+import { Group } from './group.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class GroupMember extends Base {

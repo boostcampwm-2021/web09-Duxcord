@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base/base';
-import { User } from './User';
+import { User } from './user.entity';
 
 @Entity()
 export class Thread extends Base {
