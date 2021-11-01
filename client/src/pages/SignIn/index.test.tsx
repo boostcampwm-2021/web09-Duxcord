@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import SignIn from './index';
 
 describe('SignIn은', () => {
@@ -8,5 +8,16 @@ describe('SignIn은', () => {
       const { queryByText } = render(<SignIn />);
       expect(queryByText('돌아오신 것을 환영해요!')).toBeInTheDocument();
     })
+  })
+
+  it('ID를 입력하면 Input이 바뀐다.',() => {
+    const { container } = render(<SignIn />);
+    
+    fireEvent.change(container.querySelectorAll('input')[0], {
+      target: {
+        value: 'Duxcord',
+      },
+    });
+    expect(container.querySelectorAll('input')[0]).toHaveValue('Duxcord');
   })
 });
