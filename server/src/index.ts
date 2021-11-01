@@ -5,6 +5,8 @@ import { initORM, sessionRepository } from './db';
 import session from 'express-session';
 import { TypeormStore } from 'typeorm-store';
 import { apiRouter } from './router/api.router';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const appInit = async () => {
   await initORM();
@@ -22,7 +24,6 @@ const appInit = async () => {
     session({
       secret: process.env.SESSION_COOKIE_SECRET,
       store: new TypeormStore({ repository: sessionRepository }),
-      cookie: { secure: true },
       resave: false,
       saveUninitialized: false,
     }),
