@@ -11,8 +11,12 @@ const GlobalStyle = createGlobalStyle`
     font-display: swap;
     src: local('Pretendard Variable'), url(${PretendardWoff2}) format('woff2-variations');
   }
+  
   * {
     box-sizing: border-box;
+  }
+
+  body {
     font-family: Pretendard Variable;
   }
 `;
