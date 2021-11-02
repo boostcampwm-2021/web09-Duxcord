@@ -112,6 +112,8 @@ const ProfileWrapper = styled.div`
     display: flex;
     align-items: center;
     & img {
+      width: 30px;
+      height: 30px;
       padding: 5px;
       &:hover {
         cursor: pointer;
