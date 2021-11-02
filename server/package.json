@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npm run build:live",
-    "build": "jest --force-exit && eslint ./src/ && webpack",
+    "build": "eslint ./src/ && webpack",
     "build:live": "nodemon --watch '*.ts' --exec ts-node src/index.ts",
     "test": "jest --force-exit"
   },
