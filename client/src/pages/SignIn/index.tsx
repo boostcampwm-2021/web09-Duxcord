@@ -71,7 +71,7 @@ function SignIn() {
             <Link to='/SignUp'><p>가입하기</p></Link>
           </SignUpPart>
           <LoginButton>
-            <p>로그인</p>
+          <Link to='/Main'><p>로그인</p></Link>
           </LoginButton>
         </InputPartWrapper>
         <LogoWrapper>
