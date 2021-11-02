@@ -64,8 +64,11 @@ const SignUpButton = styled.div`
 const ButtonWrapper = styled.div`
   margin-top: 40px;
   & > div:not(:first-child){
+    & > a{
+      color: ${color.Blue};
+      text-decoration: none;
+    }
     margin-top: 10px;
-    color: ${color.Blue};
     cursor: pointer;
   }
 `
