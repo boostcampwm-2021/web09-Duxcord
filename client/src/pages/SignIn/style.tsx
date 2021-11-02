@@ -1,13 +1,13 @@
 import styled from 'styled-components';
+import color from '../../styles/colors';
 
 const SignInWrapper = styled.div`
-  box-sizing: border-box;
   display: flex;
   width: 1077px;
   height: 504px;
   border-radius: 25px;
   padding: 20px 30px;
-  background-color : #f2f3f5;
+  background-color : ${color.Gray6};
   border: 1px solid gray;
 ` 
 
@@ -32,31 +32,35 @@ const Introduction = styled.div`
   & > p:first-child{
     height: 43px;
     font-size: 36px;
-    color: #0055FB;
+    font-weight: 600;
+    color: ${color.Blue};
   }
   & > p:not(:first-child){
     font-size: 18px;
     height: 22px;
-    color:gray;
+    color:${color.Gray2};
     position: relative;
-    bottom: 20px;
+    margin-top: 15px;
   }
 `
 
 const InputPart = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top:30px;
+  margin-top:40px;
   & > input{
     border:1px solid gray;
     height: 47px;
     border-radius: 10px;
     margin-top: 5px;
-    background-color: white;
+    background-color: ${color.White};
     font-size: 18px;
-    padding: 0 5px;
-    input:-webkit-autofill {
-      box-shadow: 0 0 0 1000px white inset;
+    padding: 0 10px;
+    &:-webkit-autofill {
+      box-shadow: 0 0 0 30px inset ${color.White};
+    }
+    &:-webkit-autofill::first-line {
+      font-size: 18px;
     }
   }
 `
@@ -64,9 +68,10 @@ const InputPart = styled.div`
 const SignUpPart = styled.div`
   display: flex;
   font-size:18px;
+  margin-top: 40px;
   & > p:not(:first-child){
     margin-left: 30px;
-    color: #0055FB;
+    color: ${color.Blue};
     :hover{
       cursor: pointer;
     }
@@ -74,18 +79,24 @@ const SignUpPart = styled.div`
 `
 
 const LoginButton = styled.div`
+  margin-top: 10px;
   height: 48.3px;
   border-radius: 15px;
-  background-color: #0055FB;
+  background-color: ${color.Blue};
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  color:white;
+  color:${color.White};
   box-shadow: 2.5px 2.5px 5px gray;
   :hover{
     cursor: pointer;  
   }
+`
+
+const ErrorResponse = styled.p`
+  margin-top: 10px;
+  color: ${color.DarkRed};;
 `
 
 export {
@@ -95,5 +106,6 @@ export {
   Introduction,
   InputPart,
   SignUpPart,
-  LoginButton
+  LoginButton,
+  ErrorResponse
 };
