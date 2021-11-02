@@ -1,13 +1,14 @@
 import React,{useState} from 'react';
 import BackgroundLayout from '../../layouts/BackgroundLayout'
 import {
+  SignUpWrapper
 } from './style';
 
 function SignUp() {
 
   return (
     <BackgroundLayout>
-      <div>
+      <SignUpWrapper>
         <h1>계정 만들기</h1>
         <div>
           <label htmlFor="user_id">아이디</label>
@@ -29,7 +30,7 @@ function SignUp() {
           </button>
           <div>이미 계정이 있으신가요?</div>
         </div>
-      </div>
+      </SignUpWrapper>
     </BackgroundLayout>
   );
 }
