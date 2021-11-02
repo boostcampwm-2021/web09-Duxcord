@@ -17,6 +17,10 @@ const GroupSettingWrapper = styled.div`
   height: 48px;
   padding: 15px;
   border-bottom: 1px solid ${colors.Gray4};
+  &:hover {
+    background-color: ${colors.Gray3};
+    cursor: pointer;
+  }
   & > p {
     font-size: 16px;
     font-weight: bold;
@@ -35,6 +39,12 @@ const ChannelType = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
+  &:hover {
+    cursor: pointer;
+    & div {
+      color: ${colors.Black};
+    }
+  }
   & div {
     display: flex;
     align-items: center;
@@ -54,8 +64,15 @@ const ChannelList = styled.ul`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px 15px;
+    padding: 7px 10px;
+    margin: 2px 5px;
+    border-radius: 5px;
     color: ${colors.Gray1};
+    &:hover {
+      background-color: ${colors.Gray3};
+      cursor: pointer;
+      color: ${colors.Black};
+    }
     & div {
       display: flex;
       align-items: center;
@@ -76,6 +93,9 @@ const ProfileWrapper = styled.div`
   & > div:first-child {
     display: flex;
     align-items: center;
+    &:hover {
+      cursor: pointer;
+    }
     & div {
       width: 32px;
       height: 32px;
@@ -92,7 +112,12 @@ const ProfileWrapper = styled.div`
     display: flex;
     align-items: center;
     & img {
-      margin-left: 10px;
+      padding: 5px;
+      &:hover {
+        cursor: pointer;
+        background-color: ${colors.Gray2};
+        border-radius: 5px;
+      }
     }
   }
 `;
