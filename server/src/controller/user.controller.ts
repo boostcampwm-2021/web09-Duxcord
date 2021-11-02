@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
-import { userRepository } from '../db';
+import { groupMemberRepository, userRepository } from '../db';
 import { User } from '../entity/user.entity';
 
 declare module 'express-session' {
@@ -71,9 +71,35 @@ const getUserData = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const getUserGroups = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userID } = req.session;
+    const userdata = await userRepository.findByID(userID);
+    if (!userdata) return res.status(400).send('존재하지 않는 유저입니다.');
+
+    const groups = await groupMemberRepository
+      .createQueryBuilder('group_member')
+      .where('group_member.userId = :id', { id: userID })
+      .leftJoinAndSelect('group_member.group', 'group')
+      .select([
+        'group_member.lastAccessTime',
+        'group.id',
+        'group.name',
+        'group.thumbnail',
+        'group.code',
+      ])
+      .getMany();
+
+    return res.status(200).json({ groups });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signUp,
   signIn,
   signOut,
   getUserData,
+  getUserGroups,
 };
