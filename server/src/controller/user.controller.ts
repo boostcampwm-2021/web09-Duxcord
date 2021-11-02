@@ -60,8 +60,20 @@ const signOut = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
+const getUserData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userID } = req.session;
+    const userdata = await userRepository.findByID(userID);
+
+    return res.status(200).json(userdata);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signUp,
   signIn,
   signOut,
+  getUserData,
 };
