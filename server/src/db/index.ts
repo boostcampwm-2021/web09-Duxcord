@@ -17,6 +17,7 @@ dotenv.config();
 export let connection: Connection;
 export let userRepository: Repository<User>;
 export let sessionRepository;
+export let groupRepository: Repository<Group>;
 
 const connectDB = async () => {
   connection = await createConnection({
@@ -49,4 +50,5 @@ export const initORM = async () => {
   await connectDB();
   userRepository = await getRepository(User);
   sessionRepository = await getRepository(Session);
+  groupRepository = await getRepository(Group);
 };
