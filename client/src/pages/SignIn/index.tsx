@@ -1,7 +1,7 @@
 import React,{useState} from 'react';
 import useSWR from 'swr'
 import BackgroundLayout from '../../layouts/BackgroundLayout'
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import {
   SignInWrapper,
@@ -32,7 +32,13 @@ function SignIn() {
     password:''
   })
 
-  const { ID, password } = inputState
+  const [responseState, setResponseState] = useState({
+    status:0,
+    responseText:'',
+  })
+
+  const { ID, password } = inputState;
+  const {status, responseText} = responseState;
 
   const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
     setInputState({
@@ -46,6 +52,30 @@ function SignIn() {
       ...inputState,
       password: event.currentTarget.value
     })
+  }
+
+  const logIn = async () => {
+    const response = await fetch('http://localhost:8000/api/user/signin', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify({
+      "loginID": ID,
+      "password": password
+      })
+    })
+    const responseText = await response.text()
+    setResponseState({
+      ...responseState,
+      status : response.status,
+      responseText:responseText
+    })
+  }
+
+  if(status === 200) {
+    return <Redirect to="/Main" />
   }
 
   return (
@@ -70,8 +100,8 @@ function SignIn() {
             <p>계정이 필요한가요?</p>
             <Link to='/SignUp'><p>가입하기</p></Link>
           </SignUpPart>
-          <LoginButton>
-          <Link to='/Main'><p>로그인</p></Link>
+          <LoginButton onClick={logIn}>
+            <p>로그인</p>
           </LoginButton>
         </InputPartWrapper>
         <LogoWrapper>
