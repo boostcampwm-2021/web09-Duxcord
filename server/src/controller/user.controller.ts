@@ -60,14 +60,8 @@ const signOut = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-const auth = (req: Request, res: Response, next: NextFunction) => {
-  if (req.session.userID) return next();
-  return res.status(400).send('로그인되지 않은 사용자는 접근할 수 없습니다.');
-};
-
 export default {
   signUp,
   signIn,
   signOut,
-  auth,
 };
