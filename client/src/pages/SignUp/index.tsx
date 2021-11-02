@@ -11,22 +11,51 @@ import {
 
 function SignUp() {
 
+  const [inputState, setInputState] = useState({
+    ID:'',
+    userName:'',
+    password:''
+  })
+
+  const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    setInputState({
+      ...inputState,
+      ID: event.currentTarget.value
+    })
+  }
+
+  const handleUserNameInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    setInputState({
+      ...inputState,
+      userName: event.currentTarget.value
+    })
+  }
+
+  const handlePasswordInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
+    setInputState({
+      ...inputState,
+      password: event.currentTarget.value
+    })
+  }
+
+  const {ID, userName, password} = inputState
+
   return (
     <BackgroundLayout>
       <SignUpWrapper>
         <Title>계정 만들기</Title>
         <InputPart>
           <label htmlFor="user_id">아이디</label>
-          <input id="user_id" type="text" />
+          <input id="user_id" type="text" value={ID} onInput={handleIDInputChange}/>
           <ErrorResponse>이미 사용중인 아이디 입니다.</ErrorResponse>
         </InputPart>
         <InputPart>
           <label htmlFor="user_name">사용자명</label>
-          <input id="user_name" type="text" />
+          <input id="user_name" type="text" value={userName} onInput={handleUserNameInputChange}/>
         </InputPart>
         <InputPart>
         <label htmlFor="user_password">비밀번호</label>
-          <input id="user_password" type="password" />
+          <input id="user_password" type="password" value={password} onInput={handlePasswordInputChange}/>
           <ErrorResponse>비밀먼호는 특수문자 포함 6자 이상으로 해주세요.</ErrorResponse>
         </InputPart>
         <ButtonWrapper>
