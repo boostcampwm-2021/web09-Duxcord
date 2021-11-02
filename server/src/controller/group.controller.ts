@@ -61,12 +61,7 @@ const getGroupMembers = async (req: Request, res: Response, next: NextFunction) 
     const group = await groupRepository.findOne({ where: { id: id } });
     if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
 
-    const members = await groupMemberRepository
-      .createQueryBuilder('group_member')
-      .where('group_member.groupId = :id', { id: id })
-      .leftJoinAndSelect('group_member.user', 'user')
-      .select(['group_member.lastAccessTime', 'user.id', 'user.username', 'user.thumbnail'])
-      .getMany();
+    const members = await groupMemberRepository.findUsersByGroupID(group.id);
 
     res.status(200).json({ members });
   } catch (error) {

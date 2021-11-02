@@ -102,20 +102,7 @@ const getUserGroups = async (req: Request, res: Response, next: NextFunction) =>
     const userdata = await userRepository.findByID(userID);
     if (!userdata) return res.status(400).send('존재하지 않는 유저입니다.');
 
-    const groups = await groupMemberRepository
-      .createQueryBuilder('group_member')
-      .where('group_member.userId = :id', { id: userID })
-      .leftJoinAndSelect('group_member.group', 'group')
-      .select([
-        'group_member.lastAccessTime',
-        'group.id',
-        'group.name',
-        'group.thumbnail',
-        'group.code',
-      ])
-      .leftJoinAndSelect('group.meetingChannels', 'meetingChannels')
-      .leftJoinAndSelect('group.textChannels', 'textChannels')
-      .getMany();
+    const groups = await groupMemberRepository.findGroupsByUserID(userID);
 
     return res.status(200).json({ groups });
   } catch (error) {

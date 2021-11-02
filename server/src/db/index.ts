@@ -18,6 +18,7 @@ import { Group } from '../entity/group.entity';
 import { File } from '../entity/file.entity';
 import { Session } from '../entity/session.entity';
 import { UserRepository } from './repository/user.repository';
+import { GroupMemberRepository } from './repository/groupmember.repository';
 
 dotenv.config();
 
@@ -25,7 +26,7 @@ export let connection: Connection;
 export let userRepository: UserRepository;
 export let sessionRepository;
 export let groupRepository: Repository<Group>;
-export let groupMemberRepository: Repository<GroupMember>;
+export let groupMemberRepository: GroupMemberRepository;
 export let textChannelRepository: Repository<TextChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
 
@@ -61,7 +62,7 @@ export const initORM = async () => {
   userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);
   groupRepository = await getRepository(Group);
-  groupMemberRepository = await getRepository(GroupMember);
+  groupMemberRepository = await getCustomRepository(GroupMemberRepository);
   textChannelRepository = await getRepository(TextChannel);
   meetingChannelRepository = await getRepository(MeetingChannel);
 };
