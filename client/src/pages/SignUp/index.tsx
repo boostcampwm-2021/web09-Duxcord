@@ -90,11 +90,11 @@ function SignUp() {
         <label htmlFor="user_password">비밀번호</label>
           <input id="user_password" type="password" value={password} onInput={handlePasswordInputChange}/>
           <ErrorResponse>{checkPassword(status,responseText)}</ErrorResponse>
+          <ErrorResponse>{checkForm(status,responseText)}</ErrorResponse>
         </InputPart>
-        <ErrorResponse>{checkForm(status,responseText)}</ErrorResponse>
         <ButtonWrapper>
           <SignUpButton onClick={signIn}>
-              <p>가입하기</p>
+            <p>가입하기</p>
           </SignUpButton>
           <div>이미 계정이 있으신가요?</div>
         </ButtonWrapper>
