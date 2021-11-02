@@ -1,4 +1,10 @@
-import { Connection, createConnection, getRepository, Repository } from 'typeorm';
+import {
+  Connection,
+  createConnection,
+  getCustomRepository,
+  getRepository,
+  Repository,
+} from 'typeorm';
 import dotenv from 'dotenv';
 
 import { User } from '../entity/user.entity';
@@ -11,11 +17,12 @@ import { GroupMember } from '../entity/groupmember.entity';
 import { Group } from '../entity/group.entity';
 import { File } from '../entity/file.entity';
 import { Session } from '../entity/session.entity';
+import { UserRepository } from './repository/user.repository';
 
 dotenv.config();
 
 export let connection: Connection;
-export let userRepository: Repository<User>;
+export let userRepository: UserRepository;
 export let sessionRepository;
 
 const connectDB = async () => {
@@ -47,6 +54,6 @@ const connectDB = async () => {
 
 export const initORM = async () => {
   await connectDB();
-  userRepository = await getRepository(User);
+  userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);
 };
