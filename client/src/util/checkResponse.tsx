@@ -15,7 +15,7 @@ const checkID = (status:number, responseMessage:string):string => {
 }
 
 const checkForm = (status:number, responseMessage:string):string => {
-  const formWrongMessage:string = '회원가입에 필요한 데이터일부가 누락되었습니다 않습니다.'
+  const formWrongMessage:string = '회원가입에 필요한 데이터일부가 누락되었습니다.'
   if (status === 400 && responseMessage === formWrongMessage) {
     return formWrongMessage;
   }
