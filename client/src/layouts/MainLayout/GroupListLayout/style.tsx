@@ -1,5 +1,10 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import colors from '../../../styles/colors'
+
+const radiusChange = keyframes`
+  from { border-radius: 50%; }
+  to { border-radius: 30%; }
+`
 
 const GroupListWrapper = styled.div`
   display: flex;
@@ -29,6 +34,10 @@ const Group = styled.div`
   height: 48px;
   border-radius: 50%;
   background-color: ${colors.White};
+  &:hover {
+    cursor: pointer;
+    animation: ${radiusChange} 0.1s linear both;
+  }
 `;
 
 const AddGroupButton = styled.button`
@@ -40,6 +49,10 @@ const AddGroupButton = styled.button`
   border: none;
   border-radius: 50%;
   background-color: ${colors.White};
+  &:hover {
+    cursor: pointer;
+    animation: ${radiusChange} 0.1s linear both;
+  }
   & img {
     width: 18px;
     height: 18px;
