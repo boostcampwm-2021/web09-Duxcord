@@ -13,29 +13,14 @@ import {
   LoginButton,
   ErrorResponse
 } from './style';
-
-const fetcher = (url: string) => fetch(url,{
-  method:'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body:JSON.stringify({
-    loginID: 'test',
-    password: '123',
-  })
-}).then(res => res.json())
+import { postFetchOptions } from '../../util/fetchOptions';
+import { checkLogin } from '../../util/checkResponse';
+import { getFetcher } from '../../util/fetcher';
 
 function SignIn() {
-  // const { data, error } = useSWR('/api/signin', fetcher)
-  const [inputState,setInputState] = useState({
-    ID:'',
-    password:''
-  })
-
-  const [responseState, setResponseState] = useState({
-    status:0,
-    responseText:'',
-  })
+  const {data, error} = useSWR('http://localhost:8000/api/user', getFetcher)
+  const [inputState,setInputState] = useState({ ID:'', password:'' })
+  const [responseState, setResponseState] = useState({ status:0, responseText:'' })
 
   const { ID, password } = inputState;
   const {status, responseText} = responseState;
@@ -55,17 +40,12 @@ function SignIn() {
   }
 
   const logIn = async () => {
-    const response = await fetch('http://localhost:8000/api/user/signin', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify({
+    if (ID === '') return setResponseState({ ...responseState, responseText:'아이디를 입력해주세요.' })
+    if (password === '') return setResponseState({ ...responseState, responseText:'비밀번호를 입력해주세요.' })
+    const response = await fetch('http://localhost:8000/api/user/signin', postFetchOptions({
       "loginID": ID,
       "password": password
-      })
-    })
+    }))
     const responseText = await response.text()
     setResponseState({
       ...responseState,
@@ -74,13 +54,12 @@ function SignIn() {
     })
   }
 
-  if(status === 200) {
+  if(data) {
     return <Redirect to="/Main" />
   }
 
   return (
     <BackgroundLayout>
-
       <SignInWrapper className="App">
         <InputPartWrapper>
           <Introduction>
@@ -95,7 +74,7 @@ function SignIn() {
             <label htmlFor="user_password">비밀번호</label>
             <input type="password" id="user_password" value={password} onInput={handlePasswordInputChange}></input>
           </InputPart>
-          <ErrorResponse>존재하지 않는 유저입니다.</ErrorResponse>
+          <ErrorResponse>{checkLogin(status, responseText)}</ErrorResponse>
           <SignUpPart>
             <p>계정이 필요한가요?</p>
             <Link to='/SignUp'><p>가입하기</p></Link>
