@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express';
-import { getConnection } from 'typeorm';
 
 import { groupMemberRepository, groupRepository, userRepository } from '../db';
 import { Group } from '../entity/group.entity';
