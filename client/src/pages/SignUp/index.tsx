@@ -1,5 +1,11 @@
-import React,{useCallback, useState} from 'react';
+import React,{ useState } from 'react';
 import BackgroundLayout from '../../layouts/BackgroundLayout'
+
+import { 
+  checkID,
+  checkPassword,
+  checkForm
+ } from '../../util/checkResponse';
 import {
   SignUpWrapper,
   Title,
@@ -17,7 +23,13 @@ function SignUp() {
     password:''
   })
 
+  const [responseState, setResponseState] = useState({
+    status:0,
+    responseText:'',
+  })
+
   const {ID, userName, password} = inputState
+  const {status, responseText} = responseState;
 
   const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>):void => {
     setInputState({
@@ -54,7 +66,11 @@ function SignUp() {
       })
     })
     const responseText = await response.text()
-    console.log(responseText)
+    setResponseState({
+      ...responseState,
+      status : response.status,
+      responseText:responseText
+    })
   }
 
   return (
@@ -64,7 +80,7 @@ function SignUp() {
         <InputPart>
           <label htmlFor="user_id">아이디</label>
           <input id="user_id" type="text" value={ID} onInput={handleIDInputChange}/>
-          <ErrorResponse>이미 사용중인 아이디 입니다.</ErrorResponse>
+          <ErrorResponse>{checkID(status, responseText)}</ErrorResponse>
         </InputPart>
         <InputPart>
           <label htmlFor="user_name">사용자명</label>
@@ -73,8 +89,9 @@ function SignUp() {
         <InputPart>
         <label htmlFor="user_password">비밀번호</label>
           <input id="user_password" type="password" value={password} onInput={handlePasswordInputChange}/>
-          <ErrorResponse>비밀먼호는 특수문자 포함 6자 이상으로 해주세요.</ErrorResponse>
+          <ErrorResponse>{checkPassword(status,responseText)}</ErrorResponse>
         </InputPart>
+        <ErrorResponse>{checkForm(status,responseText)}</ErrorResponse>
         <ButtonWrapper>
           <SignUpButton onClick={signIn}>
               <p>가입하기</p>
