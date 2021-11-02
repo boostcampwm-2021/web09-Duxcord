@@ -7,7 +7,8 @@ import {
   Introduction,
   InputPart,
   SignUpPart,
-  LoginButton
+  LoginButton,
+  ErrorResponse
 } from './style';
 
 const fetcher = (url: string) => fetch(url,{
@@ -59,6 +60,7 @@ function SignIn() {
           <label htmlFor="user_password">비밀번호</label>
           <input type="password" id="user_password" value={password} onInput={handlePasswordInputChange}></input>
         </InputPart>
+        <ErrorResponse>존재하지 않는 유저입니다.</ErrorResponse>
         <SignUpPart>
           <p>계정이 필요한가요?</p>
           <p>가입하기</p>
