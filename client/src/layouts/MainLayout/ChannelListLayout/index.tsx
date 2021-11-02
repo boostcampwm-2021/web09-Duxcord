@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChannelListWrapper, GroupSettingWrapper, ChannelWrapper, ChannelType, ChannelList, ProfileWrapper } from './style';
 
 function GroupListLayout() {
+  const [device, setDevice] = useState({
+    mic: true,
+    speaker: true,
+    cam: true,
+  })
+
+  const toggleDevice = (target: "mic" | "speaker" | "cam") => {
+    setDevice({
+      ...device,
+      [target]: !device[target]
+    })
+  }
+
   return (
     <ChannelListWrapper>
       <div>
@@ -55,9 +68,9 @@ function GroupListLayout() {
           <p>부덕이</p>
         </div>
         <div>
-          <img src="icons/micOn.png" alt="micToggle" />
-          <img src="icons/speakerOn.png" alt="speakerToggle" />
-          <img src="icons/camOn.png" alt="comToggle" />
+          <img onClick={() => toggleDevice('mic')} src={"icons/mic" + (device.mic ? 'On' : 'Off') + ".png"} alt="micToggle" />
+          <img onClick={() => toggleDevice('speaker')} src={"icons/speaker" + (device.speaker ? 'On' : 'Off') + ".png"} alt="speakerToggle" />
+          <img onClick={() => toggleDevice('cam')} src={"icons/cam" + (device.cam ? 'On' : 'Off') + ".png"} alt="comToggle" />
         </div>
       </ProfileWrapper>
     </ChannelListWrapper>
