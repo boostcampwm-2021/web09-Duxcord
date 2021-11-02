@@ -21,7 +21,7 @@ const usernameValidation = (username) => usernameRegex.test(username);
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
 const passwordValidation = (password) => passwordRegex.test(password);
 export const signUpMSG = {
-  nullInput: '회원가입에 필요한 데이터일부가 누락되었습니다.',
+  nullInput: '회원가입에 필요한 데이터를 모두 입력해주세요.',
   inValidLoginID: 'ID는 영소문자로 시작하는 6~15자의 영소문자 또는 숫자 여야 합니다.',
   inValidUsername: '유저 이름은 공백없이 1~15자여야 합니다.',
   inValidPassword:
