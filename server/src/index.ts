@@ -10,7 +10,7 @@ dotenv.config();
 import { initORM, sessionRepository } from './db';
 import { apiRouter } from './router/api.router';
 
-const appInit = async () => {
+export const appInit = async () => {
   await initORM();
   const app = express();
   app.set('port', process.env.PORT || 8000);
@@ -20,9 +20,6 @@ const appInit = async () => {
   app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.listen(app.get('port'), () => {
-    console.log('Express server has started on port', app.get('port'));
-  });
   app.use(
     session({
       secret: process.env.SESSION_COOKIE_SECRET,
@@ -38,6 +35,12 @@ const appInit = async () => {
   app.use(function (error, req, res, next) {
     console.error(error);
     res.status(500).send(error.message);
+  });
+
+  if (process.env.NODE_ENV === 'test') return app;
+
+  app.listen(app.get('port'), () => {
+    console.log('Express server has started on port', app.get('port'));
   });
 };
 

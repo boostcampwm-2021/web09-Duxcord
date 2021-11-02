@@ -17,7 +17,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     if (![loginID, username, password].every((data) => nullCheck(data)))
-      return res.status(400).send('회원가입에 필요한 데이터일부가 누락되었습니다 않습니다.');
+      return res.status(400).send('회원가입에 필요한 데이터일부가 누락되었습니다.');
 
     const isUsedID = await userRepository.findOne({ where: { loginID: loginID } });
     if (isUsedID) return res.status(400).send('이미 사용중인 ID 입니다.');
@@ -38,8 +38,6 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
   const { loginID, password } = req.body;
 
   try {
-    if (req.session.userID) return res.status(400).send('이미 로그인 상태입니다.');
-
     const user = await userRepository.findOne({ where: { loginID: loginID } });
     if (!user) return res.status(400).send('존재하지 않는 회원입니다.');
 
