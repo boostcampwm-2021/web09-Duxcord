@@ -25,6 +25,7 @@ export let connection: Connection;
 export let userRepository: UserRepository;
 export let sessionRepository;
 export let groupRepository: Repository<Group>;
+export let groupMemberRepository: Repository<GroupMember>;
 
 const connectDB = async () => {
   connection = await createConnection({
@@ -58,4 +59,5 @@ export const initORM = async () => {
   userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);
   groupRepository = await getRepository(Group);
+  groupMemberRepository = await getRepository(GroupMember);
 };
