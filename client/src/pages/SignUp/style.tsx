@@ -21,7 +21,7 @@ const Title = styled.h1`
 const InputPart = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 40px;
+  margin-top: 60px;
   & >input{
     border:1px solid gray;
     height: 47px;
@@ -39,7 +39,9 @@ const InputPart = styled.div`
   }
 `
 const ErrorResponse = styled.p`
+  height: 18px;
   margin-top: 6px;
+  margin-bottom: -18px;
   color:${color.DarkRed}
 `
 
@@ -59,8 +61,8 @@ const SignUpButton = styled.div`
   }
 `
 
-const ButtonWrapper =styled.div`
-  margin-top: 70px;
+const ButtonWrapper = styled.div`
+  margin-top: 40px;
   & > div:not(:first-child){
     margin-top: 10px;
     color: ${color.Blue};

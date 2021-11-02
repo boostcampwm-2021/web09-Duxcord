@@ -30,5 +30,8 @@ module.exports = {
       NODE_ENV: NODE_ENV,
     }),
   ],
+  optimization: {
+    minimize: false,
+  },
   devtool: 'source-map',
 };
