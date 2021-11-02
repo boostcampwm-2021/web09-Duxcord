@@ -71,6 +71,16 @@ describe('POST /user/signin', () => {
           done();
         });
     });
-    it('존재하지 않는 유저인 경우', () => {});
+    it('존재하지 않는 유저인 경우', (done) => {
+      request(app)
+        .post('/api/user/signin')
+        .send({ ...testLoginData, loginID: 'wrong' })
+        .expect(400)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(res.text).toBe(signInMSG.userNotFound);
+          done();
+        });
+    });
   });
 });
