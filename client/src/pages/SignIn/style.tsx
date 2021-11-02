@@ -69,11 +69,14 @@ const SignUpPart = styled.div`
   display: flex;
   font-size:18px;
   margin-top: 40px;
-  & > p:not(:first-child){
-    margin-left: 30px;
-    color: ${color.Blue};
+  & > a{
+    text-decoration: none;
     :hover{
       cursor: pointer;
+    }
+    & > p {
+      margin-left: 30px;
+      color: ${color.Blue};
     }
   }
 `
@@ -96,6 +99,7 @@ const LoginButton = styled.div`
 
 const ErrorResponse = styled.p`
   margin-top: 10px;
+  height: 18px;
   color: ${color.DarkRed};
 `
 
