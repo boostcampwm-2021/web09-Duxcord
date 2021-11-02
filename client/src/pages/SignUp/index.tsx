@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 import BackgroundLayout from '../../layouts/BackgroundLayout'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import { 
   checkID,
@@ -101,7 +101,11 @@ function SignUp() {
           <SignUpButton onClick={signIn}>
             <p>가입하기</p>
           </SignUpButton>
-          <div>이미 계정이 있으신가요?</div>
+          <div>
+            <Link to='/'>
+              이미 계정이 있으신가요?
+            </Link>
+          </div>
         </ButtonWrapper>
       </SignUpWrapper>
     </BackgroundLayout>
