@@ -68,8 +68,8 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
     const user = await userRepository.findOne({ where: { loginID: loginID } });
     if (!user) return res.status(400).send('존재하지 않는 회원입니다.');
 
-    const isPasswordValid = await compare(password, user.password);
-    if (!isPasswordValid) return res.status(400).send('비밀번호가 올바르지 않습니다.');
+    const isValidPassword = await compare(password, user.password);
+    if (!isValidPassword) return res.status(400).send('비밀번호가 올바르지 않습니다.');
 
     req.session.userID = user.id;
     return res.status(200).send('로그인 성공!');
