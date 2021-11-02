@@ -113,6 +113,8 @@ const getUserGroups = async (req: Request, res: Response, next: NextFunction) =>
         'group.thumbnail',
         'group.code',
       ])
+      .leftJoinAndSelect('group.meetingChannels', 'meetingChannels')
+      .leftJoinAndSelect('group.textChannels', 'textChannels')
       .getMany();
 
     return res.status(200).json({ groups });
