@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
+import { getConnection } from 'typeorm';
 
 import { groupMemberRepository, groupRepository, userRepository } from '../db';
 import { Group } from '../entity/group.entity';
@@ -56,4 +57,35 @@ const getGroupMembers = async (req: Request, res: Response, next: NextFunction) 
   }
 };
 
-export default { createGroup, getGroupMembers };
+const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
+  const { groupCode } = req.body;
+
+  try {
+    const { userID } = req.session;
+    const user = await userRepository.findOne({ where: { id: userID } });
+    const group = await groupRepository.findOne({ where: { code: groupCode } });
+
+    const relation = await groupMemberRepository
+      .createQueryBuilder('group_member')
+      .where('group_member.groupId = :groupID && group_member.userId = :userID', {
+        groupID: group.id,
+        userID: userID,
+      })
+      .getOne();
+
+    if (relation) return res.status(400).send('이미 그룹에 가입된 사용자입니다');
+
+    const now = new Date();
+    const newRelation = new GroupMember();
+    newRelation.group = group;
+    newRelation.user = user;
+    newRelation.lastAccessTime = now;
+    await groupMemberRepository.save(newRelation);
+
+    res.status(200).json({ group });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createGroup, getGroupMembers, joinGroup };
