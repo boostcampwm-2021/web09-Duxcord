@@ -26,7 +26,7 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
     newUser.loginID = loginID;
     newUser.username = username;
     newUser.password = await hash(password, saltRounds);
-    userRepository.save(newUser);
+    await userRepository.save(newUser);
 
     return res.status(200).send('회원가입에 성공했습니다.');
   } catch (error) {
