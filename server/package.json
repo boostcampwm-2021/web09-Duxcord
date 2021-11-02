@@ -30,12 +30,14 @@
   },
   "devDependencies": {
     "@types/eslint-plugin-prettier": "^3.1.0",
+    "@types/jest-plugin-context": "^2.9.4",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^27.3.1",
+    "jest-plugin-context": "^2.9.0",
     "nodemon": "^2.0.14",
     "prettier": "^2.4.1",
     "ts-loader": "^9.2.6",
@@ -43,5 +45,10 @@
     "typescript": "^4.4.4",
     "webpack": "^5.60.0",
     "webpack-cli": "^4.9.1"
+  },
+  "jest": {
+    "setupFiles": [
+      "jest-plugin-context/setup"
+    ]
   }
 }
