@@ -1,6 +1,8 @@
 import React,{useState} from 'react';
 import useSWR from 'swr'
 import BackgroundLayout from '../../layouts/BackgroundLayout'
+import { Link } from 'react-router-dom';
+
 import {
   SignInWrapper,
   LogoWrapper,
@@ -66,7 +68,7 @@ function SignIn() {
           <ErrorResponse>존재하지 않는 유저입니다.</ErrorResponse>
           <SignUpPart>
             <p>계정이 필요한가요?</p>
-            <p>가입하기</p>
+            <Link to='/SignUp'><p>가입하기</p></Link>
           </SignUpPart>
           <LoginButton>
             <p>로그인</p>

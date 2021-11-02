@@ -1,5 +1,6 @@
 import React,{ useState } from 'react';
 import BackgroundLayout from '../../layouts/BackgroundLayout'
+import { Redirect } from 'react-router-dom';
 
 import { 
   checkID,
@@ -71,6 +72,10 @@ function SignUp() {
       status : response.status,
       responseText:responseText
     })
+  }
+
+  if(status === 200) {
+    return <Redirect to="/" />
   }
 
   return (
