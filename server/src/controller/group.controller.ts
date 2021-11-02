@@ -1,8 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { groupMemberRepository, groupRepository, userRepository } from '../db';
+import {
+  groupMemberRepository,
+  groupRepository,
+  meetingChannelRepository,
+  textChannelRepository,
+  userRepository,
+} from '../db';
 import { Group } from '../entity/group.entity';
 import { GroupMember } from '../entity/groupmember.entity';
+import { MeetingChannel } from '../entity/meetingchannel.entity';
+import { TextChannel } from '../entity/textchannel.entity';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
@@ -30,6 +38,16 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
     newRelation.user = leader;
     newRelation.lastAccessTime = now;
     await groupMemberRepository.save(newRelation);
+
+    const newMeetingChannel = new MeetingChannel();
+    newMeetingChannel.group = newGroup;
+    newMeetingChannel.name = 'default';
+    await meetingChannelRepository.save(newMeetingChannel);
+
+    const newTextChannel = new TextChannel();
+    newTextChannel.group = newGroup;
+    newTextChannel.name = 'default';
+    await textChannelRepository.save(newTextChannel);
 
     return res.status(200).json({ code: newGroup.code });
   } catch (error) {
