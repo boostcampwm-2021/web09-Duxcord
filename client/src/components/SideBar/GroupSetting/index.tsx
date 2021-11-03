@@ -9,8 +9,8 @@ function GroupSetting() {
     <GroupSettingWrapper>
       <p>{selectedGroup?.name}</p>
       <div>
-        <img src="icons/inviteGroup.png" alt="inviteGroup" />
-        <img src="icons/delete.png" alt="deleteGroup" />
+        <img src="/icons/inviteGroup.png" alt="inviteGroup" />
+        <img src="/icons/delete.png" alt="deleteGroup" />
       </div>
     </GroupSettingWrapper>
   );

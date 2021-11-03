@@ -25,7 +25,7 @@ function GroupNav() {
       <GroupListDivider />
       <div>
         <AddGroupButton>
-          <img src="icons/addGroup.png" alt="addGroup" />
+          <img src="/icons/addGroup.png" alt="addGroup" />
         </AddGroupButton>
       </div>
     </GroupListWrapper>
