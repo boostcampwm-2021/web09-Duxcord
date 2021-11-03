@@ -1,9 +1,7 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useGroups } from '../../../hooks/useGroups';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
-import { RootState } from '../../../redux/store';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
 
 function GroupNav() {
