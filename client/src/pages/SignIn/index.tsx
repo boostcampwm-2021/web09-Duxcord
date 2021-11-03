@@ -97,7 +97,7 @@ function SignIn() {
           </LoginButton>
         </InputPartWrapper>
         <LogoWrapper>
-          <img src="duxcord_logo.png" alt="duxcord_logo" />
+          <img src="/images/duxcord_logo.png" alt="duxcord_logo" />
         </LogoWrapper>
       </SignInWrapper>
     </Background>
