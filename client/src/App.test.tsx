@@ -3,9 +3,12 @@ import { render, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 
-describe('App은', () => {
+interface Path {
+  path:string
+}
 
-  const renderApp = ({ path }) => {
+describe('App은', () => {
+  const renderApp = ({ path } : Path) => {
     return render(
       <MemoryRouter initialEntries={[path]}>
         <App />
@@ -24,6 +27,12 @@ describe('App은', () => {
     it('로그인 페이지가 그려진다.', () => {
       const { getByText } = renderApp({ path: '/' })
       expect(getByText('돌아오신 것을 환영해요!')).toBeInTheDocument();
+    })
+
+    it('가입하기 버튼을 누르면 회원가입 페이지로 이동한다.',() => {
+      const { getByText } = renderApp({ path: '/' })
+      fireEvent.click(getByText('가입하기'))
+      expect(getByText('계정 만들기')).toBeInTheDocument();
     })
   })
 
