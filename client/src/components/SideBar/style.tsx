@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../../styles/colors'
+import colors from '../../styles/colors';
 
 const ChannelListWrapper = styled.div`
   width: 272px;
@@ -124,4 +124,11 @@ const ProfileWrapper = styled.div`
   }
 `;
 
-export { ChannelListWrapper, GroupSettingWrapper, ChannelWrapper, ChannelType, ChannelList, ProfileWrapper };
+export {
+  ChannelListWrapper,
+  GroupSettingWrapper,
+  ChannelWrapper,
+  ChannelType,
+  ChannelList,
+  ProfileWrapper,
+};
