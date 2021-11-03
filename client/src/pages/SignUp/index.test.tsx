@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import SignUp from './index';
 
@@ -18,4 +18,38 @@ describe('SignUp은', () => {
       expect(queryByText('계정 만들기')).toBeInTheDocument();
     })
   })
+
+  it('ID를 입력하면 Input이 바뀐다.',() => {
+    const { container } = renderSignUp();
+    
+    fireEvent.input(container.querySelectorAll('input')[0], {
+      target: {
+        value: 'Duxcord',
+      },
+    });
+    expect(container.querySelectorAll('input')[0]).toHaveValue('Duxcord');
+  })
+
+  it('사용자 이름을 입력하면 사용자명이 바뀐다.',() => {
+    const { container } = renderSignUp();
+    
+    fireEvent.input(container.querySelectorAll('input')[1], {
+      target: {
+        value: 'F4',
+      },
+    });
+    expect(container.querySelectorAll('input')[1]).toHaveValue('F4');
+  })
+
+  it('password를 입력하면 Input이 바뀐다.',() => {
+    const { container } = renderSignUp();
+    
+    fireEvent.input(container.querySelectorAll('input')[2], {
+      target: {
+        value: '1234',
+      },
+    });
+    expect(container.querySelectorAll('input')[2]).toHaveValue('1234');
+  })
+
 });
