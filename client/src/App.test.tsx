@@ -19,4 +19,11 @@ describe('App은', () => {
       expect(container.querySelector('.App')).toBeInTheDocument();
     })
   })
+
+  context('path가 "/"이면', () => {
+    it('로그인 페이지가 그려진다.', () => {
+      const { getByText } = renderApp({ path: '/' })
+      expect(getByText('돌아오신 것을 환영해요!')).toBeInTheDocument();
+    })
+  })
 });
