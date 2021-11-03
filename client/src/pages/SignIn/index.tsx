@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import Background from '../../components/common/Background';
 import { Redirect, Link } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ import { checkLogin } from '../../util/checkResponse';
 import { getFetcher } from '../../util/fetcher';
 
 function SignIn() {
-  const { data, error } = useSWR('http://localhost:8000/api/user', getFetcher);
+  const { data, error, mutate } = useSWR('http://localhost:8000/api/user', getFetcher);
   const [inputState, setInputState] = useState({ ID: '', password: '' });
   const [responseState, setResponseState] = useState({ status: 0, responseText: '' });
 
@@ -52,7 +52,7 @@ function SignIn() {
       })
     );
     const responseText = await response.text();
-    await mutate('http://localhost:8000/api/user');
+    await mutate();
     setResponseState({
       ...responseState,
       status: response.status,
