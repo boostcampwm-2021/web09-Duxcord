@@ -29,6 +29,7 @@ export let groupRepository: Repository<Workgroup>;
 export let groupMemberRepository: GroupMemberRepository;
 export let textChannelRepository: Repository<TextChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
+export let textRepository: Repository<Text>;
 
 const connectDB = async () => {
   connection = await createConnection({
@@ -65,4 +66,5 @@ export const initORM = async () => {
   groupMemberRepository = await getCustomRepository(GroupMemberRepository);
   textChannelRepository = await getRepository(TextChannel);
   meetingChannelRepository = await getRepository(MeetingChannel);
+  textRepository = await getRepository(Text);
 };
