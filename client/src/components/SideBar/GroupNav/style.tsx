@@ -30,10 +30,15 @@ const GroupList = styled.div`
 `;
 
 const Group = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 48px;
   height: 48px;
   border-radius: 50%;
   background-color: ${colors.White};
+  text-align: center;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
     animation: ${radiusChange} 0.1s linear both;

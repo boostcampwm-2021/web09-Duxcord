@@ -6,7 +6,7 @@ const Layout = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-image: url('ducks.jpg');
+  background-image: url('/ducks.jpg');
   background-size: cover;
   background-repeat: no-repeat;
 `;
