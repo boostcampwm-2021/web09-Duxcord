@@ -6,9 +6,9 @@ const ChatWrapper = styled.div`
     display: grid;
     grid-template-columns: 60px auto;
     padding: 20px 16px;
+    position: relative;
     &:hover {
         background-color: ${colors.Gray5};
-        cursor: pointer;
     }
 `
 
