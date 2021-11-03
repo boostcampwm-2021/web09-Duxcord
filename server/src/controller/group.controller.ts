@@ -7,7 +7,7 @@ import {
   textChannelRepository,
   userRepository,
 } from '../db';
-import { Group } from '../entity/group.entity';
+import { Workgroup } from '../entity/workgroup.entity';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
@@ -20,7 +20,7 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
     const leader = await userRepository.findOne({ where: { id: leaderId } });
     if (!leader) return res.status(400).send('존재하지 않는 회원입니다.');
 
-    const newGroup = new Group();
+    const newGroup = new Workgroup();
     newGroup.name = groupName;
     newGroup.leader = leader;
     newGroup.thumbnail = groupThumbnail;
@@ -64,6 +64,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
     const { userID } = req.session;
     const user = await userRepository.findOne({ where: { id: userID } });
     const group = await groupRepository.findOne({ where: { code: groupCode } });
+    if (!group) return res.status(400).send('잘못된 그룹 코드입니다.');
 
     const relation = await groupMemberRepository
       .createQueryBuilder('group_member')

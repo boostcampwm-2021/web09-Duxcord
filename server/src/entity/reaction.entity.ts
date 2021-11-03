@@ -5,10 +5,10 @@ import { Text } from './text.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Like extends Base {
-  @ManyToOne((type) => User, (user) => user.likes)
+export class Reaction extends Base {
+  @ManyToOne(() => User, (user) => user.reactions)
   user: User;
 
-  @ManyToOne((type) => Text, (text) => text.likes)
+  @ManyToOne(() => Text, (text) => text.reactions)
   text: Text;
 }

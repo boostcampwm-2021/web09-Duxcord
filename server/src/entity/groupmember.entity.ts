@@ -1,16 +1,16 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base.entity';
-import { Group } from './group.entity';
+import { Workgroup } from './workgroup.entity';
 import { User } from './user.entity';
 
 @Entity()
 export class GroupMember extends Base {
-  @ManyToOne((type) => User, (user) => user.groups)
+  @ManyToOne(() => User, (user) => user.groups)
   user: User;
 
-  @ManyToOne((type) => Group, (group) => group.members)
-  group: Group;
+  @ManyToOne(() => Workgroup, (workgroup) => workgroup.members)
+  group: Workgroup;
 
   @Column()
   lastAccessTime: Date;

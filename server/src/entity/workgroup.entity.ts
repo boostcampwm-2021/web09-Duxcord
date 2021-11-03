@@ -7,7 +7,7 @@ import { TextChannel } from './textchannel.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Group extends Base {
+export class Workgroup extends Base {
   @Column()
   name: string;
 
@@ -17,15 +17,15 @@ export class Group extends Base {
   @Column({ nullable: true })
   thumbnail: string;
 
-  @ManyToOne((type) => User, (user) => user.leadingGroups)
+  @ManyToOne(() => User, (user) => user.leadingGroups)
   leader: User;
 
-  @OneToMany((type) => MeetingChannel, (meetingChannel) => meetingChannel.group)
+  @OneToMany(() => MeetingChannel, (meetingChannel) => meetingChannel.group)
   meetingChannels: MeetingChannel[];
 
-  @OneToMany((type) => TextChannel, (textChannel) => textChannel.group)
+  @OneToMany(() => TextChannel, (textChannel) => textChannel.group)
   textChannels: TextChannel[];
 
-  @OneToMany((types) => GroupMember, (groupMember) => groupMember.group)
+  @OneToMany(() => GroupMember, (groupMember) => groupMember.group)
   members: GroupMember[];
 }
