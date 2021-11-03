@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { Base } from './base.entity';
 import { Group } from './group.entity';
@@ -11,4 +11,7 @@ export class TextChannel extends Base {
 
   @ManyToOne((type) => Group, (group) => group.textChannels)
   group: Group;
+
+  @Column()
+  name: string;
 }
