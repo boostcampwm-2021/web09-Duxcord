@@ -11,9 +11,9 @@ export const createTextMSG = {
 };
 
 const getText = async (req: Request, res: Response, next: NextFunction) => {
-  const { textChannelId } = req.params;
-  const page = Number(req.query.page);
   try {
+    const { textChannelId } = req.params;
+    const page = Number(req.query.page);
     const texts = await textRepository.findTextsByPages(textChannelId, page);
 
     return res.status(200).json({ texts });
@@ -23,9 +23,9 @@ const getText = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const createText = async (req: Request, res: Response, next: NextFunction) => {
-  const { content } = req.body;
-  const { textChannelId } = req.params;
   try {
+    const { content } = req.body;
+    const { textChannelId } = req.params;
     const { userID } = req.session;
     const user = await userRepository.findOne({ where: { id: userID } });
     const textChannel = await textChannelRepository.findOne({ where: { id: textChannelId } });

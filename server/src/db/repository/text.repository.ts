@@ -4,6 +4,7 @@ import { Text } from '../../entity/text.entity';
 @EntityRepository(Text)
 export class TextRepository extends Repository<Text> {
   findTextsByPages(textChannelId: string, page: number) {
+    const textPerPage = 3;
     return this.createQueryBuilder('text')
       .where('text.textChannel = :id', { id: textChannelId })
       .leftJoinAndSelect('text.user', 'user')
@@ -17,8 +18,8 @@ export class TextRepository extends Repository<Text> {
         'user.thumbnail',
       ])
       .orderBy('text.createdAt', 'DESC')
-      .skip(3 * (page - 1))
-      .take(3)
+      .skip(textPerPage * (page - 1))
+      .take(textPerPage)
       .getMany();
   }
 }
