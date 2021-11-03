@@ -33,4 +33,12 @@ describe('App은', () => {
       expect(getByText('계정 만들기')).toBeInTheDocument();
     })
   })
+
+  context('path가 "/Main"이면', () => {
+    it('text채널과 meeting채널을 보여준다.', () => {
+      const { getByText } = renderApp({ path: '/Main' });
+      expect(getByText('TEXT CHANNELS')).toBeInTheDocument();
+      expect(getByText('MEETING CHANNELS')).toBeInTheDocument();
+    })
+  })
 });
