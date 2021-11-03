@@ -1,5 +1,6 @@
 import React from 'react';
 import ChannelHeader from '../../components/ChannelHeader';
+import Chat from '../../components/Chat';
 import SideBar from '../../components/SideBar';
 import { Layout, MainWrapper } from './style';
 
@@ -14,6 +15,7 @@ function Main({ children }: Props) {
       <MainWrapper>
         <ChannelHeader />
         {children}
+        <Chat chats={[]}/>
       </MainWrapper>
     </Layout>
   );
