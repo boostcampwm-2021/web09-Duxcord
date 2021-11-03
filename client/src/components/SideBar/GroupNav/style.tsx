@@ -32,8 +32,12 @@ const GroupList = styled.div`
 const Group = styled.div`
   width: 48px;
   height: 48px;
+  padding: 16px 0;
   border-radius: 50%;
   background-color: ${colors.White};
+  text-align: center;
+  vertical-align: middle;
+  overflow: hidden;
   &:hover {
     cursor: pointer;
     animation: ${radiusChange} 0.1s linear both;
