@@ -1,7 +1,7 @@
 import React from 'react';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';
 
-function ChannelHeaderLayout() {
+function ChannelHeader() {
   return (
     <ChannelHeaderWrapper>
       <ChannelHeaderLeft>
@@ -26,4 +26,4 @@ function ChannelHeaderLayout() {
   );
 }
 
-export default ChannelHeaderLayout;
+export default ChannelHeader;

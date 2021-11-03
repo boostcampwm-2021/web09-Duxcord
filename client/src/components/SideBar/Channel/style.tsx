@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../../../styles/colors'
+import colors from '../../../styles/colors';
 
 const ChannelWrapper = styled.div`
   margin-top: 20px;

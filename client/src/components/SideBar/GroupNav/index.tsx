@@ -1,7 +1,7 @@
 import React from 'react';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
 
-function GroupListLayout() {
+function GroupNav() {
   // groupId, name, thumbnail
 
   return (
@@ -21,4 +21,4 @@ function GroupListLayout() {
   );
 }
 
-export default GroupListLayout;
+export default GroupNav;
