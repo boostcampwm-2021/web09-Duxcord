@@ -10,6 +10,18 @@ export const createTextMSG = {
   success: '메시지 전송 성공!',
 };
 
+const getText = async (req: Request, res: Response, next: NextFunction) => {
+  const { textChannelId } = req.params;
+  const page = Number(req.query.page);
+  try {
+    const texts = await textRepository.findTextsByPages(textChannelId, page);
+
+    return res.status(200).json({ texts });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const createText = async (req: Request, res: Response, next: NextFunction) => {
   const { content } = req.body;
   const { textChannelId } = req.params;
@@ -34,4 +46,4 @@ const createText = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { createText };
+export default { getText, createText };
