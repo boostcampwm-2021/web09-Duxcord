@@ -16,7 +16,7 @@ const getText = async (req: Request, res: Response, next: NextFunction) => {
     const page = Number(req.query.page);
     const texts = await textRepository.findTextsByPages(textChannelId, page);
 
-    return res.status(200).json({ texts });
+    return res.status(200).json(texts);
   } catch (error) {
     next(error);
   }
