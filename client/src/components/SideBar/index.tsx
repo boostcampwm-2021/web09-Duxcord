@@ -1,19 +1,25 @@
 import React from 'react';
-import Channel from './Channel';
+import { useSelectedGroup } from '../../hooks/useSelectedGroup';
+import Channels from './Channels';
 import GroupNav from './GroupNav';
 import GroupSetting from './GroupSetting';
 import Profile from './Profile';
 import { ChannelListWrapper } from './style';
 
 function SideBar() {
+  const selectedGroup = useSelectedGroup();
   return (
     <>
       <GroupNav />
       <ChannelListWrapper>
-        <GroupSetting />
         <div>
-          <Channel channelType="text" />
-          <Channel channelType="meeting" />
+          <GroupSetting />
+          {selectedGroup && (
+            <>
+              <Channels channelType="text" />
+              <Channels channelType="meeting" />
+            </>
+          )}
         </div>
         <Profile />
       </ChannelListWrapper>
