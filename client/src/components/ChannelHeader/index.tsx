@@ -1,12 +1,21 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';
 
 function ChannelHeader() {
+  const { type, name } = useSelector((state: RootState) => state.selectedChannel);
   return (
     <ChannelHeaderWrapper>
       <ChannelHeaderLeft>
-        <img src="/icons/textChannel.png" alt="textChannel" />
-        <p>general</p>
+        {name !== '' ? (
+          <>
+            <img src={`/icons/${type}Channel.png`} alt={`${type}Channel`} />
+            <p>{name}</p>
+          </>
+        ) : (
+          ''
+        )}
       </ChannelHeaderLeft>
       <ChannelHeaderRight>
         <div>

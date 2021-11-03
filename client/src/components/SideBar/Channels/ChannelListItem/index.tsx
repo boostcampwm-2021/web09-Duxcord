@@ -1,5 +1,8 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
+import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ListItem } from './style';
 
 interface Props {
@@ -9,9 +12,12 @@ interface Props {
 }
 
 function ChannelListItem({ channelType, id, name }: Props) {
+  const selectedGroup = useSelectedGroup();
   const history = useHistory();
+  const dispatch = useDispatch();
   const joinChannel = () => {
-    history.push(`/Main/${channelType}/${id}`);
+    history.push(`/Main/group/${selectedGroup?.id}/${channelType}/${id}`);
+    dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 
   return (
