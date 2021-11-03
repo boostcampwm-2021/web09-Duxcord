@@ -1,10 +1,10 @@
 import styled, { keyframes } from 'styled-components';
-import colors from '../../../styles/colors'
+import colors from '../../../styles/colors';
 
 const radiusChange = keyframes`
   from { border-radius: 50%; }
   to { border-radius: 30%; }
-`
+`;
 
 const GroupListWrapper = styled.div`
   display: flex;
