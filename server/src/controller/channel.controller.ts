@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { textChannelRepository, userRepository } from '../db';
+import { textChannelRepository, userRepository, textRepository } from '../db';
 
 import { Text } from '../entity/text.entity';
 
@@ -19,7 +19,7 @@ const createText = async (req: Request, res: Response, next: NextFunction) => {
     newText.user = user;
     newText.textChannel = textChannel;
 
-    await textChannelRepository.save(newText);
+    await textRepository.save(newText);
 
     return res.status(200).json(newText);
   } catch (error) {
