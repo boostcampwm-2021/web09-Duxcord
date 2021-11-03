@@ -20,14 +20,19 @@ const usernameRegex = /^[^\s]{1,15}$/;
 const usernameValidation = (username) => usernameRegex.test(username);
 const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
 const passwordValidation = (password) => passwordRegex.test(password);
-const signUpMSG = {
-  nullInput: '회원가입에 필요한 데이터일부가 누락되었습니다.',
+export const signUpMSG = {
+  nullInput: '회원가입에 필요한 데이터를 모두 입력해주세요.',
   inValidLoginID: 'ID는 영소문자로 시작하는 6~15자의 영소문자 또는 숫자 여야 합니다.',
   inValidUsername: '유저 이름은 공백없이 1~15자여야 합니다.',
   inValidPassword:
     '비밀번호는 8자 이상 영대문자, 영소문자, 숫자, 특수문자를 최소 1개씩 포함하여야합니다.',
   usedID: '이미 사용중인 ID 입니다.',
   success: '회원가입에 성공했습니다.',
+};
+export const signInMSG = {
+  userNotFound: '존재하지 않는 회원입니다.',
+  wrongPassword: '비밀번호가 올바르지 않습니다.',
+  success: '로그인 성공!',
 };
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
@@ -66,13 +71,13 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 
   try {
     const user = await userRepository.findOne({ where: { loginID: loginID } });
-    if (!user) return res.status(400).send('존재하지 않는 회원입니다.');
+    if (!user) return res.status(400).send(signInMSG.userNotFound);
 
     const isValidPassword = await compare(password, user.password);
-    if (!isValidPassword) return res.status(400).send('비밀번호가 올바르지 않습니다.');
+    if (!isValidPassword) return res.status(400).send(signInMSG.wrongPassword);
 
     req.session.userID = user.id;
-    return res.status(200).send('로그인 성공!');
+    return res.status(200).send(signInMSG.success);
   } catch (error) {
     next(error);
   }
