@@ -17,15 +17,15 @@ export class Workgroup extends Base {
   @Column({ nullable: true })
   thumbnail: string;
 
-  @ManyToOne((type) => User, (user) => user.leadingGroups)
+  @ManyToOne(() => User, (user) => user.leadingGroups)
   leader: User;
 
-  @OneToMany((type) => MeetingChannel, (meetingChannel) => meetingChannel.group)
+  @OneToMany(() => MeetingChannel, (meetingChannel) => meetingChannel.group)
   meetingChannels: MeetingChannel[];
 
-  @OneToMany((type) => TextChannel, (textChannel) => textChannel.group)
+  @OneToMany(() => TextChannel, (textChannel) => textChannel.group)
   textChannels: TextChannel[];
 
-  @OneToMany((types) => GroupMember, (groupMember) => groupMember.group)
+  @OneToMany(() => GroupMember, (groupMember) => groupMember.group)
   members: GroupMember[];
 }

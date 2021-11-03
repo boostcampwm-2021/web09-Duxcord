@@ -23,18 +23,18 @@ export class User extends Base {
   @Column({ nullable: true })
   bio: string;
 
-  @OneToMany((type) => Workgroup, (workgroup) => workgroup.leader)
+  @OneToMany(() => Workgroup, (workgroup) => workgroup.leader)
   leadingGroups: Workgroup[];
 
-  @OneToMany((type) => Reaction, (reaction) => reaction.user)
+  @OneToMany(() => Reaction, (reaction) => reaction.user)
   reactions: Reaction[];
 
-  @OneToMany((type) => Text, (text) => text.user)
+  @OneToMany(() => Text, (text) => text.user)
   texts: Text[];
 
-  @OneToMany((type) => Thread, (thread) => thread.user)
+  @OneToMany(() => Thread, (thread) => thread.user)
   threads: Thread[];
 
-  @OneToMany((type) => GroupMember, (groupMember) => groupMember.user)
+  @OneToMany(() => GroupMember, (groupMember) => groupMember.user)
   groups: GroupMember[];
 }

@@ -5,7 +5,7 @@ import { Workgroup } from './workgroup.entity';
 
 @Entity()
 export class MeetingChannel extends Base {
-  @ManyToOne((type) => Workgroup, (workgroup) => workgroup.meetingChannels)
+  @ManyToOne(() => Workgroup, (workgroup) => workgroup.meetingChannels)
   group: Workgroup;
 
   @Column()

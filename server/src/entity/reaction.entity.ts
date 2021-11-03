@@ -6,9 +6,9 @@ import { User } from './user.entity';
 
 @Entity()
 export class Reaction extends Base {
-  @ManyToOne((type) => User, (user) => user.reactions)
+  @ManyToOne(() => User, (user) => user.reactions)
   user: User;
 
-  @ManyToOne((type) => Text, (text) => text.reactions)
+  @ManyToOne(() => Text, (text) => text.reactions)
   text: Text;
 }

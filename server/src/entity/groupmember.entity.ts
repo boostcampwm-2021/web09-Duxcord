@@ -6,10 +6,10 @@ import { User } from './user.entity';
 
 @Entity()
 export class GroupMember extends Base {
-  @ManyToOne((type) => User, (user) => user.groups)
+  @ManyToOne(() => User, (user) => user.groups)
   user: User;
 
-  @ManyToOne((type) => Workgroup, (workgroup) => workgroup.members)
+  @ManyToOne(() => Workgroup, (workgroup) => workgroup.members)
   group: Workgroup;
 
   @Column()

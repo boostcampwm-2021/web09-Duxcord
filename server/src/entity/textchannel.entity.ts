@@ -6,10 +6,10 @@ import { Text } from './text.entity';
 
 @Entity()
 export class TextChannel extends Base {
-  @OneToMany((type) => Text, (text) => text.textChannel)
+  @OneToMany(() => Text, (text) => text.textChannel)
   texts: Text;
 
-  @ManyToOne((type) => Workgroup, (workgroup) => workgroup.textChannels)
+  @ManyToOne(() => Workgroup, (workgroup) => workgroup.textChannels)
   group: Workgroup;
 
   @Column()
