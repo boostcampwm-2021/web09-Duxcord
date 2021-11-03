@@ -7,7 +7,7 @@ import { TextChannel } from './textchannel.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Group extends Base {
+export class Workgroup extends Base {
   @Column()
   name: string;
 

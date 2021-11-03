@@ -1,12 +1,12 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base.entity';
-import { Group } from './group.entity';
+import { Workgroup } from './workgroup.entity';
 
 @Entity()
 export class MeetingChannel extends Base {
-  @ManyToOne((type) => Group, (group) => group.meetingChannels)
-  group: Group;
+  @ManyToOne((type) => Workgroup, (workgroup) => workgroup.meetingChannels)
+  group: Workgroup;
 
   @Column()
   name: string;

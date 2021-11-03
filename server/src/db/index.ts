@@ -12,9 +12,9 @@ import { Thread } from '../entity/thread.entity';
 import { TextChannel } from '../entity/textchannel.entity';
 import { Text } from '../entity/text.entity';
 import { MeetingChannel } from '../entity/meetingchannel.entity';
-import { Like } from '../entity/like.entity';
+import { Reaction } from '../entity/reaction.entity';
 import { GroupMember } from '../entity/groupmember.entity';
-import { Group } from '../entity/group.entity';
+import { Workgroup } from '../entity/workgroup.entity';
 import { File } from '../entity/file.entity';
 import { Session } from '../entity/session.entity';
 import { UserRepository } from './repository/user.repository';
@@ -25,7 +25,7 @@ dotenv.config();
 export let connection: Connection;
 export let userRepository: UserRepository;
 export let sessionRepository;
-export let groupRepository: Repository<Group>;
+export let groupRepository: Repository<Workgroup>;
 export let groupMemberRepository: GroupMemberRepository;
 export let textChannelRepository: Repository<TextChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
@@ -47,9 +47,9 @@ const connectDB = async () => {
       TextChannel,
       Text,
       MeetingChannel,
-      Like,
+      Reaction,
       GroupMember,
-      Group,
+      Workgroup,
       File,
     ],
   });
@@ -61,7 +61,7 @@ export const initORM = async () => {
   await connectDB();
   userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);
-  groupRepository = await getRepository(Group);
+  groupRepository = await getRepository(Workgroup);
   groupMemberRepository = await getCustomRepository(GroupMemberRepository);
   textChannelRepository = await getRepository(TextChannel);
   meetingChannelRepository = await getRepository(MeetingChannel);
