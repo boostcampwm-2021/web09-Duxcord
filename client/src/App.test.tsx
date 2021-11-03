@@ -26,4 +26,11 @@ describe('App은', () => {
       expect(getByText('돌아오신 것을 환영해요!')).toBeInTheDocument();
     })
   })
+
+  context('path가 "/SignUp"이면', () => {
+    it('회원가입 페이지가 그려진다.', () => {
+      const { getByText } = renderApp({ path: '/SignUp' })
+      expect(getByText('계정 만들기')).toBeInTheDocument();
+    })
+  })
 });
