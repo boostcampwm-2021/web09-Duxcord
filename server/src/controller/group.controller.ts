@@ -8,9 +8,6 @@ import {
   userRepository,
 } from '../db';
 import { Group } from '../entity/group.entity';
-import { GroupMember } from '../entity/groupmember.entity';
-import { MeetingChannel } from '../entity/meetingchannel.entity';
-import { TextChannel } from '../entity/textchannel.entity';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
@@ -27,27 +24,18 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
     newGroup.name = groupName;
     newGroup.leader = leader;
     newGroup.thumbnail = groupThumbnail;
+
     const now = new Date();
     const timestamp = now.getTime();
     const newCode = encodeBase64(String(timestamp).slice(-6));
     newGroup.code = newCode;
     await groupRepository.save(newGroup);
 
-    const newRelation = new GroupMember();
-    newRelation.group = newGroup;
-    newRelation.user = leader;
-    newRelation.lastAccessTime = now;
-    await groupMemberRepository.save(newRelation);
+    await groupMemberRepository.insert({ group: newGroup, user: leader, lastAccessTime: now });
 
-    const newMeetingChannel = new MeetingChannel();
-    newMeetingChannel.group = newGroup;
-    newMeetingChannel.name = 'default';
-    await meetingChannelRepository.save(newMeetingChannel);
+    await meetingChannelRepository.insert({ group: newGroup, name: 'default' });
 
-    const newTextChannel = new TextChannel();
-    newTextChannel.group = newGroup;
-    newTextChannel.name = 'default';
-    await textChannelRepository.save(newTextChannel);
+    await textChannelRepository.insert({ group: newGroup, name: 'default' });
 
     return res.status(200).json({ code: newGroup.code });
   } catch (error) {
@@ -88,11 +76,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
     if (relation) return res.status(400).send('이미 그룹에 가입된 사용자입니다');
 
     const now = new Date();
-    const newRelation = new GroupMember();
-    newRelation.group = group;
-    newRelation.user = user;
-    newRelation.lastAccessTime = now;
-    await groupMemberRepository.save(newRelation);
+    await groupMemberRepository.insert({ group: group, user: user, lastAccessTime: now });
 
     res.status(200).json({ group });
   } catch (error) {
