@@ -5,7 +5,7 @@ const ChatWrapper = styled.div`
     background-color: ${colors.White};
     display: grid;
     grid-template-columns: 60px auto;
-    padding: 20px 16px;
+    padding: 20px 28px;
     position: relative;
     &:hover {
         background-color: ${colors.Gray5};

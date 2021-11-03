@@ -7,25 +7,27 @@ const Wrapper = styled.div`
     gap: 2px;
     grid-template-columns:40px auto;
     padding: 20px;
-    padding-top: 0px;
-    position: fixed;
-    bottom: 0;
-    left:0;
-    right:0;
+    padding-top: 0;
 `
 
 const ButtonWrapper = styled.div`
     background-color:${colors.Gray2};
-    border-bottom-left-radius: 8px;
-    border-top-left-radius: 8px;
+    border-bottom-left-radius: 12px;
+    border-top-left-radius: 12px;
     height:40px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    &:hover {
+        cursor: pointer;
+    }
 `
 
 const Input = styled.input`
     background-color:${colors.Gray2};
-    padding: 20px;
-    border-top-right-radius: 8px;
-    border-bottom-right-radius: 8px;
+    padding: 12px;
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
     height:40px;
     outline: none;
     border: none;
