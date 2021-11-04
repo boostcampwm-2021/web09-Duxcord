@@ -47,7 +47,8 @@ function Chat() {
         chats?.unshift(chat);
         return chats;
       });
-      const { scrollTop, clientHeight, scrollHeight } = chatListRef.current as HTMLDivElement;
+      if (chatListRef.current === null) return;
+      const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
       if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom();
     },
     [chats, mutate]
