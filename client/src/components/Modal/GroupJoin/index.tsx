@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
-import { API_URL } from '../../../api/API_URL';
+import { postJoinGroup } from '../../../api/postChat';
 import { useGroups } from '../../../hooks/useGroups';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
 import colors from '../../../styles/colors';
@@ -20,17 +20,7 @@ function GroupJoinModal({ controller }: { controller: ModalController }) {
   };
 
   const joinGroup = async () => {
-    const response = await fetch(API_URL.user.postJoinGroup, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        groupCode: groupCode,
-      }),
-    });
-    console.log(response);
+    const response = await postJoinGroup({ groupCode: groupCode });
     switch (response.status) {
       case 200:
         const group = await response.json();
