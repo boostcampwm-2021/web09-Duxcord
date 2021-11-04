@@ -48,34 +48,37 @@ function SignUp() {
   const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
     const input = event.currentTarget.value;
     setInputState({ ...inputState, ID: input });
-    if (!validateID(input)) {
-      if (validateForm(input, userName, password))
-        return setResponseState({...responseState, IDresponseText: ID_FORM_ERROR, formResponseText: ''})
-      return setResponseState({...responseState, IDresponseText: ID_FORM_ERROR })
-    }
-    return setResponseState({...responseState, IDresponseText: ''})
+    const nowFormResopnseText = validateForm(input, userName, password) ? '' : formResponseText
+    const nowIDresponseText = validateID(input) ? '' : ID_FORM_ERROR
+    setResponseState({
+      ...responseState, 
+      formResponseText: nowFormResopnseText, 
+      IDresponseText : nowIDresponseText
+    })
   };
 
   const handleUserNameInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
     const input = event.currentTarget.value;
     setInputState({ ...inputState, userName: input });
-    if(!validateUserName(input)) {
-      if (validateForm(ID, input, password))
-        return setResponseState({...responseState, userNameResponseText: USERNAME_ERROR, formResponseText: ''} )
-      return setResponseState({...responseState, userNameResponseText: USERNAME_ERROR } )
-    }
-    return setResponseState({...responseState, userNameResponseText: ''})
+    const nowFormResopnseText = validateForm(ID, input, password) ? '' : formResponseText
+    const nowUserNameResponseText = validateUserName(input) ? '' : USERNAME_ERROR
+    setResponseState({
+      ...responseState, 
+      formResponseText: nowFormResopnseText, 
+      userNameResponseText : nowUserNameResponseText
+    })
   };
 
   const handlePasswordInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
     const input = event.currentTarget.value;
     setInputState({ ...inputState, password: input });
-    if(!validatePassword(input)) {
-      if (validateForm(ID, userName, input))
-        return setResponseState({...responseState, passwordResponseText: PASSWORD_FORM_ERROR, formResponseText: ''} )
-      return setResponseState({...responseState, passwordResponseText: PASSWORD_FORM_ERROR } )
-    }
-    return setResponseState({...responseState, passwordResponseText: ''})
+    const nowFormResopnseText = validateForm(ID, userName, input) ? '' : formResponseText
+    const nowPasswordResponseText = validatePassword(input) ? '' : PASSWORD_FORM_ERROR
+    setResponseState({
+      ...responseState, 
+      formResponseText: nowFormResopnseText, 
+      passwordResponseText : nowPasswordResponseText
+    })
   };
 
   const signUp = async () => {
@@ -128,3 +131,4 @@ function SignUp() {
 }
 
 export default SignUp;
+
