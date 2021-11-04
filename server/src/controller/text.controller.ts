@@ -19,7 +19,7 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
     const text = await textRepository.findOne({ where: { id: id } });
 
     if (!user) return res.status(400).send(createTextMSG.userNotFound);
-    if (!content.trim()) return res.status(400).send(createTextMSG.emptyChat);
+    if (!content || !content.trim()) return res.status(400).send(createTextMSG.emptyChat);
 
     const newThread = new Thread();
     newThread.content = content;
