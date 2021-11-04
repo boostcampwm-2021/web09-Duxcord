@@ -18,7 +18,7 @@ import { checkLogin } from '../../util/checkResponse';
 import { getFetcher } from '../../util/fetcher';
 
 function SignIn() {
-  const { data, error, mutate } = useSWR('http://localhost:8000/api/user', getFetcher);
+  const { data, error, mutate } = useSWR('/api/user', getFetcher);
   const [inputState, setInputState] = useState({ ID: '', password: '' });
   const [responseState, setResponseState] = useState({ status: 0, responseText: '' });
 
@@ -45,7 +45,7 @@ function SignIn() {
     if (password === '')
       return setResponseState({ ...responseState, responseText: '비밀번호를 입력해주세요.' });
     const response = await fetch(
-      'http://localhost:8000/api/user/signin',
+      '/api/user/signin',
       postFetchOptions({
         loginID: ID,
         password: password,
