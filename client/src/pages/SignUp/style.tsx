@@ -15,13 +15,22 @@ const Title = styled.h1`
   font-size: 36px;
   color: ${color.Blue};
   font-weight: 600;
-  margin-bottom: 80px;
+  margin-bottom: 50px;
 `
 
 const InputPart = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 60px;
+  margin-top: 50px;
+  & > p{
+    height: 18px;
+    margin-top: 6px;
+    margin-bottom: -18px;
+    color:${color.DarkRed}
+  }
+  & > p:not(:last-child){
+    margin-bottom: 18px;
+  }
   & >input{
     border:1px solid gray;
     height: 47px;
@@ -39,10 +48,6 @@ const InputPart = styled.div`
   }
 `
 const ErrorResponse = styled.p`
-  height: 18px;
-  margin-top: 6px;
-  margin-bottom: -18px;
-  color:${color.DarkRed}
 `
 
 const SignUpButton = styled.div`
