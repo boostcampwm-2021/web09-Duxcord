@@ -2,20 +2,17 @@ import React from 'react';
 import ChannelHeader from '../../components/ChannelHeader';
 import Chat from '../../components/Chat';
 import SideBar from '../../components/SideBar';
+import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import { Layout, MainWrapper } from './style';
 
-interface Props {
-  children: JSX.Element[] | JSX.Element;
-}
-
-function Main({ children }: Props) {
+function Main() {
+  const selectedChannel = useSelectedChannel();
   return (
     <Layout>
       <SideBar />
       <MainWrapper>
         <ChannelHeader />
-        {children}
-        <Chat chats={[]}/>
+        {selectedChannel.type === 'text' && <Chat />}
       </MainWrapper>
     </Layout>
   );

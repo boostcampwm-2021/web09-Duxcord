@@ -53,7 +53,7 @@ const getGroupMembers = async (req: Request, res: Response, next: NextFunction) 
 
     const members = await groupMemberRepository.findUsersByGroupID(group.id);
 
-    res.status(200).json({ members });
+    res.status(200).json(members);
   } catch (error) {
     next(error);
   }
@@ -105,7 +105,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
     const now = new Date();
     await groupMemberRepository.insert({ group: group, user: user, lastAccessTime: now });
 
-    res.status(200).json({ group });
+    res.status(200).json(group);
   } catch (error) {
     next(error);
   }

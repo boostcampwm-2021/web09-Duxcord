@@ -1,9 +1,13 @@
 interface ChatData {
   id: number;
-  imgSrc: string;
-  username: string;
   createdAt: string;
+  updatedAt: string;
   content: string;
+  user: {
+    id: number;
+    thumbnail: null | string;
+    username: string;
+  };
 }
 
 export { ChatData };

@@ -4,7 +4,7 @@ import { Text } from '../../entity/text.entity';
 @EntityRepository(Text)
 export class TextRepository extends Repository<Text> {
   findTextsByPages(textChannelId: string, page: number) {
-    const textPerPage = 3;
+    const textPerPage = 20;
     return this.createQueryBuilder('text')
       .where('text.textChannel = :id', { id: textChannelId })
       .leftJoinAndSelect('text.user', 'user')
