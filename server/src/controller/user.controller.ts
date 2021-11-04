@@ -115,10 +115,48 @@ const getUserGroups = async (req: Request, res: Response, next: NextFunction) =>
   }
 };
 
+const getOtherUserData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const userdata = await userRepository.findByID(Number(id));
+
+    return res.status(200).json(userdata);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateUserData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { userID } = req.session;
+    const { username, thumbnail, bio } = req.body;
+
+    const isValidUsername = usernameValidation(username);
+    if (!isValidUsername) return res.status(400).send(signUpMSG.inValidUsername);
+
+    if (username === undefined) return res.status(400).send('사용자 이름이 필요합니다.');
+    if (thumbnail === undefined) return res.status(400).send('사용자 이미지가 필요합니다.');
+    if (bio === undefined) return res.status(400).send('사용자 소개가 필요합니다.');
+
+    const userdata = await userRepository.save({
+      id: userID,
+      username,
+      thumbnail,
+      bio,
+    });
+
+    return res.status(200).json(userdata);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signUp,
   signIn,
   signOut,
   getUserData,
   getUserGroups,
+  getOtherUserData,
+  updateUserData,
 };
