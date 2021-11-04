@@ -79,12 +79,8 @@ function SignUp() {
   };
 
   const signUp = async () => {
-    if (
-      !isSendPossible(IDresponseText, userNameResponseText, passwordResponseText)
-      || !ID 
-      || !userName
-      || !password 
-      )  return setResponseState({...responseState, formResponseText: EMPTY_INPUT_ERROR})
+    if (!ID  || !userName || !password ) return setResponseState({...responseState, formResponseText: EMPTY_INPUT_ERROR})
+    if (!isSendPossible(IDresponseText, userNameResponseText, passwordResponseText)) return 
     const { status, responseText } = await trySignUp(ID,userName,password);
     setResponseState({ ...responseState, status, IDresponseText: responseText });
   };
