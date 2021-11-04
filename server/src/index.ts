@@ -4,20 +4,22 @@ import morgan from 'morgan';
 import session from 'express-session';
 import { TypeormStore } from 'typeorm-store';
 import dotenv from 'dotenv';
-import cors from 'cors';
 dotenv.config();
 
 import { initORM, sessionRepository } from './db';
 import { apiRouter } from './router/api.router';
+import { createServer } from 'http';
+import { socketInit } from './socket';
 
 export const appInit = async () => {
   await initORM();
   const app = express();
+  const httpServer = createServer(app);
+  socketInit(httpServer);
   app.set('port', process.env.PORT || 8000);
   if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
   }
-  app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(
@@ -39,7 +41,7 @@ export const appInit = async () => {
 
   if (process.env.NODE_ENV === 'test') return app;
 
-  app.listen(app.get('port'), () => {
+  httpServer.listen(app.get('port'), () => {
     console.log('Express server has started on port', app.get('port'));
   });
 };

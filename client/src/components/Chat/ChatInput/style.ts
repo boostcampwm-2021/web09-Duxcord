@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import colors from "../../../styles/colors";
+import styled from 'styled-components';
+import colors from '../../../styles/colors';
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   background-color: ${colors.White};
   display: grid;
   gap: 2px;

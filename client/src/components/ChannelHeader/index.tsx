@@ -1,10 +1,9 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';
 
 function ChannelHeader() {
-  const { type, name } = useSelector((state: RootState) => state.selectedChannel);
+  const { type, name } = useSelectedChannel();
   return (
     <ChannelHeaderWrapper>
       <ChannelHeaderLeft>
