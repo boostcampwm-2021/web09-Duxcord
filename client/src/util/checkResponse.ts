@@ -1,27 +1,3 @@
-const checkPassword = (status:number, responseMessage:string):string => {
-  const passwordWrongMessage:string = '비밀먼호는 특수문자 포함 6자 이상으로 해주세요.'
-  if (status === 400 && responseMessage === passwordWrongMessage) {
-    return passwordWrongMessage;
-  }
-  return '';
-}
-
-const checkID = (status:number, responseMessage:string):string => {
-  const IDWrongMessage:string = '이미 사용중인 ID 입니다.'
-  if (status === 400 && responseMessage === IDWrongMessage) {
-    return IDWrongMessage;
-  }
-  return '';
-}
-
-const checkForm = (status:number, responseMessage:string):string => {
-  const formWrongMessage:string = '회원가입에 필요한 데이터일부가 누락되었습니다.'
-  if (status === 400 && responseMessage === formWrongMessage) {
-    return formWrongMessage;
-  }
-  return '';
-}
-
 const checkLogin = (status:number, responseMessage:string):string => {
   if (status !== 200) {
     return responseMessage;
@@ -29,9 +5,36 @@ const checkLogin = (status:number, responseMessage:string):string => {
   return '';
 }
 
+const validateID = (ID:string):boolean => {
+  const loginIDRegex = /^[a-z][a-z0-9]{5,14}$/;
+  return loginIDRegex.test(ID);
+}
+
+const validateUserName = (userName:string):boolean => {
+  const userNameRegex = /^[^\s]{1,15}$/;
+  return userNameRegex.test(userName);
+}
+
+const validatePassword = (password:string):boolean => {
+  const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
+  return passwordRegex.test(password);
+}
+
+const validateForm = (ID:string, userName:string, password:string):boolean => {
+  if (ID === '' || userName === '' || password === '') return false
+  return true
+}
+
+const isSendPossible = (IDResponseText:string, userNameResponseText:string, passwordResponseText:string):boolean => {
+  if (IDResponseText === '' && userNameResponseText === '' && passwordResponseText === '') return true
+  return false
+}
+
 export {
-  checkPassword,
-  checkID,
-  checkForm,
-  checkLogin
+  checkLogin,
+  validateID,
+  validateUserName,
+  validatePassword,
+  validateForm,
+  isSendPossible
 }
