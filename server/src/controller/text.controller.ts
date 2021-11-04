@@ -6,6 +6,7 @@ import { Thread } from '../entity/thread.entity';
 
 export const createTextMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
+  textNotFound: '존재하지 않는 텍스트 입니다.',
   emptyChat: '채팅을 입력해 주세요.',
   success: '스레드 전송 성공!',
 };
@@ -19,6 +20,7 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
     const text = await textRepository.findOne({ where: { id: id } });
 
     if (!user) return res.status(400).send(createTextMSG.userNotFound);
+    if (!text) return res.status(400).send(createTextMSG.textNotFound);
     if (!content || !content.trim()) return res.status(400).send(createTextMSG.emptyChat);
 
     const newThread = new Thread();
