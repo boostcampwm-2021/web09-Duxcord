@@ -63,7 +63,10 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { userID } = req.session;
     const user = await userRepository.findOne({ where: { id: userID } });
-    const group = await groupRepository.findOne({ where: { code: groupCode } });
+    const group = await groupRepository.findOne({
+      where: { code: groupCode },
+      relations: ['meetingChannels', 'textChannels'],
+    });
     if (!group) return res.status(400).send('잘못된 그룹 코드입니다.');
 
     const relation = await groupMemberRepository
