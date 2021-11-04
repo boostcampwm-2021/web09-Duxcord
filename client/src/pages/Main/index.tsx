@@ -15,7 +15,7 @@ function Main({ children }: Props) {
       <MainWrapper>
         <ChannelHeader />
         {children}
-        <Chat chats={[]}/>
+        <Chat chats={[]} />
       </MainWrapper>
     </Layout>
   );
