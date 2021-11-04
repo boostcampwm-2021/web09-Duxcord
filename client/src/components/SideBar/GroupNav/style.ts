@@ -28,6 +28,8 @@ const GroupList = styled.div`
   & div:not(:last-child) {
     margin-bottom: 10px;
   }
+  overflow-y: scroll;
+  height: 100%;
 `;
 
 const Group = styled.div`
