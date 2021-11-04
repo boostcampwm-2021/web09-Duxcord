@@ -2,7 +2,7 @@ import { postFetchOptions } from "./fetchOptions"
 
 const tryLogin = async (loginID: string, password: string) => {
   const response = await fetch(
-    'http://localhost:8000/api/user/signin',
+    '/api/user/signin',
     postFetchOptions({ loginID, password })
   )
   const responseText = await response.text();
@@ -12,7 +12,7 @@ const tryLogin = async (loginID: string, password: string) => {
 
 const trySignUp = async (loginID:string, username:string, password:string) => {
   const response = await fetch(
-    'http://localhost:8000/api/user/signup', 
+    '/api/user/signup', 
     postFetchOptions({loginID, username, password})
   )
   const responseText = await response.text();
