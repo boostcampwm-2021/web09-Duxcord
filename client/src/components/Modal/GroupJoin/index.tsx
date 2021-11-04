@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
+import { API_URL } from '../../../api/API_URL';
 import { useGroups } from '../../../hooks/useGroups';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
 import colors from '../../../styles/colors';
@@ -18,7 +19,7 @@ function GroupJoinModal({ controller }: { controller: any }) {
   };
 
   const joinGroup = async () => {
-    const response = await fetch('http://localhost:8000/api/group/join', {
+    const response = await fetch(API_URL.user.postJoinGroup, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -28,10 +29,10 @@ function GroupJoinModal({ controller }: { controller: any }) {
         groupCode: groupCode,
       }),
     });
+    console.log(response);
     switch (response.status) {
       case 200:
-        const responseJSON = await response.json();
-        const { group } = responseJSON;
+        const group = await response.json();
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         history.push(`/Main/group/${group.id}`);
