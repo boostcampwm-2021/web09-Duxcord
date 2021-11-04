@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - release
-      - chore/CD스크립트
 jobs:
   deploy:
     name: Build and Deploy to nCloud
@@ -87,6 +86,6 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             chown root duxcord/server
-            cd duxcord/server/build
+            cd duxcord/server/dist
             pm2 start main.js
             pm2 restart main.js
