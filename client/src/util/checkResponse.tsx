@@ -1,23 +1,29 @@
+import { SIGN_UP_ERROR_MESSAGE } from '../util/message'
+
+const {
+  PASSWORD_FORM_ERROR,
+  ID_FORM_ERROR,
+  ID_REGISTER_ERROR,
+  EMPTY_INPUT_ERROR
+} = SIGN_UP_ERROR_MESSAGE;
+
 const checkPassword = (status:number, responseMessage:string):string => {
-  const passwordWrongMessage:string = '비밀먼호는 특수문자 포함 6자 이상으로 해주세요.'
-  if (status === 400 && responseMessage === passwordWrongMessage) {
-    return passwordWrongMessage;
+  if (status === 400 && responseMessage === PASSWORD_FORM_ERROR) {
+    return PASSWORD_FORM_ERROR;
   }
   return '';
 }
 
 const checkID = (status:number, responseMessage:string):string => {
-  const IDWrongMessage:string = '이미 사용중인 ID 입니다.'
-  if (status === 400 && responseMessage === IDWrongMessage) {
-    return IDWrongMessage;
+  if (status === 400 && responseMessage in [ID_FORM_ERROR, ID_REGISTER_ERROR]) {
+    return responseMessage;
   }
   return '';
 }
 
 const checkForm = (status:number, responseMessage:string):string => {
-  const formWrongMessage:string = '회원가입에 필요한 데이터일부가 누락되었습니다.'
-  if (status === 400 && responseMessage === formWrongMessage) {
-    return formWrongMessage;
+  if (status === 400 && responseMessage === EMPTY_INPUT_ERROR) {
+    return EMPTY_INPUT_ERROR;
   }
   return '';
 }
