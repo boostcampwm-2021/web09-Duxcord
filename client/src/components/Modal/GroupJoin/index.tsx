@@ -9,14 +9,22 @@ import colors from '../../../styles/colors';
 import { ModalController } from '../../../types/modal';
 import { Input } from './style';
 
-function GroupJoinModal({ controller }: { controller: ModalController }) {
-  const { hide } = controller;
+function GroupJoinModal({
+  controller: { hidden, hide, show },
+}: {
+  controller: ModalController;
+}) {
   const [groupCode, setGroupCode] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
   const history = useHistory();
   const updateGroupCode = (newGroupCode: string) => {
     setGroupCode(newGroupCode);
+  };
+
+  const finishModal = () => {
+    hide();
+    setGroupCode('');
   };
 
   const joinGroup = async () => {
@@ -27,7 +35,7 @@ function GroupJoinModal({ controller }: { controller: ModalController }) {
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         history.push(`/Main/group/${group.id}`);
-        hide();
+        finishModal();
         break;
       case 400:
         const responseText = await response.text();
@@ -42,6 +50,7 @@ function GroupJoinModal({ controller }: { controller: ModalController }) {
     <Input
       onChange={(e) => updateGroupCode(e.target.value)}
       placeholder='그룹 코드를 입력해주세요'
+      value={groupCode}
     />
   );
   return (
@@ -56,7 +65,7 @@ function GroupJoinModal({ controller }: { controller: ModalController }) {
           onClickHandler: joinGroup,
         },
       }}
-      controller={controller}
+      controller={{ hidden, hide: finishModal, show }}
     />
   );
 }
