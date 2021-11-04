@@ -10,7 +10,7 @@ const getGroupsFetcher = async (url: string) => {
     const response = await fetch(url, { credentials: 'include' });
     const responseData = await response.json();
 
-    return responseData?.groups.map((el: any) => el.group);
+    return responseData?.map((el: any) => el.group);
   } catch (error) {
     console.error(error);
   }

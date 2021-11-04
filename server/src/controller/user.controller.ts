@@ -109,7 +109,7 @@ const getUserGroups = async (req: Request, res: Response, next: NextFunction) =>
 
     const groups = await groupMemberRepository.findGroupsByUserID(userID);
 
-    return res.status(200).json({ groups });
+    return res.status(200).json(groups);
   } catch (error) {
     next(error);
   }

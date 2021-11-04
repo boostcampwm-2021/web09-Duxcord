@@ -19,6 +19,7 @@
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.2",
+    "socket.io-client": "^4.3.2",
     "styled-components": "^5.3.3",
     "styled-reset": "^4.3.4",
     "swr": "^1.0.1",
@@ -53,5 +54,6 @@
     "@types/jest-plugin-context": "^2.9.4",
     "@types/react-router-dom": "^5.3.2",
     "jest-plugin-context": "^2.9.0"
-  }
+  },
+  "proxy": "http://localhost:8000"
 }

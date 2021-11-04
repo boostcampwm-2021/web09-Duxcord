@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { textChannelRepository, userRepository, textRepository } from '../db';
 
 import { Text } from '../entity/text.entity';
+import { io } from '../socket';
 
 export const createTextMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
@@ -16,7 +17,7 @@ const getText = async (req: Request, res: Response, next: NextFunction) => {
     const page = Number(req.query.page);
     const texts = await textRepository.findTextsByPages(textChannelId, page);
 
-    return res.status(200).json({ texts });
+    return res.status(200).json(texts);
   } catch (error) {
     next(error);
   }
@@ -39,6 +40,18 @@ const createText = async (req: Request, res: Response, next: NextFunction) => {
     newText.textChannel = textChannel;
 
     await textRepository.save(newText);
+
+    io.to(`${textChannelId}`).emit('chat', {
+      id: newText.id,
+      createdAt: newText.createdAt,
+      updatedAt: newText.updatedAt,
+      content: newText.content,
+      user: {
+        id: user.id,
+        thumbnail: user.thumbnail,
+        username: user.username,
+      },
+    });
 
     return res.status(200).send(createTextMSG.success);
   } catch (error) {
