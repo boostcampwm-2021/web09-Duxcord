@@ -3,11 +3,10 @@ import ChatItem from './ChatItem';
 import { ChatContainer, Chats } from './style';
 import { ChatData } from '../../types/chats';
 import ChatInput from './ChatInput';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import useSWRInfinite from 'swr/infinite';
 import { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
+import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 
 const getKey = (channelID: number | null) => (index: number, prevData: any) => {
   if (prevData && !prevData.length) return null;
@@ -18,7 +17,7 @@ const PAGE_SIZE = 20;
 const THRESHOLD = 300;
 
 function Chat() {
-  const selectedChannel = useSelector((state: RootState) => state.selectedChannel);
+  const selectedChannel = useSelectedChannel();
   const { data: chats, mutate, setSize } = useSWRInfinite(getKey(selectedChannel.id), getFetcher);
   const isEmpty = chats?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
