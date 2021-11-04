@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Background from '../../components/common/Background';
 import { Redirect, Link } from 'react-router-dom';
 
-import { checkID, checkPassword, checkForm } from '../../util/checkResponse';
+import { validateID, validateUserName, validatePassword, validateForm, isSendPossible } from '../../util/checkResponse';
 import {
   SignUpWrapper,
   Title,
@@ -11,6 +11,15 @@ import {
   SignUpButton,
   ButtonWrapper,
 } from './style';
+import { SIGN_UP_ERROR_MESSAGE } from '../../util/message' ;
+import { trySignUp } from '../../util/api';
+
+const { 
+  ID_FORM_ERROR, 
+  PASSWORD_FORM_ERROR, 
+  USERNAME_ERROR,
+  EMPTY_INPUT_ERROR 
+} = SIGN_UP_ERROR_MESSAGE
 
 function SignUp() {
   const [inputState, setInputState] = useState({
@@ -21,52 +30,59 @@ function SignUp() {
 
   const [responseState, setResponseState] = useState({
     status: 0,
-    responseText: '',
+    IDresponseText: '',
+    userNameResponseText:'',
+    passwordResponseText:'',
+    formResponseText:'',
   });
 
   const { ID, userName, password } = inputState;
-  const { status, responseText } = responseState;
+  const { 
+    status, 
+    IDresponseText, 
+    userNameResponseText, 
+    passwordResponseText,
+    formResponseText
+   } = responseState;
 
   const handleIDInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    setInputState({
-      ...inputState,
-      ID: event.currentTarget.value,
-    });
+    const input = event.currentTarget.value;
+    setInputState({ ...inputState, ID: input });
+    if (!validateID(input)) {
+      if (validateForm(input, userName, password))
+        return setResponseState({...responseState, IDresponseText: ID_FORM_ERROR, formResponseText: ''})
+      return setResponseState({...responseState, IDresponseText: ID_FORM_ERROR })
+    }
+    return setResponseState({...responseState, IDresponseText: ''})
   };
 
   const handleUserNameInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    setInputState({
-      ...inputState,
-      userName: event.currentTarget.value,
-    });
+    const input = event.currentTarget.value;
+    setInputState({ ...inputState, userName: input });
+    if(!validateUserName(input)) {
+      if (validateForm(ID, input, password))
+        return setResponseState({...responseState, userNameResponseText: USERNAME_ERROR, formResponseText: ''} )
+      return setResponseState({...responseState, userNameResponseText: USERNAME_ERROR } )
+    }
+    return setResponseState({...responseState, userNameResponseText: ''})
   };
 
   const handlePasswordInputChange = (event: React.FormEvent<HTMLInputElement>): void => {
-    setInputState({
-      ...inputState,
-      password: event.currentTarget.value,
-    });
+    const input = event.currentTarget.value;
+    setInputState({ ...inputState, password: input });
+    if(!validatePassword(input)) {
+      if (validateForm(ID, userName, input))
+        return setResponseState({...responseState, passwordResponseText: PASSWORD_FORM_ERROR, formResponseText: ''} )
+      return setResponseState({...responseState, passwordResponseText: PASSWORD_FORM_ERROR } )
+    }
+    return setResponseState({...responseState, passwordResponseText: ''})
   };
 
-  const signIn = async () => {
-    const response = await fetch('/api/user/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        loginID: ID,
-        username: userName,
-        password: password,
-      }),
-    });
-    const responseText = await response.text();
-    setResponseState({
-      ...responseState,
-      status: response.status,
-      responseText: responseText,
-    });
+  const signUp = async () => {
+    if (!ID  || !userName || !password ) return setResponseState({...responseState, formResponseText: EMPTY_INPUT_ERROR})
+    if (!isSendPossible(IDresponseText, userNameResponseText, passwordResponseText)) return 
+    const { status, responseText } = await trySignUp(ID,userName,password);
+    setResponseState({ ...responseState, status, IDresponseText: responseText });
   };
 
   if (status === 200) {
@@ -80,11 +96,12 @@ function SignUp() {
         <InputPart>
           <label htmlFor="user_id">아이디</label>
           <input id="user_id" type="text" value={ID} onInput={handleIDInputChange} />
-          <ErrorResponse>{checkID(status, responseText)}</ErrorResponse>
+          <ErrorResponse>{IDresponseText}</ErrorResponse>
         </InputPart>
         <InputPart>
           <label htmlFor="user_name">사용자명</label>
           <input id="user_name" type="text" value={userName} onInput={handleUserNameInputChange} />
+          <ErrorResponse>{userNameResponseText}</ErrorResponse>
         </InputPart>
         <InputPart>
           <label htmlFor="user_password">비밀번호</label>
@@ -94,11 +111,11 @@ function SignUp() {
             value={password}
             onInput={handlePasswordInputChange}
           />
-          <ErrorResponse>{checkPassword(status, responseText)}</ErrorResponse>
-          <ErrorResponse>{checkForm(status, responseText)}</ErrorResponse>
+          <ErrorResponse>{passwordResponseText}</ErrorResponse>
+          <ErrorResponse>{formResponseText}</ErrorResponse>
         </InputPart>
         <ButtonWrapper>
-          <SignUpButton onClick={signIn}>
+          <SignUpButton onClick={signUp}>
             <p>가입하기</p>
           </SignUpButton>
           <div>

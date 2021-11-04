@@ -13,9 +13,12 @@ import {
   LoginButton,
   ErrorResponse,
 } from './style';
-import { postFetchOptions } from '../../util/fetchOptions';
+import { SIGN_IN_ERROR_MESSAGE } from '../../util/message';
 import { checkLogin } from '../../util/checkResponse';
 import { getFetcher } from '../../util/fetcher';
+import { tryLogin } from '../../util/api';
+
+const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
 function SignIn() {
   const { data, error, mutate } = useSWR('/api/user', getFetcher);
@@ -40,24 +43,16 @@ function SignIn() {
   };
 
   const logIn = async () => {
-    if (ID === '')
-      return setResponseState({ ...responseState, responseText: '아이디를 입력해주세요.' });
-    if (password === '')
-      return setResponseState({ ...responseState, responseText: '비밀번호를 입력해주세요.' });
-    const response = await fetch(
-      '/api/user/signin',
-      postFetchOptions({
-        loginID: ID,
-        password: password,
-      })
-    );
-    const responseText = await response.text();
-    await mutate();
-    setResponseState({
-      ...responseState,
-      status: response.status,
-      responseText: responseText,
-    });
+    if (ID === '') return setResponseState({ ...responseState, responseText: ID_EMPTY_ERROR });
+    if (password === '') return setResponseState({ ...responseState, responseText: PASSWORD_EMPTY_ERROR });
+    
+    try {
+      const loginResponse = await tryLogin(ID, password);
+      setResponseState({ ...responseState, ...loginResponse });
+      await mutate();
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   if (data) {
