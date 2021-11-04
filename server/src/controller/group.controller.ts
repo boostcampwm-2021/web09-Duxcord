@@ -66,6 +66,8 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const group = await groupRepository.findOne({ where: { id: id } });
     if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
+    if (!['text', 'meeting'].includes(channelType))
+      return res.status(400).send('존재하지 않는 채널 타입입니다.');
 
     const newChannel = channelType === 'text' ? new TextChannel() : new MeetingChannel();
     newChannel.name = channelName;
