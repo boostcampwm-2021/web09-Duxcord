@@ -27,6 +27,7 @@ module.exports = {
     new webpack.EnvironmentPlugin({
       DB_USER: process.env.DB_USER,
       DB_PASSWORD: process.env.DB_PASSWORD,
+      SESSION_COOKIE_SECRET: process.env.SESSION_COOKIE_SECRET,
       NODE_ENV: NODE_ENV,
     }),
   ],

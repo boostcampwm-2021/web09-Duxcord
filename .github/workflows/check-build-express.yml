@@ -38,19 +38,19 @@ jobs:
       - name: Server npm install
         working-directory: ${{env.server-directory}}
         run: npm install
-    
+
       - name: Create .env file
-        working-directory:  ${{env.server-directory}}
+        working-directory: ${{env.server-directory}}
         run: |
           touch .env
           echo DB_USER=${{ secrets.DB_USER }}\ >> .env
           echo DB_PASSWORD=${{ secrets.DB_PASSWORD }}\ >> .env
+          echo SESSION_COOKIE_SECRET=${{ secrets.SESSION_COOKIE_SECRET }}\ >> .env
           cat .env
 
       - name: Rebuild the dist/ directory
-        working-directory:  ${{env.server-directory}}
-        run:
-          npm run build
+        working-directory: ${{env.server-directory}}
+        run: npm run build
       - uses: actions/upload-artifact@v2
         if: ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
