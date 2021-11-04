@@ -4,6 +4,7 @@ const {
   PASSWORD_FORM_ERROR,
   ID_FORM_ERROR,
   ID_REGISTER_ERROR,
+  USERNAME_ERROR,
   EMPTY_INPUT_ERROR
 } = SIGN_UP_ERROR_MESSAGE;
 
@@ -17,6 +18,13 @@ const checkPassword = (status:number, responseMessage:string):string => {
 const checkID = (status:number, responseMessage:string):string => {
   if (status === 400 && responseMessage in [ID_FORM_ERROR, ID_REGISTER_ERROR]) {
     return responseMessage;
+  }
+  return '';
+}
+
+const checkUserName = (status:number, responseMessage:string):string => {
+  if (status === 400 && responseMessage === USERNAME_ERROR) {
+    return USERNAME_ERROR;
   }
   return '';
 }
@@ -39,5 +47,6 @@ export {
   checkPassword,
   checkID,
   checkForm,
-  checkLogin
+  checkLogin,
+  checkUserName
 }
