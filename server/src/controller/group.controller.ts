@@ -77,7 +77,7 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
       ? await textChannelRepository.save(newChannel)
       : await meetingChannelRepository.save(newChannel);
 
-    return res.status(200).json({ newChannel });
+    return res.status(200).json(newChannel);
   } catch (error) {
     next(error);
   }
