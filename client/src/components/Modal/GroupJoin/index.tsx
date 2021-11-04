@@ -51,7 +51,7 @@ function GroupJoinModal({ controller }: { controller: ModalController }) {
         subTitle: '아래에 초대 코드를 입력해 그룹에 참가하세요',
         middleContent: InputComponent,
         bottomRightButton: {
-          title: '그룹 참가하기',
+          text: '그룹 참가하기',
           color: colors.Blue,
           onClickHandler: joinGroup,
         },

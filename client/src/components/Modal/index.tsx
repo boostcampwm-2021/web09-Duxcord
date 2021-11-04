@@ -10,14 +10,17 @@ import {
 } from './style';
 
 function Modal({
-  props,
-  controller,
+  props: {
+    title,
+    subTitle,
+    middleContent,
+    bottomRightButton: { text, onClickHandler, color },
+  },
+  controller: { hidden, hide },
 }: {
   props: ModalData;
   controller: ModalController;
 }) {
-  const { title, subTitle, middleContent, bottomRightButton } = props;
-  const { hidden, hide } = controller;
   return (
     <Background onClick={hide} hidden={hidden}>
       <Wrapper onClick={(e) => e.stopPropagation()}>
@@ -33,11 +36,8 @@ function Modal({
         <div>{middleContent}</div>
         <Bottom>
           <div onClick={hide}>닫기</div>
-          <BottomRightButton
-            color={bottomRightButton.color}
-            onClick={() => bottomRightButton.onClickHandler()}
-          >
-            {bottomRightButton.title}
+          <BottomRightButton color={color} onClick={onClickHandler}>
+            {text}
           </BottomRightButton>
         </Bottom>
       </Wrapper>

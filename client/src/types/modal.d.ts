@@ -12,7 +12,7 @@ interface ModalController {
 }
 
 interface ModalButton {
-  title: string;
+  text: string;
   onClickHandler: function;
   color: string;
 }
