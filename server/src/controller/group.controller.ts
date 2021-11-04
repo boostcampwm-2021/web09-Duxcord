@@ -67,14 +67,15 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
     const group = await groupRepository.findOne({ where: { id: id } });
     if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
 
-    const newChannel = channelType === 'text' ? new TextChannel() : new MeetingChannel;
+    const newChannel = channelType === 'text' ? new TextChannel() : new MeetingChannel();
     newChannel.name = channelName;
     newChannel.group = group;
 
-    channelType === 'text' ? await textChannelRepository.save(newChannel) : await meetingChannelRepository.save(newChannel);
+    channelType === 'text'
+      ? await textChannelRepository.save(newChannel)
+      : await meetingChannelRepository.save(newChannel);
 
     return res.status(200).json({ newChannel });
-
   } catch (error) {
     next(error);
   }
