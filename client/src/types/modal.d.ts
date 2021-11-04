@@ -5,10 +5,16 @@ interface ModalData {
   bottomRightButton: ModalButton;
 }
 
+interface ModalController {
+  hidden: boolean;
+  hide: function;
+  show: function;
+}
+
 interface ModalButton {
   title: string;
   onClickHandler: function;
   color: string;
 }
 
-export { ModalData, ModalButton };
+export { ModalData, ModalButton, ModalController };

@@ -6,10 +6,11 @@ import { API_URL } from '../../../api/API_URL';
 import { useGroups } from '../../../hooks/useGroups';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
 import colors from '../../../styles/colors';
+import { ModalController } from '../../../types/modal';
 import { Input } from './style';
 
-function GroupJoinModal({ controller }: { controller: any }) {
-  const { hidden, setHidden } = controller;
+function GroupJoinModal({ controller }: { controller: ModalController }) {
+  const { hide } = controller;
   const [groupCode, setGroupCode] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function GroupJoinModal({ controller }: { controller: any }) {
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         history.push(`/Main/group/${group.id}`);
-        setHidden(true);
+        hide();
         break;
       case 400:
         const responseText = await response.text();
@@ -65,7 +66,7 @@ function GroupJoinModal({ controller }: { controller: any }) {
           onClickHandler: joinGroup,
         },
       }}
-      controller={{ hidden, setHidden }}
+      controller={controller}
     />
   );
 }

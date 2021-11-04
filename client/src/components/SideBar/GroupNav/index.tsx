@@ -14,6 +14,7 @@ import {
   AddGroupButton,
 } from './style';
 import { socket } from '../../../util/socket';
+import { ModalController } from '../../../types/modal';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -22,6 +23,11 @@ function GroupNav() {
   const history = useHistory();
 
   const [modalHidden, setModalHidden] = useState(true);
+  const modalController: ModalController = {
+    hidden: modalHidden,
+    hide: () => setModalHidden(true),
+    show: () => setModalHidden(false),
+  };
 
   const selectGroup = (group: any) => () => {
     history.push(`/Main/group/${group.id}`);
@@ -49,9 +55,7 @@ function GroupNav() {
           <img src='/icons/addGroup.png' alt='addGroup' />
         </AddGroupButton>
       </div>
-      <GroupJoinModal
-        controller={{ hidden: modalHidden, setHidden: setModalHidden }}
-      />
+      <GroupJoinModal controller={modalController} />
     </GroupListWrapper>
   );
 }
