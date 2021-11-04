@@ -78,11 +78,33 @@ function SignUp() {
     return setResponseState({...responseState, passwordResponseText: ''})
   };
 
+<<<<<<< HEAD
   const signUp = async () => {
     if (!ID  || !userName || !password ) return setResponseState({...responseState, formResponseText: EMPTY_INPUT_ERROR})
     if (!isSendPossible(IDresponseText, userNameResponseText, passwordResponseText)) return 
     const { status, responseText } = await trySignUp(ID,userName,password);
     setResponseState({ ...responseState, status, IDresponseText: responseText });
+=======
+  const signIn = async () => {
+    const response = await fetch('/api/user/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        loginID: ID,
+        username: userName,
+        password: password,
+      }),
+    });
+    const responseText = await response.text();
+    setResponseState({
+      ...responseState,
+      status: response.status,
+      responseText: responseText,
+    });
+>>>>>>> dev
   };
 
   if (status === 200) {

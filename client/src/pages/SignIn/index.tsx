@@ -21,7 +21,7 @@ import { tryLogin } from '../../util/api';
 const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
 function SignIn() {
-  const { data, mutate } = useSWR('http://localhost:8000/api/user', getFetcher);
+  const { data, error, mutate } = useSWR('/api/user', getFetcher);
   const [inputState, setInputState] = useState({ ID: '', password: '' });
   const [responseState, setResponseState] = useState({ status: 0, responseText: '' });
 
@@ -92,7 +92,7 @@ function SignIn() {
           </LoginButton>
         </InputPartWrapper>
         <LogoWrapper>
-          <img src="duxcord_logo.png" alt="duxcord_logo" />
+          <img src="/images/duxcord_logo.png" alt="duxcord_logo" />
         </LogoWrapper>
       </SignInWrapper>
     </Background>
