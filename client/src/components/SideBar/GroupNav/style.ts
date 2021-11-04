@@ -14,6 +14,7 @@ const GroupListWrapper = styled.div`
   height: 100vh;
   background-color: ${colors.Gray4};
   padding: 32px 0;
+  z-index: 99;
 `;
 
 const GroupListDivider = styled.div`

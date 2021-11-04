@@ -1,8 +1,9 @@
-import styled from "styled-components";
-import colors from "../../../styles/colors";
+import styled from 'styled-components';
+import colors from '../../../styles/colors';
 
 const ChatWrapper = styled.div`
   background-color: ${colors.White};
+  z-index: 0;
   display: grid;
   grid-template-columns: 60px auto;
   padding: 20px 28px;
