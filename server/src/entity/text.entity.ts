@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 
 import { Base } from './base.entity';
 import { File } from './file.entity';
+import { Thread } from './thread.entity';
 import { Reaction } from './reaction.entity';
 import { TextChannel } from './textchannel.entity';
 import { User } from './user.entity';
@@ -16,6 +17,9 @@ export class Text extends Base {
 
   @ManyToOne(() => TextChannel, (textChannel) => textChannel.texts)
   textChannel: TextChannel;
+
+  @OneToMany(() => Thread, (thread) => thread.text)
+  threads: Thread[];
 
   @OneToMany(() => Reaction, (reaction) => reaction.text)
   reactions: Reaction[];
