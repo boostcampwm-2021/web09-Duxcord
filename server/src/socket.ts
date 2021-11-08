@@ -10,7 +10,7 @@ export async function socketInit(httpServer) {
       if (!user || !groups) return;
       groups?.forEach(({ code }) => {
         socket.join(`${code}`);
-        io.to(`${code}`).emit('userEnter', user);
+        io.to(`${code}`).emit('userEnter', user, code);
         if (userConnectionInfo[code]) {
           if (!userConnectionInfo[code].map((v) => v.loginID).includes(user.loginID)) {
             userConnectionInfo[code].push(user);
