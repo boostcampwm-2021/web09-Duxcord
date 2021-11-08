@@ -4,11 +4,11 @@ import {
   groupMemberRepository,
   groupRepository,
   meetingChannelRepository,
-  textChannelRepository,
+  chattingChannelRepository,
   userRepository,
 } from '../db';
 import { Workgroup } from '../entity/workgroup.entity';
-import { TextChannel } from '../entity/textchannel.entity';
+import { ChattingChannel } from '../entity/chattingchannel.entity';
 import { MeetingChannel } from '../entity/meetingchannel.entity';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
@@ -37,7 +37,7 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 
     await meetingChannelRepository.insert({ group: newGroup, name: 'default' });
 
-    await textChannelRepository.insert({ group: newGroup, name: 'default' });
+    await chattingChannelRepository.insert({ group: newGroup, name: 'default' });
 
     return res.status(200).json({ code: newGroup.code });
   } catch (error) {
@@ -66,15 +66,15 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const group = await groupRepository.findOne({ where: { id: id } });
     if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
-    if (!['text', 'meeting'].includes(channelType))
+    if (!['chatting', 'meeting'].includes(channelType))
       return res.status(400).send('존재하지 않는 채널 타입입니다.');
 
-    const newChannel = channelType === 'text' ? new TextChannel() : new MeetingChannel();
+    const newChannel = channelType === 'chatting' ? new ChattingChannel() : new MeetingChannel();
     newChannel.name = channelName;
     newChannel.group = group;
 
-    channelType === 'text'
-      ? await textChannelRepository.save(newChannel)
+    channelType === 'chatting'
+      ? await chattingChannelRepository.save(newChannel)
       : await meetingChannelRepository.save(newChannel);
 
     return res.status(200).json(newChannel);
@@ -91,7 +91,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
     const user = await userRepository.findOne({ where: { id: userID } });
     const group = await groupRepository.findOne({
       where: { code: groupCode },
-      relations: ['meetingChannels', 'textChannels'],
+      relations: ['meetingChannels', 'chattingChannels'],
     });
     if (!group) return res.status(400).send('잘못된 그룹 코드입니다.');
 
