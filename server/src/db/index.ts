@@ -9,8 +9,8 @@ import dotenv from 'dotenv';
 
 import { User } from '../entity/user.entity';
 import { Thread } from '../entity/thread.entity';
-import { TextChannel } from '../entity/textchannel.entity';
-import { Text } from '../entity/text.entity';
+import { ChattingChannel } from '../entity/chattingchannel.entity';
+import { Chat } from '../entity/chat.entity';
 import { MeetingChannel } from '../entity/meetingchannel.entity';
 import { Reaction } from '../entity/reaction.entity';
 import { GroupMember } from '../entity/groupmember.entity';
@@ -19,7 +19,7 @@ import { File } from '../entity/file.entity';
 import { Session } from '../entity/session.entity';
 import { UserRepository } from './repository/user.repository';
 import { GroupMemberRepository } from './repository/groupmember.repository';
-import { TextRepository } from './repository/text.repository';
+import { ChatRepository } from './repository/chat.repository';
 dotenv.config();
 
 export let connection: Connection;
@@ -27,9 +27,9 @@ export let userRepository: UserRepository;
 export let sessionRepository;
 export let groupRepository: Repository<Workgroup>;
 export let groupMemberRepository: GroupMemberRepository;
-export let textChannelRepository: Repository<TextChannel>;
+export let chattingChannelRepository: Repository<ChattingChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
-export let textRepository: TextRepository;
+export let chatRepository: ChatRepository;
 export let threadRepository: Repository<Thread>;
 
 const connectDB = async () => {
@@ -46,8 +46,8 @@ const connectDB = async () => {
       User,
       Session,
       Thread,
-      TextChannel,
-      Text,
+      ChattingChannel,
+      Chat,
       MeetingChannel,
       Reaction,
       GroupMember,
@@ -65,8 +65,8 @@ export const initORM = async () => {
   sessionRepository = await getRepository(Session);
   groupRepository = await getRepository(Workgroup);
   groupMemberRepository = await getCustomRepository(GroupMemberRepository);
-  textChannelRepository = await getRepository(TextChannel);
+  chattingChannelRepository = await getRepository(ChattingChannel);
   meetingChannelRepository = await getRepository(MeetingChannel);
-  textRepository = await getCustomRepository(TextRepository);
+  chatRepository = await getCustomRepository(ChatRepository);
   threadRepository = await getRepository(Thread);
 };

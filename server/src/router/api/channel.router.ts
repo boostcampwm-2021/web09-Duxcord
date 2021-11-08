@@ -4,8 +4,12 @@ import { accessControl } from '../../util';
 export const channelRouter = Router();
 
 channelRouter.post(
-  '/:textChannelId/create',
+  '/:chattingChannelID/create',
   accessControl({ signIn: true }),
-  channelController.createText,
+  channelController.createChat,
 );
-channelRouter.get('/:textChannelId', accessControl({ signIn: true }), channelController.getText);
+channelRouter.get(
+  '/:chattingChannelID',
+  accessControl({ signIn: true }),
+  channelController.getChat,
+);

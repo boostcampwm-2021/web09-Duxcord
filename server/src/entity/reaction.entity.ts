@@ -1,14 +1,14 @@
 import { Entity, ManyToOne } from 'typeorm';
 
 import { Base } from './base.entity';
-import { Text } from './text.entity';
+import { Chat } from './chat.entity';
 import { User } from './user.entity';
 
 @Entity()
 export class Reaction extends Base {
-  @ManyToOne(() => User, (user) => user.reactions)
+  @ManyToOne(() => User, (user) => user.reactions, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Text, (text) => text.reactions)
-  text: Text;
+  @ManyToOne(() => Chat, (chat) => chat.reactions, { onDelete: 'CASCADE' })
+  chat: Chat;
 }

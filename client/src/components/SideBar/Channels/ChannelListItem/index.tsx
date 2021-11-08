@@ -8,7 +8,7 @@ import { socket } from '../../../../util/socket';
 import { ListItem } from './style';
 
 interface Props {
-  channelType: 'text' | 'meeting';
+  channelType: 'chatting' | 'meeting';
   id: number;
   name: string;
 }
@@ -20,8 +20,8 @@ function ChannelListItem({ channelType, id, name }: Props) {
   const dispatch = useDispatch();
   const joinChannel = () => {
     history.push(`/Main/group/${selectedGroup?.id}/${channelType}/${id}`);
-    socket.emit('leaveChannel', selectedChannel.id);
-    socket.emit('joinChannel', id);
+    socket.emit('leaveChannel', selectedChannel.type + selectedChannel.id);
+    socket.emit('joinChannel', channelType + id);
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 
@@ -29,9 +29,9 @@ function ChannelListItem({ channelType, id, name }: Props) {
     <ListItem onClick={joinChannel}>
       <div>
         <img src={'/icons/' + channelType + 'Channel.png'} alt={channelType + 'Channel'} />
-        {name}
+        <p>{name}</p>
       </div>
-      <img src="/icons/delete.png" alt="deleteChannel" />
+      <img src='/icons/delete.png' alt='deleteChannel' />
     </ListItem>
   );
 }
