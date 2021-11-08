@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../styles/colors';
+import Colors from '../../styles/Colors';
 
 const ChatContainer = styled.div`
   flex: 1;
@@ -15,7 +15,7 @@ const Chats = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${colors.Gray2};
+    background: ${Colors.Gray2};
     border-radius: 10px;
   }
 

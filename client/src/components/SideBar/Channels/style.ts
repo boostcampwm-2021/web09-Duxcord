@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../../styles/colors';
+import Colors from '../../../styles/Colors';
 
 const ChannelWrapper = styled.div`
   margin-top: 20px;
@@ -13,7 +13,7 @@ const ChannelType = styled.div`
   &:hover {
     cursor: pointer;
     & div {
-      color: ${colors.Black};
+      color: ${Colors.Black};
     }
   }
   & div {
@@ -21,7 +21,7 @@ const ChannelType = styled.div`
     align-items: center;
     font-size: 12px;
     font-weight: bold;
-    color: ${colors.Gray1};
+    color: ${Colors.Gray1};
     & img {
       width: 8px;
       height: 8px;

@@ -43,7 +43,7 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
 
     await chatRepository.save(newChat);
 
-    io.to(`${chattingChannelID}`).emit('chat', {
+    io.to(`chatting${chattingChannelID}`).emit('chat', {
       id: newChat.id,
       createdAt: newChat.createdAt,
       updatedAt: newChat.updatedAt,

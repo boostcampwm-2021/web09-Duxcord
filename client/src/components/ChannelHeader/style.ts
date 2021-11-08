@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import colors from '../../styles/colors';
+import Colors from '../../styles/Colors';
 
 const ChannelHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 11.5px;
-  border-bottom: 1px solid ${colors.Gray4};
+  border-bottom: 1px solid ${Colors.Gray4};
   & div {
     display: flex;
     align-items: center;
@@ -31,7 +31,7 @@ const ChannelHeaderRight = styled.div`
     }
   }
   & p {
-    color: ${colors.Gray1};
+    color: ${Colors.Gray1};
     font-weight: 500;
   }
 `;
