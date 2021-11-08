@@ -10,18 +10,16 @@ interface Props {
 function Channels({ channelType }: Props) {
   const selectedGroup = useSelectedGroup();
   const channels =
-    selectedGroup?.[
-      channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'
-    ];
+    selectedGroup?.[channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'];
 
   return (
     <ChannelWrapper>
       <ChannelType>
         <div>
-          <img src='/icons/channelOpen.png' alt='channelToggle' />
+          <img src="/icons/channelOpen.png" alt="channelToggle" />
           <p>{channelType.toUpperCase()} CHANNELS</p>
         </div>
-        <img src='/icons/addChannel.png' alt='addChannel' />
+        <img src="/icons/addChannel.png" alt="addChannel" />
       </ChannelType>
       <ul>
         {channels?.map((channel: any) => (

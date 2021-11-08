@@ -20,7 +20,4 @@ const ChannelList = styled.ul`
   }
 `;
 
-export {
-  ChannelListWrapper,
-  ChannelList,
-};
+export { ChannelListWrapper, ChannelList };
