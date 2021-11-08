@@ -19,7 +19,7 @@ function ChannelListItem({ channelType, id, name }: Props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const joinChannel = () => {
-    history.push(`/Main/group/${selectedGroup?.id}/${channelType}/${id}`);
+    history.push(`/main?group=${selectedGroup?.id}&type=${channelType}&id=${id}`);
     socket.emit('leaveChannel', selectedChannel.type + selectedChannel.id);
     socket.emit('joinChannel', channelType + id);
     dispatch(setSelectedChannel({ type: channelType, id, name }));
@@ -31,7 +31,7 @@ function ChannelListItem({ channelType, id, name }: Props) {
         <img src={'/icons/' + channelType + 'Channel.png'} alt={channelType + 'Channel'} />
         <p>{name}</p>
       </div>
-      <img src='/icons/delete.png' alt='deleteChannel' />
+      <img src="/icons/delete.png" alt="deleteChannel" />
     </ListItem>
   );
 }

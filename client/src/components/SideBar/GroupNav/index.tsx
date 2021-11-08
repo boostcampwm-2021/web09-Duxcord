@@ -24,7 +24,7 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(`/Main/group/${group.id}`);
+    history.push(`/main?group=${group.id}`);
     socket.emit('leaveChannel', type + id);
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
