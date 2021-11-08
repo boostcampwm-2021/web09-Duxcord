@@ -12,7 +12,7 @@ import { ModalController } from '../../../types/modal';
 
 function GroupNav() {
   const { groups } = useGroups();
-  const { id } = useSelectedChannel();
+  const { id, type } = useSelectedChannel();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -24,8 +24,8 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(`/main/group/${group.id}`);
-    socket.emit('leaveChannel', id);
+    history.push(`/Main/group/${group.id}`);
+    socket.emit('leaveChannel', type + id);
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
   };

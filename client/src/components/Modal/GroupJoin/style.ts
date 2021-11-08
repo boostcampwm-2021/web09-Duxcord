@@ -1,11 +1,11 @@
 import styled from 'styled-components';
-import colors from '../../../styles/colors';
+import Colors from '../../../styles/Colors';
 
 const Input = styled.input`
   padding: 12px;
   border-radius: 6px;
   border: none;
-  background-color: ${colors.Gray3};
+  background-color: ${Colors.Gray3};
   width: 100%;
 `;
 
