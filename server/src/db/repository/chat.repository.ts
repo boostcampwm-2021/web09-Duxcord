@@ -11,7 +11,6 @@ export class ChatRepository extends Repository<Chat> {
       .leftJoinAndSelect('chat.reactions', 'reaction', 'reaction.user = :userID', {
         userID: userID,
       })
-      .addSelect('reaction.id is NOT NULL', 'isReactioned')
       .select([
         'chat.id',
         'chat.content',
