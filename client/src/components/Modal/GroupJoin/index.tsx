@@ -5,7 +5,7 @@ import Modal from '..';
 import { postJoinGroup } from '../../../api/postChat';
 import { useGroups } from '../../../hooks/useGroups';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
-import colors from '../../../styles/colors';
+import Colors from '../../../styles/Colors';
 import { ModalController } from '../../../types/modal';
 import { Input } from './style';
 
@@ -61,7 +61,7 @@ function GroupJoinModal({
         middleContent: InputComponent,
         bottomRightButton: {
           text: '그룹 참가하기',
-          color: colors.Blue,
+          color: Colors.Blue,
           onClickHandler: joinGroup,
         },
       }}

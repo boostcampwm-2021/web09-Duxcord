@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import colors from '../../styles/colors';
+import Colors from '../../styles/Colors';
 
 const Wrapper = styled.div`
-  background-color: ${colors.White};
+  background-color: ${Colors.White};
   padding: 20px;
   border-radius: 16px;
   position: relative;
@@ -19,7 +19,7 @@ const BottomRightButton = styled.button`
   padding: 8px 16px;
   border-radius: 8px;
   color: white;
-  background-color: ${(props) => props.color || colors.Black};
+  background-color: ${(props) => props.color || Colors.Black};
 `;
 
 const Bottom = styled.div`
