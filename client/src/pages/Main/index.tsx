@@ -2,6 +2,7 @@ import React from 'react';
 import ChannelHeader from '../../components/ChannelHeader';
 import Chat from '../../components/Chat';
 import SideBar from '../../components/SideBar';
+import UserConnection from '../../components/Chat/UserConnection';
 import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import { Layout, MainWrapper } from './style';
 
@@ -13,6 +14,7 @@ function Main() {
       <MainWrapper>
         <ChannelHeader />
         {selectedChannel.type === 'text' && <Chat />}
+        <UserConnection />
       </MainWrapper>
     </Layout>
   );
