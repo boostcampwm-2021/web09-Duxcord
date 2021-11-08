@@ -31,6 +31,7 @@ export let chattingChannelRepository: Repository<ChattingChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
 export let chatRepository: ChatRepository;
 export let threadRepository: Repository<Thread>;
+export let reactionRepository: Repository<Reaction>;
 
 const connectDB = async () => {
   connection = await createConnection({
@@ -69,4 +70,5 @@ export const initORM = async () => {
   meetingChannelRepository = await getRepository(MeetingChannel);
   chatRepository = await getCustomRepository(ChatRepository);
   threadRepository = await getRepository(Thread);
+  reactionRepository = await getRepository(Reaction);
 };
