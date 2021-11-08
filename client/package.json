@@ -53,7 +53,9 @@
   "devDependencies": {
     "@types/jest-plugin-context": "^2.9.4",
     "@types/react-router-dom": "^5.3.2",
-    "jest-plugin-context": "^2.9.0"
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest-plugin-context": "^2.9.0",
+    "prettier": "^2.4.1"
   },
   "proxy": "http://localhost:8000"
 }
