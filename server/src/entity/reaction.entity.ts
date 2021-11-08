@@ -6,9 +6,9 @@ import { User } from './user.entity';
 
 @Entity()
 export class Reaction extends Base {
-  @ManyToOne(() => User, (user) => user.reactions)
+  @ManyToOne(() => User, (user) => user.reactions, { onDelete: 'CASCADE' })
   user: User;
 
-  @ManyToOne(() => Chat, (chat) => chat.reactions)
+  @ManyToOne(() => Chat, (chat) => chat.reactions, { onDelete: 'CASCADE' })
   chat: Chat;
 }

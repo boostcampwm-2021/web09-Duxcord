@@ -17,7 +17,7 @@ export class Workgroup extends Base {
   @Column({ nullable: true })
   thumbnail: string;
 
-  @ManyToOne(() => User, (user) => user.leadingGroups)
+  @ManyToOne(() => User, (user) => user.leadingGroups, { onDelete: 'SET NULL' })
   leader: User;
 
   @OneToMany(() => MeetingChannel, (meetingChannel) => meetingChannel.group)

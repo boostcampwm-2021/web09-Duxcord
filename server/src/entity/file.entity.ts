@@ -8,6 +8,6 @@ export class File extends Base {
   @Column()
   src: string;
 
-  @ManyToOne(() => Chat, (chat) => chat.files)
+  @ManyToOne(() => Chat, (chat) => chat.files, { onDelete: 'CASCADE' })
   chat: Chat;
 }

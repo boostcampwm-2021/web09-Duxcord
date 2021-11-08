@@ -12,10 +12,15 @@ export class Chat extends Base {
   @Column({ nullable: true })
   content: string;
 
-  @ManyToOne(() => User, (user) => user.chats)
+  @Column({ default: 0 })
+  reactionsCount: number;
+
+  @ManyToOne(() => User, (user) => user.chats, { onDelete: 'SET NULL' })
   user: User;
 
-  @ManyToOne(() => ChattingChannel, (chattingChannel) => chattingChannel.chats)
+  @ManyToOne(() => ChattingChannel, (chattingChannel) => chattingChannel.chats, {
+    onDelete: 'CASCADE',
+  })
   chattingChannel: ChattingChannel;
 
   @OneToMany(() => Thread, (thread) => thread.chat)

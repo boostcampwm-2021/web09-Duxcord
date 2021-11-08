@@ -9,7 +9,7 @@ export class ChattingChannel extends Base {
   @OneToMany(() => Chat, (chat) => chat.chattingChannel)
   chats: Chat;
 
-  @ManyToOne(() => Workgroup, (workgroup) => workgroup.chattingChannels)
+  @ManyToOne(() => Workgroup, (workgroup) => workgroup.chattingChannels, { onDelete: 'CASCADE' })
   group: Workgroup;
 
   @Column()
