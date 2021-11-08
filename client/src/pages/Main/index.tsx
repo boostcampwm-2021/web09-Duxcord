@@ -12,7 +12,7 @@ function Main() {
       <SideBar />
       <MainWrapper>
         <ChannelHeader />
-        {selectedChannel.type === 'text' && <Chat />}
+        {selectedChannel.type === 'chatting' && <Chat />}
       </MainWrapper>
     </Layout>
   );

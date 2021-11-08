@@ -13,9 +13,9 @@ export const createChatMSG = {
 
 const getChat = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { chattingChannelId } = req.params;
+    const { chattingChannelID } = req.params;
     const page = Number(req.query.page);
-    const chats = await chatRepository.findChatsByPages(chattingChannelId, page);
+    const chats = await chatRepository.findChatsByPages(chattingChannelID, page);
 
     return res.status(200).json(chats);
   } catch (error) {

@@ -18,8 +18,8 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
   const { groupName, groupThumbnail } = req.body;
   try {
     if (!nullCheck(groupName)) return res.status(400).send('그룹명이 누락되었습니다.');
-    const leaderId = req.session.userID;
-    const leader = await userRepository.findOne({ where: { id: leaderId } });
+    const leaderID = req.session.userID;
+    const leader = await userRepository.findOne({ where: { id: leaderID } });
     if (!leader) return res.status(400).send('존재하지 않는 회원입니다.');
 
     const newGroup = new Workgroup();

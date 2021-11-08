@@ -3,10 +3,10 @@ import { Chat } from '../../entity/chat.entity';
 
 @EntityRepository(Chat)
 export class ChatRepository extends Repository<Chat> {
-  findChatsByPages(chattingChannelId: string, page: number) {
+  findChatsByPages(chattingChannelID: string, page: number) {
     const chatPerPage = 20;
     return this.createQueryBuilder('chat')
-      .where('chat.chattingChannel = :id', { id: chattingChannelId })
+      .where('chat.chattingChannel = :id', { id: chattingChannelID })
       .leftJoinAndSelect('chat.user', 'user')
       .select([
         'chat.id',

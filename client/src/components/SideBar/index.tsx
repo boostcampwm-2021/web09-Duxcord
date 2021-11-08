@@ -16,8 +16,8 @@ function SideBar() {
           <GroupSetting />
           {selectedGroup && (
             <>
-              <Channels channelType="text" />
-              <Channels channelType="meeting" />
+              <Channels channelType='chatting' />
+              <Channels channelType='meeting' />
             </>
           )}
         </div>
