@@ -51,7 +51,7 @@ function Chat() {
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
       if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom();
     },
-    [mutate]
+    [mutate],
   );
 
   useEffect(() => {
