@@ -8,7 +8,7 @@ import { socket } from '../../../../util/socket';
 import { ListItem } from './style';
 
 interface Props {
-  channelType: 'text' | 'meeting';
+  channelType: 'chatting' | 'meeting';
   id: number;
   name: string;
 }
@@ -28,10 +28,13 @@ function ChannelListItem({ channelType, id, name }: Props) {
   return (
     <ListItem onClick={joinChannel}>
       <div>
-        <img src={'/icons/' + channelType + 'Channel.png'} alt={channelType + 'Channel'} />
+        <img
+          src={'/icons/' + channelType + 'Channel.png'}
+          alt={channelType + 'Channel'}
+        />
         {name}
       </div>
-      <img src="/icons/delete.png" alt="deleteChannel" />
+      <img src='/icons/delete.png' alt='deleteChannel' />
     </ListItem>
   );
 }
