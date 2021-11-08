@@ -4,7 +4,7 @@ import Channels from './Channels';
 import GroupNav from './GroupNav';
 import GroupSetting from './GroupSetting';
 import Profile from './Profile';
-import { ChannelListWrapper } from './style';
+import { ChannelListWrapper, ChannelList } from './style';
 
 function SideBar() {
   const selectedGroup = useSelectedGroup();
@@ -15,10 +15,10 @@ function SideBar() {
         <div>
           <GroupSetting />
           {selectedGroup && (
-            <>
+            <ChannelList>
               <Channels channelType="text" />
               <Channels channelType="meeting" />
-            </>
+            </ChannelList>
           )}
         </div>
         <Profile />

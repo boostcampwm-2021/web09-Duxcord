@@ -34,7 +34,7 @@ const GroupList = styled.div`
   scrollbar-width: none;
   &::-webkit-scrollbar {
     display: none;
-}
+  }
 `;
 
 const Group = styled.div`
