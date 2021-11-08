@@ -1,25 +1,23 @@
 import React from 'react';
-import useSWR from 'swr';
-import { API_URL } from '../../../api/API_URL';
-import { getFetcher } from '../../../util/fetcher';
-import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { Route, RouteProps } from 'react-router-dom';
+import { useAccessControl } from '../../../hooks/useAccessControl';
 
 interface Props extends RouteProps {
+  // component: any;
   signIn: boolean;
   redirectPath: string;
 }
 
 function RestrictedRoute({ component: Component, signIn, redirectPath, ...rest }: Props) {
-  const { data: userdata } = useSWR(API_URL.user.getUserdata, getFetcher);
   if (!Component) return null;
-  const accessible = (signIn && userdata) || (!signIn && !userdata);
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => (accessible ? <Component {...props} /> : <Redirect to={redirectPath} />)}
-    />
-  );
+  const RestrictedComponent = (props: any) => {
+    useAccessControl({ signIn, redirectPath });
+
+    return <Component {...props} />;
+  };
+
+  return <Route {...rest} component={RestrictedComponent} />;
 }
 
 export default RestrictedRoute;

@@ -14,8 +14,6 @@ import {
 import { SIGN_IN_ERROR_MESSAGE } from '../../util/message';
 import { checkLogin } from '../../util/checkResponse';
 import { tryLogin } from '../../util/api';
-import { mutate } from 'swr';
-import { API_URL } from '../../api/API_URL';
 
 const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
@@ -46,7 +44,6 @@ function SignIn() {
 
     try {
       const loginResponse = await tryLogin(ID, password);
-      mutate(API_URL.user.getUserdata);
       setResponseState({ ...responseState, ...loginResponse });
     } catch (error) {
       console.log(error);
