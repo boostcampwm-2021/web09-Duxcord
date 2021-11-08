@@ -41,7 +41,7 @@ const createText = async (req: Request, res: Response, next: NextFunction) => {
 
     await textRepository.save(newText);
 
-    io.to(`${textChannelId}`).emit('chat', {
+    io.to(`text${textChannelId}`).emit('chat', {
       id: newText.id,
       createdAt: newText.createdAt,
       updatedAt: newText.updatedAt,

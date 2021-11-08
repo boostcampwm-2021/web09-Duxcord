@@ -20,8 +20,8 @@ function ChannelListItem({ channelType, id, name }: Props) {
   const dispatch = useDispatch();
   const joinChannel = () => {
     history.push(`/Main/group/${selectedGroup?.id}/${channelType}/${id}`);
-    socket.emit('leaveChannel', selectedChannel.id);
-    socket.emit('joinChannel', id);
+    socket.emit('leaveChannel', selectedChannel.type + selectedChannel.id);
+    socket.emit('joinChannel', channelType + id);
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 
