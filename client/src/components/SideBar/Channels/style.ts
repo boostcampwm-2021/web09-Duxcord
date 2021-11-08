@@ -30,6 +30,4 @@ const ChannelType = styled.div`
   }
 `;
 
-const ChannelList = styled.ul``;
-
-export { ChannelWrapper, ChannelType, ChannelList };
+export { ChannelWrapper, ChannelType };

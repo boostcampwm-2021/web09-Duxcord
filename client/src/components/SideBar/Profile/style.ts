@@ -24,6 +24,7 @@ const ProfileWrapper = styled.div`
     & p {
       font-size: 14px;
       font-weight: bold;
+      max-width: 100px;
     }
   }
   & > div:last-child {

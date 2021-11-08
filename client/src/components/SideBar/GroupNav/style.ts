@@ -30,6 +30,11 @@ const GroupList = styled.div`
   }
   overflow-y: scroll;
   height: 100%;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Group = styled.div`

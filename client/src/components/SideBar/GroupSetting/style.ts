@@ -15,6 +15,8 @@ const GroupSettingWrapper = styled.div`
   & > p {
     font-size: 16px;
     font-weight: bold;
+    overflow-x: hidden;
+    max-width: 180px;
   }
   & > div img {
     margin-left: 10px;

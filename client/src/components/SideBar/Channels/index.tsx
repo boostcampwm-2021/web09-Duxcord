@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import ChannelListItem from './ChannelListItem';
-import { ChannelWrapper, ChannelType, ChannelList } from './style';
+import { ChannelWrapper, ChannelType } from './style';
 
 interface Props {
   channelType: 'chatting' | 'meeting';
@@ -23,7 +23,7 @@ function Channels({ channelType }: Props) {
         </div>
         <img src='/icons/addChannel.png' alt='addChannel' />
       </ChannelType>
-      <ChannelList>
+      <ul>
         {channels?.map((channel: any) => (
           <ChannelListItem
             key={channel.id}
@@ -32,7 +32,7 @@ function Channels({ channelType }: Props) {
             name={channel.name}
           />
         ))}
-      </ChannelList>
+      </ul>
     </ChannelWrapper>
   );
 }
