@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import color from '../../styles/colors';
+import Colors from '../../styles/Colors';
 
 const SignInWrapper = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ const SignInWrapper = styled.div`
   height: 504px;
   border-radius: 25px;
   padding: 20px 30px;
-  background-color : ${color.Gray6};
+  background-color : ${Colors.Gray6};
   border: 1px solid gray;
 ` 
 
@@ -33,12 +33,12 @@ const Introduction = styled.div`
     height: 43px;
     font-size: 36px;
     font-weight: 600;
-    color: ${color.Blue};
+    color: ${Colors.Blue};
   }
   & > p:not(:first-child){
     font-size: 18px;
     height: 22px;
-    color:${color.Gray2};
+    color:${Colors.Gray2};
     position: relative;
     margin-top: 15px;
   }
@@ -53,11 +53,11 @@ const InputPart = styled.div`
     height: 47px;
     border-radius: 10px;
     margin-top: 5px;
-    background-color: ${color.White};
+    background-color: ${Colors.White};
     font-size: 18px;
     padding: 0 10px;
     &:-webkit-autofill {
-      box-shadow: 0 0 0 30px inset ${color.White};
+      box-shadow: 0 0 0 30px inset ${Colors.White};
     }
     &:-webkit-autofill::first-line {
       font-size: 18px;
@@ -76,7 +76,7 @@ const SignUpPart = styled.div`
     }
     & > p {
       margin-left: 30px;
-      color: ${color.Blue};
+      color: ${Colors.Blue};
     }
   }
 `
@@ -85,12 +85,12 @@ const LoginButton = styled.div`
   margin-top: 10px;
   height: 48.3px;
   border-radius: 15px;
-  background-color: ${color.Blue};
+  background-color: ${Colors.Blue};
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  color:${color.White};
+  color:${Colors.White};
   box-shadow: 2.5px 2.5px 5px gray;
   :hover{
     cursor: pointer;  
@@ -100,7 +100,7 @@ const LoginButton = styled.div`
 const ErrorResponse = styled.p`
   margin-top: 10px;
   height: 18px;
-  color: ${color.DarkRed};
+  color: ${Colors.DarkRed};
 `
 
 export {

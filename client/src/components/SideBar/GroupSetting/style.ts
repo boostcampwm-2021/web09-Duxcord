@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../../styles/colors';
+import Colors from '../../../styles/Colors';
 
 const GroupSettingWrapper = styled.div`
   display: flex;
@@ -7,9 +7,9 @@ const GroupSettingWrapper = styled.div`
   align-items: center;
   height: 48px;
   padding: 15px;
-  border-bottom: 1px solid ${colors.Gray4};
+  border-bottom: 1px solid ${Colors.Gray4};
   &:hover {
-    background-color: ${colors.Gray3};
+    background-color: ${Colors.Gray3};
     cursor: pointer;
   }
   & > p {

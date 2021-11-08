@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import colors from '../../../styles/colors';
+import Colors from '../../../styles/Colors';
 
 const radiusChange = keyframes`
   from { border-radius: 50%; }
@@ -12,7 +12,7 @@ const GroupListWrapper = styled.div`
   align-items: center;
   width: 72px;
   height: 100vh;
-  background-color: ${colors.Gray4};
+  background-color: ${Colors.Gray4};
   padding: 32px 0;
   z-index: 99;
 `;
@@ -20,7 +20,7 @@ const GroupListWrapper = styled.div`
 const GroupListDivider = styled.div`
   width: 32px;
   height: 2px;
-  background-color: ${colors.Gray2};
+  background-color: ${Colors.Gray2};
   margin: 10px 0;
 `;
 
@@ -39,7 +39,7 @@ const Group = styled.div`
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: ${colors.White};
+  background-color: ${Colors.White};
   text-align: center;
   overflow: hidden;
   &:hover {
@@ -56,7 +56,7 @@ const AddGroupButton = styled.button`
   height: 48px;
   border: none;
   border-radius: 50%;
-  background-color: ${colors.White};
+  background-color: ${Colors.White};
   &:hover {
     cursor: pointer;
     animation: ${radiusChange} 0.1s linear both;
