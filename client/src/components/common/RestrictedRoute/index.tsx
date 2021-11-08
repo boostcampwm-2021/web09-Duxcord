@@ -3,7 +3,6 @@ import { Route, RouteProps } from 'react-router-dom';
 import { useAccessControl } from '../../../hooks/useAccessControl';
 
 interface Props extends RouteProps {
-  // component: any;
   signIn: boolean;
   redirectPath: string;
 }
