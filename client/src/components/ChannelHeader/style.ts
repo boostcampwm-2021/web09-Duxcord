@@ -20,6 +20,8 @@ const ChannelHeaderLeft = styled.div`
   & p {
     font-size: 16px;
     font-weight: bold;
+    overflow-x: hidden;
+    max-width: 400px;
   }
 `;
 

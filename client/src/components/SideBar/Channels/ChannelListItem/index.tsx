@@ -29,7 +29,7 @@ function ChannelListItem({ channelType, id, name }: Props) {
     <ListItem onClick={joinChannel}>
       <div>
         <img src={'/icons/' + channelType + 'Channel.png'} alt={channelType + 'Channel'} />
-        {name}
+        <p>{name}</p>
       </div>
       <img src="/icons/delete.png" alt="deleteChannel" />
     </ListItem>

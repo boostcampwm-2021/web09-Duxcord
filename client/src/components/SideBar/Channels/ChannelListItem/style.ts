@@ -20,6 +20,10 @@ const ListItem = styled.li`
     & img {
       margin-right: 5px;
     }
+    & p {
+      max-width: 180px;
+      overflow-x: hidden;
+    }
   }
 `;
 
