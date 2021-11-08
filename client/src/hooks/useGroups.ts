@@ -17,7 +17,7 @@ const getGroupsFetcher = async (url: string) => {
 };
 
 export const useGroups = () => {
-  const { data: groups, error, mutate } = useSWR(API_URL.user.getGroups, getGroupsFetcher);
+  const { data: groups, ...rest } = useSWR(API_URL.user.getGroups, getGroupsFetcher);
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
 
@@ -30,5 +30,5 @@ export const useGroups = () => {
     dispatch(setSelectedGroup(updatedSelectedGroup));
   }, [groups, dispatch]);
 
-  return { groups, error, mutate };
+  return { groups, ...rest };
 };
