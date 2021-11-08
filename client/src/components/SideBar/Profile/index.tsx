@@ -9,7 +9,7 @@ function Profile() {
   const device = useUserDevice();
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
-      dispatch(setUserDevice({...device, [target]: !device[target]}));
+    dispatch(setUserDevice({...device, [target]: !device[target]}));
   };
 
   return (
