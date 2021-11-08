@@ -15,7 +15,7 @@ export class GroupMemberRepository extends Repository<GroupMember> {
         'group.code',
       ])
       .leftJoinAndSelect('group.meetingChannels', 'meetingChannels')
-      .leftJoinAndSelect('group.textChannels', 'textChannels')
+      .leftJoinAndSelect('group.chattingChannels', 'chattingChannels')
       .getMany();
   }
 
