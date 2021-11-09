@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { postLikeChat } from '../../../api/postLikeChat';
+import { STATUS_CODES } from '../../../api/STATUS_CODES';
 import { ChatData } from '../../../types/chats';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
@@ -19,10 +20,10 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
   const handleLike = async () => {
     const handleLikeResponse = await postLikeChat({ chatID: id });
     switch (handleLikeResponse.status) {
-      case 200:
+      case STATUS_CODES.OK:
         setDisplayReaction(displayReaction - 1);
         break;
-      case 201:
+      case STATUS_CODES.CREATE:
         setDisplayReaction(displayReaction + 1);
         break;
     }
