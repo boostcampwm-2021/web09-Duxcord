@@ -34,7 +34,7 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
       await reactionRepository.insert({ user: user, chat: chat });
       chat.reactionsCount += 1;
       await chatRepository.save(chat);
-      res.status(200).send(handleReactionMSG.addReactionSuccess);
+      res.status(201).send(handleReactionMSG.addReactionSuccess);
     } else {
       await reactionRepository.remove(reaction);
       chat.reactionsCount -= 1;

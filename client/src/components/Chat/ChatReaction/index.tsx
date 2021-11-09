@@ -1,8 +1,8 @@
 import React from 'react';
 import { Wrapper } from './style';
 
-function ChatReaction({ count }: { count: number }) {
-  return <Wrapper>👍 {count}</Wrapper>;
+function ChatReaction({ count, handleLike }: { count: number; handleLike: () => {} }) {
+  return <Wrapper onClick={handleLike}>👍 {count}</Wrapper>;
 }
 
 export default ChatReaction;
