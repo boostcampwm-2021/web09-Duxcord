@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useUserDevice } from '../../../hooks/useUserDevice';
 import { VideoItem } from './style';
 
-function MeetButton() {
+function MeetVideo() {
   const myVideoRef = useRef<HTMLVideoElement>(null);
   const { mic, cam } = useUserDevice();
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
@@ -36,9 +36,9 @@ function MeetButton() {
 
   return (
     <div>
-      <VideoItem autoPlay playsInline ref={myVideoRef}></VideoItem>
+      <VideoItem autoPlay playsInline ref={myVideoRef} muted></VideoItem>
     </div>
   );
 }
 
-export default MeetButton;
+export default MeetVideo;

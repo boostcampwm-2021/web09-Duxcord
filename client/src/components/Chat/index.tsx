@@ -4,7 +4,7 @@ import { ChatContainer, Chats } from './style';
 import { ChatData } from '../../types/chats';
 import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
-import { socket } from '../../util/socket';
+import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
 import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 
@@ -17,11 +17,20 @@ const PAGE_SIZE = 20;
 const THRESHOLD = 300;
 
 function Chat() {
-  const selectedChannel = useSelectedChannel();
-  const { data: chats, mutate, setSize } = useSWRInfinite(getKey(selectedChannel.id), getFetcher);
+  const { id } = useSelectedChannel();
+  const { data: chats, mutate, setSize } = useSWRInfinite(getKey(id), getFetcher);
   const isEmpty = chats?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (id === null) return;
+    Socket.joinChannel({ channelType: 'chatting', id });
+
+    return () => {
+      Socket.leaveChannel({ channelType: 'chatting', id });
+    };
+  }, [id]);
 
   const onScroll = useCallback(() => {
     if (chatListRef?.current?.scrollTop === 0 && !isReachingEnd) setSize((size) => size + 1);
