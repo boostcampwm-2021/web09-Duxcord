@@ -21,6 +21,7 @@ const ChannelHeaderLeft = styled.div`
     font-size: 16px;
     font-weight: bold;
     overflow-x: hidden;
+    overflow-y: hidden;
     max-width: 400px;
   }
 `;

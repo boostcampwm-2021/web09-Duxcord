@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initState: {mic: boolean, speaker: boolean, cam: boolean} = {
+const initState: { mic: boolean; speaker: boolean; cam: boolean } = {
   mic: true,
   speaker: true,
   cam: true,
