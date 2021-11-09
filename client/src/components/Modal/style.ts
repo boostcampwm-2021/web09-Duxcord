@@ -8,6 +8,7 @@ const Wrapper = styled.div`
   position: relative;
   max-width: 400px;
   z-index: 999;
+  min-width: 300px;
 
   & div {
     text-align: center;

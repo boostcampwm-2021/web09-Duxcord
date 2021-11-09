@@ -9,6 +9,8 @@ import GroupJoinModal from '../../Modal/GroupJoin';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
 import { socket } from '../../../util/socket';
 import { ModalController } from '../../../types/modal';
+import GroupCreateModal from '../../Modal/GroupCreate';
+import GroupAddModal from '../../Modal/GroupAdd';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -16,11 +18,25 @@ function GroupNav() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [modalHidden, setModalHidden] = useState(true);
-  const modalController: ModalController = {
-    hidden: modalHidden,
-    hide: () => setModalHidden(true),
-    show: () => setModalHidden(false),
+  const [groupJoinModalHidden, setGroupJoinModalHidden] = useState(true);
+  const groupJoinModalControl: ModalController = {
+    hidden: groupJoinModalHidden,
+    hide: () => setGroupJoinModalHidden(true),
+    show: () => setGroupJoinModalHidden(false),
+  };
+
+  const [groupCreateModalHidden, setGroupCreateModalHidden] = useState(true);
+  const groupCreateModalControl: ModalController = {
+    hidden: groupCreateModalHidden,
+    hide: () => setGroupCreateModalHidden(true),
+    show: () => setGroupCreateModalHidden(false),
+  };
+
+  const [groupAddModalHidden, setGroupAddModalHidden] = useState(true);
+  const groupAddModalControl: ModalController = {
+    hidden: groupAddModalHidden,
+    hide: () => setGroupAddModalHidden(true),
+    show: () => setGroupAddModalHidden(false),
   };
 
   const selectGroup = (group: any) => () => {
@@ -30,8 +46,8 @@ function GroupNav() {
     dispatch(setSelectedGroup(group));
   };
 
-  const openGroupJoinModal = () => {
-    setModalHidden(false);
+  const openGroupAddModal = () => {
+    setGroupAddModalHidden(false);
   };
 
   return (
@@ -45,11 +61,17 @@ function GroupNav() {
       </GroupList>
       <GroupListDivider />
       <div>
-        <AddGroupButton onClick={openGroupJoinModal}>
+        <AddGroupButton onClick={openGroupAddModal}>
           <img src="/icons/addGroup.png" alt="addGroup" />
         </AddGroupButton>
       </div>
-      <GroupJoinModal controller={modalController} />
+      <GroupAddModal
+        controller={groupAddModalControl}
+        showGroupCreate={groupCreateModalControl.show}
+        showGroupJoin={groupJoinModalControl.show}
+      />
+      <GroupJoinModal controller={groupJoinModalControl} />
+      <GroupCreateModal controller={groupCreateModalControl} />
     </GroupListWrapper>
   );
 }
