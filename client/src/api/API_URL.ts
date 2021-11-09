@@ -5,6 +5,7 @@ export const API_URL = {
   },
   channel: {
     postChat: (channelID: number) => `/api/channel/${channelID}/create`,
+    postLikeChat: (chatID: number) => `/api/chat/${chatID}/reaction`,
   },
   group: {
     postJoinGroup: '/api/group/join',
