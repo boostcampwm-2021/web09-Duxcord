@@ -23,6 +23,7 @@ const ListItem = styled.li`
     & p {
       max-width: 180px;
       overflow-x: hidden;
+      overflow-y: hidden;
     }
   }
 `;
