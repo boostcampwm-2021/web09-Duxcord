@@ -13,6 +13,7 @@ export const useAccessControl = ({
   const history = useHistory();
 
   useEffect(() => {
+    console.log('check');
     fetch(API_URL.user.getUserdata).then(({ status }) => {
       const accessible =
         (signIn && status === STATUS_CODES.OK) || (!signIn && status >= STATUS_CODES.BAD_REQUEST);
