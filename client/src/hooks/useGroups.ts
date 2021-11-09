@@ -1,8 +1,10 @@
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '../api/API_URL';
 import { setSelectedGroup } from '../redux/selectedGroup/slice';
+import { getFetcher } from '../util/fetcher';
+import { socket } from '../util/socket';
 import { useSelectedGroup } from './useSelectedGroup';
 
 const getGroupsFetcher = async (url: string) => {
@@ -18,8 +20,13 @@ const getGroupsFetcher = async (url: string) => {
 
 export const useGroups = () => {
   const { data: groups, ...rest } = useSWR(API_URL.user.getGroups, getGroupsFetcher);
+  const { data: userData } = useSWR('/api/user', getFetcher);
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userData) socket.emit('logIn', groups, userData);
+  }, [userData, groups]);
 
   useLayoutEffect(() => {
     if (selectedGroup === null) return;
