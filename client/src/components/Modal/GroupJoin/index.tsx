@@ -9,11 +9,7 @@ import Colors from '../../../styles/Colors';
 import { ModalController } from '../../../types/modal';
 import { Input } from './style';
 
-function GroupJoinModal({
-  controller: { hidden, hide, show },
-}: {
-  controller: ModalController;
-}) {
+function GroupJoinModal({ controller: { hidden, hide, show } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
@@ -49,7 +45,7 @@ function GroupJoinModal({
   const InputComponent = (
     <Input
       onChange={(e) => updateGroupCode(e.target.value)}
-      placeholder='그룹 코드를 입력해주세요'
+      placeholder="그룹 코드를 입력해주세요"
       value={groupCode}
     />
   );

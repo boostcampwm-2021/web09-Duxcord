@@ -7,9 +7,9 @@ const SignInWrapper = styled.div`
   height: 504px;
   border-radius: 25px;
   padding: 20px 30px;
-  background-color : ${Colors.Gray6};
+  background-color: ${Colors.Gray6};
   border: 1px solid gray;
-` 
+`;
 
 const LogoWrapper = styled.div`
   width: 50%;
@@ -17,39 +17,39 @@ const LogoWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  & > img{
+  & > img {
     width: 278.11px;
     height: 278.11px;
   }
-`
+`;
 
 const InputPartWrapper = styled.div`
   width: 50%;
   height: 100%;
-`
+`;
 
 const Introduction = styled.div`
-  & > p:first-child{
+  & > p:first-child {
     height: 43px;
     font-size: 36px;
     font-weight: 600;
     color: ${Colors.Blue};
   }
-  & > p:not(:first-child){
+  & > p:not(:first-child) {
     font-size: 18px;
     height: 22px;
-    color:${Colors.Gray2};
+    color: ${Colors.Gray2};
     position: relative;
     margin-top: 15px;
   }
-`
+`;
 
 const InputPart = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top:40px;
-  & > input{
-    border:1px solid gray;
+  margin-top: 40px;
+  & > input {
+    border: 1px solid gray;
     height: 47px;
     border-radius: 10px;
     margin-top: 5px;
@@ -63,15 +63,15 @@ const InputPart = styled.div`
       font-size: 18px;
     }
   }
-`
+`;
 
 const SignUpPart = styled.div`
   display: flex;
-  font-size:18px;
+  font-size: 18px;
   margin-top: 40px;
-  & > a{
+  & > a {
     text-decoration: none;
-    :hover{
+    :hover {
       cursor: pointer;
     }
     & > p {
@@ -79,7 +79,7 @@ const SignUpPart = styled.div`
       color: ${Colors.Blue};
     }
   }
-`
+`;
 
 const LoginButton = styled.div`
   margin-top: 10px;
@@ -90,18 +90,18 @@ const LoginButton = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 18px;
-  color:${Colors.White};
+  color: ${Colors.White};
   box-shadow: 2.5px 2.5px 5px gray;
-  :hover{
-    cursor: pointer;  
+  :hover {
+    cursor: pointer;
   }
-`
+`;
 
 const ErrorResponse = styled.p`
   margin-top: 10px;
   height: 18px;
   color: ${Colors.DarkRed};
-`
+`;
 
 export {
   SignInWrapper,
@@ -111,5 +111,5 @@ export {
   InputPart,
   SignUpPart,
   LoginButton,
-  ErrorResponse
+  ErrorResponse,
 };
