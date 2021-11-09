@@ -1,8 +1,13 @@
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 
+const ChatPart = styled.div`
+  display: flex;
+`;
+
 const ChatContainer = styled.div`
   flex: 1;
+  width: 80%;
 `;
 
 const Chats = styled.div`
@@ -25,4 +30,4 @@ const Chats = styled.div`
   }
 `;
 
-export { ChatContainer, Chats };
+export { ChatContainer, Chats, ChatPart };

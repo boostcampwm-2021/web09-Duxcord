@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ChatItem from './ChatItem';
-import { ChatContainer, Chats } from './style';
+import { ChatContainer, Chats, ChatPart } from './style';
 import { ChatData } from '../../types/chats';
 import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
 import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
 import { useSelectedChannel } from '../../hooks/useSelectedChannel';
+import UserConnection from './UserConnection/UserConnection';
 
 const getKey = (channelID: number | null) => (index: number, prevData: any) => {
   if (prevData && !prevData.length) return null;
@@ -72,17 +73,20 @@ function Chat() {
   }, [mutate, onChat]);
 
   return (
-    <ChatContainer>
-      <Chats ref={chatListRef}>
-        {chats
-          ?.flat()
-          .reverse()
-          .map((chat) => (
-            <ChatItem key={chat.id} chatData={chat} />
-          ))}
-      </Chats>
-      <ChatInput scrollToBottom={scrollToBottom} />
-    </ChatContainer>
+    <ChatPart>
+      <ChatContainer>
+        <Chats ref={chatListRef}>
+          {chats
+            ?.flat()
+            .reverse()
+            .map((chat) => (
+              <ChatItem key={chat.id} chatData={chat} />
+            ))}
+        </Chats>
+        <ChatInput scrollToBottom={scrollToBottom} />
+      </ChatContainer>
+      <UserConnection />
+    </ChatPart>
   );
 }
 

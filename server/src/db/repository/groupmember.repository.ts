@@ -23,7 +23,13 @@ export class GroupMemberRepository extends Repository<GroupMember> {
     return this.createQueryBuilder('group_member')
       .where('group_member.groupId = :id', { id: groupID })
       .leftJoinAndSelect('group_member.user', 'user')
-      .select(['group_member.lastAccessTime', 'user.id', 'user.username', 'user.thumbnail'])
+      .select([
+        'group_member.lastAccessTime',
+        'user.id',
+        'user.username',
+        'user.thumbnail',
+        'user.loginID',
+      ])
       .getMany();
   }
 }
