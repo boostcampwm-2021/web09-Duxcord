@@ -7,7 +7,7 @@ const store = configureStore({
   reducer: {
     selectedGroup: selectedGroupReducer,
     selectedChannel: selectedChannelReducer,
-    userDevice: userDeviceReducer
+    userDevice: userDeviceReducer,
   },
 });
 

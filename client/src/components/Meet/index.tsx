@@ -8,8 +8,7 @@ function Meet() {
       <MeetVideo />
       <MeetButton />
     </div>
-  )
-
+  );
 }
 
 export default Meet;
