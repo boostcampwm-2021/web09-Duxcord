@@ -45,10 +45,6 @@ function GroupNav() {
     socket.emit('GroupID', group.code);
   };
 
-  const openGroupJoinModal = () => {
-    setModalHidden(false);
-  };
-
   useEffect(() => {
     socket.on('GroupUserConnection', (connectionList) => {
       dispatch(setGroupConnection(connectionList));
@@ -67,7 +63,7 @@ function GroupNav() {
       socket.off('userExit');
       socket.off('userEnter');
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <GroupListWrapper>
