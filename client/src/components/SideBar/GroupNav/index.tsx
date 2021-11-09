@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { useGroups } from '../../../hooks/useGroups';
@@ -24,15 +24,37 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(`/main?group=${group.id}`);
+    history.push(`/Main/group/${group.id}`);
     socket.emit('leaveChannel', type + id);
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
+    // group.id의 키에 있는 애들 다 알려줘~!
+    socket.emit('GroupID', group.code);
   };
 
   const openGroupJoinModal = () => {
     setModalHidden(false);
   };
+
+  useEffect(() => {
+    socket.on('GroupUserConnection', (connectionList) => {
+      console.log('그룹 클릭!', connectionList);
+    });
+
+    socket.on('userExit', (user, code) => {
+      console.log(user, code, '유저가 나갔습니다.');
+    });
+
+    socket.on('userEnter', (user, code) => {
+      console.log(user, code, '유저가 들어왔습니다.');
+    });
+
+    return () => {
+      socket.off('GroupUserConnection');
+      socket.off('userExit');
+      socket.off('userEnter');
+    };
+  }, []);
 
   return (
     <GroupListWrapper>
