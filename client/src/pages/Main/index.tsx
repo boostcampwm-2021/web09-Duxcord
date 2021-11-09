@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import ChannelHeader from '../../components/ChannelHeader';
 import Chat from '../../components/Chat';
+import Meet from '../../components/Meet';
 import SideBar from '../../components/SideBar';
 import { useGroups } from '../../hooks/useGroups';
 import { useSelectedChannel } from '../../hooks/useSelectedChannel';
@@ -45,7 +46,7 @@ function Main() {
       <SideBar />
       <MainWrapper>
         <ChannelHeader />
-        {selectedChannel.type === 'chatting' && <Chat />}
+        {selectedChannel.type && (selectedChannel.type === 'chatting' ? <Chat /> : <Meet />)}
       </MainWrapper>
     </Layout>
   );
