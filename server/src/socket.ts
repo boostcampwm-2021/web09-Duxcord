@@ -4,11 +4,12 @@ export let io: Server;
 
 export async function socketInit(httpServer) {
   const userConnectionInfo = {};
+  const meetingMembers = {};
+  const socketToMeeting = {};
+
   io = new Server(httpServer);
   io.on('connection', (socket) => {
-    //
     socket.on('GroupID', (groupID) => {
-      // console.log(userConnectionInfo, groupID);
       socket.emit('GroupUserConnection', userConnectionInfo[groupID]);
     });
 
@@ -37,7 +38,6 @@ export async function socketInit(httpServer) {
         Object.keys(userConnectionInfo).forEach((v) => {
           userConnectionInfo[v] = userConnectionInfo[v].filter((a) => a.loginID !== user.loginID);
         });
-        // console.log(userConnectionInfo);
         groups?.forEach(({ code }) => {
           socket.leave(code);
           io.to(`${code}`).emit('userExit', user, code);
@@ -46,21 +46,59 @@ export async function socketInit(httpServer) {
     });
 
     socket.on('joinChannel', (channelID) => {
-      socket.join(`${channelID}`);
-      if (channelID.startsWith('meeting')) socket.to(channelID).emit('joinMeetingChannel');
+      socket.join(channelID);
     });
 
     socket.on('leaveChannel', (channelID) => {
-      socket.leave(`${channelID}`);
+      socket.leave(channelID);
     });
-    socket.on('offer', (offer, channelID) => {
-      socket.to(channelID).emit('offer', offer);
+
+    socket.on('joinMeeting', (meetingID, { loginID, username, thumbnail }) => {
+      socket.join('rtc' + meetingID);
+      socketToMeeting[socket.id] = meetingID;
+      const newMember = {
+        socketID: socket.id,
+        loginID,
+        username,
+        thumbnail,
+      };
+
+      if (meetingID in meetingMembers) {
+        const memberList = meetingMembers[meetingID].map((member) => member.socketID);
+        if (memberList.includes(newMember.socketID)) return;
+        meetingMembers[meetingID].push(newMember);
+      } else {
+        meetingMembers[meetingID] = [newMember];
+      }
+
+      const membersInMeeting = meetingMembers[meetingID].filter(
+        (user) => user.socketID !== socket.id,
+      );
+
+      io.to(socket.id).emit('allMeetingMembers', membersInMeeting);
     });
-    socket.on('answer', (answer, channelID) => {
-      socket.to(channelID).emit('answer', answer);
+
+    socket.on('candidate', ({ candidate, receiverID }) => {
+      io.to(receiverID).emit('candidate', { candidate, senderID: socket.id });
     });
-    socket.on('ice', (ice, channelID) => {
-      socket.to(channelID).emit('ice', ice);
+
+    socket.on('offer', ({ offer, receiverID, member }) => {
+      io.to(receiverID).emit('offer', { offer, member });
     });
+
+    socket.on('answer', ({ answer, receiverID }) => {
+      io.to(receiverID).emit('answer', { answer, senderID: socket.id });
+    });
+
+    const leaveMeeting = () => {
+      const meetingID = socketToMeeting[socket.id];
+      if (meetingMembers[meetingID])
+        meetingMembers[meetingID] = meetingMembers[meetingID].filter(
+          (member) => member.socketID !== socket.id,
+        );
+      io.to('rtc' + meetingID).emit('leaveMember', socket.id);
+    };
+    socket.on('leaveMeeting', leaveMeeting);
+    socket.on('disconnect', leaveMeeting);
   });
 }
