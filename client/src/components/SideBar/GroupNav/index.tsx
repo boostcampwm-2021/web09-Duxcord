@@ -9,6 +9,11 @@ import GroupJoinModal from '../../Modal/GroupJoin';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
 import { socket } from '../../../util/socket';
 import { ModalController } from '../../../types/modal';
+import {
+  addUserConnection,
+  removeUserConnection,
+  setGroupConnection,
+} from '../../../redux/groupConnection/slice';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -38,15 +43,15 @@ function GroupNav() {
 
   useEffect(() => {
     socket.on('GroupUserConnection', (connectionList) => {
-      console.log('그룹 클릭!', connectionList);
+      dispatch(setGroupConnection(connectionList));
     });
 
     socket.on('userExit', (user, code) => {
-      console.log(user, code, '유저가 나갔습니다.');
+      dispatch(removeUserConnection(user));
     });
 
     socket.on('userEnter', (user, code) => {
-      console.log(user, code, '유저가 들어왔습니다.');
+      dispatch(addUserConnection(user));
     });
 
     return () => {
