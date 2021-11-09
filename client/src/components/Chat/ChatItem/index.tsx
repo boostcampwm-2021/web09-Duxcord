@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChatData } from '../../../types/chats';
 import AddChatReaction from '../AddChatReaction';
+import ChatReaction from '../ChatReaction';
 import { ChatWrapper, UserImage, ChatHeader } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
@@ -8,6 +9,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
     user: { username, thumbnail },
     createdAt,
     content,
+    reactionsCount,
   } = chatData;
 
   const [isFocused, setIsFocused] = useState(false);
@@ -21,6 +23,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
         </ChatHeader>
         <div>{content}</div>
+        {reactionsCount !== 0 && <ChatReaction count={reactionsCount} />}
       </div>
       {isFocused && <AddChatReaction />}
     </ChatWrapper>

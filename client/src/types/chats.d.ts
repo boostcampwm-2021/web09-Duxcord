@@ -3,6 +3,7 @@ interface ChatData {
   createdAt: string;
   updatedAt: string;
   content: string;
+  reactionsCount: number;
   user: {
     id: number;
     thumbnail: null | string;
