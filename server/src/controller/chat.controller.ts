@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { userRepository, chatRepository, threadRepository, reactionRepository } from '../db';
 
 import { Thread } from '../entity/thread.entity';
+import { io } from '../socket';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
@@ -24,7 +25,10 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
     const { userID } = req.session;
 
     const user = await userRepository.findOne({ where: { id: userID } });
-    const chat = await chatRepository.findOne({ where: { id: chatID } });
+    const chat = await chatRepository.findOne({
+      where: { id: chatID },
+      relations: ['chattingChannel'],
+    });
     if (!user) return res.status(400).send(handleReactionMSG.userNotFound);
     if (!chat) return res.status(400).send(handleReactionMSG.chatNotFound);
 
@@ -34,12 +38,20 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
       await reactionRepository.insert({ user: user, chat: chat });
       chat.reactionsCount += 1;
       await chatRepository.save(chat);
-      res.status(201).send(handleReactionMSG.addReactionSuccess);
+      io.to(`chatting${chat.chattingChannel.id}`).emit('like', {
+        chatID: chat.id,
+        reactionsCount: chat.reactionsCount,
+      });
+      return res.status(201).json({ chat, message: handleReactionMSG.addReactionSuccess });
     } else {
       await reactionRepository.remove(reaction);
       chat.reactionsCount -= 1;
       await chatRepository.save(chat);
-      res.status(200).send(handleReactionMSG.deleteReactionSuccess);
+      io.to(`chatting${chat.chattingChannel.id}`).emit('like', {
+        chatID: chat.id,
+        reactionsCount: chat.reactionsCount,
+      });
+      return res.status(204).json({ chat, message: handleReactionMSG.deleteReactionSuccess });
     }
   } catch (error) {
     next(error);
