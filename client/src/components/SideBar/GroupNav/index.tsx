@@ -16,7 +16,6 @@ import {
 import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
 
-
 function GroupNav() {
   const { groups } = useGroups();
   const dispatch = useDispatch();
