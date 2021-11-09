@@ -10,7 +10,6 @@ import { useSelectedGroup } from '../../hooks/useSelectedGroup';
 import { setSelectedChannel } from '../../redux/selectedChannel/slice';
 import { setSelectedGroup } from '../../redux/selectedGroup/slice';
 import { getURLParams } from '../../util/getURLParams';
-import { socket } from '../../util/socket';
 import { Layout, MainWrapper } from './style';
 
 function Main() {
@@ -37,7 +36,6 @@ function Main() {
 
     if (!id || !name) return;
 
-    socket.emit('joinChannel', channelType + id);
     dispatch(setSelectedChannel({ id, name, type: channelType }));
   }, [isValidating]);
 
