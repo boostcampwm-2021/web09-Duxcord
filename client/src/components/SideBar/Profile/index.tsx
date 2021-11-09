@@ -1,18 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ProfileWrapper } from './style';
+import { useDispatch } from 'react-redux';
+import { useUserDevice } from '../../../hooks/useUserDevice';
+import { setUserDevice } from '../../../redux/userDevice/slice';
 
 function Profile() {
-  const [device, setDevice] = useState({
-    mic: true,
-    speaker: true,
-    cam: true,
-  });
+  const dispatch = useDispatch();
+  const device = useUserDevice();
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
-    setDevice({
-      ...device,
-      [target]: !device[target],
-    });
+    dispatch(setUserDevice({...device, [target]: !device[target]}));
   };
 
   return (

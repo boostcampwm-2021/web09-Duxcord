@@ -16,7 +16,7 @@ function SideBar() {
           <GroupSetting />
           {selectedGroup && (
             <ChannelList>
-              <Channels channelType='chatting' />
+              <Channels channelType="chatting" />
               <Channels channelType="meeting" />
             </ChannelList>
           )}

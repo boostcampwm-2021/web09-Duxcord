@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import Colors from "../../../styles/Colors";
+import styled from 'styled-components';
+import Colors from '../../../styles/Colors';
 
 const Wrapper = styled.div`
   border: ${Colors.Gray2} 1px solid;

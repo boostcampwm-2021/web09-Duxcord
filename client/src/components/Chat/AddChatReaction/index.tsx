@@ -1,5 +1,5 @@
-import React from "react";
-import { Wrapper } from "./style";
+import React from 'react';
+import { Wrapper } from './style';
 
 function AddChatReaction() {
   return (

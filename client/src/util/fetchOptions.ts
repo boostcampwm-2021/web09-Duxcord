@@ -1,18 +1,16 @@
 interface Body {
-  [Key:string]: string
+  [Key: string]: string;
+}
+
+const postFetchOptions = (body: Body): RequestInit => {
+  return {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
 };
 
-const postFetchOptions = (body: Body):RequestInit => {
-  return ({
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(body)
-  });
-}
-
-export{
-  postFetchOptions
-}
+export { postFetchOptions };
