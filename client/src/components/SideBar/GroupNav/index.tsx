@@ -5,6 +5,7 @@ import { useGroups } from '../../../hooks/useGroups';
 import { setSelectedChannel } from '../../../redux/selectedChannel/slice';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
+import { socket } from '../../../util/socket';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
 import { ModalController } from '../../../types/modal';
 import {
