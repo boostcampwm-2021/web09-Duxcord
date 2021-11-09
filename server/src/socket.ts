@@ -8,7 +8,7 @@ export async function socketInit(httpServer) {
   io.on('connection', (socket) => {
     //
     socket.on('GroupID', (groupID) => {
-      console.log(userConnectionInfo, groupID);
+      // console.log(userConnectionInfo, groupID);
       socket.emit('GroupUserConnection', userConnectionInfo[groupID]);
     });
 
@@ -33,12 +33,13 @@ export async function socketInit(httpServer) {
           myFriendsConnectionInfo[code] = userConnectionInfo[code];
         });
       io.to(socket.id).emit('userConnectionInfo', myFriendsConnectionInfo);
-      socket.on('disconnect', () => {
+      socket.on('disconnecting', () => {
         Object.keys(userConnectionInfo).forEach((v) => {
           userConnectionInfo[v] = userConnectionInfo[v].filter((a) => a.loginID !== user.loginID);
         });
-        console.log(userConnectionInfo);
+        // console.log(userConnectionInfo);
         groups?.forEach(({ code }) => {
+          socket.leave(code);
           io.to(`${code}`).emit('userExit', user, code);
         });
       });
