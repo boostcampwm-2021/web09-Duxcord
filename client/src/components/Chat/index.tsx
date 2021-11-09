@@ -63,13 +63,28 @@ function Chat() {
     [mutate],
   );
 
+  const onLike = useCallback(
+    async (info: any) => {
+      await mutate((chats) => {
+        if (!chats) return chats;
+        return chats.map((chatChunk) => {
+          return chatChunk.map((chat: any) =>
+            chat.id === info.chatID ? { ...chat, reactionsCount: info.reactionsCount } : chat,
+          );
+        });
+      }, false);
+    },
+    [mutate],
+  );
+
   useEffect(() => {
     socket.on('chat', onChat);
-
+    socket.on('like', onLike);
     return () => {
       socket.off('chat', onChat);
+      socket.off('like', onLike);
     };
-  }, [mutate, onChat]);
+  }, [mutate, onChat, onLike]);
 
   return (
     <ChatContainer>
