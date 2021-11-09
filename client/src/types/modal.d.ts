@@ -6,9 +6,9 @@ interface ModalData {
 }
 
 interface ModalController {
-  hidden: boolean;
   hide: function;
   show: function;
+  previous?: function;
 }
 
 interface ModalButton {

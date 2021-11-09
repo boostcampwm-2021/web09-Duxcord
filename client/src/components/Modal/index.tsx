@@ -4,13 +4,13 @@ import { BottomRightButton, Bottom, Background, Wrapper, Title, SubTitle } from 
 
 function Modal({
   props: { title, subTitle, middleContent, bottomRightButton },
-  controller: { hidden, hide },
+  controller: { hide, previous },
 }: {
   props: ModalData;
   controller: ModalController;
 }) {
   return (
-    <Background onClick={hide} hidden={hidden}>
+    <Background onClick={hide}>
       <Wrapper onClick={(e) => e.stopPropagation()}>
         <div style={{ textAlign: 'right' }}>
           <img src="/icons/btn-close-modal.svg" alt="close modal" onClick={hide} />
@@ -20,7 +20,11 @@ function Modal({
         <div>{middleContent}</div>
         {bottomRightButton && (
           <Bottom>
-            <div onClick={hide}>닫기</div>
+            {previous !== null ? (
+              <div onClick={previous}>이전</div>
+            ) : (
+              <div onClick={hide}>닫기</div>
+            )}
             <BottomRightButton
               color={bottomRightButton.color}
               onClick={bottomRightButton.onClickHandler}

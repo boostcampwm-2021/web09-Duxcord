@@ -18,25 +18,20 @@ function GroupNav() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [groupJoinModalHidden, setGroupJoinModalHidden] = useState(true);
+  const [selectedModal, setSelectedModal] = useState('');
   const groupJoinModalControl: ModalController = {
-    hidden: groupJoinModalHidden,
-    hide: () => setGroupJoinModalHidden(true),
-    show: () => setGroupJoinModalHidden(false),
+    hide: () => setSelectedModal(''),
+    show: () => setSelectedModal('JOIN'),
+    previous: () => setSelectedModal('ADD'),
   };
-
-  const [groupCreateModalHidden, setGroupCreateModalHidden] = useState(true);
   const groupCreateModalControl: ModalController = {
-    hidden: groupCreateModalHidden,
-    hide: () => setGroupCreateModalHidden(true),
-    show: () => setGroupCreateModalHidden(false),
+    hide: () => setSelectedModal(''),
+    show: () => setSelectedModal('CREATE'),
+    previous: () => setSelectedModal('ADD'),
   };
-
-  const [groupAddModalHidden, setGroupAddModalHidden] = useState(true);
   const groupAddModalControl: ModalController = {
-    hidden: groupAddModalHidden,
-    hide: () => setGroupAddModalHidden(true),
-    show: () => setGroupAddModalHidden(false),
+    hide: () => setSelectedModal(''),
+    show: () => setSelectedModal('ADD'),
   };
 
   const selectGroup = (group: any) => () => {
@@ -44,10 +39,6 @@ function GroupNav() {
     socket.emit('leaveChannel', type + id);
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
-  };
-
-  const openGroupAddModal = () => {
-    setGroupAddModalHidden(false);
   };
 
   return (
@@ -61,17 +52,21 @@ function GroupNav() {
       </GroupList>
       <GroupListDivider />
       <div>
-        <AddGroupButton onClick={openGroupAddModal}>
+        <AddGroupButton onClick={groupAddModalControl.show}>
           <img src="/icons/addGroup.png" alt="addGroup" />
         </AddGroupButton>
       </div>
-      <GroupAddModal
-        controller={groupAddModalControl}
-        showGroupCreate={groupCreateModalControl.show}
-        showGroupJoin={groupJoinModalControl.show}
-      />
-      <GroupJoinModal controller={groupJoinModalControl} />
-      <GroupCreateModal controller={groupCreateModalControl} />
+      {selectedModal === 'ADD' ? (
+        <GroupAddModal
+          controller={groupAddModalControl}
+          showGroupCreate={groupCreateModalControl.show}
+          showGroupJoin={groupJoinModalControl.show}
+        />
+      ) : selectedModal === 'JOIN' ? (
+        <GroupJoinModal controller={groupJoinModalControl} />
+      ) : selectedModal === 'CREATE' ? (
+        <GroupCreateModal controller={groupCreateModalControl} />
+      ) : null}
     </GroupListWrapper>
   );
 }

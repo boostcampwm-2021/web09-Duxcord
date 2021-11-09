@@ -9,7 +9,7 @@ import Colors from '../../../styles/Colors';
 import { ModalController } from '../../../types/modal';
 import { Input } from './style';
 
-function GroupJoinModal({ controller: { hidden, hide, show } }: { controller: ModalController }) {
+function GroupJoinModal({ controller: { hide, show } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
@@ -19,8 +19,8 @@ function GroupJoinModal({ controller: { hidden, hide, show } }: { controller: Mo
   };
 
   const finishModal = () => {
-    hide();
     setGroupCode('');
+    hide();
   };
 
   const joinGroup = async () => {
@@ -61,7 +61,7 @@ function GroupJoinModal({ controller: { hidden, hide, show } }: { controller: Mo
           onClickHandler: joinGroup,
         },
       }}
-      controller={{ hidden, hide: finishModal, show }}
+      controller={{ hide: finishModal, show }}
     />
   );
 }
