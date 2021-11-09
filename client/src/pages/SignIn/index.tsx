@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Background from '../../components/common/Background';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
   SignInWrapper,
   LogoWrapper,
@@ -14,10 +14,12 @@ import {
 import { SIGN_IN_ERROR_MESSAGE } from '../../util/message';
 import { checkLogin } from '../../util/checkResponse';
 import { tryLogin } from '../../util/api';
+import { STATUS_CODES } from '../../api/STATUS_CODES';
 
 const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
 function SignIn() {
+  const history = useHistory();
   const [inputState, setInputState] = useState({ ID: '', password: '' });
   const [responseState, setResponseState] = useState({ status: 0, responseText: '' });
   const { ID, password } = inputState;
@@ -44,6 +46,7 @@ function SignIn() {
 
     try {
       const loginResponse = await tryLogin(ID, password);
+      if (loginResponse.status === STATUS_CODES.OK) history.push('/main');
       setResponseState({ ...responseState, ...loginResponse });
     } catch (error) {
       console.log(error);
