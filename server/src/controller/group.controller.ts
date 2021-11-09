@@ -35,11 +35,28 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 
     await groupMemberRepository.insert({ group: newGroup, user: leader, lastAccessTime: now });
 
-    await meetingChannelRepository.insert({ group: newGroup, name: 'default' });
+    const newMeetingChannel = new MeetingChannel();
+    newMeetingChannel.group = newGroup;
+    newMeetingChannel.name = 'default';
+    await meetingChannelRepository.save(newMeetingChannel);
+    const responseMeetingChannel = (({ group, ...o }) => o)(newMeetingChannel);
 
-    await chattingChannelRepository.insert({ group: newGroup, name: 'default' });
+    const newChattingChannel = new ChattingChannel();
+    newChattingChannel.group = newGroup;
+    newChattingChannel.name = 'default';
+    await chattingChannelRepository.save(newChattingChannel);
+    const responseChattingChannel = (({ group, ...o }) => o)(newChattingChannel);
 
-    return res.status(200).json({ code: newGroup.code });
+    const responseGroup = {
+      id: newGroup.id,
+      name: groupName,
+      code: newCode,
+      groupThumbnail: groupThumbnail,
+      meetingChannels: [responseMeetingChannel],
+      chattingChannels: [responseChattingChannel],
+    };
+
+    return res.status(200).json(responseGroup);
   } catch (error) {
     next(error);
   }

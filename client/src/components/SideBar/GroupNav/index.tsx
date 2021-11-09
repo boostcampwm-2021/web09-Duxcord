@@ -13,17 +13,29 @@ import {
   removeUserConnection,
   setGroupConnection,
 } from '../../../redux/groupConnection/slice';
+import GroupCreateModal from '../../Modal/GroupCreate';
+import GroupAddModal from '../../Modal/GroupAdd';
+
 
 function GroupNav() {
   const { groups } = useGroups();
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const [modalHidden, setModalHidden] = useState(true);
-  const modalController: ModalController = {
-    hidden: modalHidden,
-    hide: () => setModalHidden(true),
-    show: () => setModalHidden(false),
+  const [selectedModal, setSelectedModal] = useState('');
+  const groupJoinModalControl: ModalController = {
+    hide: () => setSelectedModal(''),
+    show: () => setSelectedModal('JOIN'),
+    previous: () => setSelectedModal('ADD'),
+  };
+  const groupCreateModalControl: ModalController = {
+    hide: () => setSelectedModal(''),
+    show: () => setSelectedModal('CREATE'),
+    previous: () => setSelectedModal('ADD'),
+  };
+  const groupAddModalControl: ModalController = {
+    hide: () => setSelectedModal(''),
+    show: () => setSelectedModal('ADD'),
   };
 
   const selectGroup = (group: any) => () => {
@@ -69,11 +81,21 @@ function GroupNav() {
       </GroupList>
       <GroupListDivider />
       <div>
-        <AddGroupButton onClick={openGroupJoinModal}>
+        <AddGroupButton onClick={groupAddModalControl.show}>
           <img src="/icons/addGroup.png" alt="addGroup" />
         </AddGroupButton>
       </div>
-      <GroupJoinModal controller={modalController} />
+      {selectedModal === 'ADD' ? (
+        <GroupAddModal
+          controller={groupAddModalControl}
+          showGroupCreate={groupCreateModalControl.show}
+          showGroupJoin={groupJoinModalControl.show}
+        />
+      ) : selectedModal === 'JOIN' ? (
+        <GroupJoinModal controller={groupJoinModalControl} />
+      ) : selectedModal === 'CREATE' ? (
+        <GroupCreateModal controller={groupCreateModalControl} />
+      ) : null}
     </GroupListWrapper>
   );
 }
