@@ -11,7 +11,17 @@ function MeetVideo() {
   const { mic, cam } = useUserDevice();
   const channelID = type + id;
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
-  const myPeerConnnection = new RTCPeerConnection();
+  const myPeerConnnection = new RTCPeerConnection({
+    iceServers: [
+      {
+        urls: [
+          'stun:stun.l.google.com:19302',
+          'stun:stun1.l.google.com:19302',
+          'stun:stun2.l.google.com:19302',
+        ],
+      },
+    ],
+  });
 
   useEffect(() => {
     function handleIce(data: any) {
