@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import groupConnectionReducer from './groupConnection/slice';
 import selectedChannelReducer from './selectedChannel/slice';
 import selectedGroupReducer from './selectedGroup/slice';
 import userDeviceReducer from './userDevice/slice';
@@ -8,6 +9,7 @@ const store = configureStore({
     selectedGroup: selectedGroupReducer,
     selectedChannel: selectedChannelReducer,
     userDevice: userDeviceReducer,
+    groupConnection: groupConnectionReducer,
   },
 });
 
