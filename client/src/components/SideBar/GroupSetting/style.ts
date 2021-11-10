@@ -7,6 +7,7 @@ const GroupSettingWrapper = styled.div`
   align-items: center;
   height: 48px;
   padding: 15px;
+  z-index: 999;
   border-bottom: 1px solid ${Colors.Gray4};
   &:hover {
     background-color: ${Colors.Gray3};
