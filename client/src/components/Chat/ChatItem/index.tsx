@@ -49,7 +49,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           />
         )}
       </div>
-      {isFocused && <AddChatReaction handleLike={handleLike} />}
+      {isFocused && <AddChatReaction handleLike={handleLike} chatData={chatData} />}
     </ChatWrapper>
   );
 }

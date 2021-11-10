@@ -7,7 +7,7 @@ const ChatPart = styled.div`
 
 const ChatContainer = styled.div`
   flex: 1;
-  width: 80%;
+  width: 70%;
 `;
 
 const Chats = styled.div`
