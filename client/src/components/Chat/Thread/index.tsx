@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '../../../api/API_URL';
@@ -7,6 +7,7 @@ import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
 import { getFetcher } from '../../../util/fetcher';
+import { socket } from '../../../util/socket';
 import ThreadItem from '../ThreadItem';
 import {
   ButtonWrapper,
@@ -26,27 +27,36 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const {
     createdAt,
     content,
-    user: { id: userID, username, thumbnail },
+    user: { username, thumbnail },
   } = selectedChat;
+
+  const onThread = useCallback(
+    async (info: any) => {
+      if (info.chatID !== selectedChat.id) return;
+      await mutate((threads: any) => [
+        ...threads,
+        {
+          createdAt: new Date(),
+          content: info.content,
+          user: info.threadWriter,
+        },
+      ]);
+    },
+    [mutate, selectedChat.id],
+  );
+
+  useEffect(() => {
+    socket.on('thread', onThread);
+    return () => {
+      socket.off('thread');
+    };
+  }, [mutate, onThread]);
 
   const [threadInput, setThreadInput] = useState('');
   const createThread = async (e: FormEvent) => {
     e.preventDefault();
     if (selectedChat.id === null) return;
     await postCreateThread({ chatID: selectedChat.id, content: threadInput });
-    mutate([
-      ...data,
-      {
-        createdAt: new Date(),
-        content: content,
-        user: {
-          id: userID,
-          loginID: 'seojintestt',
-          username: username,
-          thumbnail: thumbnail,
-        },
-      },
-    ]);
     setThreadInput('');
   };
 
