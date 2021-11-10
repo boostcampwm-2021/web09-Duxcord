@@ -15,7 +15,7 @@ function MeetingUserList({ meetingUser }: Props) {
               <MeetingUserProfileWrapper>
                 <MeetingUserProfile src="/images/default_profile.png" alt="profile" />
               </MeetingUserProfileWrapper>
-              <p>{user.username}</p>
+              <p>{`${user.username}(${user.loginID})`}</p>
             </MeetingUserListWrapper>
           );
         })}
