@@ -31,6 +31,10 @@ function Channels({ channelType }: Props) {
     socket.on('MeetingUserList', (meetingUserList) => {
       setMeetingUser({ ...meetingUserList });
     });
+    
+    return () => {
+      socket.off('MeetingUserList');
+    }
   }, []);
 
   return (
