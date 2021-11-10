@@ -13,18 +13,19 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
     createdAt,
     content,
     reactionsCount,
+    reactions,
   } = chatData;
 
-  const [displayReaction, setDisplayReaction] = useState(reactionsCount);
+  const [isReactioned, setIsReactioned] = useState(reactions.length !== 0);
 
   const handleLike = async () => {
     const handleLikeResponse = await postLikeChat({ chatID: id });
     switch (handleLikeResponse.status) {
       case STATUS_CODES.NO_CONTENTS:
-        setDisplayReaction(displayReaction - 1);
+        setIsReactioned(false);
         break;
       case STATUS_CODES.CREATE:
-        setDisplayReaction(displayReaction + 1);
+        setIsReactioned(true);
         break;
     }
   };
@@ -40,7 +41,13 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
         </ChatHeader>
         <div>{content}</div>
-        {reactionsCount !== 0 && <ChatReaction handleLike={handleLike} count={reactionsCount} />}
+        {reactionsCount !== 0 && (
+          <ChatReaction
+            handleLike={handleLike}
+            count={reactionsCount}
+            isReactioned={isReactioned}
+          />
+        )}
       </div>
       {isFocused && <AddChatReaction handleLike={handleLike} />}
     </ChatWrapper>
