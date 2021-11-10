@@ -15,6 +15,15 @@ export class Chat extends Base {
   @Column({ default: 0 })
   reactionsCount: number;
 
+  @Column({ default: 0 })
+  threadsCount: number;
+
+  @Column({ default: null, nullable: true })
+  threadLastTime: Date;
+
+  @ManyToOne(() => User, { onDelete: 'SET NULL', nullable: true })
+  threadWriter: User;
+
   @ManyToOne(() => User, (user) => user.chats, { onDelete: 'SET NULL' })
   user: User;
 

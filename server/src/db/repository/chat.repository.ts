@@ -11,16 +11,22 @@ export class ChatRepository extends Repository<Chat> {
       .leftJoinAndSelect('chat.reactions', 'reaction', 'reaction.user = :userID', {
         userID: userID,
       })
+      .leftJoinAndSelect('chat.threadWriter', 'threadWriter')
       .select([
         'chat.id',
         'chat.content',
         'chat.createdAt',
         'chat.updatedAt',
         'chat.reactionsCount',
+        'chat.threadsCount',
+        'chat.threadLastTime',
         'user.id',
         'user.username',
         'user.thumbnail',
         'reaction.id',
+        'threadWriter.id',
+        'threadWriter.username',
+        'threadWriter.thumbnail',
       ])
       .orderBy('chat.createdAt', 'DESC')
       .skip(chatPerPage * (page - 1))
