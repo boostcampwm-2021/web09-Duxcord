@@ -41,11 +41,13 @@ const ThreadHeaderWrapper = styled.div`
     }
   }
 `;
+
 const ThreadChatWrapper = styled.div`
   height: calc(100vh - 270px);
   overflow-y: scroll;
 `;
-const OrginalChatWrapper = styled.div`
+
+const OriginalChatWrapper = styled.div`
   border-bottom: 1px solid ${Colors.Gray4};
   padding: 20px;
   display: flex;
@@ -106,6 +108,6 @@ export {
   ButtonWrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
-  OrginalChatWrapper,
+  OriginalChatWrapper,
   ThreadChatWrapper,
 };

@@ -103,11 +103,7 @@ function Chat() {
         </Chats>
         <ChatInput scrollToBottom={scrollToBottom} />
       </ChatContainer>
-      {chats?.flat().find((v) => v.id === selectedChat) ? (
-        <Thread selectedChat={chats?.flat().find((v) => v.id === selectedChat)} />
-      ) : (
-        <UserConnection />
-      )}
+      {selectedChat ? <Thread selectedChat={selectedChat} /> : <UserConnection />}
     </ChatPart>
   );
 }

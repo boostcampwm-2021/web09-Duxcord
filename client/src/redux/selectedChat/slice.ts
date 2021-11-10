@@ -1,12 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initState = 0;
+const initState = null;
 
 const { reducer: selectedChatReducer, actions } = createSlice({
   name: 'selectedChannel',
   initialState: initState,
   reducers: {
-    setSelectedChat: (state, { payload: chatID }) => chatID,
+    setSelectedChat: (state, { payload: chat }) => chat,
   },
 });
 

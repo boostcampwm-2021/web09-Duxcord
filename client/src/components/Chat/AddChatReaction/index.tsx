@@ -1,9 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
+import { ChatData } from '../../../types/chats';
 import { Wrapper } from './style';
 
-function AddChatReaction({ handleLike, chatID }: { handleLike: () => {}; chatID: number }) {
+function AddChatReaction({ handleLike, chatData }: { handleLike: () => {}; chatData: ChatData }) {
   const dispatch = useDispatch();
   return (
     <Wrapper>
@@ -11,7 +12,7 @@ function AddChatReaction({ handleLike, chatID }: { handleLike: () => {}; chatID:
       <img
         src="/icons/btn-thread.svg"
         alt="btn thread"
-        onClick={() => dispatch(setSelectedChat(chatID))}
+        onClick={() => dispatch(setSelectedChat(chatData))}
       />
     </Wrapper>
   );

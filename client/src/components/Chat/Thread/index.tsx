@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
-import useSWR from 'swr';
 import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
@@ -10,7 +9,7 @@ import {
   Wrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
-  OrginalChatWrapper,
+  OriginalChatWrapper,
   ThreadChatWrapper,
 } from './style';
 
@@ -22,7 +21,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
     content,
     user: { username, thumbnail },
   } = selectedChat;
-  console.log(selectedChat);
+
   return (
     <ThreadWrapper>
       <div>
@@ -37,8 +36,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             onClick={() => dispatch(setSelectedChat(0))}
           />
         </ThreadHeaderWrapper>
-        <OrginalChatWrapper>
-          <img src="/images/default_profile.png" alt="thumbnail" />
+        <OriginalChatWrapper>
+          <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
           <div>
             <div>
               <p>{username}</p>
@@ -46,8 +45,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             </div>
             <div>{content}</div>
           </div>
-        </OrginalChatWrapper>
-        <ThreadChatWrapper></ThreadChatWrapper>
+        </OriginalChatWrapper>
+        <ThreadChatWrapper />
       </div>
       <Wrapper>
         <ButtonWrapper>
