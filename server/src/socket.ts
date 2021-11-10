@@ -53,6 +53,10 @@ export async function socketInit(httpServer) {
       socket.leave(channelID);
     });
 
+    socket.on('meetChat', ({ channelID, chat }) => {
+      io.to('meeting' + channelID).emit('meetChat', chat);
+    });
+
     socket.on('joinMeeting', (meetingID, { loginID, username, thumbnail }) => {
       socket.join('rtc' + meetingID);
       socketToMeeting[socket.id] = meetingID;

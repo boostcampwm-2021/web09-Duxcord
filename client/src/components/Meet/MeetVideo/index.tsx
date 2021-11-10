@@ -191,7 +191,7 @@ function MeetVideo() {
 
   return (
     <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
-      <VideoItem autoPlay playsInline ref={myVideoRef}></VideoItem>
+      <VideoItem autoPlay playsInline muted ref={myVideoRef}></VideoItem>
       {meetingMembers.map((member) => (
         <OtherVideo key={member.socketID} member={member} />
       ))}
