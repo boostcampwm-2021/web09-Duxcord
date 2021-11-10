@@ -27,7 +27,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
     content,
     user: { username, thumbnail },
   } = selectedChat;
-  console.log(data);
+
   return (
     <ThreadWrapper>
       <div>
