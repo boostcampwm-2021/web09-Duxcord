@@ -155,10 +155,7 @@ function MeetVideo() {
       socket.off(MeetingEvent.LEAVE_MEMBER);
       socket.emit(MeetingEvent.LEAVE_MEETING);
 
-      meetingMembers.forEach((member) => {
-        if (!pcs.current[member.socketID]) return;
-        pcs.current[member.socketID].close();
-      });
+      Object.values(pcs.current).forEach((pc) => pc.close());
     };
   }, [id]);
 
