@@ -81,14 +81,38 @@ function Chat() {
     [mutate],
   );
 
+  const onThread = useCallback(
+    async (info: any) => {
+      console.log(info);
+      await mutate((chats) => {
+        if (!chats) return chats;
+        return chats.map((chatChunk) => {
+          return chatChunk.map((chat: ChatData) =>
+            chat.id === info.chatID
+              ? {
+                  ...chat,
+                  threadsCount: info.threadsCount,
+                  threadWriter: info.threadWriter,
+                  threadLastTime: info.threadLastTime,
+                }
+              : chat,
+          );
+        });
+      }, false);
+    },
+    [mutate],
+  );
+
   useEffect(() => {
     socket.on('chat', onChat);
     socket.on('like', onLike);
+    socket.on('thread', onThread);
     return () => {
       socket.off('chat', onChat);
       socket.off('like', onLike);
+      socket.off('thread', onThread);
     };
-  }, [mutate, onChat, onLike]);
+  }, [mutate, onChat, onLike, onThread]);
 
   return (
     <ChatPart>

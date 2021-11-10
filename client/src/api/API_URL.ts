@@ -13,5 +13,6 @@ export const API_URL = {
   },
   thread: {
     getThread: (chatID: number) => `/api/chat/${chatID}/thread`,
+    createThread: (chatID: number) => `/api/chat/${chatID}/thread/create`,
   },
 };

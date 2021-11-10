@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { FormEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '../../../api/API_URL';
+import { postCreateThread } from '../../../api/postCreateThread';
 import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
@@ -19,14 +20,35 @@ import {
 } from './style';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
-  const { data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
+  const { mutate, data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
   const dispatch = useDispatch();
   const { name } = useSelectedChannel();
   const {
     createdAt,
     content,
-    user: { username, thumbnail },
+    user: { id: userID, username, thumbnail },
   } = selectedChat;
+
+  const [threadInput, setThreadInput] = useState('');
+  const createThread = async (e: FormEvent) => {
+    e.preventDefault();
+    if (selectedChat.id === null) return;
+    await postCreateThread({ chatID: selectedChat.id, content: threadInput });
+    mutate([
+      ...data,
+      {
+        createdAt: new Date(),
+        content: content,
+        user: {
+          id: userID,
+          loginID: 'seojintestt',
+          username: username,
+          thumbnail: thumbnail,
+        },
+      },
+    ]);
+    setThreadInput('');
+  };
 
   return (
     <ThreadWrapper>
@@ -57,11 +79,15 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           {data && data.map((v: ChatData) => <ThreadItem threadData={v} />)}
         </ThreadChatWrapper>
       </div>
-      <Wrapper>
+      <Wrapper onSubmit={createThread}>
         <ButtonWrapper>
           <img src="/icons/btn-text-add-file.svg" alt="add file button" />
         </ButtonWrapper>
-        <Input placeholder="Message to channel" />
+        <Input
+          placeholder="Message to channel"
+          value={threadInput}
+          onChange={(e) => setThreadInput(e.target.value)}
+        />
       </Wrapper>
     </ThreadWrapper>
   );
