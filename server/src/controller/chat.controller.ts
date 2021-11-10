@@ -91,6 +91,14 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
       threadWriter: chat.threadWriter,
       threadLastTime: chat.threadLastTime,
     });
+
+    io.to(`thread${chatID}`).emit('threadUpdate', {
+      id: newThread.id,
+      threadWriter: chat.threadWriter,
+      content: newThread.content,
+      createdAt: newThread.createdAt,
+    });
+
     return res.status(200).send(createChatMSG.success);
   } catch (error) {
     next(error);
