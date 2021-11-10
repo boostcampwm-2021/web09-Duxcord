@@ -42,7 +42,6 @@ const ThreadHeaderWrapper = styled.div`
   }
 `;
 const ThreadChatWrapper = styled.div`
-  background-color: red;
   height: calc(100vh - 270px);
   overflow-y: scroll;
 `;
