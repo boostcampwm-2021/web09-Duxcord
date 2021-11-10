@@ -4,9 +4,9 @@ import { postLikeChat } from '../../../api/postLikeChat';
 import { STATUS_CODES } from '../../../api/STATUS_CODES';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
+import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
-import ChatThread from '../ChatThread';
 import { ChatWrapper, UserImage, ChatHeader } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
@@ -16,8 +16,9 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
     createdAt,
     content,
     reactionsCount,
-    threadCount,
-    lastThreadUser,
+    threadsCount,
+    threadWriter,
+    threadLastTime,
     reactions,
   } = chatData;
 
@@ -56,10 +57,11 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
               isReactioned={isReactioned}
             />
           )}
-          {lastThreadUser !== null && (
-            <ChatThread
-              count={threadCount}
-              lastThreadUser={lastThreadUser}
+          {threadWriter && threadLastTime && (
+            <ThreadPreview
+              count={threadsCount}
+              lastThreadUser={threadWriter}
+              threadLastTime={threadLastTime}
               onClick={() => dispatch(setSelectedChat(chatData))}
             />
           )}

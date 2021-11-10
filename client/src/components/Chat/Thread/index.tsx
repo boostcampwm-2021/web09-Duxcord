@@ -1,8 +1,12 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import useSWR from 'swr';
+import { API_URL } from '../../../api/API_URL';
 import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
+import { getFetcher } from '../../../util/fetcher';
+import ThreadItem from '../ThreadItem';
 import {
   ButtonWrapper,
   Input,
@@ -11,9 +15,11 @@ import {
   ThreadHeaderWrapper,
   OriginalChatWrapper,
   ThreadChatWrapper,
+  ChatLengthWrapper,
 } from './style';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
+  const { data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
   const dispatch = useDispatch();
   const { name } = useSelectedChannel();
   const {
@@ -21,7 +27,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
     content,
     user: { username, thumbnail },
   } = selectedChat;
-
+  console.log(data);
   return (
     <ThreadWrapper>
       <div>
@@ -46,7 +52,10 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>{content}</div>
           </div>
         </OriginalChatWrapper>
-        <ThreadChatWrapper />
+        <ChatLengthWrapper>{data?.length}개의 댓글</ChatLengthWrapper>
+        <ThreadChatWrapper>
+          {data && data.map((v: ChatData) => <ThreadItem threadData={v} />)}
+        </ThreadChatWrapper>
       </div>
       <Wrapper>
         <ButtonWrapper>

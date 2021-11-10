@@ -5,8 +5,9 @@ interface ChatData {
   content: string;
   reactionsCount: number;
   reactions: [];
-  threadCount: 0;
-  lastThreadUser: null | User;
+  threadsCount: number;
+  threadWriter: null | User;
+  threadLastTime: null | Date;
   user: User;
 }
 
