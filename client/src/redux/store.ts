@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import groupConnectionReducer from './groupConnection/slice';
 import selectedChannelReducer from './selectedChannel/slice';
+import selectedChatReducer from './selectedChat/slice';
 import selectedGroupReducer from './selectedGroup/slice';
 import userDeviceReducer from './userDevice/slice';
 
@@ -8,6 +9,7 @@ const store = configureStore({
   reducer: {
     selectedGroup: selectedGroupReducer,
     selectedChannel: selectedChannelReducer,
+    selectedChat: selectedChatReducer,
     userDevice: userDeviceReducer,
     groupConnection: groupConnectionReducer,
   },
