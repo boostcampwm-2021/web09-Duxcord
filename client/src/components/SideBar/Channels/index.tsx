@@ -1,16 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import { socket } from '../../../util/socket';
 import ChannelListItem from './ChannelListItem';
+import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
 
 interface Props {
   channelType: 'chatting' | 'meeting';
 }
 
+interface IMeetingUser {
+  [key: number]: object[];
+}
+
 function Channels({ channelType }: Props) {
   const selectedGroup = useSelectedGroup();
   const channels =
     selectedGroup?.[channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'];
+  const [meetingUser, setMeetingUser] = useState<IMeetingUser>({});
+
+  useEffect(() => {
+    const meetingchannelList = selectedGroup.meetingChannels.map(
+      (channel: { id: number }) => channel.id,
+    );
+
+    socket.emit('MeetingChannelList', selectedGroup.code, meetingchannelList);
+  }, [selectedGroup]);
+
+  useEffect(() => {
+    socket.on('MeetingUserList', (meetingUserList) => {
+      setMeetingUser({ ...meetingUserList });
+    });
+  }, []);
 
   return (
     <ChannelWrapper>
@@ -22,14 +43,21 @@ function Channels({ channelType }: Props) {
         <img src="/icons/addChannel.png" alt="addChannel" />
       </ChannelType>
       <ul>
-        {channels?.map((channel: any) => (
-          <ChannelListItem
-            key={channel.id}
-            channelType={channelType}
-            id={channel.id}
-            name={channel.name}
-          />
-        ))}
+        {channels?.map((channel: any) => {
+          return (
+            <>
+              <ChannelListItem
+                key={channel.id}
+                channelType={channelType}
+                id={channel.id}
+                name={channel.name}
+              />
+              {channelType === 'meeting' && (
+                <MeetingUserList meetingUser={meetingUser[channel.id]} />
+              )}
+            </>
+          );
+        })}
       </ul>
     </ChannelWrapper>
   );
