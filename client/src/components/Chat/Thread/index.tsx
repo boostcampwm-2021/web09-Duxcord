@@ -32,9 +32,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
   const onThread = useCallback(
-    async (info: any) => {
-      // if (info.chatID !== selectedChat.id) return;
-      await mutate((threads: any) => [
+    (info: any) => {
+      mutate((threads: any) => [
         ...threads,
         {
           id: info.id,
@@ -62,10 +61,10 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   }, [onThread]);
 
   const [threadInput, setThreadInput] = useState('');
-  const createThread = async (e: FormEvent) => {
+  const createThread = (e: FormEvent) => {
     e.preventDefault();
     if (selectedChat.id === null) return;
-    await postCreateThread({ chatID: selectedChat.id, content: threadInput });
+    postCreateThread({ chatID: selectedChat.id, content: threadInput });
     setThreadInput('');
   };
 
