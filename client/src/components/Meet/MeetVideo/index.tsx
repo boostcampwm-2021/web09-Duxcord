@@ -3,7 +3,7 @@ import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { useUserdata } from '../../../hooks/useUserdata';
 import { useUserDevice } from '../../../hooks/useUserDevice';
 import Socket, { socket } from '../../../util/socket';
-import { VideoItem } from './style';
+import { MeetVideoWrapper, VideoItem } from './style';
 
 const pcConfig = {
   iceServers: [
@@ -26,10 +26,13 @@ function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
   const { mic, cam } = useUserDevice();
+  const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
   const myStreamRef = useRef<MediaStream | null>(null);
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
+
+  const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
 
   const getMyStream = async () => {
     try {
@@ -165,12 +168,12 @@ function MeetVideo() {
   }, [myStreamRef.current, mic, cam]);
 
   return (
-    <div>
+    <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
       <VideoItem autoPlay playsInline ref={myVideoRef}></VideoItem>
       {meetingMembers.map((member) => (
         <OtherVideo member={member} />
       ))}
-    </div>
+    </MeetVideoWrapper>
   );
 }
 
