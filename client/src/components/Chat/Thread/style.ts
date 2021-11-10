@@ -8,6 +8,8 @@ const Wrapper = styled.form`
   grid-template-columns: 40px auto;
   padding: 20px;
   padding-top: 0;
+  position: relative;
+  bottom: 14px;
 `;
 
 const ThreadWrapper = styled.div`
@@ -49,7 +51,7 @@ const ThreadChatWrapper = styled.div`
 
 const OriginalChatWrapper = styled.div`
   border-bottom: 1px solid ${Colors.Gray4};
-  padding: 20px;
+  padding: 20px 20px 40px;
   display: flex;
   & > img {
     width: 40px;
@@ -69,7 +71,7 @@ const OriginalChatWrapper = styled.div`
     display: flex;
     align-items: center;
     & > p:first-child {
-      font-weight: 700px;
+      font-weight: 700;
       margin-right: 5px;
     }
     & > p:not(:first-child) {
@@ -91,6 +93,13 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const ChatLengthWrapper = styled.p`
+  margin-top: -9.5px;
+  background-color: ${Colors.White};
+  padding: 0 12px;
+  display: table;
+`;
+
 const Input = styled.input`
   background-color: ${Colors.Gray2};
   padding: 12px;
@@ -110,4 +119,5 @@ export {
   ThreadHeaderWrapper,
   OriginalChatWrapper,
   ThreadChatWrapper,
+  ChatLengthWrapper,
 };

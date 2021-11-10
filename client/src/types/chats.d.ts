@@ -5,11 +5,16 @@ interface ChatData {
   content: string;
   reactionsCount: number;
   reactions: [];
-  user: {
-    id: number;
-    thumbnail: null | string;
-    username: string;
-  };
+  threadsCount: number;
+  threadWriter: null | User;
+  threadLastTime: null | Date;
+  user: User;
 }
 
-export { ChatData };
+interface User {
+  id: number;
+  thumbnail: null | string;
+  username: string;
+}
+
+export { ChatData, User };

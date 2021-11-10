@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { postLikeChat } from '../../../api/postLikeChat';
 import { STATUS_CODES } from '../../../api/STATUS_CODES';
+import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
+import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
 import { ChatWrapper, UserImage, ChatHeader } from './style';
@@ -13,8 +16,13 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
     createdAt,
     content,
     reactionsCount,
+    threadsCount,
+    threadWriter,
+    threadLastTime,
     reactions,
   } = chatData;
+
+  const dispatch = useDispatch();
 
   const [isReactioned, setIsReactioned] = useState(reactions.length !== 0);
 
@@ -41,15 +49,25 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
         </ChatHeader>
         <div>{content}</div>
-        {reactionsCount !== 0 && (
-          <ChatReaction
-            handleLike={handleLike}
-            count={reactionsCount}
-            isReactioned={isReactioned}
-          />
-        )}
+        <div>
+          {reactionsCount !== 0 && (
+            <ChatReaction
+              handleLike={handleLike}
+              count={reactionsCount}
+              isReactioned={isReactioned}
+            />
+          )}
+          {threadWriter && threadLastTime && (
+            <ThreadPreview
+              count={threadsCount}
+              lastThreadUser={threadWriter}
+              threadLastTime={threadLastTime}
+              onClick={() => dispatch(setSelectedChat(chatData))}
+            />
+          )}
+        </div>
+        {isFocused && <AddChatReaction handleLike={handleLike} chatData={chatData} />}
       </div>
-      {isFocused && <AddChatReaction handleLike={handleLike} chatData={chatData} />}
     </ChatWrapper>
   );
 }
