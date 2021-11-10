@@ -13,7 +13,16 @@ const pcConfig = {
   ],
 };
 
-const JOIN_MEETING = 'joinMeeting';
+enum MeetingEvent {
+  JOIN_MEETING = 'joinMeeting',
+  ALL_MEETING_MEMBERS = 'allMeetingMembers',
+  CANDIDATE = 'candidate',
+  OFFER = 'offer',
+  ANSWER = 'answer',
+  LEAVE_MEMBER = 'leaveMember',
+  LEAVE_MEETING = 'leaveMeeting',
+}
+
 interface IMeetingUser {
   socketID: string;
   loginID: string;
@@ -84,8 +93,7 @@ function MeetVideo() {
     const { loginID, username, thumbnail } = userdata;
 
     Socket.joinChannel({ channelType: 'meeting', id });
-    socket.on('allMeetingMembers', async (members) => {
-      await getMyStream();
+    socket.on(MeetingEvent.ALL_MEETING_MEMBERS, async (members) => {
       members.forEach(async (member: IMeetingUser) => {
         try {
           if (!(await myStreamRef.current)) return;
@@ -95,13 +103,13 @@ function MeetVideo() {
           const offer = await pc.createOffer();
           await pc.setLocalDescription(new RTCSessionDescription(offer));
 
-          socket.emit('offer', {
+          socket.emit(MeetingEvent.OFFER, {
             offer,
             receiverID: member.socketID,
             member: { socketID: socket.id, loginID, username, thumbnail },
           });
         } catch (e) {
-          console.error('allMeetingMembers: ', e);
+          console.error(MeetingEvent.ALL_MEETING_MEMBERS, e);
         }
       });
     });
@@ -122,7 +130,8 @@ function MeetVideo() {
       pc.setRemoteDescription(new RTCSessionDescription(answer));
     });
 
-    socket.on('leaveMember', (memberID) => {
+    socket.on(MeetingEvent.CANDIDATE, async ({ candidate, senderID }) => {
+    socket.on(MeetingEvent.LEAVE_MEMBER, (memberID) => {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
       delete pcs.current[memberID];
@@ -139,12 +148,12 @@ function MeetVideo() {
 
     return () => {
       Socket.leaveChannel({ channelType: 'meeting', id });
-      socket.off('allMeetingMembers');
-      socket.off('offer');
-      socket.off('answer');
-      socket.off('candidate');
-      socket.off('leaveMember');
-      socket.emit('leaveMeeting');
+      socket.off(MeetingEvent.ALL_MEETING_MEMBERS);
+      socket.off(MeetingEvent.OFFER);
+      socket.off(MeetingEvent.ANSWER);
+      socket.off(MeetingEvent.CANDIDATE);
+      socket.off(MeetingEvent.LEAVE_MEMBER);
+      socket.emit(MeetingEvent.LEAVE_MEETING);
 
       meetingMembers.forEach((member) => {
         if (!pcs.current[member.socketID]) return;
