@@ -19,6 +19,7 @@ export class ChatRepository extends Repository<Chat> {
         'chat.updatedAt',
         'chat.reactionsCount',
         'chat.threadsCount',
+        'chat.threadLastTime',
         'user.id',
         'user.username',
         'user.thumbnail',

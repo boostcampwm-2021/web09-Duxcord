@@ -79,6 +79,7 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
 
     chat.threadsCount += 1;
     chat.threadWriter = user;
+    chat.threadLastTime = newThread.createdAt;
     await chatRepository.save(chat);
 
     return res.status(200).send(createChatMSG.success);
