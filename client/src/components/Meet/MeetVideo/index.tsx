@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { useUserdata } from '../../../hooks/useUserdata';
 import { useUserDevice } from '../../../hooks/useUserDevice';
@@ -36,7 +36,7 @@ function MeetVideo() {
   const { id } = useSelectedChannel();
   const { mic, cam } = useUserDevice();
   const myVideoRef = useRef<HTMLVideoElement>(null);
-  const myStreamRef = useRef<MediaStream | null>(null);
+  const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
 
@@ -46,57 +46,64 @@ function MeetVideo() {
         audio: true,
         video: true,
       });
-      myStreamRef.current = myStream;
       if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
+      setMyStream(myStream);
     } catch (e) {
       console.error('getMyStream: ', e);
     }
   };
 
-  const createPeerConnection = async (member: IMeetingUser) => {
-    try {
-      const pc = new RTCPeerConnection(pcConfig);
+  const createPeerConnection = useCallback(
+    async (member: IMeetingUser) => {
+      try {
+        const pc = new RTCPeerConnection(pcConfig);
 
-      pc.onicecandidate = (data) => {
-        if (!data.candidate) return;
+        pc.onicecandidate = (data) => {
+          if (!data.candidate) return;
 
-        socket.emit('candidate', {
-          candidate: data.candidate,
-          receiverID: member.socketID,
-        });
-      };
+          socket.emit(MeetingEvent.CANDIDATE, {
+            candidate: data.candidate,
+            receiverID: member.socketID,
+          });
+        };
 
-      pc.ontrack = (data) => {
-        setMeetingMembers((members): IMeetingUser[] => [
-          ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
-          {
-            ...member,
-            stream: data.streams[0],
-          },
-        ]);
-      };
+        pc.ontrack = (data) => {
+          setMeetingMembers((members): IMeetingUser[] => [
+            ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
+            {
+              ...member,
+              stream: data.streams[0],
+            },
+          ]);
+        };
 
-      if (myStreamRef.current) {
-        myStreamRef.current.getTracks().forEach((track) => {
-          if (myStreamRef.current) pc.addTrack(track, myStreamRef.current);
-        });
+        if (myStream) {
+          myStream.getTracks().forEach((track) => {
+            if (myStream) pc.addTrack(track, myStream);
+          });
+        }
+
+        return pc;
+      } catch (e) {
+        console.error('getMyStream: ', e);
       }
-
-      return pc;
-    } catch (e) {
-      console.error('getMyStream: ', e);
-    }
-  };
+    },
+    [myStream],
+  );
 
   useEffect(() => {
-    if (id === null || userdata === undefined) return;
+    getMyStream();
+  }, []);
+
+  useEffect(() => {
+    if (id === null || userdata === undefined || myStream === null) return;
     const { loginID, username, thumbnail } = userdata;
 
     Socket.joinChannel({ channelType: 'meeting', id });
     socket.on(MeetingEvent.ALL_MEETING_MEMBERS, async (members) => {
       members.forEach(async (member: IMeetingUser) => {
         try {
-          if (!(await myStreamRef.current)) return;
+          if (!(await myStream)) return;
           const pc = await createPeerConnection(member);
           if (!pc) return;
           pcs.current = { ...pcs.current, [member.socketID]: pc };
@@ -114,7 +121,7 @@ function MeetVideo() {
       });
     });
 
-    socket.on('offer', async ({ offer, member }) => {
+    socket.on(MeetingEvent.OFFER, async ({ offer, member }) => {
       const pc = await createPeerConnection(member);
       if (!pc) return;
       pcs.current[member.socketID] = pc;
@@ -124,13 +131,18 @@ function MeetVideo() {
       socket.emit('answer', { answer, receiverID: member.socketID });
     });
 
-    socket.on('answer', ({ answer, senderID }) => {
+    socket.on(MeetingEvent.ANSWER, ({ answer, senderID }) => {
       const pc = pcs.current[senderID];
       if (!pc) return;
       pc.setRemoteDescription(new RTCSessionDescription(answer));
     });
 
     socket.on(MeetingEvent.CANDIDATE, async ({ candidate, senderID }) => {
+      const pc = pcs.current[senderID];
+      if (!pc) return;
+      await pc.addIceCandidate(new RTCIceCandidate(candidate));
+    });
+
     socket.on(MeetingEvent.LEAVE_MEMBER, (memberID) => {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
@@ -138,13 +150,7 @@ function MeetVideo() {
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.on('candidate', async ({ candidate, senderID }) => {
-      const pc = pcs.current[senderID];
-      if (!pc) return;
-      await pc.addIceCandidate(new RTCIceCandidate(candidate));
-    });
-
-    socket.emit(JOIN_MEETING, id, { loginID, username, thumbnail });
+    socket.emit(MeetingEvent.JOIN_MEETING, id, { loginID, username, thumbnail });
 
     return () => {
       Socket.leaveChannel({ channelType: 'meeting', id });
@@ -157,18 +163,18 @@ function MeetVideo() {
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
-  }, [id]);
+  }, [id, userdata, myStream, createPeerConnection]);
 
   useEffect(() => {
-    if (myStreamRef.current) {
-      myStreamRef.current.getAudioTracks().forEach((track) => {
+    if (myStream) {
+      myStream.getAudioTracks().forEach((track) => {
         track.enabled = mic;
       });
-      myStreamRef.current.getVideoTracks().forEach((track) => {
+      myStream.getVideoTracks().forEach((track) => {
         track.enabled = cam;
       });
     }
-  }, [myStreamRef.current, mic, cam]);
+  }, [mic, cam, myStream]);
 
   return (
     <div>
