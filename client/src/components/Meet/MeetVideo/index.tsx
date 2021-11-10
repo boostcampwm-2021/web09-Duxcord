@@ -101,7 +101,7 @@ function MeetVideo() {
             member: { socketID: socket.id, loginID, username, thumbnail },
           });
         } catch (e) {
-          console.error('meetingAllMembers: ', e);
+          console.error('allMeetingMembers: ', e);
         }
       });
     });
@@ -139,10 +139,11 @@ function MeetVideo() {
 
     return () => {
       Socket.leaveChannel({ channelType: 'meeting', id });
-      socket.off('meetingAllMembers');
+      socket.off('allMeetingMembers');
       socket.off('offer');
       socket.off('answer');
       socket.off('candidate');
+      socket.off('leaveMember');
       socket.emit('leaveMeeting');
 
       meetingMembers.forEach((member) => {
