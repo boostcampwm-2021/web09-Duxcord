@@ -45,6 +45,25 @@ export async function socketInit(httpServer) {
       });
     });
 
+    const checkMeetingUserList = (meetingchannelList) => {
+      const meetingUserList = {};
+      Object.entries(meetingMembers).forEach(([channel, user]) => {
+        const channelID = Number(channel);
+        if (!meetingchannelList.includes(channelID)) return;
+        if (meetingUserList[channelID]) {
+          meetingUserList[channelID].push(user);
+        } else {
+          meetingUserList[channelID] = [user];
+        }
+      });
+      return meetingUserList;
+    };
+
+    socket.on('MeetingChannelList', (code, meetingchannelList) => {
+      const meetingUserList = checkMeetingUserList(meetingchannelList);
+      io.to(code).emit('MeetingUserList', meetingUserList);
+    });
+
     socket.on('joinChannel', (channelID) => {
       socket.join(channelID);
     });
