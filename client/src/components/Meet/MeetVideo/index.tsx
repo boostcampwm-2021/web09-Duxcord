@@ -5,13 +5,20 @@ import { useUserDevice } from '../../../hooks/useUserDevice';
 import Socket, { socket } from '../../../util/socket';
 import { VideoItem } from './style';
 
+const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
+
 const pcConfig = {
   iceServers: [
     {
-      urls: 'stun:stun.l.google.com:19302',
+      urls: ICE_SERVER_URL,
     },
   ],
 };
+
+enum ChannelType {
+  CHATTING = 'chatting',
+  MEETING = 'meeting',
+}
 
 enum MeetingEvent {
   JOIN_MEETING = 'joinMeeting',
@@ -22,6 +29,9 @@ enum MeetingEvent {
   LEAVE_MEMBER = 'leaveMember',
   LEAVE_MEETING = 'leaveMeeting',
 }
+
+const GET_MY_STREAM = 'getMyStream';
+const CREATE_PEER_CONNECTION = 'createPeerConnection';
 
 interface IMeetingUser {
   socketID: string;
@@ -49,7 +59,7 @@ function MeetVideo() {
       if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
       setMyStream(myStream);
     } catch (e) {
-      console.error('getMyStream: ', e);
+      console.error(GET_MY_STREAM, e);
     }
   };
 
@@ -85,7 +95,7 @@ function MeetVideo() {
 
         return pc;
       } catch (e) {
-        console.error('getMyStream: ', e);
+        console.error(CREATE_PEER_CONNECTION, e);
       }
     },
     [myStream],
@@ -99,7 +109,7 @@ function MeetVideo() {
     if (id === null || userdata === undefined || myStream === null) return;
     const { loginID, username, thumbnail } = userdata;
 
-    Socket.joinChannel({ channelType: 'meeting', id });
+    Socket.joinChannel({ channelType: ChannelType.MEETING, id });
     socket.on(MeetingEvent.ALL_MEETING_MEMBERS, async (members) => {
       members.forEach(async (member: IMeetingUser) => {
         try {
@@ -128,7 +138,7 @@ function MeetVideo() {
       pc.setRemoteDescription(new RTCSessionDescription(offer));
       const answer = await pc.createAnswer();
       pc.setLocalDescription(new RTCSessionDescription(answer));
-      socket.emit('answer', { answer, receiverID: member.socketID });
+      socket.emit(MeetingEvent.ANSWER, { answer, receiverID: member.socketID });
     });
 
     socket.on(MeetingEvent.ANSWER, ({ answer, senderID }) => {
@@ -153,7 +163,7 @@ function MeetVideo() {
     socket.emit(MeetingEvent.JOIN_MEETING, id, { loginID, username, thumbnail });
 
     return () => {
-      Socket.leaveChannel({ channelType: 'meeting', id });
+      Socket.leaveChannel({ channelType: ChannelType.MEETING, id });
       socket.off(MeetingEvent.ALL_MEETING_MEMBERS);
       socket.off(MeetingEvent.OFFER);
       socket.off(MeetingEvent.ANSWER);
@@ -180,7 +190,7 @@ function MeetVideo() {
     <div>
       <VideoItem autoPlay playsInline ref={myVideoRef}></VideoItem>
       {meetingMembers.map((member) => (
-        <OtherVideo member={member} />
+        <OtherVideo key={member.socketID} member={member} />
       ))}
     </div>
   );
