@@ -20,6 +20,7 @@ import { Session } from '../entity/session.entity';
 import { UserRepository } from './repository/user.repository';
 import { GroupMemberRepository } from './repository/groupmember.repository';
 import { ChatRepository } from './repository/chat.repository';
+import { ThreadRepository } from './repository/thread.repository';
 dotenv.config();
 
 export let connection: Connection;
@@ -30,7 +31,7 @@ export let groupMemberRepository: GroupMemberRepository;
 export let chattingChannelRepository: Repository<ChattingChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
 export let chatRepository: ChatRepository;
-export let threadRepository: Repository<Thread>;
+export let threadRepository: ThreadRepository;
 export let reactionRepository: Repository<Reaction>;
 
 const connectDB = async () => {
@@ -69,6 +70,6 @@ export const initORM = async () => {
   chattingChannelRepository = await getRepository(ChattingChannel);
   meetingChannelRepository = await getRepository(MeetingChannel);
   chatRepository = await getCustomRepository(ChatRepository);
-  threadRepository = await getRepository(Thread);
+  threadRepository = await getCustomRepository(ThreadRepository);
   reactionRepository = await getRepository(Reaction);
 };

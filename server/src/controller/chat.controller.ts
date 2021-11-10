@@ -88,4 +88,18 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
   }
 };
 
-export default { createThread, handleReaction };
+const getThread = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { chatID } = req.params;
+    const chat = await chatRepository.findOne({ where: { id: chatID } });
+    if (!chat) return res.status(400).send(createChatMSG.chatNotFound);
+
+    const threads = await threadRepository.findThreadsByChatID(chatID);
+
+    return res.status(200).send(threads);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createThread, handleReaction, getThread };

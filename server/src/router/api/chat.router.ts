@@ -13,3 +13,4 @@ chatRouter.post(
   accessControl({ signIn: true }),
   chatController.handleReaction,
 );
+chatRouter.get('/:chatID/thread', accessControl({ signIn: true }), chatController.getThread);
