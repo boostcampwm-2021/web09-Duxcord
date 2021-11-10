@@ -42,7 +42,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
         <div>{content}</div>
         {reactionsCount !== 0 && <ChatReaction handleLike={handleLike} count={reactionsCount} />}
       </div>
-      {isFocused && <AddChatReaction handleLike={handleLike} />}
+      {isFocused && <AddChatReaction handleLike={handleLike} chatID={id} />}
     </ChatWrapper>
   );
 }
