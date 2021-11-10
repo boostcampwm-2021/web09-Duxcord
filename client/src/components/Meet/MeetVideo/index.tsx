@@ -1,19 +1,38 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { useUserdata } from '../../../hooks/useUserdata';
 import { useUserDevice } from '../../../hooks/useUserDevice';
 import Socket, { socket } from '../../../util/socket';
 import { MeetVideoWrapper, VideoItem } from './style';
 
+const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
+
 const pcConfig = {
   iceServers: [
     {
-      urls: 'stun:stun.l.google.com:19302',
+      urls: ICE_SERVER_URL,
     },
   ],
 };
 
-const JOIN_MEETING = 'joinMeeting';
+enum ChannelType {
+  CHATTING = 'chatting',
+  MEETING = 'meeting',
+}
+
+enum MeetingEvent {
+  JOIN_MEETING = 'joinMeeting',
+  ALL_MEETING_MEMBERS = 'allMeetingMembers',
+  CANDIDATE = 'candidate',
+  OFFER = 'offer',
+  ANSWER = 'answer',
+  LEAVE_MEMBER = 'leaveMember',
+  LEAVE_MEETING = 'leaveMeeting',
+}
+
+const GET_MY_STREAM = 'getMyStream';
+const CREATE_PEER_CONNECTION = 'createPeerConnection';
+
 interface IMeetingUser {
   socketID: string;
   loginID: string;
@@ -28,7 +47,7 @@ function MeetVideo() {
   const { mic, cam } = useUserDevice();
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
-  const myStreamRef = useRef<MediaStream | null>(null);
+  const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
 
@@ -40,138 +59,141 @@ function MeetVideo() {
         audio: true,
         video: true,
       });
-      myStreamRef.current = myStream;
       if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
+      setMyStream(myStream);
     } catch (e) {
-      console.error('getMyStream: ', e);
+      console.error(GET_MY_STREAM, e);
     }
   };
 
-  const createPeerConnection = async (member: IMeetingUser) => {
-    try {
-      const pc = new RTCPeerConnection(pcConfig);
+  const createPeerConnection = useCallback(
+    async (member: IMeetingUser) => {
+      try {
+        const pc = new RTCPeerConnection(pcConfig);
 
-      pc.onicecandidate = (data) => {
-        if (!data.candidate) return;
+        pc.onicecandidate = (data) => {
+          if (!data.candidate) return;
 
-        socket.emit('candidate', {
-          candidate: data.candidate,
-          receiverID: member.socketID,
-        });
-      };
+          socket.emit(MeetingEvent.CANDIDATE, {
+            candidate: data.candidate,
+            receiverID: member.socketID,
+          });
+        };
 
-      pc.ontrack = (data) => {
-        setMeetingMembers((members): IMeetingUser[] => [
-          ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
-          {
-            ...member,
-            stream: data.streams[0],
-          },
-        ]);
-      };
+        pc.ontrack = (data) => {
+          setMeetingMembers((members): IMeetingUser[] => [
+            ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
+            {
+              ...member,
+              stream: data.streams[0],
+            },
+          ]);
+        };
 
-      if (myStreamRef.current) {
-        myStreamRef.current.getTracks().forEach((track) => {
-          if (myStreamRef.current) pc.addTrack(track, myStreamRef.current);
-        });
+        if (myStream) {
+          myStream.getTracks().forEach((track) => {
+            if (myStream) pc.addTrack(track, myStream);
+          });
+        }
+
+        return pc;
+      } catch (e) {
+        console.error(CREATE_PEER_CONNECTION, e);
       }
-
-      return pc;
-    } catch (e) {
-      console.error('getMyStream: ', e);
-    }
-  };
+    },
+    [myStream],
+  );
 
   useEffect(() => {
-    if (id === null || userdata === undefined) return;
+    getMyStream();
+  }, []);
+
+  useEffect(() => {
+    if (id === null || userdata === undefined || myStream === null) return;
     const { loginID, username, thumbnail } = userdata;
 
-    Socket.joinChannel({ channelType: 'meeting', id });
-    socket.on('allMeetingMembers', async (members) => {
-      await getMyStream();
+    Socket.joinChannel({ channelType: ChannelType.MEETING, id });
+    socket.on(MeetingEvent.ALL_MEETING_MEMBERS, async (members) => {
       members.forEach(async (member: IMeetingUser) => {
         try {
-          if (!(await myStreamRef.current)) return;
+          if (!(await myStream)) return;
           const pc = await createPeerConnection(member);
           if (!pc) return;
           pcs.current = { ...pcs.current, [member.socketID]: pc };
           const offer = await pc.createOffer();
           await pc.setLocalDescription(new RTCSessionDescription(offer));
 
-          socket.emit('offer', {
+          socket.emit(MeetingEvent.OFFER, {
             offer,
             receiverID: member.socketID,
             member: { socketID: socket.id, loginID, username, thumbnail },
           });
         } catch (e) {
-          console.error('allMeetingMembers: ', e);
+          console.error(MeetingEvent.ALL_MEETING_MEMBERS, e);
         }
       });
     });
 
-    socket.on('offer', async ({ offer, member }) => {
+    socket.on(MeetingEvent.OFFER, async ({ offer, member }) => {
       const pc = await createPeerConnection(member);
       if (!pc) return;
       pcs.current[member.socketID] = pc;
       pc.setRemoteDescription(new RTCSessionDescription(offer));
       const answer = await pc.createAnswer();
       pc.setLocalDescription(new RTCSessionDescription(answer));
-      socket.emit('answer', { answer, receiverID: member.socketID });
+      socket.emit(MeetingEvent.ANSWER, { answer, receiverID: member.socketID });
     });
 
-    socket.on('answer', ({ answer, senderID }) => {
+    socket.on(MeetingEvent.ANSWER, ({ answer, senderID }) => {
       const pc = pcs.current[senderID];
       if (!pc) return;
       pc.setRemoteDescription(new RTCSessionDescription(answer));
     });
 
-    socket.on('leaveMember', (memberID) => {
+    socket.on(MeetingEvent.CANDIDATE, async ({ candidate, senderID }) => {
+      const pc = pcs.current[senderID];
+      if (!pc) return;
+      await pc.addIceCandidate(new RTCIceCandidate(candidate));
+    });
+
+    socket.on(MeetingEvent.LEAVE_MEMBER, (memberID) => {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
       delete pcs.current[memberID];
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.on('candidate', async ({ candidate, senderID }) => {
-      const pc = pcs.current[senderID];
-      if (!pc) return;
-      await pc.addIceCandidate(new RTCIceCandidate(candidate));
-    });
-
-    socket.emit(JOIN_MEETING, id, { loginID, username, thumbnail });
+    socket.emit(MeetingEvent.JOIN_MEETING, id, { loginID, username, thumbnail });
 
     return () => {
-      Socket.leaveChannel({ channelType: 'meeting', id });
-      socket.off('allMeetingMembers');
-      socket.off('offer');
-      socket.off('answer');
-      socket.off('candidate');
-      socket.off('leaveMember');
-      socket.emit('leaveMeeting');
+      Socket.leaveChannel({ channelType: ChannelType.MEETING, id });
+      socket.off(MeetingEvent.ALL_MEETING_MEMBERS);
+      socket.off(MeetingEvent.OFFER);
+      socket.off(MeetingEvent.ANSWER);
+      socket.off(MeetingEvent.CANDIDATE);
+      socket.off(MeetingEvent.LEAVE_MEMBER);
+      socket.emit(MeetingEvent.LEAVE_MEETING);
 
-      meetingMembers.forEach((member) => {
-        if (!pcs.current[member.socketID]) return;
-        pcs.current[member.socketID].close();
-      });
+      Object.values(pcs.current).forEach((pc) => pc.close());
     };
-  }, [id]);
+  }, [id, userdata, myStream, createPeerConnection]);
 
   useEffect(() => {
-    if (myStreamRef.current) {
-      myStreamRef.current.getAudioTracks().forEach((track) => {
+    if (myStream) {
+      myStream.getAudioTracks().forEach((track) => {
         track.enabled = mic;
       });
-      myStreamRef.current.getVideoTracks().forEach((track) => {
+      myStream.getVideoTracks().forEach((track) => {
         track.enabled = cam;
       });
     }
-  }, [myStreamRef.current, mic, cam]);
+  }, [mic, cam, myStream]);
 
   return (
     <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
       <VideoItem autoPlay playsInline ref={myVideoRef}></VideoItem>
       {meetingMembers.map((member) => (
-        <OtherVideo member={member} />
+        <OtherVideo key={member.socketID} member={member} />
       ))}
     </MeetVideoWrapper>
   );

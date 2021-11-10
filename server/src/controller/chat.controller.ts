@@ -77,10 +77,29 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
 
     await threadRepository.save(newThread);
 
+    chat.threadsCount += 1;
+    chat.threadWriter = user;
+    chat.threadLastTime = newThread.createdAt;
+    await chatRepository.save(chat);
+
     return res.status(200).send(createChatMSG.success);
   } catch (error) {
     next(error);
   }
 };
 
-export default { createThread, handleReaction };
+const getThread = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { chatID } = req.params;
+    const chat = await chatRepository.findOne({ where: { id: chatID } });
+    if (!chat) return res.status(400).send(createChatMSG.chatNotFound);
+
+    const threads = await threadRepository.findThreadsByChatID(chatID);
+
+    return res.status(200).send(threads);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createThread, handleReaction, getThread };
