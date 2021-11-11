@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect, useState } from 'react';
+import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '../../../api/API_URL';
@@ -29,34 +29,42 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
     content,
     user: { username, thumbnail },
   } = selectedChat;
+  const threadChatListRef = useRef<HTMLDivElement>(null);
 
   const onThread = useCallback(
-    async (info: any) => {
-      if (info.chatID !== selectedChat.id) return;
-      await mutate((threads: any) => [
+    (info: any) => {
+      mutate((threads: any) => [
         ...threads,
         {
-          createdAt: new Date(),
+          id: info.id,
+          createdAt: info.createdAt,
           content: info.content,
           user: info.threadWriter,
         },
       ]);
     },
-    [mutate, selectedChat.id],
+    [mutate],
   );
 
   useEffect(() => {
-    socket.on('thread', onThread);
+    socket.emit('joinChannel', 'thread' + selectedChat.id);
     return () => {
-      socket.off('thread');
+      socket.emit('leaveChannel', 'thread' + selectedChat.id);
     };
-  }, [mutate, onThread]);
+  }, [selectedChat.id]);
+
+  useEffect(() => {
+    socket.on('threadUpdate', onThread);
+    return () => {
+      socket.off('threadUpdate');
+    };
+  }, [onThread]);
 
   const [threadInput, setThreadInput] = useState('');
-  const createThread = async (e: FormEvent) => {
+  const createThread = (e: FormEvent) => {
     e.preventDefault();
     if (selectedChat.id === null) return;
-    await postCreateThread({ chatID: selectedChat.id, content: threadInput });
+    postCreateThread({ chatID: selectedChat.id, content: threadInput });
     setThreadInput('');
   };
 
@@ -85,8 +93,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           </div>
         </OriginalChatWrapper>
         <ChatLengthWrapper>{data?.length}개의 댓글</ChatLengthWrapper>
-        <ThreadChatWrapper>
-          {data && data.map((v: ChatData) => <ThreadItem threadData={v} />)}
+        <ThreadChatWrapper ref={threadChatListRef}>
+          {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>
       </div>
       <Wrapper onSubmit={createThread}>
