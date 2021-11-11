@@ -24,7 +24,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
 
   const dispatch = useDispatch();
 
-  const [isReactioned, setIsReactioned] = useState(reactions.length !== 0);
+  const [isReactioned, setIsReactioned] = useState(reactions?.length !== 0);
 
   const handleLike = async () => {
     const handleLikeResponse = await postLikeChat({ chatID: id });

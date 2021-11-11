@@ -64,7 +64,10 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
     const { chatID } = req.params;
     const { userID } = req.session;
     const user = await userRepository.findOne({ where: { id: userID } });
-    const chat = await chatRepository.findOne({ where: { id: chatID } });
+    const chat = await chatRepository.findOne({
+      where: { id: chatID },
+      relations: ['chattingChannel'],
+    });
 
     if (!user) return res.status(400).send(createChatMSG.userNotFound);
     if (!chat) return res.status(400).send(createChatMSG.chatNotFound);
@@ -81,6 +84,20 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
     chat.threadWriter = user;
     chat.threadLastTime = newThread.createdAt;
     await chatRepository.save(chat);
+
+    io.to(`chatting${chat.chattingChannel.id}`).emit('thread', {
+      chatID: chat.id,
+      threadsCount: chat.threadsCount,
+      threadWriter: chat.threadWriter,
+      threadLastTime: chat.threadLastTime,
+    });
+
+    io.to(`thread${chatID}`).emit('threadUpdate', {
+      id: newThread.id,
+      threadWriter: chat.threadWriter,
+      content: newThread.content,
+      createdAt: newThread.createdAt,
+    });
 
     return res.status(200).send(createChatMSG.success);
   } catch (error) {
