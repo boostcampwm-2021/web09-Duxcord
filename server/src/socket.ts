@@ -9,13 +9,14 @@ export async function socketInit(httpServer) {
 
   io = new Server(httpServer);
   io.on('connection', (socket) => {
-    socket.on('GroupID', (groupID) => {
+    socket.on('GroupID', (groupID, user) => {
+      if (user && !userConnectionInfo[groupID].map((v) => v.loginID).includes(user.loginID))
+        userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
       socket.emit('GroupUserConnection', userConnectionInfo[groupID]);
     });
 
     socket.on('logIn', (groups, user) => {
       if (!user || !groups) return;
-
       groups?.forEach(({ code }) => {
         socket.join(`${code}`);
         io.to(`${code}`).emit('userEnter', user, code);

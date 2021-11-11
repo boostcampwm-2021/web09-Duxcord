@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import useSWR from 'swr';
 import { useGroupConnection } from '../../../hooks/useGroupConnection';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import { useUserdata } from '../../../hooks/useUserdata';
 import { getFetcher } from '../../../util/fetcher';
 import { socket } from '../../../util/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
@@ -9,11 +10,12 @@ import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
 function UserConnection() {
   const selectedGroup = useSelectedGroup();
   const groupConnection = useGroupConnection();
+  const { userdata } = useUserdata();
   const { data = [] } = useSWR(`/api/group/${selectedGroup?.id}/members`, getFetcher);
 
   useEffect(() => {
-    socket.emit('GroupID', selectedGroup?.code);
-  }, [selectedGroup?.code]);
+    socket.emit('GroupID', selectedGroup?.code, userdata);
+  }, [selectedGroup?.code, userdata]);
 
   return (
     <UserConnectionWrapper>
