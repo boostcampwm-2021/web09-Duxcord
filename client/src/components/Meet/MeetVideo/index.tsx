@@ -106,7 +106,7 @@ function MeetVideo() {
   }, []);
 
   useEffect(() => {
-    if (id === null || userdata === undefined || myStream === null) return;
+    if (id === null || userdata === undefined) return;
     const { loginID, username, thumbnail } = userdata;
 
     Socket.joinChannel({ channelType: ChannelType.MEETING, id });
@@ -131,7 +131,7 @@ function MeetVideo() {
     });
 
     socket.on(MeetingEvent.OFFER, async ({ offer, member }) => {
-      const pc = await createPeerConnection(member);
+      const pc = createPeerConnection(member);
       if (!pc) return;
       pcs.current[member.socketID] = pc;
       pc.setRemoteDescription(new RTCSessionDescription(offer));
