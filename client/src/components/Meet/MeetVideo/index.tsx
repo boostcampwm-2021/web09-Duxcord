@@ -109,7 +109,7 @@ function MeetVideo() {
   }, []);
 
   useEffect(() => {
-    if (id === null || userdata === undefined || myStream === null) return;
+    if (id === null || userdata === undefined) return;
     const { loginID, username, thumbnail } = userdata;
 
     Socket.joinChannel({ channelType: ChannelType.MEETING, id });
