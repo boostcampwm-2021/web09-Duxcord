@@ -15,9 +15,11 @@ import {
 } from '../../../redux/groupConnection/slice';
 import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
+import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 
 function GroupNav() {
   const { groups } = useGroups();
+  const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -55,7 +57,7 @@ function GroupNav() {
     });
 
     socket.on('userEnter', (user, code) => {
-      dispatch(addUserConnection(user));
+      if (code === selectedGroup?.code) dispatch(addUserConnection(user));
     });
 
     return () => {
