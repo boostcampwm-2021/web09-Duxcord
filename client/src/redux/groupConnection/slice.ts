@@ -7,14 +7,12 @@ const { reducer: groupConnectionReducer, actions } = createSlice({
   initialState: initState,
   reducers: {
     setGroupConnection: (state, { payload: group }) => {
-      // console.log('처음 받아오는 것', state, group);
       return [...group];
     },
     removeUserConnection: (state, { payload: connection }) => [
       ...state.filter((v: any) => v.loginID !== connection.loginID),
     ],
     addUserConnection: (state, { payload: connection }) => {
-      // console.log(connection.loginID, '이 들어와서 redux가 실행된다.');
       if (state.map((v: any) => v.loginID).includes(connection.loginID)) {
         return state;
       } else {
