@@ -30,7 +30,6 @@ function Chat() {
   useEffect(() => {
     if (id === null) return;
     Socket.joinChannel({ channelType: 'chatting', id });
-    console.log('join');
 
     return () => {
       Socket.leaveChannel({ channelType: 'chatting', id });

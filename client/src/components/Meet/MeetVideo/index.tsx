@@ -116,7 +116,6 @@ function MeetVideo() {
     socket.on(MeetingEvent.ALL_MEETING_MEMBERS, async (members) => {
       members.forEach(async (member: IMeetingUser) => {
         try {
-          if (!(await myStream)) return;
           const pc = await createPeerConnection(member);
           if (!pc) return;
           pcs.current = { ...pcs.current, [member.socketID]: pc };
@@ -176,7 +175,7 @@ function MeetVideo() {
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
-  }, [id, userdata, myStream, createPeerConnection]);
+  }, [id, userdata, createPeerConnection]);
 
   useEffect(() => {
     if (myStream) {

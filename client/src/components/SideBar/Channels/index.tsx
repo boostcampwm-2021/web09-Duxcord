@@ -57,7 +57,10 @@ function Channels({ channelType }: Props) {
                 name={channel.name}
               />
               {channelType === 'meeting' && (
-                <MeetingUserList meetingUser={meetingUser[channel.id]} />
+                <MeetingUserList
+                  key={channel.id + 'userlist'}
+                  meetingUser={meetingUser[channel.id]}
+                />
               )}
             </>
           );
