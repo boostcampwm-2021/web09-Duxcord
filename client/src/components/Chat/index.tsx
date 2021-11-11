@@ -59,7 +59,7 @@ function Chat() {
       await mutate((chats) => {
         chats?.unshift(chat);
         return chats;
-      });
+      }, false);
       if (chatListRef.current === null) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
       if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom();
@@ -68,8 +68,8 @@ function Chat() {
   );
 
   const onLike = useCallback(
-    async (info: any) => {
-      await mutate((chats) => {
+    (info: any) => {
+      mutate((chats) => {
         if (!chats) return chats;
         return chats.map((chatChunk) => {
           return chatChunk.map((chat: any) =>
@@ -82,9 +82,8 @@ function Chat() {
   );
 
   const onThread = useCallback(
-    async (info: any) => {
-      console.log(info);
-      await mutate((chats) => {
+    (info: any) => {
+      mutate((chats) => {
         if (!chats) return chats;
         return chats.map((chatChunk) => {
           return chatChunk.map((chat: ChatData) =>
@@ -112,7 +111,7 @@ function Chat() {
       socket.off('like', onLike);
       socket.off('thread', onThread);
     };
-  }, [mutate, onChat, onLike, onThread]);
+  }, [onChat, onLike, onThread]);
 
   return (
     <ChatPart>
