@@ -31,7 +31,6 @@ enum MeetingEvent {
 }
 
 const GET_MY_STREAM = 'getMyStream';
-const CREATE_PEER_CONNECTION = 'createPeerConnection';
 
 interface IMeetingUser {
   socketID: string;
@@ -63,43 +62,41 @@ function MeetVideo() {
       setMyStream(myStream);
     } catch (e) {
       console.error(GET_MY_STREAM, e);
+      if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
+      setMyStream(new MediaStream());
     }
   };
 
   const createPeerConnection = useCallback(
-    async (member: IMeetingUser) => {
-      try {
-        const pc = new RTCPeerConnection(pcConfig);
+    (member: IMeetingUser) => {
+      const pc = new RTCPeerConnection(pcConfig);
 
-        pc.onicecandidate = (data) => {
-          if (!data.candidate) return;
+      pc.onicecandidate = (data) => {
+        if (!data.candidate) return;
 
-          socket.emit(MeetingEvent.CANDIDATE, {
-            candidate: data.candidate,
-            receiverID: member.socketID,
-          });
-        };
+        socket.emit(MeetingEvent.CANDIDATE, {
+          candidate: data.candidate,
+          receiverID: member.socketID,
+        });
+      };
 
-        pc.ontrack = (data) => {
-          setMeetingMembers((members): IMeetingUser[] => [
-            ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
-            {
-              ...member,
-              stream: data.streams[0],
-            },
-          ]);
-        };
+      pc.ontrack = (data) => {
+        setMeetingMembers((members): IMeetingUser[] => [
+          ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
+          {
+            ...member,
+            stream: data.streams[0],
+          },
+        ]);
+      };
 
-        if (myStream) {
-          myStream.getTracks().forEach((track) => {
-            if (myStream) pc.addTrack(track, myStream);
-          });
-        }
-
-        return pc;
-      } catch (e) {
-        console.error(CREATE_PEER_CONNECTION, e);
+      if (myStream) {
+        myStream.getTracks().forEach((track) => {
+          if (myStream) pc.addTrack(track, myStream);
+        });
       }
+
+      return pc;
     },
     [myStream],
   );
@@ -109,7 +106,7 @@ function MeetVideo() {
   }, []);
 
   useEffect(() => {
-    if (id === null || userdata === undefined) return;
+    if (id === null || userdata === undefined || myStream === null) return;
     const { loginID, username, thumbnail } = userdata;
 
     Socket.joinChannel({ channelType: ChannelType.MEETING, id });
@@ -175,7 +172,7 @@ function MeetVideo() {
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
-  }, [id, userdata, createPeerConnection]);
+  }, [id, userdata, myStream, createPeerConnection]);
 
   useEffect(() => {
     if (myStream) {
