@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../../../styles/colors';
+import Colors from '../../../../styles/Colors';
 
 const ListItem = styled.li`
   display: flex;
@@ -8,17 +8,22 @@ const ListItem = styled.li`
   padding: 7px 10px;
   margin: 2px 5px;
   border-radius: 5px;
-  color: ${colors.Gray1};
+  color: ${Colors.Gray1};
   &:hover {
-    background-color: ${colors.Gray3};
+    background-color: ${Colors.Gray3};
     cursor: pointer;
-    color: ${colors.Black};
+    color: ${Colors.Black};
   }
   & div {
     display: flex;
     align-items: center;
     & img {
       margin-right: 5px;
+    }
+    & p {
+      max-width: 180px;
+      overflow-x: hidden;
+      overflow-y: hidden;
     }
   }
 `;

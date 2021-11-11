@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import useSWR from 'swr';
 import Background from '../../components/common/Background';
-import { Redirect, Link } from 'react-router-dom';
-
+import { Link, useHistory } from 'react-router-dom';
 import {
   SignInWrapper,
   LogoWrapper,
@@ -15,16 +13,15 @@ import {
 } from './style';
 import { SIGN_IN_ERROR_MESSAGE } from '../../util/message';
 import { checkLogin } from '../../util/checkResponse';
-import { getFetcher } from '../../util/fetcher';
 import { tryLogin } from '../../util/api';
+import { STATUS_CODES } from '../../api/STATUS_CODES';
 
 const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
 function SignIn() {
-  const { data, error, mutate } = useSWR('/api/user', getFetcher);
+  const history = useHistory();
   const [inputState, setInputState] = useState({ ID: '', password: '' });
   const [responseState, setResponseState] = useState({ status: 0, responseText: '' });
-
   const { ID, password } = inputState;
   const { status, responseText } = responseState;
 
@@ -44,20 +41,17 @@ function SignIn() {
 
   const logIn = async () => {
     if (ID === '') return setResponseState({ ...responseState, responseText: ID_EMPTY_ERROR });
-    if (password === '') return setResponseState({ ...responseState, responseText: PASSWORD_EMPTY_ERROR });
-    
+    if (password === '')
+      return setResponseState({ ...responseState, responseText: PASSWORD_EMPTY_ERROR });
+
     try {
       const loginResponse = await tryLogin(ID, password);
+      if (loginResponse.status === STATUS_CODES.OK) history.push('/main');
       setResponseState({ ...responseState, ...loginResponse });
-      await mutate();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
-
-  if (data) {
-    return <Redirect to="/Main" />;
-  }
 
   return (
     <Background>
@@ -83,7 +77,7 @@ function SignIn() {
           <ErrorResponse>{checkLogin(status, responseText)}</ErrorResponse>
           <SignUpPart>
             <p>계정이 필요한가요?</p>
-            <Link to="/SignUp">
+            <Link to="/signup">
               <p>가입하기</p>
             </Link>
           </SignUpPart>

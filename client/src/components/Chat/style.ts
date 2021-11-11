@@ -1,8 +1,13 @@
 import styled from 'styled-components';
-import colors from '../../styles/colors';
+import Colors from '../../styles/Colors';
+
+const ChatPart = styled.div`
+  display: flex;
+`;
 
 const ChatContainer = styled.div`
   flex: 1;
+  width: 70%;
 `;
 
 const Chats = styled.div`
@@ -15,7 +20,7 @@ const Chats = styled.div`
   }
 
   &::-webkit-scrollbar-thumb {
-    background: ${colors.Gray2};
+    background: ${Colors.Gray2};
     border-radius: 10px;
   }
 
@@ -25,4 +30,4 @@ const Chats = styled.div`
   }
 `;
 
-export { ChatContainer, Chats };
+export { ChatContainer, Chats, ChatPart };

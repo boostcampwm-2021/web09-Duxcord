@@ -15,7 +15,7 @@ export class GroupMemberRepository extends Repository<GroupMember> {
         'group.code',
       ])
       .leftJoinAndSelect('group.meetingChannels', 'meetingChannels')
-      .leftJoinAndSelect('group.textChannels', 'textChannels')
+      .leftJoinAndSelect('group.chattingChannels', 'chattingChannels')
       .getMany();
   }
 
@@ -23,7 +23,13 @@ export class GroupMemberRepository extends Repository<GroupMember> {
     return this.createQueryBuilder('group_member')
       .where('group_member.groupId = :id', { id: groupID })
       .leftJoinAndSelect('group_member.user', 'user')
-      .select(['group_member.lastAccessTime', 'user.id', 'user.username', 'user.thumbnail'])
+      .select([
+        'group_member.lastAccessTime',
+        'user.id',
+        'user.username',
+        'user.thumbnail',
+        'user.loginID',
+      ])
       .getMany();
   }
 }

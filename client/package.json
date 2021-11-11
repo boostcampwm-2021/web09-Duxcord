@@ -13,6 +13,7 @@
     "@types/react-dom": "^17.0.10",
     "@types/react-redux": "^7.1.20",
     "@types/styled-components": "^5.1.15",
+    "http-proxy-middleware": "^2.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.6",
@@ -53,7 +54,8 @@
   "devDependencies": {
     "@types/jest-plugin-context": "^2.9.4",
     "@types/react-router-dom": "^5.3.2",
-    "jest-plugin-context": "^2.9.0"
-  },
-  "proxy": "http://localhost:8000"
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest-plugin-context": "^2.9.0",
+    "prettier": "^2.4.1"
+  }
 }

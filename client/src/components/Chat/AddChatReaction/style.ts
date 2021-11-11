@@ -1,8 +1,8 @@
-import styled from "styled-components";
-import colors from "../../../styles/colors";
+import styled from 'styled-components';
+import Colors from '../../../styles/Colors';
 
 const Wrapper = styled.div`
-  border: ${colors.Gray2} 1px solid;
+  border: ${Colors.Gray2} 1px solid;
   border-radius: 4px;
   position: absolute;
   right: 6px;
@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   padding: 4px;
-  background-color: ${colors.White};
+  background-color: ${Colors.White};
   &:hover {
     cursor: pointer;
   }

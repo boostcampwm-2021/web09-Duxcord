@@ -3,7 +3,7 @@ import { Base } from './base.entity';
 import { Workgroup } from './workgroup.entity';
 import { GroupMember } from './groupmember.entity';
 import { Reaction } from './reaction.entity';
-import { Text } from './text.entity';
+import { Chat } from './chat.entity';
 import { Thread } from './thread.entity';
 
 @Entity()
@@ -29,8 +29,8 @@ export class User extends Base {
   @OneToMany(() => Reaction, (reaction) => reaction.user)
   reactions: Reaction[];
 
-  @OneToMany(() => Text, (text) => text.user)
-  texts: Text[];
+  @OneToMany(() => Chat, (chat) => chat.user)
+  chats: Chat[];
 
   @OneToMany(() => Thread, (thread) => thread.user)
   threads: Thread[];

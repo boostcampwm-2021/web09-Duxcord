@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../../styles/colors';
+import Colors from '../../../styles/Colors';
 
 const ProfileWrapper = styled.div`
   display: flex;
@@ -7,7 +7,7 @@ const ProfileWrapper = styled.div`
   align-items: center;
   height: 52px;
   padding: 0 20px;
-  background-color: ${colors.Gray3};
+  background-color: ${Colors.Gray3};
   & > div:first-child {
     display: flex;
     align-items: center;
@@ -18,12 +18,17 @@ const ProfileWrapper = styled.div`
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      background-color: ${colors.White};
+      background-color: ${Colors.White};
       margin-right: 10px;
+      & img {
+        width: 32px;
+        height: 32px;
+      }
     }
     & p {
       font-size: 14px;
       font-weight: bold;
+      max-width: 100px;
     }
   }
   & > div:last-child {
@@ -35,7 +40,7 @@ const ProfileWrapper = styled.div`
       padding: 5px;
       &:hover {
         cursor: pointer;
-        background-color: ${colors.Gray2};
+        background-color: ${Colors.Gray2};
         border-radius: 5px;
       }
     }

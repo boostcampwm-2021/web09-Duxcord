@@ -18,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: Pretendard Variable;
     width: 100vw;
+    min-width: 1100px;
     height: 100vh;
   }
 `;

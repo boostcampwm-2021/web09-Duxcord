@@ -4,11 +4,11 @@ import {
   groupMemberRepository,
   groupRepository,
   meetingChannelRepository,
-  textChannelRepository,
+  chattingChannelRepository,
   userRepository,
 } from '../db';
 import { Workgroup } from '../entity/workgroup.entity';
-import { TextChannel } from '../entity/textchannel.entity';
+import { ChattingChannel } from '../entity/chattingchannel.entity';
 import { MeetingChannel } from '../entity/meetingchannel.entity';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
@@ -18,8 +18,8 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
   const { groupName, groupThumbnail } = req.body;
   try {
     if (!nullCheck(groupName)) return res.status(400).send('그룹명이 누락되었습니다.');
-    const leaderId = req.session.userID;
-    const leader = await userRepository.findOne({ where: { id: leaderId } });
+    const leaderID = req.session.userID;
+    const leader = await userRepository.findOne({ where: { id: leaderID } });
     if (!leader) return res.status(400).send('존재하지 않는 회원입니다.');
 
     const newGroup = new Workgroup();
@@ -35,11 +35,28 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 
     await groupMemberRepository.insert({ group: newGroup, user: leader, lastAccessTime: now });
 
-    await meetingChannelRepository.insert({ group: newGroup, name: 'default' });
+    const newMeetingChannel = new MeetingChannel();
+    newMeetingChannel.group = newGroup;
+    newMeetingChannel.name = 'default';
+    await meetingChannelRepository.save(newMeetingChannel);
+    const responseMeetingChannel = (({ group, ...o }) => o)(newMeetingChannel);
 
-    await textChannelRepository.insert({ group: newGroup, name: 'default' });
+    const newChattingChannel = new ChattingChannel();
+    newChattingChannel.group = newGroup;
+    newChattingChannel.name = 'default';
+    await chattingChannelRepository.save(newChattingChannel);
+    const responseChattingChannel = (({ group, ...o }) => o)(newChattingChannel);
 
-    return res.status(200).json({ code: newGroup.code });
+    const responseGroup = {
+      id: newGroup.id,
+      name: groupName,
+      code: newCode,
+      groupThumbnail: groupThumbnail,
+      meetingChannels: [responseMeetingChannel],
+      chattingChannels: [responseChattingChannel],
+    };
+
+    return res.status(200).json(responseGroup);
   } catch (error) {
     next(error);
   }
@@ -66,15 +83,15 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const group = await groupRepository.findOne({ where: { id: id } });
     if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
-    if (!['text', 'meeting'].includes(channelType))
+    if (!['chatting', 'meeting'].includes(channelType))
       return res.status(400).send('존재하지 않는 채널 타입입니다.');
 
-    const newChannel = channelType === 'text' ? new TextChannel() : new MeetingChannel();
+    const newChannel = channelType === 'chatting' ? new ChattingChannel() : new MeetingChannel();
     newChannel.name = channelName;
     newChannel.group = group;
 
-    channelType === 'text'
-      ? await textChannelRepository.save(newChannel)
+    channelType === 'chatting'
+      ? await chattingChannelRepository.save(newChannel)
       : await meetingChannelRepository.save(newChannel);
 
     return res.status(200).json(newChannel);
@@ -91,7 +108,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
     const user = await userRepository.findOne({ where: { id: userID } });
     const group = await groupRepository.findOne({
       where: { code: groupCode },
-      relations: ['meetingChannels', 'textChannels'],
+      relations: ['meetingChannels', 'chattingChannels'],
     });
     if (!group) return res.status(400).send('잘못된 그룹 코드입니다.');
 

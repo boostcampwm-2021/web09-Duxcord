@@ -3,11 +3,18 @@ interface ChatData {
   createdAt: string;
   updatedAt: string;
   content: string;
-  user: {
-    id: number;
-    thumbnail: null | string;
-    username: string;
-  };
+  reactionsCount: number;
+  reactions: [];
+  threadsCount: number;
+  threadWriter: null | User;
+  threadLastTime: null | Date;
+  user: User;
 }
 
-export { ChatData };
+interface User {
+  id: number;
+  thumbnail: null | string;
+  username: string;
+}
+
+export { ChatData, User };
