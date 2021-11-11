@@ -1,11 +1,13 @@
 import React from 'react';
 import { ProfileWrapper } from './style';
 import { useDispatch } from 'react-redux';
+import { useUserdata } from '../../../hooks/useUserdata';
 import { useUserDevice } from '../../../hooks/useUserDevice';
 import { setUserDevice } from '../../../redux/userDevice/slice';
 
 function Profile() {
   const dispatch = useDispatch();
+  const { userdata } = useUserdata();
   const device = useUserDevice();
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
@@ -15,8 +17,10 @@ function Profile() {
   return (
     <ProfileWrapper>
       <div>
-        <div></div>
-        <p>부덕이</p>
+        <div>
+          <img src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
+        </div>
+        <p>{userdata?.username}</p>
       </div>
       <div>
         <img

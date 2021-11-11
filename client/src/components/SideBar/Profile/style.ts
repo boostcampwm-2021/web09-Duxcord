@@ -20,6 +20,10 @@ const ProfileWrapper = styled.div`
       border-radius: 50%;
       background-color: ${Colors.White};
       margin-right: 10px;
+      & img {
+        width: 32px;
+        height: 32px;
+      }
     }
     & p {
       font-size: 14px;
