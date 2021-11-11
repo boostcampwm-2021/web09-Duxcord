@@ -3,7 +3,7 @@ import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { useUserdata } from '../../../hooks/useUserdata';
 import { useUserDevice } from '../../../hooks/useUserDevice';
 import Socket, { socket } from '../../../util/socket';
-import { MeetVideoWrapper, VideoItem } from './style';
+import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -191,7 +191,10 @@ function MeetVideo() {
 
   return (
     <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
-      <VideoItem autoPlay playsInline muted ref={myVideoRef}></VideoItem>
+      <VideoItemWrapper>
+        <VideoItem autoPlay playsInline muted ref={myVideoRef} />
+        <p>{userdata?.username}</p>
+      </VideoItemWrapper>
       {meetingMembers.map((member) => (
         <OtherVideo key={member.socketID} member={member} />
       ))}
@@ -207,7 +210,12 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
     ref.current.srcObject = member.stream;
   });
 
-  return <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />;
+  return (
+    <VideoItemWrapper>
+      <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />
+      <p>{member?.username}</p>
+    </VideoItemWrapper>
+  );
 }
 
 export default MeetVideo;
