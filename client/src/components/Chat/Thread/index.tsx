@@ -33,15 +33,18 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
 
   const onThread = useCallback(
     (info: any) => {
-      mutate((threads: any) => [
-        ...threads,
-        {
-          id: info.id,
-          createdAt: info.createdAt,
-          content: info.content,
-          user: info.threadWriter,
-        },
-      ]);
+      mutate(
+        (threads: any) => [
+          ...threads,
+          {
+            id: info.id,
+            createdAt: info.createdAt,
+            content: info.content,
+            user: info.threadWriter,
+          },
+        ],
+        false,
+      );
     },
     [mutate],
   );
