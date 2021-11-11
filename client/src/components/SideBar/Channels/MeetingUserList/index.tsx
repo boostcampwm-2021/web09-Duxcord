@@ -11,7 +11,7 @@ function MeetingUserList({ meetingUser }: Props) {
       {meetingUser &&
         meetingUser[0].map((user: any) => {
           return (
-            <MeetingUserListWrapper>
+            <MeetingUserListWrapper key={user.id}>
               <MeetingUserProfileWrapper>
                 <MeetingUserProfile src="/images/default_profile.png" alt="profile" />
               </MeetingUserProfileWrapper>
