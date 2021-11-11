@@ -21,12 +21,28 @@ const MeetVideoWrapper = styled.div<IMeetVideoWrapper>`
       : 'max-width: 1500px; grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));'}
 `;
 
-const VideoItem = styled.video`
+const VideoItemWrapper = styled.div`
   width: 100%;
   max-width: 700px;
   height: 100%;
   justify-self: center;
   align-self: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  & p {
+    align-self: center;
+  }
 `;
 
-export { MeetVideoWrapper, VideoItem };
+const VideoItem = styled.video`
+  width: 100%;
+  max-width: 700px;
+  border-radius: 20px;
+  justify-self: center;
+  align-self: center;
+  margin-bottom: 10px;
+`;
+
+export { MeetVideoWrapper, VideoItemWrapper, VideoItem };
