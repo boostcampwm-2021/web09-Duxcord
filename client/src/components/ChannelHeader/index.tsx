@@ -26,8 +26,7 @@ function ChannelHeader() {
           <p>Duxcord</p>
         </div>
         <div>
-          <img src="/icons/headerMention.png" alt="headerMention" />
-          <img src="/icons/headerQuestion.png" alt="headerQuestion" />
+          <p>LogOut</p>
         </div>
       </ChannelHeaderRight>
     </ChannelHeaderWrapper>
