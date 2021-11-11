@@ -37,6 +37,22 @@ const ChannelHeaderRight = styled.div`
     color: ${Colors.Gray1};
     font-weight: 500;
   }
+
+  & > div:last-child {
+    background-color: ${Colors.Gray3};
+    font-weight: 500;
+    padding: 5px;
+    cursor: pointer;
+    transition: 0.5s all;
+    border-radius: 5px;
+    &:hover {
+      & > p {
+        color: ${Colors.White};
+      }
+      border-radius: 10px;
+      background-color: ${Colors.DarkRed};
+    }
+  }
 `;
 
 export { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight };
