@@ -49,6 +49,10 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
       createdAt: newChat.createdAt,
       updatedAt: newChat.updatedAt,
       content: newChat.content,
+      reactionsCount: newChat.reactionsCount,
+      reactions: [],
+      threadsCount: newChat.threadsCount,
+      threadWriter: null,
       user: {
         id: user.id,
         thumbnail: user.thumbnail,

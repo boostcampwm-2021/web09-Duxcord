@@ -30,6 +30,7 @@ function Chat() {
   useEffect(() => {
     if (id === null) return;
     Socket.joinChannel({ channelType: 'chatting', id });
+    console.log('join');
 
     return () => {
       Socket.leaveChannel({ channelType: 'chatting', id });
@@ -57,9 +58,9 @@ function Chat() {
   const onChat = useCallback(
     async (chat: ChatData) => {
       await mutate((chats) => {
-        chats?.unshift(chat);
-        return chats;
-      });
+        if (!chats) return [chat];
+        return [chat, ...chats];
+      }, false);
       if (chatListRef.current === null) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
       if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom();
@@ -68,14 +69,33 @@ function Chat() {
   );
 
   const onLike = useCallback(
-    async (info: any) => {
-      await mutate((chats) => {
+    (info: any) => {
+      mutate((chats) => {
         if (!chats) return chats;
-        return chats.map((chatChunk) => {
-          return chatChunk.map((chat: any) =>
+        return chats
+          .flat()
+          .map((chat: any) =>
             chat.id === info.chatID ? { ...chat, reactionsCount: info.reactionsCount } : chat,
           );
-        });
+      }, false);
+    },
+    [mutate],
+  );
+
+  const onThread = useCallback(
+    (info: any) => {
+      mutate((chats) => {
+        if (!chats) return chats;
+        return chats.flat().map((chat: ChatData) =>
+          chat.id === info.chatID
+            ? {
+                ...chat,
+                threadsCount: info.threadsCount,
+                threadWriter: info.threadWriter,
+                threadLastTime: info.threadLastTime,
+              }
+            : chat,
+        );
       }, false);
     },
     [mutate],
@@ -84,11 +104,13 @@ function Chat() {
   useEffect(() => {
     socket.on('chat', onChat);
     socket.on('like', onLike);
+    socket.on('thread', onThread);
     return () => {
       socket.off('chat', onChat);
       socket.off('like', onLike);
+      socket.off('thread', onThread);
     };
-  }, [mutate, onChat, onLike]);
+  }, [onChat, onLike, onThread]);
 
   return (
     <ChatPart>
