@@ -10,7 +10,7 @@ export async function socketInit(httpServer) {
   io = new Server(httpServer);
   io.on('connection', (socket) => {
     socket.on('GroupID', (groupID, user) => {
-      if (user && !userConnectionInfo[groupID].map((v) => v.loginID).includes(user.loginID))
+      if (user && !userConnectionInfo[groupID].some((v) => v.loginID === user.loginID))
         userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
       socket.emit('GroupUserConnection', userConnectionInfo[groupID]);
     });

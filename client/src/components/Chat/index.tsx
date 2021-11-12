@@ -110,7 +110,7 @@ function Chat() {
       socket.off('thread', onThread);
     };
   }, [onChat, onLike, onThread]);
-  console.log(chats);
+
   return (
     <ChatPart>
       <ChatContainer>
