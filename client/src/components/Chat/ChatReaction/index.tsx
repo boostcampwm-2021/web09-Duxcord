@@ -7,11 +7,11 @@ function ChatReaction({
   isReactioned,
 }: {
   count: number;
-  handleLike: () => {};
+  handleLike: Function;
   isReactioned: boolean;
 }) {
   return (
-    <Wrapper onClick={handleLike} isActive={isReactioned}>
+    <Wrapper onClick={() => handleLike()} isActive={isReactioned}>
       👍 {count}
     </Wrapper>
   );
