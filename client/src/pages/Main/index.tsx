@@ -20,11 +20,12 @@ function Main() {
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    if (selectedGroup !== null) return;
+    if (isValidating) return;
+    if (selectedGroup !== null || groupID === null) return;
 
     const group = groups?.find((group: any) => group.id.toString() === groupID) ?? null;
 
-    if (group === null || groupID === null) return;
+    if (group === null) return;
 
     dispatch(setSelectedGroup(group));
 

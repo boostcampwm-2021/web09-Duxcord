@@ -30,8 +30,6 @@ enum MeetingEvent {
   LEAVE_MEETING = 'leaveMeeting',
 }
 
-const GET_MY_STREAM = 'getMyStream';
-
 interface IMeetingUser {
   socketID: string;
   loginID: string;
@@ -49,22 +47,21 @@ function MeetVideo() {
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
-
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
 
   const getMyStream = async () => {
+    let myStream;
     try {
-      const myStream = await navigator.mediaDevices.getUserMedia({
+      myStream = await navigator.mediaDevices.getUserMedia({
         audio: true,
         video: true,
       });
-      if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
-      setMyStream(myStream);
     } catch (e) {
-      console.error(GET_MY_STREAM, e);
-      if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
-      setMyStream(new MediaStream());
+      const canvas = document.createElement('canvas');
+      myStream = canvas.captureStream(0);
     }
+    if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
+    setMyStream(myStream);
   };
 
   const createPeerConnection = useCallback(
@@ -172,7 +169,7 @@ function MeetVideo() {
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
-  }, [id, userdata, myStream, createPeerConnection]);
+  }, [id, userdata, createPeerConnection]);
 
   useEffect(() => {
     if (myStream) {
