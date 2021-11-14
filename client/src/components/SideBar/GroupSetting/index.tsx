@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
-import { ModalController } from '../../../types/modal';
+import { ModalController } from '@customTypes/modal';
 import GroupInviteModal from '../../Modal/GroupInvite';
 import { GroupSettingWrapper } from './style';
 

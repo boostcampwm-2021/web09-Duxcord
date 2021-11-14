@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router';
 import Modal from '..';
-import { ModalController } from '../../../types/modal';
+import { ModalController } from '@customTypes/modal';
 
-import Colors from '../../../styles/Colors';
+import Colors from '@styles/Colors';
 import { MiddlePart } from './style';
 import { postLogout } from '../../../api/postLogout';
 import { socket } from '../../../util/socket';

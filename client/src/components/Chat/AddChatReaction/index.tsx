@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { setSelectedChat } from '../../../redux/selectedChat/slice';
-import { ChatData } from '../../../types/chats';
+import { setSelectedChat } from '@redux/selectedChat/slice';
+import { ChatData } from '@customTypes/chats';
 import { Wrapper } from './style';
 
 function AddChatReaction({ handleLike, chatData }: { handleLike: () => {}; chatData: ChatData }) {

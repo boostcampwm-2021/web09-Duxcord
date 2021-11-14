@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useSelectedChannel } from '../../hooks/useSelectedChannel';
-import { ModalController } from '../../types/modal';
+import { useSelectedChannel } from '@hooks/useSelectedChannel';
+import { ModalController } from '@customTypes/modal';
 import LogoutModal from '../Modal/Logout';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';
 

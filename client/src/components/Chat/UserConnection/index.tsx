@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
-import { useGroupConnection } from '../../../hooks/useGroupConnection';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
-import { useUserdata } from '../../../hooks/useUserdata';
+import { useGroupConnection } from '@hooks/useGroupConnection';
+import { useSelectedGroup } from '@hooks/useSelectedGroup';
+import { useUserdata } from '@hooks/useUserdata';
 import { getFetcher } from '../../../util/fetcher';
 import { socket } from '../../../util/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Background from '../../components/common/Background';
+import Background from '@components/common/Background';
 import { Link, useHistory } from 'react-router-dom';
 import {
   SignInWrapper,
