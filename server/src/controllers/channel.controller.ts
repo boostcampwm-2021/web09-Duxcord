@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import { chattingChannelRepository, userRepository, chatRepository } from '../loaders/ormLoader';
 
-import { Chat } from '../db/entities/chat.entity';
+import { Chat } from '../db/entities';
 import { io } from '../loaders/socketLoader';
 
 export const createChatMSG = {

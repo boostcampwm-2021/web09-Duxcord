@@ -1,7 +1,7 @@
 import { compare, hash } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { groupMemberRepository, userRepository } from '../loaders/ormLoader';
-import { User } from '../db/entities/user.entity';
+import { User } from '../db/entities';
 
 declare module 'express-session' {
   interface SessionData {

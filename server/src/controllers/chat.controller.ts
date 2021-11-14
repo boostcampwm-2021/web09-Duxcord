@@ -7,7 +7,7 @@ import {
   reactionRepository,
 } from '../loaders/ormLoader';
 
-import { Thread } from '../db/entities/thread.entity';
+import { Thread } from '../db/entities';
 import { io } from '../loaders/socketLoader';
 
 export const createChatMSG = {
