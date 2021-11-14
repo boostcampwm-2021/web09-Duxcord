@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { API_URL } from '../../../../api/API_URL';
 import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ListItem } from './style';
@@ -16,7 +17,7 @@ function ChannelListItem({ channelType, id, name }: Props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const joinChannel = () => {
-    history.push(`/main?group=${selectedGroup?.id}&type=${channelType}&id=${id}`);
+    history.push(API_URL.page.ChannelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 

@@ -18,6 +18,7 @@ import GroupAddModal from '../../Modal/GroupAdd';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import { mutate } from 'swr';
 import { API_URL } from '../../../api/API_URL';
+import GroupEvent from '../../../types/socket/GroupEvent';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -42,30 +43,30 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(`/main?group=${group.id}`);
+    history.push(API_URL.page.groupPage(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
-    socket.emit('GroupID', group.code);
+    socket.emit(GroupEvent.groupID, group.code);
   };
 
   useEffect(() => {
-    socket.on('GroupUserConnection', (connectionList) => {
+    socket.on(GroupEvent.groupUserConnection, (connectionList) => {
       dispatch(setGroupConnection(connectionList));
     });
 
-    socket.on('userExit', (user, code) => {
+    socket.on(GroupEvent.userExit, (user, code) => {
       dispatch(removeUserConnection(user));
     });
 
-    socket.on('userEnter', (user, code) => {
+    socket.on(GroupEvent.userEnter, (user, code) => {
       if (code === selectedGroup?.code) dispatch(addUserConnection(user));
       mutate(API_URL.group.getGroupMembers(selectedGroup?.id));
     });
 
     return () => {
-      socket.off('GroupUserConnection');
-      socket.off('userExit');
-      socket.off('userEnter');
+      socket.off(GroupEvent.groupUserConnection);
+      socket.off(GroupEvent.userEnter);
+      socket.off(GroupEvent.userExit);
     };
   }, [dispatch, selectedGroup?.code, selectedGroup?.id]);
 

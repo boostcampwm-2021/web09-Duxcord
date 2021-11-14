@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
+import { API_URL } from '../../../api/API_URL';
 import { postCreateGroup } from '../../../api/postCreateGroup';
 import { useGroups } from '../../../hooks/useGroups';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
@@ -31,7 +32,7 @@ function GroupCreateModal({ controller: { hide, show } }: { controller: ModalCon
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.push(`/main/group/${group.id}`);
+        history.push(API_URL.page.groupPage(group.id));
         break;
       case 400:
         const responseText = await response.text();

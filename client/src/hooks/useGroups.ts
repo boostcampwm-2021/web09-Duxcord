@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '../api/API_URL';
 import { setSelectedGroup } from '../redux/selectedGroup/slice';
+import GroupEvent from '../types/socket/GroupEvent';
 import { getFetcher } from '../util/fetcher';
 import { socket } from '../util/socket';
 import { useSelectedGroup } from './useSelectedGroup';
@@ -25,7 +26,7 @@ export const useGroups = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userData) socket.emit('logIn', groups, userData);
+    if (userData) socket.emit(GroupEvent.login, groups, userData);
   }, [userData, groups]);
 
   useLayoutEffect(() => {

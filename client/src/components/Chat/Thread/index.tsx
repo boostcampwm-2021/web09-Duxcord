@@ -8,6 +8,7 @@ import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
 import { getFetcher } from '../../../util/fetcher';
 import { socket } from '../../../util/socket';
+import ChannelEvent from '../../../types/socket/ChannelEvent';
 import ThreadItem from '../ThreadItem';
 import {
   ButtonWrapper,
@@ -19,6 +20,7 @@ import {
   ThreadChatWrapper,
   ChatLengthWrapper,
 } from './style';
+import ThreadType from '../../../types/socket/ThreadEvent';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const { mutate, data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
@@ -50,16 +52,16 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   );
 
   useEffect(() => {
-    socket.emit('joinChannel', 'thread' + selectedChat.id);
+    socket.emit(ChannelEvent.joinChannel, ThreadType.thread + selectedChat.id);
     return () => {
-      socket.emit('leaveChannel', 'thread' + selectedChat.id);
+      socket.emit(ChannelEvent.leaveChannel, ThreadType.thread + selectedChat.id);
     };
   }, [selectedChat.id]);
 
   useEffect(() => {
-    socket.on('threadUpdate', onThread);
+    socket.on(ThreadType.threadUpdate, onThread);
     return () => {
-      socket.off('threadUpdate');
+      socket.off(ThreadType.threadUpdate);
     };
   }, [onThread]);
 

@@ -7,10 +7,13 @@ import useSWRInfinite from 'swr/infinite';
 import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
 import { useSelectedChannel } from '../../hooks/useSelectedChannel';
-import UserConnection from './UserConnection/UserConnection';
+import UserConnection from './UserConnection';
 import Thread from './Thread';
 import { useSelectedChat } from '../../hooks/useSelectedChat';
 import { API_URL } from '../../api/API_URL';
+import LikeEvent from '../../types/socket/LikeEvent';
+import ThreadEvent from '../../types/socket/ThreadEvent';
+import ChatEvent from '../../types/socket/ChatEvent';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
@@ -25,10 +28,10 @@ function Chat() {
 
   useEffect(() => {
     if (id === null) return;
-    Socket.joinChannel({ channelType: 'chatting', id });
+    Socket.joinChannel({ channelType: ChatEvent.chatting, id });
 
     return () => {
-      Socket.leaveChannel({ channelType: 'chatting', id });
+      Socket.leaveChannel({ channelType: ChatEvent.chatting, id });
     };
   }, [id]);
 
@@ -97,13 +100,13 @@ function Chat() {
   );
 
   useEffect(() => {
-    socket.on('chat', onChat);
-    socket.on('like', onLike);
-    socket.on('thread', onThread);
+    socket.on(ChatEvent.chat, onChat);
+    socket.on(LikeEvent.like, onLike);
+    socket.on(ThreadEvent.thread, onThread);
     return () => {
-      socket.off('chat', onChat);
-      socket.off('like', onLike);
-      socket.off('thread', onThread);
+      socket.off(ChatEvent.chat);
+      socket.off(LikeEvent.like);
+      socket.off(ThreadEvent.thread);
     };
   }, [onChat, onLike, onThread]);
 

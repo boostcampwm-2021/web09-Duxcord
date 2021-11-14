@@ -4,6 +4,7 @@ import { API_URL } from '../../../api/API_URL';
 import { useGroupConnection } from '../../../hooks/useGroupConnection';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import { useUserdata } from '../../../hooks/useUserdata';
+import GroupEvent from '../../../types/socket/GroupEvent';
 import { getFetcher } from '../../../util/fetcher';
 import { socket } from '../../../util/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
@@ -15,7 +16,7 @@ function UserConnection() {
   const { data = [] } = useSWR(API_URL.group.getGroupMembers(selectedGroup?.id), getFetcher);
 
   useEffect(() => {
-    socket.emit('GroupID', selectedGroup?.code, userdata);
+    socket.emit(GroupEvent.groupID, selectedGroup?.code, userdata);
   }, [selectedGroup?.code, userdata]);
 
   return (
