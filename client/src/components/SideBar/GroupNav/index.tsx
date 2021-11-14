@@ -17,6 +17,7 @@ import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import { mutate } from 'swr';
+import { API_URL } from '../../../api/API_URL';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -58,7 +59,7 @@ function GroupNav() {
 
     socket.on('userEnter', (user, code) => {
       if (code === selectedGroup?.code) dispatch(addUserConnection(user));
-      mutate(`/api/group/${selectedGroup?.id}/members`);
+      mutate(API_URL.group.getGroupMembers(selectedGroup?.id));
     });
 
     return () => {

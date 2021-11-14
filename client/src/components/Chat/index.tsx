@@ -10,11 +10,7 @@ import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import UserConnection from './UserConnection/UserConnection';
 import Thread from './Thread';
 import { useSelectedChat } from '../../hooks/useSelectedChat';
-
-const getKey = (channelID: number | null) => (index: number, prevData: any) => {
-  if (prevData && !prevData.length) return null;
-  return `/api/channel/${channelID}?page=${index + 1}`;
-};
+import { API_URL } from '../../api/API_URL';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
@@ -22,7 +18,7 @@ const THRESHOLD = 300;
 function Chat() {
   const { id } = useSelectedChannel();
   const selectedChat = useSelectedChat();
-  const { data: chats, mutate, setSize } = useSWRInfinite(getKey(id), getFetcher);
+  const { data: chats, mutate, setSize } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
   const isEmpty = chats?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
