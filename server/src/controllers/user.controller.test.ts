@@ -1,7 +1,7 @@
 import request from 'supertest';
 
 import { appInit } from '..';
-import { userRepository } from '../db';
+import { userRepository } from '../loaders/ormLoader';
 import { signInMSG } from './user.controller';
 
 let app;

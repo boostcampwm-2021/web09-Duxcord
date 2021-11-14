@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import userController from '../../controller/user.controller';
-import { accessControl } from '../../util';
+import userController from '../../controllers/user.controller';
+import { accessControl } from '../../utils';
+
 export const userRouter = Router();
 
 userRouter.get('/', accessControl(), userController.getUserData);

@@ -6,16 +6,16 @@ import { TypeormStore } from 'typeorm-store';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { initORM, sessionRepository } from './db';
-import { apiRouter } from './router/api.router';
+import { ormLoader, sessionRepository } from './loaders/ormLoader';
+import { apiRouter } from './routes/api.router';
 import { createServer } from 'http';
-import { socketInit } from './socket';
+import { socketLoader } from './loaders/socketLoader';
 
 export const appInit = async () => {
-  await initORM();
+  await ormLoader();
   const app = express();
   const httpServer = createServer(app);
-  socketInit(httpServer);
+  socketLoader(httpServer);
   app.set('port', process.env.PORT || 8000);
   if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));

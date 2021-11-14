@@ -2,7 +2,7 @@ import { Server } from 'socket.io';
 
 export let io: Server;
 
-export async function socketInit(httpServer) {
+export async function socketLoader(httpServer) {
   const userConnectionInfo = {};
   const meetingMembers = {};
   const socketToMeeting = {};

@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
-import { Thread } from '../../entity/thread.entity';
+import { Thread } from '../entities/thread.entity';
 
 @EntityRepository(Thread)
 export class ThreadRepository extends Repository<Thread> {

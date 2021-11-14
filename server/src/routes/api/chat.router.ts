@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import chatController from '../../controller/chat.controller';
-import { accessControl } from '../../util';
+import chatController from '../../controllers/chat.controller';
+import { accessControl } from '../../utils';
+
 export const chatRouter = Router();
 
 chatRouter.post(

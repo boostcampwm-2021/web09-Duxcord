@@ -1,9 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { userRepository, chatRepository, threadRepository, reactionRepository } from '../db';
+import {
+  userRepository,
+  chatRepository,
+  threadRepository,
+  reactionRepository,
+} from '../loaders/ormLoader';
 
-import { Thread } from '../entity/thread.entity';
-import { io } from '../socket';
+import { Thread } from '../db/entities/thread.entity';
+import { io } from '../loaders/socketLoader';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',

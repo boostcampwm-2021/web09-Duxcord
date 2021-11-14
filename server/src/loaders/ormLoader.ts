@@ -7,20 +7,20 @@ import {
 } from 'typeorm';
 import dotenv from 'dotenv';
 
-import { User } from '../entity/user.entity';
-import { Thread } from '../entity/thread.entity';
-import { ChattingChannel } from '../entity/chattingchannel.entity';
-import { Chat } from '../entity/chat.entity';
-import { MeetingChannel } from '../entity/meetingchannel.entity';
-import { Reaction } from '../entity/reaction.entity';
-import { GroupMember } from '../entity/groupmember.entity';
-import { Workgroup } from '../entity/workgroup.entity';
-import { File } from '../entity/file.entity';
-import { Session } from '../entity/session.entity';
-import { UserRepository } from './repository/user.repository';
-import { GroupMemberRepository } from './repository/groupmember.repository';
-import { ChatRepository } from './repository/chat.repository';
-import { ThreadRepository } from './repository/thread.repository';
+import { User } from '../db/entities/user.entity';
+import { Thread } from '../db/entities/thread.entity';
+import { ChattingChannel } from '../db/entities/chattingchannel.entity';
+import { Chat } from '../db/entities/chat.entity';
+import { MeetingChannel } from '../db/entities/meetingchannel.entity';
+import { Reaction } from '../db/entities/reaction.entity';
+import { GroupMember } from '../db/entities/groupmember.entity';
+import { Workgroup } from '../db/entities/workgroup.entity';
+import { File } from '../db/entities/file.entity';
+import { Session } from '../db/entities/session.entity';
+import { UserRepository } from '../db/repositories/user.repository';
+import { GroupMemberRepository } from '../db/repositories/groupmember.repository';
+import { ChatRepository } from '../db/repositories/chat.repository';
+import { ThreadRepository } from '../db/repositories/thread.repository';
 dotenv.config();
 
 export let connection: Connection;
@@ -61,7 +61,7 @@ const connectDB = async () => {
   return connection;
 };
 
-export const initORM = async () => {
+export const ormLoader = async () => {
   await connectDB();
   userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);
