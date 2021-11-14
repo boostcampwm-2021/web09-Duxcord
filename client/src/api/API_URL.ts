@@ -2,6 +2,7 @@ export const API_URL = {
   user: {
     getUserdata: '/api/user',
     getGroups: '/api/user/groups',
+    logout: '/api/user/signout',
   },
   channel: {
     postChat: (channelID: number) => `/api/channel/${channelID}/create`,

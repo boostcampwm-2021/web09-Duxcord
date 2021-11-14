@@ -44,7 +44,6 @@ function GroupNav() {
     history.push(`/main?group=${group.id}`);
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
-    // group.id의 키에 있는 애들 다 알려줘~!
     socket.emit('GroupID', group.code);
   };
 
@@ -67,7 +66,7 @@ function GroupNav() {
       socket.off('userExit');
       socket.off('userEnter');
     };
-  }, [dispatch]);
+  }, [dispatch, selectedGroup?.code, selectedGroup?.id]);
 
   return (
     <GroupListWrapper>

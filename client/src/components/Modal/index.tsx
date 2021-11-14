@@ -29,7 +29,7 @@ function Modal({
         <div>{middleContent}</div>
         {bottomRightButton && (
           <Bottom>
-            {previous !== null ? (
+            {previous !== undefined ? (
               <div onClick={previous}>이전</div>
             ) : (
               <div onClick={hideModal}>닫기</div>
