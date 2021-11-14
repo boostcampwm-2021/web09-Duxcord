@@ -1,4 +1,5 @@
 import React from 'react';
+import { LikeIcon, ThreadOpenIcon } from '../../common/Icon';
 import { Wrapper } from './style';
 
 function AddChatReaction({
@@ -10,8 +11,8 @@ function AddChatReaction({
 }) {
   return (
     <Wrapper>
-      <img src="/icons/btn-like.svg" alt="btn like" onClick={handleLike} />
-      <img src="/icons/btn-thread.svg" alt="btn thread" onClick={selectChat} />
+      <LikeIcon onClick={handleLike} />
+      <ThreadOpenIcon onClick={selectChat} />
     </Wrapper>
   );
 }

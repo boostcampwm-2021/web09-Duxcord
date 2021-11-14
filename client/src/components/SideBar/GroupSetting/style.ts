@@ -20,7 +20,7 @@ const GroupSettingWrapper = styled.div`
     overflow-y: hidden;
     max-width: 180px;
   }
-  & > div img {
+  & > div svg {
     margin-left: 10px;
   }
 `;
