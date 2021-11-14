@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
 import { postJoinGroup } from '../../../api/postJoinGroup';
-import { useGroups } from '../../../hooks/useGroups';
+import { useGroups } from '../../../hooks';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
 import Colors from '../../../styles/Colors';
 import { ModalController } from '../../../types/modal';

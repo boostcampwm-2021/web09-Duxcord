@@ -6,10 +6,9 @@ import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
 import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
-import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import UserConnection from './UserConnection/UserConnection';
 import Thread from './Thread';
-import { useSelectedChat } from '../../hooks/useSelectedChat';
+import { useSelectedChannel, useSelectedChat } from '../../hooks';
 
 const getKey = (channelID: number | null) => (index: number, prevData: any) => {
   if (prevData && !prevData.length) return null;

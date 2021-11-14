@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
+import { useSelectedGroup } from '../../../../hooks';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ListItem } from './style';
 

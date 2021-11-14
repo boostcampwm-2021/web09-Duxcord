@@ -1,8 +1,7 @@
 import React from 'react';
 import { ProfileWrapper } from './style';
 import { useDispatch } from 'react-redux';
-import { useUserdata } from '../../../hooks/useUserdata';
-import { useUserDevice } from '../../../hooks/useUserDevice';
+import { useUserdata, useUserDevice } from '../../../hooks';
 import { setUserDevice } from '../../../redux/userDevice/slice';
 
 function Profile() {

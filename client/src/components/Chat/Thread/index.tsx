@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '../../../api/API_URL';
 import { postCreateThread } from '../../../api/postCreateThread';
-import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
+import { useSelectedChannel } from '../../../hooks';
 import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
 import { getFetcher } from '../../../util/fetcher';

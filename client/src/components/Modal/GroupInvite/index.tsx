@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '..';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import { useSelectedGroup } from '../../../hooks';
 import Colors from '../../../styles/Colors';
 import { ModalController } from '../../../types/modal';
 import { CodeWrapper } from './style';

@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
-import { useUserdata } from '../../../hooks/useUserdata';
+import { useSelectedChannel, useUserdata } from '../../../hooks';
 import { socket } from '../../../util/socket';
 import { ChatHeader, UserImage } from '../../Chat/ChatItem/style';
 import {

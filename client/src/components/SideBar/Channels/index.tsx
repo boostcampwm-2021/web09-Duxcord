@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import { useSelectedGroup } from '../../../hooks';
 import { socket } from '../../../util/socket';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';

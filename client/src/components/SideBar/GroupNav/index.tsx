@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useGroups } from '../../../hooks/useGroups';
+import { useGroups, useSelectedGroup } from '../../../hooks';
 import { setSelectedChannel } from '../../../redux/selectedChannel/slice';
 import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
@@ -15,7 +15,6 @@ import {
 } from '../../../redux/groupConnection/slice';
 import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import { mutate } from 'swr';
 
 function GroupNav() {
