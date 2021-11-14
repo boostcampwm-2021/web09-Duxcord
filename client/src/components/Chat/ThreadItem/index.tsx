@@ -1,5 +1,5 @@
 import React from 'react';
-import { ThreadData } from '../../../types/threads';
+import { ThreadData } from '@customTypes/threads';
 import { Wrapper } from './style';
 
 function ThreadItem({ threadData }: { threadData: ThreadData }) {

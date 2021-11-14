@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ModalController, ModalData } from '../../types/modal';
+import { ModalController, ModalData } from '@customTypes/modal';
 import { ModalCloseIcon } from '../common/Icon';
 import { BottomRightButton, Bottom, Background, Wrapper, Title, SubTitle } from './style';
 

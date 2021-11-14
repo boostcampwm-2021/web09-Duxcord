@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ChatItem from './ChatItem';
 import { ChatContainer, Chats, ChatPart } from './style';
-import { ChatData } from '../../types/chats';
+import { ChatData } from '@customTypes/chats';
 import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
 import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
-import { useSelectedChannel } from '../../hooks/useSelectedChannel';
-import UserConnection from './UserConnection/UserConnection';
+import { useSelectedChannel } from '@hooks/useSelectedChannel';
+import UserConnection from './UserConnection';
 import Thread from './Thread';
-import { useSelectedChat } from '../../hooks/useSelectedChat';
+import { useSelectedChat } from '@hooks/useSelectedChat';
 
 const getKey = (channelID: number | null) => (index: number, prevData: any) => {
   if (prevData && !prevData.length) return null;

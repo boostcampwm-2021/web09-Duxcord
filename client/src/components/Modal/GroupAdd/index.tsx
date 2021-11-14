@@ -1,6 +1,6 @@
 import React from 'react';
 import Modal from '..';
-import { ModalController } from '../../../types/modal';
+import { ModalController } from '@customTypes/modal';
 import { Transporter } from './style';
 
 function GroupAddModal({

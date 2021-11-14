@@ -1,6 +1,6 @@
 import React, { FormEvent, useRef } from 'react';
 import { postChat } from '../../../api/postChat';
-import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
+import { useSelectedChannel } from '@hooks/useSelectedChannel';
 import { FileSelectIcon } from '../../common/Icon';
 import { ButtonWrapper, Input, Wrapper } from './style';
 
