@@ -3,7 +3,7 @@ import { postChat } from '../../../api/postChat';
 import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { ButtonWrapper, Input, Wrapper } from './style';
 
-function ChatInput({ scrollToBottom }: { scrollToBottom: Function }) {
+function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
   const chatInputRef = useRef<HTMLInputElement>(null);
 

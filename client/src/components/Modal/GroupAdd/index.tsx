@@ -9,13 +9,13 @@ function GroupAddModal({
   showGroupJoin,
 }: {
   controller: ModalController;
-  showGroupCreate: Function;
-  showGroupJoin: Function;
+  showGroupCreate: () => void;
+  showGroupJoin: () => void;
 }) {
   const TransporterComponent = (
     <>
-      <Transporter onClick={() => showGroupCreate()}>그룹 만들기</Transporter>
-      <Transporter onClick={() => showGroupJoin()}>그룹 참가하기</Transporter>
+      <Transporter onClick={showGroupCreate}>그룹 만들기</Transporter>
+      <Transporter onClick={showGroupJoin}>그룹 참가하기</Transporter>
     </>
   );
   return (

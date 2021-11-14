@@ -11,10 +11,10 @@ function ThreadPreview({
   count: number;
   lastThreadUser: User;
   threadLastTime: Date;
-  selectChat: Function;
+  selectChat: () => void;
 }) {
   return (
-    <ThreadPreviewWrapper onClick={() => selectChat()}>
+    <ThreadPreviewWrapper onClick={selectChat}>
       <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
       <p>{count}개의 댓글</p>
       <p>({new Date(threadLastTime).toLocaleTimeString('ko-KR')})</p>
