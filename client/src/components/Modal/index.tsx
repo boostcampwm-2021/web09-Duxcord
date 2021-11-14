@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ModalController, ModalData } from '@customTypes/modal';
+import { ModalCloseIcon } from '../common/Icon';
 import { BottomRightButton, Bottom, Background, Wrapper, Title, SubTitle } from './style';
 
 function Modal({
@@ -22,7 +23,7 @@ function Modal({
     <Background onClick={hideModal} isHidden={hidden}>
       <Wrapper onClick={(e) => e.stopPropagation()} isHidden={hidden}>
         <div style={{ textAlign: 'right' }}>
-          <img src="/icons/btn-close-modal.svg" alt="close modal" onClick={hideModal} />
+          <ModalCloseIcon onClick={hideModal} />
         </div>
         {title && <Title>{title}</Title>}
         {subTitle && <SubTitle>{subTitle}</SubTitle>}

@@ -66,9 +66,9 @@ const AddGroupButton = styled.button`
     cursor: pointer;
     animation: ${radiusChange} 0.1s linear both;
   }
-  & img {
-    width: 18px;
-    height: 18px;
+  & svg {
+    width: 48px;
+    height: 48px;
   }
 `;
 

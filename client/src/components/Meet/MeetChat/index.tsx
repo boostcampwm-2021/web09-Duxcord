@@ -3,6 +3,7 @@ import { useSelectedChannel } from '@hooks/useSelectedChannel';
 import { useUserdata } from '@hooks/useUserdata';
 import { socket } from '../../../util/socket';
 import { ChatHeader, UserImage } from '../../Chat/ChatItem/style';
+import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icon';
 import {
   Chat,
   ChatList,
@@ -70,8 +71,8 @@ function MeetChat() {
 
   return show ? (
     <ChatWrap>
-      <CloseChatButton onClick={() => setShow(false)}>
-        <img src="/icons/btn-close-meetchat.svg" alt="close chat icon" />
+      <CloseChatButton>
+        <ChatCloseIcon onClick={() => setShow(false)} />
       </CloseChatButton>
       <ChatList ref={chatListRef}>
         {chats.map(({ id, loginID, username, thumbnail, message, createdAt }) => (
@@ -91,7 +92,7 @@ function MeetChat() {
     </ChatWrap>
   ) : (
     <ShowChatButton onClick={() => setShow(true)}>
-      <img src="/icons/btn-show-meetchat.svg" alt="show chat icon" />
+      <ChatOpenIcon />
     </ShowChatButton>
   );
 }

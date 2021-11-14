@@ -7,7 +7,7 @@ function ChatReaction({
   isReactioned,
 }: {
   count: number;
-  handleLike: () => {};
+  handleLike: () => void;
   isReactioned: boolean;
 }) {
   return (

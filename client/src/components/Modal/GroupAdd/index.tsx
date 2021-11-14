@@ -9,8 +9,8 @@ function GroupAddModal({
   showGroupJoin,
 }: {
   controller: ModalController;
-  showGroupCreate: () => {};
-  showGroupJoin: () => {};
+  showGroupCreate: () => void;
+  showGroupJoin: () => void;
 }) {
   const TransporterComponent = (
     <>

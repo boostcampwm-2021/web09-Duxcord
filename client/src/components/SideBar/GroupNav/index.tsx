@@ -17,6 +17,7 @@ import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
 import { useSelectedGroup } from '@hooks/useSelectedGroup';
 import { mutate } from 'swr';
+import { GroupAddIcon } from '../../common/Icon';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -80,7 +81,7 @@ function GroupNav() {
       <GroupListDivider />
       <div>
         <AddGroupButton onClick={groupAddModalControl.show}>
-          <img src="/icons/addGroup.png" alt="addGroup" />
+          <GroupAddIcon />
         </AddGroupButton>
       </div>
       {selectedModal === 'ADD' ? (
