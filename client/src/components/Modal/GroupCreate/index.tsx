@@ -9,7 +9,11 @@ import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
 import { InputForm, InputImage, InputText } from './style';
 
-function GroupCreateModal({ controller: { hide, show } }: { controller: ModalController }) {
+function GroupCreateModal({
+  controller: { hide, show, previous },
+}: {
+  controller: ModalController;
+}) {
   const [groupName, setGroupName] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
@@ -71,7 +75,7 @@ function GroupCreateModal({ controller: { hide, show } }: { controller: ModalCon
           },
         },
       }}
-      controller={{ hide: finishModal, show }}
+      controller={{ hide: finishModal, show, previous }}
     />
   );
 }
