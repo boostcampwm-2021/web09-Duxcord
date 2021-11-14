@@ -40,6 +40,8 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
 
   const [isFocused, setIsFocused] = useState(false);
 
+  const selectChat = () => dispatch(setSelectedChat(chatData));
+
   return (
     <ChatWrapper onMouseEnter={() => setIsFocused(true)} onMouseLeave={() => setIsFocused(false)}>
       <UserImage src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
@@ -62,11 +64,11 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
               count={threadsCount}
               lastThreadUser={threadWriter}
               threadLastTime={threadLastTime}
-              onClick={() => dispatch(setSelectedChat(chatData))}
+              selectChat={() => selectChat()}
             />
           )}
         </div>
-        {isFocused && <AddChatReaction handleLike={handleLike} chatData={chatData} />}
+        {isFocused && <AddChatReaction handleLike={handleLike} selectChat={selectChat} />}
       </div>
     </ChatWrapper>
   );

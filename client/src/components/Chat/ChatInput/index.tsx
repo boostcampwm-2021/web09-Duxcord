@@ -4,7 +4,7 @@ import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
 import { FileSelectIcon } from '../../common/Icon';
 import { ButtonWrapper, Input, Wrapper } from './style';
 
-function ChatInput({ scrollToBottom }: { scrollToBottom: Function }) {
+function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
   const chatInputRef = useRef<HTMLInputElement>(null);
 
