@@ -4,10 +4,10 @@ import { useHistory } from 'react-router';
 import Modal from '..';
 import { API_URL } from '../../../api/API_URL';
 import { postJoinGroup } from '../../../api/postJoinGroup';
-import { useGroups } from '../../../hooks/useGroups';
-import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
-import Colors from '../../../styles/Colors';
-import { ModalController } from '../../../types/modal';
+import { useGroups } from '@hooks/useGroups';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import Colors from '@styles/Colors';
+import { ModalController } from '@customTypes/modal';
 import { Input } from './style';
 
 function GroupJoinModal({ controller: { hide, show } }: { controller: ModalController }) {

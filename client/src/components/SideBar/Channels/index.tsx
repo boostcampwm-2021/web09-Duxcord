@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
-import MeetEvent from '../../../types/socket/MeetEvent';
+import MeetEvent from '@customTypes/socket/MeetEvent';
 import { socket } from '../../../util/socket';
+import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
@@ -42,10 +43,10 @@ function Channels({ channelType }: Props) {
     <ChannelWrapper>
       <ChannelType>
         <div>
-          <img src="/icons/channelOpen.png" alt="channelToggle" />
+          <ChannelOpenIcon />
           <p>{channelType.toUpperCase()} CHANNELS</p>
         </div>
-        <img src="/icons/addChannel.png" alt="addChannel" />
+        <ChannelAddIcon />
       </ChannelType>
       <ul>
         {channels?.map((channel: any) => {

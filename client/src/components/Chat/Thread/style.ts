@@ -27,7 +27,7 @@ const ThreadHeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${Colors.Gray4};
-  & > img {
+  & > svg {
     width: 15px;
     height: 15px;
     cursor: pointer;

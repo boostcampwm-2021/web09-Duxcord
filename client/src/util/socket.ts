@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
-import ChannelEvent from '../types/socket/ChannelEvent';
+import ChannelEvent from '@customTypes/socket/ChannelEvent';
 
 export const socket = io('/');
 socket.connect();

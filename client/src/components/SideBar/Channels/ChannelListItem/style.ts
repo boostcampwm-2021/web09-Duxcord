@@ -17,7 +17,7 @@ const ListItem = styled.li`
   & div {
     display: flex;
     align-items: center;
-    & img {
+    & svg {
       margin-right: 5px;
     }
     & p {

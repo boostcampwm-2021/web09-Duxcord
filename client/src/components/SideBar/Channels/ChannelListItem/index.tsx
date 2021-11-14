@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { API_URL } from '../../../../api/API_URL';
 import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
+import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icon';
 import { ListItem } from './style';
 
 interface Props {
@@ -24,10 +25,14 @@ function ChannelListItem({ channelType, id, name }: Props) {
   return (
     <ListItem onClick={joinChannel}>
       <div>
-        <img src={'/icons/' + channelType + 'Channel.png'} alt={channelType + 'Channel'} />
+        {channelType === 'meeting' ? (
+          <ChannelMeetingIcon />
+        ) : channelType === 'chatting' ? (
+          <ChannelChattingIcon />
+        ) : null}
         <p>{name}</p>
       </div>
-      <img src="/icons/delete.png" alt="deleteChannel" />
+      <GroupDeleteIcon />
     </ListItem>
   );
 }

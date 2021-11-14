@@ -34,7 +34,7 @@ const ProfileWrapper = styled.div`
   & > div:last-child {
     display: flex;
     align-items: center;
-    & img {
+    & svg {
       width: 30px;
       height: 30px;
       padding: 5px;

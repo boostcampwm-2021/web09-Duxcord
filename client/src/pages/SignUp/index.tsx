@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Background from '../../components/common/Background';
+import Background from '@components/common/Background';
 import { Redirect, Link } from 'react-router-dom';
 
 import {

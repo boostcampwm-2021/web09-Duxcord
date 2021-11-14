@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
-import { useUserdata } from '../../../hooks/useUserdata';
-import { useUserDevice } from '../../../hooks/useUserDevice';
-import MeetEvent from '../../../types/socket/MeetEvent';
+import MeetEvent from '@customTypes/socket/MeetEvent';
+import { useSelectedChannel } from '@hooks/useSelectedChannel';
+import { useUserdata } from '@hooks/useUserdata';
+import { useUserDevice } from '@hooks/useUserDevice';
 import Socket, { socket } from '../../../util/socket';
 import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
 

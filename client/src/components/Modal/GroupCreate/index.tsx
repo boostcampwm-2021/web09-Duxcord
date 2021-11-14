@@ -4,10 +4,10 @@ import { useHistory } from 'react-router';
 import Modal from '..';
 import { API_URL } from '../../../api/API_URL';
 import { postCreateGroup } from '../../../api/postCreateGroup';
-import { useGroups } from '../../../hooks/useGroups';
-import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
-import Colors from '../../../styles/Colors';
-import { ModalController } from '../../../types/modal';
+import { useGroups } from '@hooks/useGroups';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import Colors from '@styles/Colors';
+import { ModalController } from '@customTypes/modal';
 import { InputForm, InputImage, InputText } from './style';
 
 function GroupCreateModal({ controller: { hide, show } }: { controller: ModalController }) {

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { postLikeChat } from '../../../api/postLikeChat';
 import { STATUS_CODES } from '../../../api/STATUS_CODES';
-import { setSelectedChat } from '../../../redux/selectedChat/slice';
-import { ChatData } from '../../../types/chats';
+import { setSelectedChat } from '@redux/selectedChat/slice';
+import { ChatData } from '@customTypes/chats';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
@@ -40,6 +40,8 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
 
   const [isFocused, setIsFocused] = useState(false);
 
+  const selectChat = () => dispatch(setSelectedChat(chatData));
+
   return (
     <ChatWrapper onMouseEnter={() => setIsFocused(true)} onMouseLeave={() => setIsFocused(false)}>
       <UserImage src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
@@ -62,11 +64,11 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
               count={threadsCount}
               lastThreadUser={threadWriter}
               threadLastTime={threadLastTime}
-              onClick={() => dispatch(setSelectedChat(chatData))}
+              selectChat={() => selectChat()}
             />
           )}
         </div>
-        {isFocused && <AddChatReaction handleLike={handleLike} chatData={chatData} />}
+        {isFocused && <AddChatReaction handleLike={handleLike} selectChat={selectChat} />}
       </div>
     </ChatWrapper>
   );

@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useGroups } from '../../../hooks/useGroups';
-import { setSelectedChannel } from '../../../redux/selectedChannel/slice';
-import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
+import { useGroups } from '@hooks/useGroups';
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
 import { socket } from '../../../util/socket';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
-import { ModalController } from '../../../types/modal';
+import { ModalController } from '@customTypes/modal';
 import {
   addUserConnection,
   removeUserConnection,
   setGroupConnection,
-} from '../../../redux/groupConnection/slice';
+} from '@redux/groupConnection/slice';
 import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import { useSelectedGroup } from '@hooks/useSelectedGroup';
 import { mutate } from 'swr';
 import { API_URL } from '../../../api/API_URL';
-import GroupEvent from '../../../types/socket/GroupEvent';
+import GroupEvent from '@customTypes/socket/GroupEvent';
+import { GroupAddIcon } from '../../common/Icon';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -82,7 +83,7 @@ function GroupNav() {
       <GroupListDivider />
       <div>
         <AddGroupButton onClick={groupAddModalControl.show}>
-          <img src="/icons/addGroup.png" alt="addGroup" />
+          <GroupAddIcon />
         </AddGroupButton>
       </div>
       {selectedModal === 'ADD' ? (

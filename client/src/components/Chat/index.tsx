@@ -1,19 +1,19 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ChatItem from './ChatItem';
 import { ChatContainer, Chats, ChatPart } from './style';
-import { ChatData } from '../../types/chats';
+import { ChatData } from '@customTypes/chats';
 import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
 import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
-import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import UserConnection from './UserConnection';
 import Thread from './Thread';
-import { useSelectedChat } from '../../hooks/useSelectedChat';
 import { API_URL } from '../../api/API_URL';
-import LikeEvent from '../../types/socket/LikeEvent';
-import ThreadEvent from '../../types/socket/ThreadEvent';
-import ChatEvent from '../../types/socket/ChatEvent';
+import LikeEvent from '@customTypes/socket/LikeEvent';
+import ThreadEvent from '@customTypes/socket/ThreadEvent';
+import ChatEvent from '@customTypes/socket/ChatEvent';
+import { useSelectedChannel } from '@hooks/useSelectedChannel';
+import { useSelectedChat } from '@hooks/useSelectedChat';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import SignIn from './pages/SignIn';
-import SignUp from './pages/SignUp';
-import Main from './pages/Main';
-import GlobalStyle from './styles/GlobalStyle';
+import SignIn from '@pages/SignIn';
+import SignUp from '@pages/SignUp';
+import Main from '@pages/Main';
+import GlobalStyle from '@styles/GlobalStyle';
 import { Switch } from 'react-router-dom';
-import RestrictedRoute from './components/common/RestrictedRoute';
+import RestrictedRoute from '@components/common/RestrictedRoute';
 
 function App() {
   return (
