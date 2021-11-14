@@ -7,20 +7,23 @@ import {
 } from 'typeorm';
 import dotenv from 'dotenv';
 
-import { User } from '../db/entities/user.entity';
-import { Thread } from '../db/entities/thread.entity';
-import { ChattingChannel } from '../db/entities/chattingchannel.entity';
-import { Chat } from '../db/entities/chat.entity';
-import { MeetingChannel } from '../db/entities/meetingchannel.entity';
-import { Reaction } from '../db/entities/reaction.entity';
-import { GroupMember } from '../db/entities/groupmember.entity';
-import { Workgroup } from '../db/entities/workgroup.entity';
-import { File } from '../db/entities/file.entity';
-import { Session } from '../db/entities/session.entity';
-import { UserRepository } from '../db/repositories/user.repository';
-import { GroupMemberRepository } from '../db/repositories/groupmember.repository';
-import { ChatRepository } from '../db/repositories/chat.repository';
-import { ThreadRepository } from '../db/repositories/thread.repository';
+import { Session } from 'inspector';
+import {
+  Workgroup,
+  ChattingChannel,
+  MeetingChannel,
+  Reaction,
+  User,
+  Thread,
+  Chat,
+  GroupMember,
+} from '../db/entities';
+import {
+  UserRepository,
+  GroupMemberRepository,
+  ChatRepository,
+  ThreadRepository,
+} from '../db/repositories';
 dotenv.config();
 
 export let connection: Connection;
