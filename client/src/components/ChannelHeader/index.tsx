@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { useSelectedChannel } from '../../hooks/useSelectedChannel';
 import { ModalController } from '../../types/modal';
+import {
+  ChannelChattingIcon,
+  ChannelMeetingIcon,
+  HeaderAlertIcon,
+  HeaderFixIcon,
+  HeaderUsersIcon,
+} from '../common/Icon';
 import LogoutModal from '../Modal/Logout';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';
 
@@ -19,7 +26,11 @@ function ChannelHeader() {
         <ChannelHeaderLeft>
           {name !== '' ? (
             <>
-              <img src={`/icons/${type}Channel.png`} alt={`${type}Channel`} />
+              {type === 'meeting' ? (
+                <ChannelMeetingIcon />
+              ) : type === 'chatting' ? (
+                <ChannelChattingIcon />
+              ) : null}
               <p>{name}</p>
             </>
           ) : (
@@ -28,9 +39,9 @@ function ChannelHeader() {
         </ChannelHeaderLeft>
         <ChannelHeaderRight>
           <div>
-            <img src="/icons/headerNotification.png" alt="headerNotification" />
-            <img src="/icons/headerFix.png" alt="headerFix" />
-            <img src="/icons/headerUsers.png" alt="headerUsers" />
+            <HeaderAlertIcon />
+            <HeaderFixIcon />
+            <HeaderUsersIcon />
           </div>
           <div>
             <p>Duxcord</p>

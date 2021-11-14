@@ -8,6 +8,7 @@ import { setSelectedChat } from '../../../redux/selectedChat/slice';
 import { ChatData } from '../../../types/chats';
 import { getFetcher } from '../../../util/fetcher';
 import { socket } from '../../../util/socket';
+import { FileSelectIcon, ThreadCloseIcon } from '../../common/Icon';
 import ThreadItem from '../ThreadItem';
 import {
   ButtonWrapper,
@@ -79,11 +80,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>Thread</div>
             <div>#{name}</div>
           </div>
-          <img
-            src="/icons/threadClose.png"
-            alt="close thread"
-            onClick={() => dispatch(setSelectedChat(0))}
-          />
+          <ThreadCloseIcon onClick={() => dispatch(setSelectedChat(0))} />
         </ThreadHeaderWrapper>
         <OriginalChatWrapper>
           <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
@@ -102,7 +99,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
       </div>
       <Wrapper onSubmit={createThread}>
         <ButtonWrapper>
-          <img src="/icons/btn-text-add-file.svg" alt="add file button" />
+          <FileSelectIcon />
         </ButtonWrapper>
         <Input
           placeholder="Message to channel"
