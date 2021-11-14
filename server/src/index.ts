@@ -3,10 +3,10 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { ormLoader } from './loaders/ormLoader';
+import { ormLoader } from './loaders/orm.loader';
 import { createServer } from 'http';
-import { socketLoader } from './loaders/socketLoader';
-import { appLoader } from './loaders/appLoader';
+import { socketLoader } from './loaders/socket.loader';
+import { appLoader } from './loaders/app.loader';
 
 export const appInit = async () => {
   await ormLoader();

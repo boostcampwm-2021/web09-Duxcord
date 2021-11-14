@@ -5,10 +5,10 @@ import {
   chatRepository,
   threadRepository,
   reactionRepository,
-} from '../loaders/ormLoader';
+} from '../loaders/orm.loader';
 
 import { Thread } from '../db/entities';
-import { io } from '../loaders/socketLoader';
+import { io } from '../loaders/socket.loader';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',

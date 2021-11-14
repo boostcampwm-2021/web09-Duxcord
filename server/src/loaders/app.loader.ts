@@ -3,7 +3,7 @@ import session from 'express-session';
 import morgan from 'morgan';
 import { TypeormStore } from 'typeorm-store';
 import { apiRouter } from '../routes/api.router';
-import { sessionRepository } from './ormLoader';
+import { sessionRepository } from './orm.loader';
 
 export const appLoader = (app) => {
   app.set('port', process.env.PORT || 8000);

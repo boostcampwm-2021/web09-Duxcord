@@ -6,7 +6,7 @@ import {
   meetingChannelRepository,
   chattingChannelRepository,
   userRepository,
-} from '../loaders/ormLoader';
+} from '../loaders/orm.loader';
 import { ChattingChannel, MeetingChannel, Workgroup } from '../db/entities';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
