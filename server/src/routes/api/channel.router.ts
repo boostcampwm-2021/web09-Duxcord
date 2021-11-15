@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import channelController from '../../controller/channel.controller';
-import { accessControl } from '../../util';
+import channelController from '../../controllers/channel.controller';
+import { accessControl } from '../../utils';
+
 export const channelRouter = Router();
 
 channelRouter.post(

@@ -7,20 +7,23 @@ import {
 } from 'typeorm';
 import dotenv from 'dotenv';
 
-import { User } from '../entity/user.entity';
-import { Thread } from '../entity/thread.entity';
-import { ChattingChannel } from '../entity/chattingchannel.entity';
-import { Chat } from '../entity/chat.entity';
-import { MeetingChannel } from '../entity/meetingchannel.entity';
-import { Reaction } from '../entity/reaction.entity';
-import { GroupMember } from '../entity/groupmember.entity';
-import { Workgroup } from '../entity/workgroup.entity';
-import { File } from '../entity/file.entity';
-import { Session } from '../entity/session.entity';
-import { UserRepository } from './repository/user.repository';
-import { GroupMemberRepository } from './repository/groupmember.repository';
-import { ChatRepository } from './repository/chat.repository';
-import { ThreadRepository } from './repository/thread.repository';
+import { Session } from 'inspector';
+import {
+  Workgroup,
+  ChattingChannel,
+  MeetingChannel,
+  Reaction,
+  User,
+  Thread,
+  Chat,
+  GroupMember,
+} from '../db/entities';
+import {
+  UserRepository,
+  GroupMemberRepository,
+  ChatRepository,
+  ThreadRepository,
+} from '../db/repositories';
 dotenv.config();
 
 export let connection: Connection;
@@ -61,7 +64,7 @@ const connectDB = async () => {
   return connection;
 };
 
-export const initORM = async () => {
+export const ormLoader = async () => {
   await connectDB();
   userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);

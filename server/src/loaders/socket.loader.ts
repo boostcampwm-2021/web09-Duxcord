@@ -1,12 +1,11 @@
 import { Server } from 'socket.io';
 
 export let io: Server;
+export const userConnectionInfo = {};
+export const meetingMembers = {};
+export const socketToMeeting = {};
 
-export async function socketInit(httpServer) {
-  const userConnectionInfo = {};
-  const meetingMembers = {};
-  const socketToMeeting = {};
-
+export async function socketLoader(httpServer) {
   io = new Server(httpServer);
   io.on('connection', (socket) => {
     socket.on('GroupID', (groupID, user) => {

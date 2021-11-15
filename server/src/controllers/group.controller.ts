@@ -6,10 +6,8 @@ import {
   meetingChannelRepository,
   chattingChannelRepository,
   userRepository,
-} from '../db';
-import { Workgroup } from '../entity/workgroup.entity';
-import { ChattingChannel } from '../entity/chattingchannel.entity';
-import { MeetingChannel } from '../entity/meetingchannel.entity';
+} from '../loaders/orm.loader';
+import { ChattingChannel, MeetingChannel, Workgroup } from '../db/entities';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
