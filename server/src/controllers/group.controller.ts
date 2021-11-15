@@ -19,6 +19,7 @@ const MSG = {
   groupNotFound: '존재하지 않는 그룹입니다.',
   wrongChannelType: '올바르지 않은 채널 타입입니다.',
   alreadyJoined: '이미 그룹에 가입된 사용자입니다.',
+  channelNameEmpty: '채널 이름을 입력해주세요',
 };
 const DEFFAULT_CHANNEL_NAME = 'general';
 
@@ -89,6 +90,7 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
   const { channelType, channelName } = req.body;
 
   try {
+    if (!channelName || !channelName.trim()) return res.status(400).send(MSG.channelNameEmpty);
     const group = await groupRepository.findOne({ where: { id: id } });
     if (!group) return res.status(400).send(MSG.groupNotFound);
     if (!Object.values(ChannelType).includes(channelType))
