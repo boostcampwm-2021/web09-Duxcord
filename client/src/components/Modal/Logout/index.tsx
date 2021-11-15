@@ -1,18 +1,18 @@
 import { useHistory } from 'react-router';
 import Modal from '..';
-import { ModalController } from '../../../types/modal';
+import { ModalController } from '@customTypes/modal';
 
-import Colors from '../../../styles/Colors';
+import Colors from '@styles/Colors';
 import { MiddlePart } from './style';
 import { postLogout } from '../../../api/postLogout';
-import { socket } from '../../../util/socket';
+import { URL } from 'src/api/URL';
 
 function LogoutModal({ controller: { hide, show } }: { controller: ModalController }) {
   const history = useHistory();
   const finishModal = () => hide();
   const logOut = async () => {
     const isSuccess = await postLogout();
-    if (isSuccess) history.push(`/`);
+    if (isSuccess) history.push(URL.loginPage);
     window.location.reload();
   };
 

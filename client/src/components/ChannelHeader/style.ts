@@ -10,11 +10,12 @@ const ChannelHeaderWrapper = styled.div`
   & div {
     display: flex;
     align-items: center;
+    gap: 12px;
   }
 `;
 
 const ChannelHeaderLeft = styled.div`
-  & img {
+  & svg {
     margin-right: 10px;
   }
   & p {
@@ -27,12 +28,12 @@ const ChannelHeaderLeft = styled.div`
 `;
 
 const ChannelHeaderRight = styled.div`
-  & div {
-    margin-left: 20px;
-    & img {
-      margin: 0 5px;
-    }
+  & > div:first-child {
+    display: flex;
+    gap: 16px;
+    padding: 0 24px;
   }
+
   & p {
     color: ${Colors.Gray1};
     font-weight: 500;

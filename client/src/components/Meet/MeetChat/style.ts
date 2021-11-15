@@ -40,7 +40,7 @@ const ShowChatButton = styled.button`
   background: none;
   border: none;
 
-  img {
+  svg {
     width: 25px;
     height: 25px;
   }
@@ -54,7 +54,7 @@ const CloseChatButton = styled.button`
   background: none;
   border: none;
 
-  img {
+  svg {
     width: 20px;
     height: 20px;
   }

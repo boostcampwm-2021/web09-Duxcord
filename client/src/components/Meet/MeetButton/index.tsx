@@ -1,11 +1,16 @@
 import React from 'react';
+import { MeetingStopIcon, ScreenShareStartIcon } from '../../common/Icon';
 import { MeetButtonWrapper } from './style';
 
 function MeetButton() {
   return (
     <MeetButtonWrapper>
-      <button>화면 공유</button>
-      <button>통화 종료</button>
+      <button>
+        <ScreenShareStartIcon stroke="white" />
+      </button>
+      <button>
+        <MeetingStopIcon stroke="white" />
+      </button>
     </MeetButtonWrapper>
   );
 }

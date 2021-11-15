@@ -1,19 +1,18 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ChatItem from './ChatItem';
 import { ChatContainer, Chats, ChatPart } from './style';
-import { ChatData } from '../../types/chats';
+import { ChatData } from '@customTypes/chats';
 import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
 import Socket, { socket } from '../../util/socket';
 import { getFetcher } from '../../util/fetcher';
-import UserConnection from './UserConnection/UserConnection';
+import UserConnection from './UserConnection';
 import Thread from './Thread';
-import { useSelectedChannel, useSelectedChat } from '../../hooks';
-
-const getKey = (channelID: number | null) => (index: number, prevData: any) => {
-  if (prevData && !prevData.length) return null;
-  return `/api/channel/${channelID}?page=${index + 1}`;
-};
+import { API_URL } from '../../api/API_URL';
+import LikeEvent from '@customTypes/socket/LikeEvent';
+import ThreadEvent from '@customTypes/socket/ThreadEvent';
+import ChatEvent from '@customTypes/socket/ChatEvent';
+import { useSelectedChannel, useSelectedChat } from '@hooks/index';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
@@ -21,17 +20,17 @@ const THRESHOLD = 300;
 function Chat() {
   const { id } = useSelectedChannel();
   const selectedChat = useSelectedChat();
-  const { data: chats, mutate, setSize } = useSWRInfinite(getKey(id), getFetcher);
+  const { data: chats, mutate, setSize } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
   const isEmpty = chats?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id === null) return;
-    Socket.joinChannel({ channelType: 'chatting', id });
+    Socket.joinChannel({ channelType: ChatEvent.chatting, id });
 
     return () => {
-      Socket.leaveChannel({ channelType: 'chatting', id });
+      Socket.leaveChannel({ channelType: ChatEvent.chatting, id });
     };
   }, [id]);
 
@@ -100,13 +99,13 @@ function Chat() {
   );
 
   useEffect(() => {
-    socket.on('chat', onChat);
-    socket.on('like', onLike);
-    socket.on('thread', onThread);
+    socket.on(ChatEvent.chat, onChat);
+    socket.on(LikeEvent.like, onLike);
+    socket.on(ThreadEvent.thread, onThread);
     return () => {
-      socket.off('chat', onChat);
-      socket.off('like', onLike);
-      socket.off('thread', onThread);
+      socket.off(ChatEvent.chat);
+      socket.off(LikeEvent.like);
+      socket.off(ThreadEvent.thread);
     };
   }, [onChat, onLike, onThread]);
 

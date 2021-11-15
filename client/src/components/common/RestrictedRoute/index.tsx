@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, RouteProps } from 'react-router-dom';
-import { useAccessControl } from '../../../hooks';
+import { useAccessControl } from '@hooks/index';
 
 interface Props extends RouteProps {
   signIn: boolean;

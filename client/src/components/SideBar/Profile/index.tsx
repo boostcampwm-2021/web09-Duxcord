@@ -3,6 +3,14 @@ import { ProfileWrapper } from './style';
 import { useDispatch } from 'react-redux';
 import { useUserdata, useUserDevice } from '../../../hooks';
 import { setUserDevice } from '../../../redux/userDevice/slice';
+import {
+  CameraOffIcon,
+  CameraOnIcon,
+  MicOffIcon,
+  MicOnIcon,
+  SpeakerOffIcon,
+  SpeakerOnIcon,
+} from '../../common/Icon';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -22,21 +30,15 @@ function Profile() {
         <p>{userdata?.username}</p>
       </div>
       <div>
-        <img
-          onClick={() => onToggleDevice('mic')}
-          src={'/icons/mic' + (device.mic ? 'On' : 'Off') + '.png'}
-          alt="micToggle"
-        />
-        <img
-          onClick={() => onToggleDevice('speaker')}
-          src={'/icons/speaker' + (device.speaker ? 'On' : 'Off') + '.png'}
-          alt="speakerToggle"
-        />
-        <img
-          onClick={() => onToggleDevice('cam')}
-          src={'/icons/cam' + (device.cam ? 'On' : 'Off') + '.png'}
-          alt="camToggle"
-        />
+        <div onClick={() => onToggleDevice('mic')}>
+          {device.mic ? <MicOnIcon /> : <MicOffIcon />}
+        </div>
+        <div onClick={() => onToggleDevice('speaker')}>
+          {device.speaker ? <SpeakerOnIcon /> : <SpeakerOffIcon />}
+        </div>
+        <div onClick={() => onToggleDevice('cam')}>
+          {device.cam ? <CameraOnIcon /> : <CameraOffIcon />}
+        </div>
       </div>
     </ProfileWrapper>
   );

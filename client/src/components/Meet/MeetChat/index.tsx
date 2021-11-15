@@ -1,7 +1,9 @@
 import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useSelectedChannel, useUserdata } from '../../../hooks';
+import MeetEvent from '@customTypes/socket/MeetEvent';
+import { useSelectedChannel, useUserdata } from '@hooks/index';
 import { socket } from '../../../util/socket';
 import { ChatHeader, UserImage } from '../../Chat/ChatItem/style';
+import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icon';
 import {
   Chat,
   ChatList,
@@ -22,7 +24,6 @@ interface IChat {
   createdAt: string;
 }
 
-const MEET_CHAT = 'meetChat';
 const THRESHOLD = 300;
 
 function MeetChat() {
@@ -38,7 +39,7 @@ function MeetChat() {
     if (!chatInputRef.current || !userdata) return;
     const message = chatInputRef.current.value;
     if (message.trim() === '') return;
-    socket.emit(MEET_CHAT, {
+    socket.emit(MeetEvent.meetChat, {
       channelID,
       chat: { ...userdata, message, createdAt: new Date().toLocaleTimeString('ko-KR') },
     });
@@ -55,7 +56,7 @@ function MeetChat() {
   }, [show]);
 
   useEffect(() => {
-    socket.on(MEET_CHAT, (chat: IChat) => {
+    socket.on(MeetEvent.meetChat, (chat: IChat) => {
       setChats((chats) => [...chats, chat]);
       if (!chatListRef.current) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
@@ -63,14 +64,14 @@ function MeetChat() {
     });
 
     return () => {
-      socket.off(MEET_CHAT);
+      socket.off(MeetEvent.meetChat);
     };
   }, []);
 
   return show ? (
     <ChatWrap>
-      <CloseChatButton onClick={() => setShow(false)}>
-        <img src="/icons/btn-close-meetchat.svg" alt="close chat icon" />
+      <CloseChatButton>
+        <ChatCloseIcon onClick={() => setShow(false)} />
       </CloseChatButton>
       <ChatList ref={chatListRef}>
         {chats.map(({ id, loginID, username, thumbnail, message, createdAt }) => (
@@ -90,7 +91,7 @@ function MeetChat() {
     </ChatWrap>
   ) : (
     <ShowChatButton onClick={() => setShow(true)}>
-      <img src="/icons/btn-show-meetchat.svg" alt="show chat icon" />
+      <ChatOpenIcon />
     </ShowChatButton>
   );
 }

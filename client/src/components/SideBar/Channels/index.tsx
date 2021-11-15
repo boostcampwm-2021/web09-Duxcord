@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useSelectedGroup } from '../../../hooks';
+import { useSelectedGroup } from '@hooks/index';
+import MeetEvent from '@customTypes/socket/MeetEvent';
 import { socket } from '../../../util/socket';
+import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
@@ -24,16 +26,16 @@ function Channels({ channelType }: Props) {
       (channel: { id: number }) => channel.id,
     );
 
-    socket.emit('MeetingChannelList', selectedGroup.code, meetingchannelList);
+    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingchannelList);
   }, [selectedGroup]);
 
   useEffect(() => {
-    socket.on('MeetingUserList', (meetingUserList) => {
+    socket.on(MeetEvent.MeetingUserList, (meetingUserList) => {
       setMeetingUser({ ...meetingUserList });
     });
 
     return () => {
-      socket.off('MeetingUserList');
+      socket.off(MeetEvent.MeetingUserList);
     };
   }, []);
 
@@ -41,10 +43,10 @@ function Channels({ channelType }: Props) {
     <ChannelWrapper>
       <ChannelType>
         <div>
-          <img src="/icons/channelOpen.png" alt="channelToggle" />
+          <ChannelOpenIcon />
           <p>{channelType.toUpperCase()} CHANNELS</p>
         </div>
-        <img src="/icons/addChannel.png" alt="addChannel" />
+        <ChannelAddIcon />
       </ChannelType>
       <ul>
         {channels?.map((channel: any) => {

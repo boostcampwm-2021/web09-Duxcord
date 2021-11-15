@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useGroups, useSelectedGroup } from '../../../hooks';
-import { setSelectedChannel } from '../../../redux/selectedChannel/slice';
-import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
+import { useGroups, useSelectedGroup } from '@hooks/index';
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
 import { socket } from '../../../util/socket';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
-import { ModalController } from '../../../types/modal';
+import { ModalController } from '@customTypes/modal';
 import {
   addUserConnection,
   removeUserConnection,
   setGroupConnection,
-} from '../../../redux/groupConnection/slice';
+} from '@redux/groupConnection/slice';
 import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
 import { mutate } from 'swr';
+import { API_URL } from '../../../api/API_URL';
+import GroupEvent from '@customTypes/socket/GroupEvent';
+import { GroupAddIcon } from '../../common/Icon';
+import { URL } from 'src/api/URL';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -40,30 +44,30 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(`/main?group=${group.id}`);
+    history.push(URL.groupPage(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
-    socket.emit('GroupID', group.code);
+    socket.emit(GroupEvent.groupID, group.code);
   };
 
   useEffect(() => {
-    socket.on('GroupUserConnection', (connectionList) => {
+    socket.on(GroupEvent.groupUserConnection, (connectionList) => {
       dispatch(setGroupConnection(connectionList));
     });
 
-    socket.on('userExit', (user, code) => {
+    socket.on(GroupEvent.userExit, (user, code) => {
       dispatch(removeUserConnection(user));
     });
 
-    socket.on('userEnter', (user, code) => {
+    socket.on(GroupEvent.userEnter, (user, code) => {
       if (code === selectedGroup?.code) dispatch(addUserConnection(user));
-      mutate(`/api/group/${selectedGroup?.id}/members`);
+      mutate(API_URL.group.getGroupMembers(selectedGroup?.id));
     });
 
     return () => {
-      socket.off('GroupUserConnection');
-      socket.off('userExit');
-      socket.off('userEnter');
+      socket.off(GroupEvent.groupUserConnection);
+      socket.off(GroupEvent.userEnter);
+      socket.off(GroupEvent.userExit);
     };
   }, [dispatch, selectedGroup?.code, selectedGroup?.id]);
 
@@ -79,7 +83,7 @@ function GroupNav() {
       <GroupListDivider />
       <div>
         <AddGroupButton onClick={groupAddModalControl.show}>
-          <img src="/icons/addGroup.png" alt="addGroup" />
+          <GroupAddIcon />
         </AddGroupButton>
       </div>
       {selectedModal === 'ADD' ? (

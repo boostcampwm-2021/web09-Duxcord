@@ -3,13 +3,18 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
 import { postCreateGroup } from '../../../api/postCreateGroup';
-import { useGroups } from '../../../hooks';
-import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
-import Colors from '../../../styles/Colors';
-import { ModalController } from '../../../types/modal';
+import { useGroups } from '@hooks/index';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import Colors from '@styles/Colors';
+import { ModalController } from '@customTypes/modal';
 import { InputForm, InputImage, InputText } from './style';
+import { URL } from 'src/api/URL';
 
-function GroupCreateModal({ controller: { hide, show } }: { controller: ModalController }) {
+function GroupCreateModal({
+  controller: { hide, show, previous },
+}: {
+  controller: ModalController;
+}) {
   const [groupName, setGroupName] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
@@ -31,7 +36,7 @@ function GroupCreateModal({ controller: { hide, show } }: { controller: ModalCon
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.push(`/main/group/${group.id}`);
+        history.push(URL.groupPage(group.id));
         break;
       case 400:
         const responseText = await response.text();
@@ -71,7 +76,7 @@ function GroupCreateModal({ controller: { hide, show } }: { controller: ModalCon
           },
         },
       }}
-      controller={{ hide: finishModal, show }}
+      controller={{ hide: finishModal, show, previous }}
     />
   );
 }

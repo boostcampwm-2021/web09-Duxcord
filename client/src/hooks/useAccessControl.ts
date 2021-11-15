@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { API_URL } from '../api/API_URL';
+import { URL } from '../api/URL';
 import { useUserdata } from './useUserdata';
 
 export const useAccessControl = ({
   signIn = true,
-  redirectPath = '/',
+  redirectPath = URL.loginPage,
 }: {
   signIn: boolean;
   redirectPath: string;
