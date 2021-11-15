@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelectedGroup } from '@hooks/index';
+import { useUserdata, useSelectedGroup } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import { GroupDeleteIcon, GroupInviteIcon } from '../../common/Icon';
 import GroupInviteModal from '../../Modal/GroupInvite';
@@ -7,6 +7,8 @@ import { GroupSettingWrapper } from './style';
 
 function GroupSetting() {
   const selectedGroup = useSelectedGroup();
+  const { userdata } = useUserdata();
+  const isLeader = selectedGroup?.leader.loginID === userdata?.loginID;
 
   const [showModal, setShowModal] = useState(false);
   const modalController: ModalController = {
@@ -20,7 +22,7 @@ function GroupSetting() {
       {selectedGroup && (
         <div>
           <GroupInviteIcon onClick={modalController.show} />
-          <GroupDeleteIcon width="24px" height="24px" />
+          {isLeader && <GroupDeleteIcon width="24px" height="24px" />}
         </div>
       )}
       {showModal && <GroupInviteModal controller={modalController} />}
