@@ -1,11 +1,4 @@
 export const API_URL = {
-  page: {
-    loginPage: '/',
-    groupPage: (groupID: number | undefined = undefined) =>
-      groupID ? `/main?group=${groupID}` : '/main',
-    ChannelPage: (groupID: number | undefined, channelType: string, id: number) =>
-      `/main?group=${groupID}&type=${channelType}&id=${id}`,
-  },
   user: {
     getUserdata: '/api/user',
     getGroups: '/api/user/groups',
