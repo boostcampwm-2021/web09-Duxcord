@@ -14,7 +14,7 @@ export class GroupMemberRepository extends Repository<GroupMember> {
         'group.name',
         'group.thumbnail',
         'group.code',
-        'user.id',
+        'user.loginID',
       ])
       .leftJoinAndSelect('group.meetingChannels', 'meetingChannels')
       .leftJoinAndSelect('group.chattingChannels', 'chattingChannels')
