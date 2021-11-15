@@ -63,7 +63,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          port: ${{ secrets.PORT_DEV }}
           source: './client/build'
           target: '/usr/share/nginx/html'
 
@@ -73,7 +73,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          port: ${{ secrets.PORT_DEV }}
           source: './server/dist'
           target: 'duxcord'
 
@@ -83,7 +83,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+          port: ${{ secrets.PORT_DEV }}
           script: |
             chown root duxcord/server
             cd duxcord/server/dist
