@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../util/socket';
 import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
+import { highlightMyVolume } from 'src/util/Audio';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -20,6 +21,7 @@ interface IMeetingUser {
   username: string;
   thumbnail: string | null;
   stream?: MediaStream;
+  pc?: RTCPeerConnection;
 }
 
 function MeetVideo() {
@@ -45,6 +47,7 @@ function MeetVideo() {
       myStream = canvas.captureStream(0);
     }
     if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
+    if (myVideoRef.current) highlightMyVolume(myStream, myVideoRef.current);
     setMyStream(myStream);
   };
 
@@ -67,6 +70,7 @@ function MeetVideo() {
           {
             ...member,
             stream: data.streams[0],
+            pc,
           },
         ]);
       };
@@ -76,7 +80,6 @@ function MeetVideo() {
           if (myStream) pc.addTrack(track, myStream);
         });
       }
-
       return pc;
     },
     [myStream],
@@ -185,6 +188,18 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
   useEffect(() => {
     if (!ref.current || !member.stream) return;
     ref.current.srcObject = member.stream;
+    const interval = setInterval(() => {
+      const receiver = member?.pc?.getReceivers().find((r: { track: { kind: string } }) => {
+        return r.track.kind === 'audio';
+      });
+      const source = receiver?.getSynchronizationSources()[0];
+      if (source?.audioLevel && source?.audioLevel > 0.001) {
+        ref.current?.classList.add('saying');
+      } else {
+        ref.current?.classList.remove('saying');
+      }
+    }, 1000);
+    return () => clearInterval(interval);
   });
 
   return (
