@@ -53,7 +53,9 @@ function Chat() {
     chatListRef.current.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
   };
 
-  useEffect(scrollToBottom, []);
+  useEffect(() => {
+    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
+  }, [isEmpty]);
 
   const onChat = useCallback(
     async (chat: ChatData) => {
