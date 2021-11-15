@@ -42,10 +42,10 @@ export async function socketLoader(httpServer) {
       });
     });
 
-    socket.on(GroupEvent.groupDelete, (groupID, code) => {
+    socket.on(GroupEvent.groupDelete, (code) => {
+      delete userConnectionInfo[code];
       io.to(code).emit(GroupEvent.groupDelete, code);
       socket.leave(code);
-      delete userConnectionInfo[groupID];
     });
 
     const checkMeetingUserList = (meetingchannelList) => {
