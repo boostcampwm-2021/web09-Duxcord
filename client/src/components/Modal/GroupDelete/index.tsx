@@ -25,11 +25,11 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
       const response = await deleteGroup({ groupID: selectedGroup.id });
       switch (response.status) {
         case 200:
+          socket.emit(GroupEvent.groupDelete, selectedGroup.id, selectedGroup.code);
           mutateGroups(
             groups.filter((group: any) => group.id !== selectedGroup.id),
             false,
           );
-          socket.emit(GroupEvent.groupDelete, selectedGroup.code);
           dispatch(setSelectedGroup(null));
           dispatch(
             setSelectedChannel({
