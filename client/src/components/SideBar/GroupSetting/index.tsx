@@ -9,7 +9,7 @@ import { GroupSettingWrapper } from './style';
 function GroupSetting() {
   const selectedGroup = useSelectedGroup();
   const { userdata } = useUserdata();
-  const isLeader = selectedGroup?.leader.loginID === userdata?.loginID;
+  const isLeader = selectedGroup?.leader?.loginID === userdata?.loginID;
 
   const [selectedModal, setSelectedModal] = useState('');
 
@@ -25,7 +25,7 @@ function GroupSetting() {
   return (
     <GroupSettingWrapper>
       <p>{selectedGroup?.name}</p>
-      {selectedGroup && (
+      {selectedGroup && selectedGroup.name && (
         <div>
           <GroupInviteIcon onClick={groupInviteModalControl.show} />
           {isLeader && (
