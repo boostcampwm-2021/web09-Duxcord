@@ -20,6 +20,11 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
     min-width: 1100px;
     height: 100vh;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+    }
   }
 `;
 

@@ -7,6 +7,8 @@ import { getURLParams } from '../../../util/getURLParams';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
+import ChannelCreateModal from '@components/Modal/ChannelCreate';
+import { ModalController } from '@customTypes/modal';
 
 interface Props {
   channelType: 'chatting' | 'meeting';
@@ -21,6 +23,12 @@ function Channels({ channelType }: Props) {
   const channels =
     selectedGroup?.[channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'];
   const [meetingUser, setMeetingUser] = useState<IMeetingUser>({});
+  const [channelToCreate, setChannelToCreate] = useState<'chatting' | 'meeting' | null>(null);
+  const [showModal, setShowModal] = useState(false);
+  const modalController: ModalController = {
+    hide: () => setShowModal(false),
+    show: () => setShowModal(true),
+  };
   const { groupID } = getURLParams();
 
   useEffect(() => {
@@ -50,7 +58,12 @@ function Channels({ channelType }: Props) {
               <ChannelOpenIcon />
               <p>{channelType.toUpperCase()} CHANNELS</p>
             </div>
-            <ChannelAddIcon />
+            <ChannelAddIcon
+              onClick={() => {
+                setChannelToCreate(channelType);
+                modalController.show();
+              }}
+            />
           </ChannelType>
           <ul>
             {channels?.map((channel: any) => {
@@ -72,6 +85,9 @@ function Channels({ channelType }: Props) {
               );
             })}
           </ul>
+          {channelToCreate && showModal && (
+            <ChannelCreateModal initialChannelType={channelToCreate} controller={modalController} />
+          )}
         </>
       )}
     </ChannelWrapper>

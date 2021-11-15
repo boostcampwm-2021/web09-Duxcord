@@ -28,6 +28,8 @@ import { ReactComponent as ChannelMeetingIcon } from './asset/ic-channel-meeting
 import { ReactComponent as MeetingStopIcon } from './asset/ic-meeting-stop.svg';
 import { ReactComponent as ScreenShareStartIcon } from './asset/ic-screen-share-start.svg';
 import { ReactComponent as ScreenShareStopIcon } from './asset/ic-screen-share-stop.svg';
+import { ReactComponent as CircleDeselectedIcon } from './asset/ic-circle-deselected.svg';
+import { ReactComponent as CircleSelectedIcon } from './asset/ic-circle-selected.svg';
 
 export {
   CameraOffIcon,
@@ -60,4 +62,6 @@ export {
   MeetingStopIcon,
   ScreenShareStartIcon,
   ScreenShareStopIcon,
+  CircleDeselectedIcon,
+  CircleSelectedIcon,
 };

@@ -34,6 +34,17 @@ export const signInMSG = {
   wrongPassword: '비밀번호가 올바르지 않습니다.',
   success: '로그인 성공!',
 };
+const signOutMSG = {
+  success: '로그아웃 성공!',
+};
+const getUserGroupsMSG = {
+  userNotFound: '존재하지 않는 유저입니다.',
+};
+const updateUserDataMSG = {
+  needUsername: '사용자 이름이 필요합니다.',
+  needThumbnail: '사용자 이미지가 필요합니다.',
+  needBio: '사용자 소개가 필요합니다.',
+};
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const { loginID, username, password } = req.body;
@@ -86,7 +97,7 @@ const signIn = async (req: Request, res: Response, next: NextFunction) => {
 const signOut = (req: Request, res: Response, next: NextFunction) => {
   return req.session.destroy((error) => {
     if (error) return next(error);
-    return res.status(200).send('로그아웃 성공!');
+    return res.status(200).send(signOutMSG.success);
   });
 };
 
@@ -105,7 +116,7 @@ const getUserGroups = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const { userID } = req.session;
     const userdata = await userRepository.findByID(userID);
-    if (!userdata) return res.status(400).send('존재하지 않는 유저입니다.');
+    if (!userdata) return res.status(400).send(getUserGroupsMSG.userNotFound);
 
     const groups = await groupMemberRepository.findGroupsByUserID(userID);
 
@@ -134,9 +145,9 @@ const updateUserData = async (req: Request, res: Response, next: NextFunction) =
     const isValidUsername = usernameValidation(username);
     if (!isValidUsername) return res.status(400).send(signUpMSG.inValidUsername);
 
-    if (username === undefined) return res.status(400).send('사용자 이름이 필요합니다.');
-    if (thumbnail === undefined) return res.status(400).send('사용자 이미지가 필요합니다.');
-    if (bio === undefined) return res.status(400).send('사용자 소개가 필요합니다.');
+    if (username === undefined) return res.status(400).send(updateUserDataMSG.needUsername);
+    if (thumbnail === undefined) return res.status(400).send(updateUserDataMSG.needThumbnail);
+    if (bio === undefined) return res.status(400).send(updateUserDataMSG.needBio);
 
     const userdata = await userRepository.save({
       id: userID,
