@@ -6,7 +6,7 @@ import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
-import ChannelCreateModal from '@components/Modal/ ChannelCreate';
+import ChannelCreateModal from '@components/Modal/ChannelCreate';
 import { ModalController } from '@customTypes/modal';
 
 interface Props {

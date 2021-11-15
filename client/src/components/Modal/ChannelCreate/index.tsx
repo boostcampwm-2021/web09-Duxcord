@@ -4,7 +4,7 @@ import Colors from '@styles/Colors';
 import Modal from '..';
 import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icon';
-import { Label, Wrapper, Input } from './style';
+import { Label, Wrapper, Input, ErrorMessage } from './style';
 import { postCreateChannel } from 'src/api/postCreateChannel';
 import { useSelectedGroup } from '@hooks/useSelectedGroup';
 import { useGroups } from '@hooks/useGroups';
@@ -22,6 +22,7 @@ export default function ChannelCreateModal({
 }) {
   const [channelType, setChannelType] = useState(initialChannelType);
   const [channelName, setChannelName] = useState('');
+  const [errorMessage, setErrorMessage] = useState(false);
   const selectedGroup = useSelectedGroup();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -33,23 +34,33 @@ export default function ChannelCreateModal({
       channelType,
       channelName,
     });
-    const createdChannel = await response.json();
-    mutateGroups((groups: any) => {
-      return groups.map((group: any) => {
-        if (group.id !== selectedGroup.id) return group;
-        const tempGroup = group;
-        tempGroup[`${channelType}Channels`] = [
-          ...tempGroup[`${channelType}Channels`],
-          createdChannel,
-        ];
-        return tempGroup;
-      });
-    }, false);
-    controller.hide();
-    history.push(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
-    dispatch(
-      setSelectedChannel({ type: channelType, id: createdChannel.id, name: createdChannel.name }),
-    );
+    try {
+      const createdChannel = await response.json();
+      mutateGroups((groups: any) => {
+        return groups.map((group: any) => {
+          if (group.id !== selectedGroup.id) return group;
+          const tempGroup = group;
+          tempGroup[`${channelType}Channels`] = [
+            ...tempGroup[`${channelType}Channels`],
+            createdChannel,
+          ];
+          return tempGroup;
+        });
+      }, false);
+      controller.hide();
+      if (channelType === 'chatting') {
+        history.push(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
+        dispatch(
+          setSelectedChannel({
+            type: channelType,
+            id: createdChannel.id,
+            name: createdChannel.name,
+          }),
+        );
+      }
+    } catch (e) {
+      setErrorMessage(true);
+    }
   };
   const ChannelCreateForm = (
     <Wrapper>
@@ -76,6 +87,7 @@ export default function ChannelCreateModal({
           setChannelName(e.target.value);
         }}
       />
+      {errorMessage && <ErrorMessage>채널 생성에 실패했습니다. 다시 시도해주세요.</ErrorMessage>}
     </Wrapper>
   );
   return (
