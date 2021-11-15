@@ -9,6 +9,7 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
 import { Input } from './style';
+import { URL } from 'src/api/URL';
 
 function GroupJoinModal({ controller: { hide, show } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
@@ -32,7 +33,7 @@ function GroupJoinModal({ controller: { hide, show } }: { controller: ModalContr
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.push(API_URL.page.groupPage(group.id));
+        history.push(URL.groupPage(group.id));
         break;
       case 400:
         const responseText = await response.text();

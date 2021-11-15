@@ -20,6 +20,7 @@ import { mutate } from 'swr';
 import { API_URL } from '../../../api/API_URL';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import { GroupAddIcon } from '../../common/Icon';
+import { URL } from 'src/api/URL';
 
 function GroupNav() {
   const { groups } = useGroups();
@@ -44,7 +45,7 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(API_URL.page.groupPage(group.id));
+    history.push(URL.groupPage(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
     socket.emit(GroupEvent.groupID, group.code);

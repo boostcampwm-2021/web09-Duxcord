@@ -5,14 +5,14 @@ import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { MiddlePart } from './style';
 import { postLogout } from '../../../api/postLogout';
-import { API_URL } from '../../../api/API_URL';
+import { URL } from 'src/api/URL';
 
 function LogoutModal({ controller: { hide, show } }: { controller: ModalController }) {
   const history = useHistory();
   const finishModal = () => hide();
   const logOut = async () => {
     const isSuccess = await postLogout();
-    if (isSuccess) history.push(API_URL.page.loginPage);
+    if (isSuccess) history.push(URL.loginPage);
     window.location.reload();
   };
 
