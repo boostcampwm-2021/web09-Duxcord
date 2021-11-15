@@ -1,3 +1,4 @@
+import Colors from '@styles/Colors';
 import styled from 'styled-components';
 
 interface IMeetVideoWrapper {
@@ -33,6 +34,9 @@ const VideoItemWrapper = styled.div`
   flex-direction: column;
   & p {
     align-self: center;
+  }
+  .saying {
+    border: 3px solid ${Colors.Blue};
   }
 `;
 
