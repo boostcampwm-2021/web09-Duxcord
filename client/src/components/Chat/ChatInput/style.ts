@@ -6,8 +6,7 @@ const Wrapper = styled.form`
   display: grid;
   gap: 2px;
   grid-template-columns: 40px auto;
-  padding: 20px;
-  padding-top: 0;
+  padding: 0 20px 18px 20px;
 `;
 
 const ButtonWrapper = styled.div`
