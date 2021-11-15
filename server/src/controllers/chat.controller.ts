@@ -11,6 +11,7 @@ import { Thread } from '../db/entities';
 import { io } from '../loaders/socket.loader';
 import ThreadEvent from '../types/socket/ThreadEvent';
 import LikeEvent from '../types/socket/LikeEvent';
+import RoomPrefix from '../types/socket/RoomPrefix';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',

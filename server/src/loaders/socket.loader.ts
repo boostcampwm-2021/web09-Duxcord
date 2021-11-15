@@ -3,6 +3,7 @@ import ChannelEvent from '../types/socket/ChannelEvent';
 import ConnectionEvent from '../types/socket/ConnectionEvent';
 import GroupEvent from '../types/socket/GroupEvent';
 import MeetEvent from '../types/socket/MeetEvent';
+import RoomPrefix from '../types/socket/RoomPrefix';
 
 export let io: Server;
 export const userConnectionInfo = {};

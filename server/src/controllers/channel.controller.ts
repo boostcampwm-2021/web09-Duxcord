@@ -5,6 +5,7 @@ import { chattingChannelRepository, userRepository, chatRepository } from '../lo
 import { Chat } from '../db/entities';
 import { io } from '../loaders/socket.loader';
 import ChatEvent from '../types/socket/ChatEvent';
+import RoomPrefix from '../types/socket/RoomPrefix';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',

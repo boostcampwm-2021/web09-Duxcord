@@ -4,3 +4,5 @@ enum RoomPrefix {
   chatting = 'chatting',
   thread = 'thread',
 }
+
+export default RoomPrefix;
