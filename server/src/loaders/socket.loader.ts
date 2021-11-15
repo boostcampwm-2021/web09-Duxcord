@@ -42,9 +42,10 @@ export async function socketLoader(httpServer) {
       });
     });
 
-    socket.on(GroupEvent.groupDelete, (code) => {
+    socket.on(GroupEvent.groupDelete, (groupID, code) => {
       io.to(code).emit(GroupEvent.groupDelete, code);
       socket.leave(code);
+      delete userConnectionInfo[groupID];
     });
 
     const checkMeetingUserList = (meetingchannelList) => {
@@ -62,6 +63,7 @@ export async function socketLoader(httpServer) {
     };
 
     socket.on(MeetEvent.MeetingChannelList, (code, meetingchannelList) => {
+      if (!meetingchannelList) return;
       const meetingUserList = checkMeetingUserList(meetingchannelList);
       io.to(code).emit(MeetEvent.MeetingUserList, meetingUserList);
     });
