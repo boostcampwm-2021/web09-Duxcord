@@ -13,4 +13,11 @@ const postFetchOptions = (body: Body): RequestInit => {
   };
 };
 
-export { postFetchOptions };
+const deleteFetchOptions = (): RequestInit => {
+  return {
+    method: 'DELETE',
+    credentials: 'include',
+  };
+};
+
+export { postFetchOptions, deleteFetchOptions };
