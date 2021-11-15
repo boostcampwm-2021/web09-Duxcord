@@ -46,8 +46,10 @@ function MeetVideo() {
       const canvas = document.createElement('canvas');
       myStream = canvas.captureStream(0);
     }
-    if (myVideoRef.current) myVideoRef.current.srcObject = myStream;
-    if (myVideoRef.current) highlightMyVolume(myStream, myVideoRef.current);
+    if (myVideoRef.current) {
+      myVideoRef.current.srcObject = myStream;
+      highlightMyVolume(myStream, myVideoRef.current);
+    }
     setMyStream(myStream);
   };
 
