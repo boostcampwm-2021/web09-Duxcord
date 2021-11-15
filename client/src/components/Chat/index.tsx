@@ -50,7 +50,7 @@ function Chat() {
 
   const scrollToBottom = () => {
     if (chatListRef.current === null) return;
-    chatListRef.current.scrollTop = chatListRef.current?.scrollHeight;
+    chatListRef.current.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
   };
 
   useEffect(scrollToBottom, []);
