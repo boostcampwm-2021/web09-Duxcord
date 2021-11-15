@@ -14,13 +14,9 @@ const highlightMyVolume = (stream: MediaStream, myVideo: HTMLVideoElement) => {
     if (!check) return;
     const array = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(array);
-    let values = 0;
 
     const length = array.length;
-    for (var i = 0; i < length; i++) {
-      values += array[i];
-    }
-
+    const values = array.reduce((acu, v) => acu + v, 0);
     const average = values / length;
 
     if (Math.round(average) > 30) {

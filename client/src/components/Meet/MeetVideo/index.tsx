@@ -3,7 +3,7 @@ import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../util/socket';
 import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
-import { highlightMyVolume } from 'src/util/Audio';
+import { highlightMyVolume } from 'src/util/audio';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
