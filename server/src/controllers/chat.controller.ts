@@ -9,6 +9,8 @@ import {
 
 import { Thread } from '../db/entities';
 import { io } from '../loaders/socket.loader';
+import ThreadEvent from '../types/socket/ThreadEvent';
+import LikeEvent from '../types/socket/LikeEvent';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
@@ -43,7 +45,7 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
       await reactionRepository.insert({ user: user, chat: chat });
       chat.reactionsCount += 1;
       await chatRepository.save(chat);
-      io.to(`chatting${chat.chattingChannel.id}`).emit('like', {
+      io.to(RoomPrefix.chatting + chat.chattingChannel.id).emit(LikeEvent.like, {
         chatID: chat.id,
         reactionsCount: chat.reactionsCount,
       });
@@ -52,7 +54,7 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
       await reactionRepository.remove(reaction);
       chat.reactionsCount -= 1;
       await chatRepository.save(chat);
-      io.to(`chatting${chat.chattingChannel.id}`).emit('like', {
+      io.to(RoomPrefix.chatting + chat.chattingChannel.id).emit(LikeEvent.like, {
         chatID: chat.id,
         reactionsCount: chat.reactionsCount,
       });
@@ -90,14 +92,14 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
     chat.threadLastTime = newThread.createdAt;
     await chatRepository.save(chat);
 
-    io.to(`chatting${chat.chattingChannel.id}`).emit('thread', {
+    io.to(RoomPrefix.chatting + chat.chattingChannel.id).emit(ThreadEvent.thread, {
       chatID: chat.id,
       threadsCount: chat.threadsCount,
       threadWriter: chat.threadWriter,
       threadLastTime: chat.threadLastTime,
     });
 
-    io.to(`thread${chatID}`).emit('threadUpdate', {
+    io.to(RoomPrefix.thread + chatID).emit(ThreadEvent.threadUpdate, {
       id: newThread.id,
       threadWriter: chat.threadWriter,
       content: newThread.content,

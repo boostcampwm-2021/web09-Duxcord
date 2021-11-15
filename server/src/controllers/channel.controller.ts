@@ -4,6 +4,7 @@ import { chattingChannelRepository, userRepository, chatRepository } from '../lo
 
 import { Chat } from '../db/entities';
 import { io } from '../loaders/socket.loader';
+import ChatEvent from '../types/socket/ChatEvent';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
@@ -44,7 +45,7 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
 
     await chatRepository.save(newChat);
 
-    io.to(`chatting${chattingChannelID}`).emit('chat', {
+    io.to(RoomPrefix.chatting + chattingChannelID).emit(ChatEvent.chat, {
       id: newChat.id,
       createdAt: newChat.createdAt,
       updatedAt: newChat.updatedAt,
