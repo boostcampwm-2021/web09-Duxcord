@@ -4,14 +4,16 @@ import ConnectionEvent from '../types/socket/ConnectionEvent';
 import GroupEvent from '../types/socket/GroupEvent';
 import MeetEvent from '../types/socket/MeetEvent';
 import RoomPrefix from '../types/socket/RoomPrefix';
-
 export let io: Server;
 export const userConnectionInfo = {};
 export const meetingMembers = {};
 export const socketToMeeting = {};
 
+const MAX_LISTENERS = 20;
+
 export async function socketLoader(httpServer) {
   io = new Server(httpServer);
+  io.sockets.setMaxListeners(MAX_LISTENERS);
   io.on(ConnectionEvent.connection, (socket) => {
     socket.on(GroupEvent.groupID, (groupID, user) => {
       if (user && !userConnectionInfo[groupID].some((v) => v.loginID === user.loginID))
