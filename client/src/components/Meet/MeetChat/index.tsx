@@ -48,7 +48,7 @@ function MeetChat() {
 
   const scrollToBottom = () => {
     if (!chatListRef.current) return;
-    chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+    chatListRef.current.scrollTo({ top: chatListRef.current.scrollHeight, behavior: 'smooth' });
   };
 
   useLayoutEffect(() => {
