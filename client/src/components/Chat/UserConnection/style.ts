@@ -7,6 +7,11 @@ const UserConnectionWrapper = styled.div`
   height: calc(100vh - 50px);
   padding: 10px;
   overflow-y: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera*/
+  }
 `;
 
 const Text = styled.div`
