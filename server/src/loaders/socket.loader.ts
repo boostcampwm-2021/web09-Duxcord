@@ -42,6 +42,11 @@ export async function socketLoader(httpServer) {
       });
     });
 
+    socket.on(GroupEvent.groupDelete, (code) => {
+      io.to(code).emit(GroupEvent.groupDelete, code);
+      socket.leave(code);
+    });
+
     const checkMeetingUserList = (meetingchannelList) => {
       const meetingUserList = {};
       Object.entries(meetingMembers).forEach(([channel, user]) => {
