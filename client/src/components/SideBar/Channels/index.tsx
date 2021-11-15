@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import MeetEvent from '@customTypes/socket/MeetEvent';
 import { socket } from '../../../util/socket';
 import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
 import ChannelListItem from './ChannelListItem';
@@ -25,16 +26,16 @@ function Channels({ channelType }: Props) {
       (channel: { id: number }) => channel.id,
     );
 
-    socket.emit('MeetingChannelList', selectedGroup.code, meetingchannelList);
+    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingchannelList);
   }, [selectedGroup]);
 
   useEffect(() => {
-    socket.on('MeetingUserList', (meetingUserList) => {
+    socket.on(MeetEvent.MeetingUserList, (meetingUserList) => {
       setMeetingUser({ ...meetingUserList });
     });
 
     return () => {
-      socket.off('MeetingUserList');
+      socket.off(MeetEvent.MeetingUserList);
     };
   }, []);
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { URL } from 'src/api/URL';
 import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icon';
@@ -17,7 +18,7 @@ function ChannelListItem({ channelType, id, name }: Props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const joinChannel = () => {
-    history.push(`/main?group=${selectedGroup?.id}&type=${channelType}&id=${id}`);
+    history.push(URL.channelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 

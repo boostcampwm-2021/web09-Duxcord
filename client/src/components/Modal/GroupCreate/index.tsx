@@ -8,6 +8,7 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
 import { InputForm, InputImage, InputText } from './style';
+import { URL } from 'src/api/URL';
 
 function GroupCreateModal({
   controller: { hide, show, previous },
@@ -35,7 +36,7 @@ function GroupCreateModal({
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.push(`/main/group/${group.id}`);
+        history.push(URL.groupPage(group.id));
         break;
       case 400:
         const responseText = await response.text();

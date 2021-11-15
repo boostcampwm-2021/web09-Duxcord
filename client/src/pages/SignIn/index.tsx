@@ -15,6 +15,7 @@ import { SIGN_IN_ERROR_MESSAGE } from '../../util/message';
 import { checkLogin } from '../../util/checkResponse';
 import { tryLogin } from '../../util/api';
 import { STATUS_CODES } from '../../api/STATUS_CODES';
+import { URL } from 'src/api/URL';
 
 const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
@@ -46,7 +47,7 @@ function SignIn() {
 
     try {
       const loginResponse = await tryLogin(ID, password);
-      if (loginResponse.status === STATUS_CODES.OK) history.push('/main');
+      if (loginResponse.status === STATUS_CODES.OK) history.push(URL.groupPage());
       setResponseState({ ...responseState, ...loginResponse });
     } catch (error) {
       console.log(error);

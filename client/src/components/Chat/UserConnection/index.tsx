@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
+import { API_URL } from '../../../api/API_URL';
+import GroupEvent from '@customTypes/socket/GroupEvent';
 import { useGroupConnection } from '@hooks/useGroupConnection';
 import { useSelectedGroup } from '@hooks/useSelectedGroup';
 import { useUserdata } from '@hooks/useUserdata';
@@ -11,10 +13,10 @@ function UserConnection() {
   const selectedGroup = useSelectedGroup();
   const groupConnection = useGroupConnection();
   const { userdata } = useUserdata();
-  const { data = [] } = useSWR(`/api/group/${selectedGroup?.id}/members`, getFetcher);
+  const { data = [] } = useSWR(API_URL.group.getGroupMembers(selectedGroup?.id), getFetcher);
 
   useEffect(() => {
-    socket.emit('GroupID', selectedGroup?.code, userdata);
+    socket.emit(GroupEvent.groupID, selectedGroup?.code, userdata);
   }, [selectedGroup?.code, userdata]);
 
   return (

@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel } from '@hooks/useSelectedChannel';
 import { useUserdata } from '@hooks/useUserdata';
 import { socket } from '../../../util/socket';
@@ -24,7 +25,6 @@ interface IChat {
   createdAt: string;
 }
 
-const MEET_CHAT = 'meetChat';
 const THRESHOLD = 300;
 
 function MeetChat() {
@@ -40,7 +40,7 @@ function MeetChat() {
     if (!chatInputRef.current || !userdata) return;
     const message = chatInputRef.current.value;
     if (message.trim() === '') return;
-    socket.emit(MEET_CHAT, {
+    socket.emit(MeetEvent.meetChat, {
       channelID,
       chat: { ...userdata, message, createdAt: new Date().toLocaleTimeString('ko-KR') },
     });
@@ -57,7 +57,7 @@ function MeetChat() {
   }, [show]);
 
   useEffect(() => {
-    socket.on(MEET_CHAT, (chat: IChat) => {
+    socket.on(MeetEvent.meetChat, (chat: IChat) => {
       setChats((chats) => [...chats, chat]);
       if (!chatListRef.current) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
@@ -65,7 +65,7 @@ function MeetChat() {
     });
 
     return () => {
-      socket.off(MEET_CHAT);
+      socket.off(MeetEvent.meetChat);
     };
   }, []);
 

@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
+import { API_URL } from '../../../api/API_URL';
 import { postJoinGroup } from '../../../api/postJoinGroup';
 import { useGroups } from '@hooks/useGroups';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
 import { Input } from './style';
+import { URL } from 'src/api/URL';
 
 function GroupJoinModal({ controller: { hide, show, previous } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
@@ -31,7 +33,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.push(`/main/group/${group.id}`);
+        history.push(URL.groupPage(group.id));
         break;
       case 400:
         const responseText = await response.text();

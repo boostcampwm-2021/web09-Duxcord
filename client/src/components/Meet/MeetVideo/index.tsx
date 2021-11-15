@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel } from '@hooks/useSelectedChannel';
 import { useUserdata } from '@hooks/useUserdata';
 import { useUserDevice } from '@hooks/useUserDevice';
@@ -14,21 +15,6 @@ const pcConfig = {
     },
   ],
 };
-
-enum ChannelType {
-  CHATTING = 'chatting',
-  MEETING = 'meeting',
-}
-
-enum MeetingEvent {
-  JOIN_MEETING = 'joinMeeting',
-  ALL_MEETING_MEMBERS = 'allMeetingMembers',
-  CANDIDATE = 'candidate',
-  OFFER = 'offer',
-  ANSWER = 'answer',
-  LEAVE_MEMBER = 'leaveMember',
-  LEAVE_MEETING = 'leaveMeeting',
-}
 
 interface IMeetingUser {
   socketID: string;
@@ -71,7 +57,7 @@ function MeetVideo() {
       pc.onicecandidate = (data) => {
         if (!data.candidate) return;
 
-        socket.emit(MeetingEvent.CANDIDATE, {
+        socket.emit(MeetEvent.candidate, {
           candidate: data.candidate,
           receiverID: member.socketID,
         });
@@ -106,8 +92,8 @@ function MeetVideo() {
     if (id === null || userdata === undefined) return;
     const { loginID, username, thumbnail } = userdata;
 
-    Socket.joinChannel({ channelType: ChannelType.MEETING, id });
-    socket.on(MeetingEvent.ALL_MEETING_MEMBERS, async (members) => {
+    Socket.joinChannel({ channelType: MeetEvent.meeting, id });
+    socket.on(MeetEvent.allMeetingMembers, async (members) => {
       members.forEach(async (member: IMeetingUser) => {
         try {
           const pc = await createPeerConnection(member);
@@ -116,56 +102,56 @@ function MeetVideo() {
           const offer = await pc.createOffer();
           await pc.setLocalDescription(new RTCSessionDescription(offer));
 
-          socket.emit(MeetingEvent.OFFER, {
+          socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
             member: { socketID: socket.id, loginID, username, thumbnail },
           });
         } catch (e) {
-          console.error(MeetingEvent.ALL_MEETING_MEMBERS, e);
+          console.error(MeetEvent.allMeetingMembers, e);
         }
       });
     });
 
-    socket.on(MeetingEvent.OFFER, async ({ offer, member }) => {
+    socket.on(MeetEvent.offer, async ({ offer, member }) => {
       const pc = createPeerConnection(member);
       if (!pc) return;
       pcs.current[member.socketID] = pc;
       pc.setRemoteDescription(new RTCSessionDescription(offer));
       const answer = await pc.createAnswer();
       pc.setLocalDescription(new RTCSessionDescription(answer));
-      socket.emit(MeetingEvent.ANSWER, { answer, receiverID: member.socketID });
+      socket.emit(MeetEvent.answer, { answer, receiverID: member.socketID });
     });
 
-    socket.on(MeetingEvent.ANSWER, ({ answer, senderID }) => {
+    socket.on(MeetEvent.answer, ({ answer, senderID }) => {
       const pc = pcs.current[senderID];
       if (!pc) return;
       pc.setRemoteDescription(new RTCSessionDescription(answer));
     });
 
-    socket.on(MeetingEvent.CANDIDATE, async ({ candidate, senderID }) => {
+    socket.on(MeetEvent.candidate, async ({ candidate, senderID }) => {
       const pc = pcs.current[senderID];
       if (!pc) return;
       await pc.addIceCandidate(new RTCIceCandidate(candidate));
     });
 
-    socket.on(MeetingEvent.LEAVE_MEMBER, (memberID) => {
+    socket.on(MeetEvent.leaveMember, (memberID) => {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
       delete pcs.current[memberID];
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.emit(MeetingEvent.JOIN_MEETING, id, { loginID, username, thumbnail });
+    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail });
 
     return () => {
-      Socket.leaveChannel({ channelType: ChannelType.MEETING, id });
-      socket.off(MeetingEvent.ALL_MEETING_MEMBERS);
-      socket.off(MeetingEvent.OFFER);
-      socket.off(MeetingEvent.ANSWER);
-      socket.off(MeetingEvent.CANDIDATE);
-      socket.off(MeetingEvent.LEAVE_MEMBER);
-      socket.emit(MeetingEvent.LEAVE_MEETING);
+      Socket.leaveChannel({ channelType: MeetEvent.meeting, id });
+      socket.off(MeetEvent.allMeetingMembers);
+      socket.off(MeetEvent.offer);
+      socket.off(MeetEvent.answer);
+      socket.off(MeetEvent.candidate);
+      socket.off(MeetEvent.leaveMember);
+      socket.emit(MeetEvent.leaveMeeting);
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
