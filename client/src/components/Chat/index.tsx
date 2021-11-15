@@ -21,7 +21,7 @@ function Chat() {
   const { id } = useSelectedChannel();
   const selectedChat = useSelectedChat();
   const { data: chats, mutate, setSize } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
-  const isEmpty = chats?.[0]?.length === 0;
+  const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +35,10 @@ function Chat() {
   }, [id]);
 
   const onScroll = useCallback(() => {
-    if (chatListRef?.current?.scrollTop === 0 && !isReachingEnd) setSize((size) => size + 1);
+    if (chatListRef?.current?.scrollTop === 0 && !isReachingEnd) {
+      chatListRef.current.scrollTo({ top: THRESHOLD });
+      setSize((size) => size + 1);
+    }
   }, [isReachingEnd, setSize]);
 
   useEffect(() => {
@@ -47,10 +50,12 @@ function Chat() {
 
   const scrollToBottom = () => {
     if (chatListRef.current === null) return;
-    chatListRef.current.scrollTop = chatListRef.current?.scrollHeight;
+    chatListRef.current.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
   };
 
-  useEffect(scrollToBottom, []);
+  useEffect(() => {
+    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
+  }, [isEmpty]);
 
   const onChat = useCallback(
     async (chat: ChatData) => {
