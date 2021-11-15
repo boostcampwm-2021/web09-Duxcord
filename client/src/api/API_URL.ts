@@ -18,6 +18,7 @@ export const API_URL = {
     postJoinGroup: '/api/group/join',
     postCreateGroup: '/api/group/create',
     getGroupMembers: (groupID: number | undefined) => `/api/group/${groupID}/members`,
+    deleteGroup: (groupID: number | undefined) => `/api/group/${groupID}`,
   },
   thread: {
     getThread: (chatID: number) => `/api/chat/${chatID}/thread`,
