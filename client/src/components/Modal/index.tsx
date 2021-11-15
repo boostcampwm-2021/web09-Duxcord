@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { ModalController, ModalData } from '@customTypes/modal';
 import { ModalCloseIcon } from '../common/Icon';
-import { BottomRightButton, Bottom, Background, Wrapper, Title, SubTitle } from './style';
+import {
+  BottomRightButton,
+  Bottom,
+  Background,
+  Wrapper,
+  Title,
+  SubTitle,
+  BottomLeftButton,
+} from './style';
 
 function Modal({
   props: { title, subTitle, middleContent, bottomRightButton },
@@ -30,10 +38,10 @@ function Modal({
         <div>{middleContent}</div>
         {bottomRightButton && (
           <Bottom>
-            {previous !== undefined ? (
-              <div onClick={previous}>이전</div>
+            {previous ? (
+              <BottomLeftButton onClick={previous}>이전</BottomLeftButton>
             ) : (
-              <div onClick={hideModal}>닫기</div>
+              <BottomLeftButton onClick={hideModal}>닫기</BottomLeftButton>
             )}
             <BottomRightButton
               color={bottomRightButton.color}

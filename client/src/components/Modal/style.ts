@@ -44,6 +44,15 @@ const Wrapper = styled.div<IHideAnimation>`
   }
 `;
 
+const BottomLeftButton = styled.button`
+  border: none;
+  background-color: white;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 const BottomRightButton = styled.button`
   border: none;
   padding: 8px 16px;
@@ -102,4 +111,4 @@ const SubTitle = styled.h2`
   margin-bottom: 20px;
 `;
 
-export { Background, Wrapper, BottomRightButton, Bottom, Title, SubTitle };
+export { Background, Wrapper, BottomRightButton, BottomLeftButton, Bottom, Title, SubTitle };
