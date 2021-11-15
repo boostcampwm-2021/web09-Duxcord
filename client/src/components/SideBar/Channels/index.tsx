@@ -58,7 +58,6 @@ function Channels({ channelType }: Props) {
           onClick={() => {
             setChannelToCreate(channelType);
             modalController.show();
-            console.log(channelToCreate, showModal);
           }}
         />
       </ChannelType>

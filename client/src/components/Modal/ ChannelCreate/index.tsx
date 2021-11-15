@@ -5,6 +5,13 @@ import Modal from '..';
 import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icon';
 import { Label, Wrapper, Input } from './style';
+import { postCreateChannel } from 'src/api/postCreateChannel';
+import { useSelectedGroup } from '@hooks/useSelectedGroup';
+import { useGroups } from '@hooks/useGroups';
+import { useHistory } from 'react-router';
+import { URL } from 'src/api/URL';
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { useDispatch } from 'react-redux';
 
 export default function ChannelCreateModal({
   initialChannelType,
@@ -14,6 +21,36 @@ export default function ChannelCreateModal({
   controller: ModalController;
 }) {
   const [channelType, setChannelType] = useState(initialChannelType);
+  const [channelName, setChannelName] = useState('');
+  const selectedGroup = useSelectedGroup();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { mutate: mutateGroups } = useGroups();
+
+  const createChannel = async () => {
+    const response = await postCreateChannel({
+      groupID: selectedGroup.id,
+      channelType,
+      channelName,
+    });
+    const createdChannel = await response.json();
+    mutateGroups((groups: any) => {
+      return groups.map((group: any) => {
+        if (group.id !== selectedGroup.id) return group;
+        const tempGroup = group;
+        tempGroup[`${channelType}Channels`] = [
+          ...tempGroup[`${channelType}Channels`],
+          createdChannel,
+        ];
+        return tempGroup;
+      });
+    }, false);
+    controller.hide();
+    history.push(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
+    dispatch(
+      setSelectedChannel({ type: channelType, id: createdChannel.id, name: createdChannel.name }),
+    );
+  };
   const ChannelCreateForm = (
     <Wrapper>
       <Label>채널 유형</Label>
@@ -34,7 +71,11 @@ export default function ChannelCreateModal({
         subTitle="회의 합시다!"
       />
       <Label>채널 이름</Label>
-      <Input />
+      <Input
+        onChange={(e) => {
+          setChannelName(e.target.value);
+        }}
+      />
     </Wrapper>
   );
   return (
@@ -45,7 +86,7 @@ export default function ChannelCreateModal({
         bottomRightButton: {
           text: '만들기',
           color: Colors.Blue,
-          onClickHandler: () => {},
+          onClickHandler: createChannel,
         },
       }}
       controller={controller}
