@@ -64,20 +64,12 @@ function Channels({ channelType }: Props) {
       <ul>
         {channels?.map((channel: any) => {
           return (
-            <>
-              <ChannelListItem
-                key={channel.id}
-                channelType={channelType}
-                id={channel.id}
-                name={channel.name}
-              />
+            <div key={channel.id}>
+              <ChannelListItem channelType={channelType} id={channel.id} name={channel.name} />
               {channelType === 'meeting' && (
-                <MeetingUserList
-                  key={channel.id + 'userlist'}
-                  meetingUser={meetingUser[channel.id]}
-                />
+                <MeetingUserList meetingUser={meetingUser[channel.id]} />
               )}
-            </>
+            </div>
           );
         })}
       </ul>
