@@ -21,7 +21,7 @@ function Chat() {
   const { id } = useSelectedChannel();
   const selectedChat = useSelectedChat();
   const { data: chats, mutate, setSize } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
-  const isEmpty = chats?.[0]?.length === 0;
+  const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
 
