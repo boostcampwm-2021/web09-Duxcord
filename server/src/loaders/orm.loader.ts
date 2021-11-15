@@ -5,11 +5,9 @@ import {
   getRepository,
   Repository,
 } from 'typeorm';
-import dotenv from 'dotenv';
-
-import { Session } from 'inspector';
 import {
   Workgroup,
+  Session,
   ChattingChannel,
   MeetingChannel,
   Reaction,
@@ -17,6 +15,7 @@ import {
   Thread,
   Chat,
   GroupMember,
+  File,
 } from '../db/entities';
 import {
   UserRepository,
@@ -24,6 +23,7 @@ import {
   ChatRepository,
   ThreadRepository,
 } from '../db/repositories';
+import dotenv from 'dotenv';
 dotenv.config();
 
 export let connection: Connection;
