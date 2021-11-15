@@ -7,7 +7,7 @@
       "@pages/*": ["src/pages/*"],
       "@redux/*": ["src/redux/*"],
       "@styles/*": ["src/styles/*"],
-      "@customTypes/*": ["src/customTypes/*"]
+      "@customTypes/*": ["src/types/*"]
     }
   }
 }

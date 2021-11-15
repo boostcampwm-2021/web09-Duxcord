@@ -12,8 +12,7 @@ import { API_URL } from '../../api/API_URL';
 import LikeEvent from '@customTypes/socket/LikeEvent';
 import ThreadEvent from '@customTypes/socket/ThreadEvent';
 import ChatEvent from '@customTypes/socket/ChatEvent';
-import { useSelectedChannel } from '@hooks/useSelectedChannel';
-import { useSelectedChat } from '@hooks/useSelectedChat';
+import { useSelectedChannel, useSelectedChat } from '@hooks/index';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;

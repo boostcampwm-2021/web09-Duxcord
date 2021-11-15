@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelectedChannel } from '@hooks/useSelectedChannel';
+import { useSelectedChannel } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import {
   ChannelChattingIcon,

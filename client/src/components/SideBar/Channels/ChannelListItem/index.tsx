@@ -1,8 +1,8 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useSelectedGroup } from '@hooks/index';
 import { URL } from 'src/api/URL';
-import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icon';
 import { ListItem } from './style';

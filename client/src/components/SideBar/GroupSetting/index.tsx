@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
+import { useSelectedGroup } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import { GroupDeleteIcon, GroupInviteIcon } from '../../common/Icon';
 import GroupInviteModal from '../../Modal/GroupInvite';
