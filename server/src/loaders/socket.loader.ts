@@ -121,11 +121,23 @@ export async function socketLoader(httpServer) {
     });
 
     socket.on('mute', (meetingID, muted, who) => {
-      console.log('asd');
-      const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID.toString());
-      console.log(meetingMembers, meetingID);
+      const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
       if (!meetingChannel) return;
+      const index = meetingMembers[meetingID.toString()].findIndex(
+        (oneMember) => oneMember.loginID === who,
+      );
+      meetingMembers[meetingID.toString()][index].mic = muted;
       io.to(RoomPrefix.RTC + meetingID).emit('setMuted', who, muted);
+    });
+
+    socket.on('toggleCam', (meetingID, toggleCam, who) => {
+      const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
+      if (!meetingChannel) return;
+      const index = meetingMembers[meetingID.toString()].findIndex(
+        (oneMember) => oneMember.loginID === who,
+      );
+      meetingMembers[meetingID.toString()][index].cam = toggleCam;
+      io.to(RoomPrefix.RTC + meetingID).emit('setToggleCam', who, toggleCam);
     });
 
     const leaveMeeting = () => {
