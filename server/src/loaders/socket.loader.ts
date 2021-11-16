@@ -81,7 +81,7 @@ export async function socketLoader(httpServer) {
       io.to(RoomPrefix.meeting + channelID).emit(MeetEvent.meetChat, chat);
     });
 
-    socket.on(MeetEvent.joinMeeting, (meetingID, { loginID, username, thumbnail }) => {
+    socket.on(MeetEvent.joinMeeting, (meetingID, { loginID, username, thumbnail, mic, cam }) => {
       socket.join(RoomPrefix.RTC + meetingID);
       socketToMeeting[socket.id] = meetingID;
       const newMember = {
@@ -89,8 +89,10 @@ export async function socketLoader(httpServer) {
         loginID,
         username,
         thumbnail,
+        mic,
+        cam,
       };
-
+      console.log('newMember', newMember);
       if (meetingID in meetingMembers) {
         const memberList = meetingMembers[meetingID].map((member) => member.socketID);
         if (memberList.includes(newMember.socketID)) return;
