@@ -96,8 +96,8 @@ function GroupNav() {
     <GroupListWrapper>
       <GroupList>
         {groups?.map((group: any) => (
-          <Group key={group.id} onClick={selectGroup(group)}>
-            {group.name}
+          <Group key={group.id} onClick={selectGroup(group)} thumbnail={group.thumbnail}>
+            {!group.thumbnail && group.name}
           </Group>
         ))}
       </GroupList>
