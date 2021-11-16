@@ -3,7 +3,7 @@ import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import ChannelTypeItem from './ChannelTypeItem';
-import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icon';
+import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
 import { Label, Wrapper, Input, ErrorMessage } from './style';
 import { postCreateChannel } from 'src/api/postCreateChannel';
 import { useSelectedGroup } from '@hooks/useSelectedGroup';

@@ -18,7 +18,7 @@ import GroupAddModal from '../../Modal/GroupAdd';
 import { mutate } from 'swr';
 import { API_URL } from '../../../api/API_URL';
 import GroupEvent from '@customTypes/socket/GroupEvent';
-import { GroupAddIcon } from '../../common/Icon';
+import { GroupAddIcon } from '../../common/Icons';
 import { URL } from 'src/api/URL';
 
 function GroupNav() {

@@ -108,7 +108,7 @@ function MeetVideo() {
           socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
-            member: { socketID: socket.id, loginID, username, thumbnail },
+            member: { loginID, username, thumbnail },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);

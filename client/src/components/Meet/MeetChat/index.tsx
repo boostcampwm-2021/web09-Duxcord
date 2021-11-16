@@ -3,7 +3,7 @@ import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata } from '@hooks/index';
 import { socket } from '../../../util/socket';
 import { ChatHeader, UserImage } from '../../Chat/ChatItem/style';
-import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icon';
+import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icons';
 import {
   Chat,
   ChatList,

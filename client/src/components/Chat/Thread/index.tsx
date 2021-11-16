@@ -9,7 +9,7 @@ import { ChatData } from '@customTypes/chats';
 import { getFetcher } from '../../../util/fetcher';
 import { socket } from '../../../util/socket';
 import ChannelEvent from '@customTypes/socket/ChannelEvent';
-import { FileSelectIcon, ThreadCloseIcon } from '../../common/Icon';
+import { FileSelectIcon, ThreadCloseIcon } from '../../common/Icons';
 import ThreadItem from '../ThreadItem';
 import {
   ButtonWrapper,

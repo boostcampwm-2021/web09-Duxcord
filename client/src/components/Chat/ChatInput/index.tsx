@@ -1,7 +1,7 @@
 import React, { FormEvent, useRef } from 'react';
 import { postChat } from '../../../api/postChat';
 import { useSelectedChannel } from '@hooks/index';
-import { FileSelectIcon } from '../../common/Icon';
+import { FileSelectIcon } from '../../common/Icons';
 import { ButtonWrapper, Input, Wrapper } from './style';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {

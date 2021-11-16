@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ModalController, ModalData } from '@customTypes/modal';
-import { ModalCloseIcon } from '../common/Icon';
+import { ModalCloseIcon } from '../common/Icons';
 import {
   BottomRightButton,
   Bottom,

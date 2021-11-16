@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelectedGroup } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { socket } from '../../../util/socket';
-import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
+import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icons';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';

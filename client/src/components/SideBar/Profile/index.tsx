@@ -10,7 +10,7 @@ import {
   MicOnIcon,
   SpeakerOffIcon,
   SpeakerOnIcon,
-} from '../../common/Icon';
+} from '../../common/Icons';
 
 function Profile() {
   const dispatch = useDispatch();
