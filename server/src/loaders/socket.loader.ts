@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import SocketGroupController from '../controllers/socket/group.socket';
 import SocketMeetController from '../controllers/socket/meet.socket';
 import ChannelEvent from '../types/socket/ChannelEvent';
 import ConnectionEvent from '../types/socket/ConnectionEvent';
@@ -14,34 +15,9 @@ export const socketToMeeting = {};
 export async function socketLoader(httpServer) {
   io = new Server(httpServer);
   io.on(ConnectionEvent.connection, (socket) => {
-    socket.on(GroupEvent.groupID, (groupID, user) => {
-      if (user && !userConnectionInfo[groupID].some((v) => v.loginID === user.loginID))
-        userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
-      socket.emit(GroupEvent.groupUserConnection, userConnectionInfo[groupID]);
-    });
-
-    socket.on(GroupEvent.login, (groups, user) => {
-      if (!user || !groups) return;
-      groups?.forEach(({ code }) => {
-        socket.join(`${code}`);
-        io.to(`${code}`).emit(GroupEvent.userEnter, user, code);
-        if (userConnectionInfo[code]) {
-          if (!userConnectionInfo[code].map((v) => v.loginID).includes(user.loginID)) {
-            userConnectionInfo[code].push(user);
-          }
-        } else {
-          userConnectionInfo[code] = [user];
-        }
-      });
-      socket.on(ConnectionEvent.disconnect, () => {
-        Object.keys(userConnectionInfo).forEach((v) => {
-          userConnectionInfo[v] = userConnectionInfo[v].filter((a) => a.loginID !== user.loginID);
-        });
-        groups?.forEach(({ code }) => {
-          io.to(`${code}`).emit(GroupEvent.userExit, user, code);
-        });
-      });
-    });
+    const groupController = new SocketGroupController(socket);
+    socket.on(GroupEvent.groupID, groupController.groupID);
+    socket.on(GroupEvent.login, groupController.login);
 
     const channelController = new SocketChannelController(socket);
 
