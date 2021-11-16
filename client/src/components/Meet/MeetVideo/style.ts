@@ -38,6 +38,13 @@ const VideoItemWrapper = styled.div`
   .saying {
     border: 3px solid ${Colors.Blue};
   }
+  .mute {
+    display: block;
+  }
+  .turnOffCam {
+    display: block;
+    position: absolute;
+  }
 `;
 
 const VideoItem = styled.video`
@@ -49,4 +56,12 @@ const VideoItem = styled.video`
   margin-bottom: 10px;
 `;
 
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem };
+const MuteWrapper = styled.div`
+  display: none;
+`;
+
+const CamOffWrapper = styled.div`
+  display: none;
+`;
+
+export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MuteWrapper, CamOffWrapper };
