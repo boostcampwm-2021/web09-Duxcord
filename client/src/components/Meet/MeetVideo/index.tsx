@@ -209,8 +209,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
     if (!ref.current || !member.stream) return;
     ref.current.srcObject = member.stream;
 
-    socket.on('setMuted', (who, muted) => {
-      console.log(`${who} is muted${muted}`);
+    socket.on(MeetEvent.setMuted, (who, muted) => {
       if (member.loginID !== who) return;
 
       if (!muted) {
@@ -220,7 +219,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
       }
     });
 
-    socket.on('setToggleCam', (who, toggleCam) => {
+    socket.on(MeetEvent.setToggleCam, (who, toggleCam) => {
       if (member.loginID !== who) return;
       if (!toggleCam) {
         thumbnailRef.current?.classList.add('turnOffCam');
@@ -245,8 +244,8 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
       }
     }, 1000);
     return () => {
-      socket.off('setMuted');
-      socket.off('setToggleCam');
+      socket.off(MeetEvent.setMuted);
+      socket.off(MeetEvent.setToggleCam);
       clearInterval(interval);
     };
   });

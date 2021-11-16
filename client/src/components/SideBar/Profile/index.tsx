@@ -12,6 +12,7 @@ import {
   SpeakerOnIcon,
 } from '../../common/Icon';
 import { socket } from 'src/util/socket';
+import MeetEvent from '@customTypes/socket/MeetEvent';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ function Profile() {
   const { id } = useSelectedChannel();
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
-    if (target === 'mic') socket.emit('mute', id, !device[target], userdata.loginID);
-    if (target === 'cam') socket.emit('toggleCam', id, !device[target], userdata.loginID);
+    if (target === 'mic') socket.emit(MeetEvent.mute, id, !device[target], userdata.loginID);
+    if (target === 'cam') socket.emit(MeetEvent.toggleCam, id, !device[target], userdata.loginID);
     dispatch(setUserDevice({ ...device, [target]: !device[target] }));
   };
 

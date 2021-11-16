@@ -92,7 +92,7 @@ export async function socketLoader(httpServer) {
         mic,
         cam,
       };
-      console.log('newMember', newMember);
+
       if (meetingID in meetingMembers) {
         const memberList = meetingMembers[meetingID].map((member) => member.socketID);
         if (memberList.includes(newMember.socketID)) return;
@@ -120,24 +120,25 @@ export async function socketLoader(httpServer) {
       io.to(receiverID).emit(MeetEvent.answer, { answer, senderID: socket.id });
     });
 
-    socket.on('mute', (meetingID, muted, who) => {
+    socket.on(MeetEvent.mute, (meetingID, muted, who) => {
       const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
       if (!meetingChannel) return;
       const index = meetingMembers[meetingID.toString()].findIndex(
         (oneMember) => oneMember.loginID === who,
       );
+      if (index === -1) return;
       meetingMembers[meetingID.toString()][index].mic = muted;
-      io.to(RoomPrefix.RTC + meetingID).emit('setMuted', who, muted);
+      io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setMuted, who, muted);
     });
 
-    socket.on('toggleCam', (meetingID, toggleCam, who) => {
+    socket.on(MeetEvent.toggleCam, (meetingID, toggleCam, who) => {
       const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
       if (!meetingChannel) return;
       const index = meetingMembers[meetingID.toString()].findIndex(
         (oneMember) => oneMember.loginID === who,
       );
       meetingMembers[meetingID.toString()][index].cam = toggleCam;
-      io.to(RoomPrefix.RTC + meetingID).emit('setToggleCam', who, toggleCam);
+      io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setToggleCam, who, toggleCam);
     });
 
     const leaveMeeting = () => {
@@ -146,7 +147,7 @@ export async function socketLoader(httpServer) {
         meetingMembers[meetingID] = meetingMembers[meetingID].filter(
           (member) => member.socketID !== socket.id,
         );
-      console.log(RoomPrefix.RTC + meetingID);
+
       io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
     };
     socket.on(MeetEvent.leaveMeeting, leaveMeeting);
