@@ -39,7 +39,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
             }),
           );
           dispatch(setSelectedChat(null));
-          finishModal();
+          hide();
           history.push(URL.groupPage());
           break;
         case 400:
@@ -52,10 +52,6 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const finishModal = () => {
-    hide();
   };
 
   const AlertComponent = (
@@ -77,7 +73,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
           onClickHandler: deleteCurrentGroup,
         },
       }}
-      controller={{ hide: finishModal, show }}
+      controller={{ hide: () => hide(), show }}
     />
   );
 }
