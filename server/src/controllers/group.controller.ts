@@ -58,11 +58,12 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 
     const responseGroup = {
       id: newGroup.id,
-      name: groupName,
+      name: newGroup.name,
       code: newCode,
-      groupThumbnail: groupThumbnail,
+      thumbnail: newGroup.thumbnail,
       meetingChannels: [responseMeetingChannel],
       chattingChannels: [responseChattingChannel],
+      leader: { loginID: leader.loginID },
     };
 
     return res.status(200).json(responseGroup);
