@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import SocketMeetController from '../controllers/socket/meet.socket';
 import ChannelEvent from '../types/socket/ChannelEvent';
 import ConnectionEvent from '../types/socket/ConnectionEvent';
 import GroupEvent from '../types/socket/GroupEvent';
@@ -69,56 +70,13 @@ export async function socketLoader(httpServer) {
       socket.leave(channelID);
     });
 
-    socket.on(MeetEvent.meetChat, ({ channelID, chat }) => {
-      io.to(RoomPrefix.meeting + channelID).emit(MeetEvent.meetChat, chat);
-    });
-
-    socket.on(MeetEvent.joinMeeting, (meetingID, { loginID, username, thumbnail }) => {
-      socket.join(RoomPrefix.RTC + meetingID);
-      socketToMeeting[socket.id] = meetingID;
-      const newMember = {
-        socketID: socket.id,
-        loginID,
-        username,
-        thumbnail,
-      };
-
-      if (meetingID in meetingMembers) {
-        const memberList = meetingMembers[meetingID].map((member) => member.socketID);
-        if (memberList.includes(newMember.socketID)) return;
-        meetingMembers[meetingID].push(newMember);
-      } else {
-        meetingMembers[meetingID] = [newMember];
-      }
-
-      const membersInMeeting = meetingMembers[meetingID].filter(
-        (user) => user.socketID !== socket.id,
-      );
-
-      io.to(socket.id).emit(MeetEvent.allMeetingMembers, membersInMeeting);
-    });
-
-    socket.on(MeetEvent.candidate, ({ candidate, receiverID }) => {
-      io.to(receiverID).emit(MeetEvent.candidate, { candidate, senderID: socket.id });
-    });
-
-    socket.on(MeetEvent.offer, ({ offer, receiverID, member }) => {
-      io.to(receiverID).emit(MeetEvent.offer, { offer, member });
-    });
-
-    socket.on(MeetEvent.answer, ({ answer, receiverID }) => {
-      io.to(receiverID).emit(MeetEvent.answer, { answer, senderID: socket.id });
-    });
-
-    const leaveMeeting = () => {
-      const meetingID = socketToMeeting[socket.id];
-      if (meetingMembers[meetingID])
-        meetingMembers[meetingID] = meetingMembers[meetingID].filter(
-          (member) => member.socketID !== socket.id,
-        );
-      io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
-    };
-    socket.on(MeetEvent.leaveMeeting, leaveMeeting);
-    socket.on(ConnectionEvent.disconnect, leaveMeeting);
+    const meetController = new SocketMeetController(socket);
+    socket.on(MeetEvent.meetChat, meetController.meetChat);
+    socket.on(MeetEvent.joinMeeting, meetController.joinMeeting);
+    socket.on(MeetEvent.offer, meetController.offer);
+    socket.on(MeetEvent.answer, meetController.answer);
+    socket.on(MeetEvent.candidate, meetController.candidate);
+    socket.on(MeetEvent.leaveMeeting, meetController.leaveMeeting);
+    socket.on(ConnectionEvent.disconnect, meetController.leaveMeeting);
   });
 }
