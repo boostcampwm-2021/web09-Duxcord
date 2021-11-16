@@ -58,11 +58,12 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 
     const responseGroup = {
       id: newGroup.id,
-      name: groupName,
+      name: newGroup.name,
       code: newCode,
-      groupThumbnail: groupThumbnail,
+      thumbnail: newGroup.thumbnail,
       meetingChannels: [responseMeetingChannel],
       chattingChannels: [responseChattingChannel],
+      leader: { loginID: leader.loginID },
     };
 
     return res.status(200).json(responseGroup);
@@ -142,4 +143,21 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { createGroup, getGroupMembers, createChannel, joinGroup };
+const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
+  const { id } = req.params;
+  const { userID } = req.session;
+
+  try {
+    const group = await groupRepository.findByIDWithLeaderID(id);
+
+    if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
+    if (group.leader.id !== userID) return res.status(400).send('그룹 삭제 권한이 없습니다.');
+
+    await groupRepository.remove(group);
+    res.status(200).json('그룹이 삭제되었습니다.');
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default { createGroup, getGroupMembers, createChannel, joinGroup, deleteGroup };

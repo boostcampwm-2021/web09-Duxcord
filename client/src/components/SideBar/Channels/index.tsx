@@ -3,6 +3,7 @@ import { useSelectedGroup } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { socket } from '../../../util/socket';
 import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
+import { getURLParams } from '../../../util/getURLParams';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
@@ -28,9 +29,10 @@ function Channels({ channelType }: Props) {
     hide: () => setShowModal(false),
     show: () => setShowModal(true),
   };
+  const { groupID } = getURLParams();
 
   useEffect(() => {
-    const meetingchannelList = selectedGroup.meetingChannels.map(
+    const meetingchannelList = selectedGroup?.meetingChannels?.map(
       (channel: { id: number }) => channel.id,
     );
 
@@ -49,40 +51,44 @@ function Channels({ channelType }: Props) {
 
   return (
     <ChannelWrapper>
-      <ChannelType>
-        <div>
-          <ChannelOpenIcon />
-          <p>{channelType.toUpperCase()} CHANNELS</p>
-        </div>
-        <ChannelAddIcon
-          onClick={() => {
-            setChannelToCreate(channelType);
-            modalController.show();
-          }}
-        />
-      </ChannelType>
-      <ul>
-        {channels?.map((channel: any) => {
-          return (
-            <>
-              <ChannelListItem
-                key={channel.id}
-                channelType={channelType}
-                id={channel.id}
-                name={channel.name}
-              />
-              {channelType === 'meeting' && (
-                <MeetingUserList
-                  key={channel.id + 'userlist'}
-                  meetingUser={meetingUser[channel.id]}
-                />
-              )}
-            </>
-          );
-        })}
-      </ul>
-      {channelToCreate && showModal && (
-        <ChannelCreateModal initialChannelType={channelToCreate} controller={modalController} />
+      {groupID && (
+        <>
+          <ChannelType>
+            <div>
+              <ChannelOpenIcon />
+              <p>{channelType.toUpperCase()} CHANNELS</p>
+            </div>
+            <ChannelAddIcon
+              onClick={() => {
+                setChannelToCreate(channelType);
+                modalController.show();
+              }}
+            />
+          </ChannelType>
+          <ul>
+            {channels?.map((channel: any) => {
+              return (
+                <>
+                  <ChannelListItem
+                    key={channel.id}
+                    channelType={channelType}
+                    id={channel.id}
+                    name={channel.name}
+                  />
+                  {channelType === 'meeting' && (
+                    <MeetingUserList
+                      key={channel.id + 'userlist'}
+                      meetingUser={meetingUser[channel.id]}
+                    />
+                  )}
+                </>
+              );
+            })}
+          </ul>
+          {channelToCreate && showModal && (
+            <ChannelCreateModal initialChannelType={channelToCreate} controller={modalController} />
+          )}
+        </>
       )}
     </ChannelWrapper>
   );

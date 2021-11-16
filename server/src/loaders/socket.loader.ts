@@ -14,6 +14,7 @@ export async function socketLoader(httpServer) {
   io = new Server(httpServer);
   io.on(ConnectionEvent.connection, (socket) => {
     socket.on(GroupEvent.groupID, (groupID, user) => {
+      if (!userConnectionInfo[groupID]) return;
       if (user && !userConnectionInfo[groupID].some((v) => v.loginID === user.loginID))
         userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
       socket.emit(GroupEvent.groupUserConnection, userConnectionInfo[groupID]);
@@ -42,6 +43,12 @@ export async function socketLoader(httpServer) {
       });
     });
 
+    socket.on(GroupEvent.groupDelete, (code) => {
+      delete userConnectionInfo[code];
+      io.to(code).emit(GroupEvent.groupDelete, code);
+      socket.leave(code);
+    });
+
     const checkMeetingUserList = (meetingchannelList) => {
       const meetingUserList = {};
       Object.entries(meetingMembers).forEach(([channel, user]) => {
@@ -57,6 +64,7 @@ export async function socketLoader(httpServer) {
     };
 
     socket.on(MeetEvent.MeetingChannelList, (code, meetingchannelList) => {
+      if (!meetingchannelList) return;
       const meetingUserList = checkMeetingUserList(meetingchannelList);
       io.to(code).emit(MeetEvent.MeetingUserList, meetingUserList);
     });

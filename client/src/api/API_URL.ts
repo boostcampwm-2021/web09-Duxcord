@@ -19,6 +19,7 @@ export const API_URL = {
     postCreateGroup: '/api/group/create',
     postCreateChannel: (groupID: number | undefined) => `/api/group/${groupID}/channel/create`,
     getGroupMembers: (groupID: number | undefined) => `/api/group/${groupID}/members`,
+    deleteGroup: (groupID: number | undefined) => `/api/group/${groupID}`,
   },
   thread: {
     getThread: (chatID: number) => `/api/chat/${chatID}/thread`,
