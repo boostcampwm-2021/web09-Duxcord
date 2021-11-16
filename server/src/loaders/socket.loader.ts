@@ -43,32 +43,7 @@ export async function socketLoader(httpServer) {
       });
     });
 
-    const checkMeetingUserList = (meetingchannelList) => {
-      const meetingUserList = {};
-      Object.entries(meetingMembers).forEach(([channel, user]) => {
-        const channelID = Number(channel);
-        if (!meetingchannelList.includes(channelID)) return;
-        if (meetingUserList[channelID]) {
-          meetingUserList[channelID].push(user);
-        } else {
-          meetingUserList[channelID] = [user];
-        }
-      });
-      return meetingUserList;
-    };
-
-    socket.on(MeetEvent.MeetingChannelList, (code, meetingchannelList) => {
-      const meetingUserList = checkMeetingUserList(meetingchannelList);
-      io.to(code).emit(MeetEvent.MeetingUserList, meetingUserList);
-    });
-
-    socket.on(ChannelEvent.joinChannel, (channelID) => {
-      socket.join(channelID);
-    });
-
-    socket.on(ChannelEvent.leaveChannel, (channelID) => {
-      socket.leave(channelID);
-    });
+    const channelController = new SocketChannelController(socket);
 
     const meetController = new SocketMeetController(socket);
     socket.on(MeetEvent.meetChat, meetController.meetChat);
@@ -78,5 +53,6 @@ export async function socketLoader(httpServer) {
     socket.on(MeetEvent.candidate, meetController.candidate);
     socket.on(MeetEvent.leaveMeeting, meetController.leaveMeeting);
     socket.on(ConnectionEvent.disconnect, meetController.leaveMeeting);
+    socket.on(MeetEvent.MeetingChannelList, meetController.meetingChannelUserList);
   });
 }
