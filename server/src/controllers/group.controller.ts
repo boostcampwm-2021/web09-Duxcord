@@ -21,7 +21,7 @@ const MSG = {
   alreadyJoined: '이미 그룹에 가입된 사용자입니다.',
   channelNameEmpty: '채널 이름을 입력해주세요',
 };
-const DEFFAULT_CHANNEL_NAME = 'general';
+const DEFAULT_CHANNEL_NAME = 'general';
 
 const createGroup = async (req: Request, res: Response, next: NextFunction) => {
   const { groupName, groupThumbnail } = req.body;
@@ -46,13 +46,13 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 
     const newMeetingChannel = new MeetingChannel();
     newMeetingChannel.group = newGroup;
-    newMeetingChannel.name = DEFFAULT_CHANNEL_NAME;
+    newMeetingChannel.name = DEFAULT_CHANNEL_NAME;
     await meetingChannelRepository.save(newMeetingChannel);
     const responseMeetingChannel = (({ group, ...o }) => o)(newMeetingChannel);
 
     const newChattingChannel = new ChattingChannel();
     newChattingChannel.group = newGroup;
-    newChattingChannel.name = DEFFAULT_CHANNEL_NAME;
+    newChattingChannel.name = DEFAULT_CHANNEL_NAME;
     await chattingChannelRepository.save(newChattingChannel);
     const responseChattingChannel = (({ group, ...o }) => o)(newChattingChannel);
 

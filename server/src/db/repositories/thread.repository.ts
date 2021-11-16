@@ -8,6 +8,7 @@ export class ThreadRepository extends Repository<Thread> {
       .where('thread.chatId = :id', { id: chatID })
       .leftJoinAndSelect('thread.user', 'user')
       .select([
+        'thread.id',
         'thread.content',
         'thread.createdAt',
         'user.id',

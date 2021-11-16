@@ -8,10 +8,7 @@ import {
 } from '../loaders/orm.loader';
 
 import { Thread } from '../db/entities';
-import { io } from '../loaders/socket.loader';
-import ThreadEvent from '../types/socket/ThreadEvent';
-import LikeEvent from '../types/socket/LikeEvent';
-import RoomPrefix from '../types/socket/RoomPrefix';
+import { broadcast } from '../utils';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
@@ -42,25 +39,27 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
 
     const reaction = await reactionRepository.findOne({ where: { user: user, chat: chat } });
 
+    let message;
     if (!reaction) {
       await reactionRepository.insert({ user: user, chat: chat });
       chat.reactionsCount += 1;
-      await chatRepository.save(chat);
-      io.to(RoomPrefix.chatting + chat.chattingChannel.id).emit(LikeEvent.like, {
-        chatID: chat.id,
-        reactionsCount: chat.reactionsCount,
-      });
-      return res.status(201).json({ chat, message: handleReactionMSG.addReactionSuccess });
+      message = handleReactionMSG.addReactionSuccess;
+      res.status(201);
     } else {
       await reactionRepository.remove(reaction);
       chat.reactionsCount -= 1;
-      await chatRepository.save(chat);
-      io.to(RoomPrefix.chatting + chat.chattingChannel.id).emit(LikeEvent.like, {
+      message = handleReactionMSG.deleteReactionSuccess;
+      res.status(204);
+    }
+    await chatRepository.save(chat);
+    broadcast.reactionInfo({
+      reactionInfo: {
         chatID: chat.id,
         reactionsCount: chat.reactionsCount,
-      });
-      return res.status(204).json({ chat, message: handleReactionMSG.deleteReactionSuccess });
-    }
+      },
+      channelID: chat.chattingChannel.id,
+    });
+    return res.json({ chat, message });
   } catch (error) {
     next(error);
   }
@@ -93,18 +92,24 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
     chat.threadLastTime = newThread.createdAt;
     await chatRepository.save(chat);
 
-    io.to(RoomPrefix.chatting + chat.chattingChannel.id).emit(ThreadEvent.thread, {
-      chatID: chat.id,
-      threadsCount: chat.threadsCount,
-      threadWriter: chat.threadWriter,
-      threadLastTime: chat.threadLastTime,
+    broadcast.threadInfo({
+      threadInfo: {
+        chatID: chat.id,
+        threadsCount: chat.threadsCount,
+        threadWriter: chat.threadWriter,
+        threadLastTime: chat.threadLastTime,
+      },
+      channelID: chat.chattingChannel.id,
     });
 
-    io.to(RoomPrefix.thread + chatID).emit(ThreadEvent.threadUpdate, {
-      id: newThread.id,
-      threadWriter: chat.threadWriter,
-      content: newThread.content,
-      createdAt: newThread.createdAt,
+    broadcast.newThread({
+      newThread: {
+        id: newThread.id,
+        threadWriter: chat.threadWriter,
+        content: newThread.content,
+        createdAt: newThread.createdAt,
+      },
+      chatID: chat.id,
     });
 
     return res.status(200).send(createChatMSG.success);

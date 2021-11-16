@@ -7,7 +7,7 @@ import {
   HeaderAlertIcon,
   HeaderFixIcon,
   HeaderUsersIcon,
-} from '../common/Icon';
+} from '../common/Icons';
 import LogoutModal from '../Modal/Logout';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';
 

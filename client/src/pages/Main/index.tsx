@@ -7,7 +7,7 @@ import SideBar from '@components/SideBar';
 import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { getURLParams } from '../../util/getURLParams';
+import { getURLParams } from '../../utils/getURLParams';
 import { Layout, MainWrapper } from './style';
 
 function Main() {

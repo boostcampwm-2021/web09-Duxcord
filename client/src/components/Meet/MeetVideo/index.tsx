@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
-import Socket, { socket } from '../../../util/socket';
+import Socket, { socket } from '../../../utils/socket';
 import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
-import { highlightMyVolume } from '../../../util/audio';
+import { highlightMyVolume } from '../../../utils/audio';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -108,7 +108,7 @@ function MeetVideo() {
           socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
-            member: { socketID: socket.id, loginID, username, thumbnail },
+            member: { loginID, username, thumbnail },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);
