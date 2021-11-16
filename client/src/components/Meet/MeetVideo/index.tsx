@@ -250,7 +250,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
       socket.off(MeetEvent.setToggleCam);
       clearInterval(interval);
     };
-  });
+  }, [member]);
 
   return (
     <VideoItemWrapper>
