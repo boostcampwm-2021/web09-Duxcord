@@ -2,7 +2,14 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../util/socket';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem, MuteWrapper, CamOffWrapper } from './style';
+import {
+  MeetVideoWrapper,
+  VideoItemWrapper,
+  VideoItem,
+  MuteWrapper,
+  CamOffWrapper,
+  MyImage,
+} from './style';
 import { highlightMyVolume } from '../../../util/audio';
 import { MicOffIcon } from '@components/common/Icon';
 
@@ -178,13 +185,13 @@ function MeetVideo() {
     <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
       <VideoItemWrapper>
         <VideoItem autoPlay playsInline muted ref={myVideoRef} />
-        {mic ? '' : <MicOffIcon />}
         {cam ? (
           ''
         ) : (
-          <img src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+          <MyImage src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
         )}
         <p>{userdata?.username}</p>
+        {mic ? '' : <MicOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
         <OtherVideo key={member.socketID} member={member} />

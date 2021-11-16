@@ -47,6 +47,10 @@ const VideoItemWrapper = styled.div`
   }
 `;
 
+const MyImage = styled.img`
+  position: absolute;
+`;
+
 const VideoItem = styled.video`
   width: 100%;
   max-width: 700px;
@@ -64,4 +68,4 @@ const CamOffWrapper = styled.div`
   display: none;
 `;
 
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MuteWrapper, CamOffWrapper };
+export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MuteWrapper, CamOffWrapper, MyImage };
