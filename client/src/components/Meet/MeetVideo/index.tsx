@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../util/socket';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
+import { MeetVideoWrapper, VideoItemWrapper, VideoItem, MuteWrapper, CamOffWrapper } from './style';
 import { highlightMyVolume } from '../../../util/audio';
-import { MicOffIcon, MicOnIcon } from '@components/common/Icon';
+import { MicOffIcon } from '@components/common/Icon';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -70,7 +70,6 @@ function MeetVideo() {
       };
 
       pc.ontrack = (data) => {
-        console.log(member, '연결완료!');
         setMeetingMembers((members): IMeetingUser[] => [
           ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
           {
@@ -149,10 +148,6 @@ function MeetVideo() {
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.on('setMuted', (who, muted) => {
-      console.log(`${who} is muted${muted}`);
-    });
-
     socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail, mic, cam });
 
     return () => {
@@ -183,6 +178,12 @@ function MeetVideo() {
     <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
       <VideoItemWrapper>
         <VideoItem autoPlay playsInline muted ref={myVideoRef} />
+        {mic ? '' : <MicOffIcon />}
+        {cam ? (
+          ''
+        ) : (
+          <img src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+        )}
         <p>{userdata?.username}</p>
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
@@ -194,10 +195,36 @@ function MeetVideo() {
 
 function OtherVideo({ member }: { member: IMeetingUser }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const micIconRef = useRef<HTMLDivElement>(null);
+  const thumbnailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current || !member.stream) return;
     ref.current.srcObject = member.stream;
+
+    socket.on('setMuted', (who, muted) => {
+      console.log(`${who} is muted${muted}`);
+      if (member.loginID !== who) return;
+
+      if (!muted) {
+        micIconRef.current?.classList.add('mute');
+      } else {
+        micIconRef.current?.classList.remove('mute');
+      }
+    });
+
+    socket.on('setToggleCam', (who, toggleCam) => {
+      if (member.loginID !== who) return;
+      if (!toggleCam) {
+        thumbnailRef.current?.classList.add('turnOffCam');
+      } else {
+        thumbnailRef.current?.classList.remove('turnOffCam');
+      }
+    });
+
+    if (!member.mic) micIconRef.current?.classList.add('mute');
+    if (!member.cam) thumbnailRef.current?.classList.add('turnOffCam');
+
     const interval = setInterval(() => {
       const receiver = member?.pc?.getReceivers().find((r: { track: { kind: string } }) => {
         return r.track.kind === 'audio';
@@ -210,19 +237,23 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
         ref.current?.classList.remove('saying');
       }
     }, 1000);
-    return () => clearInterval(interval);
+    return () => {
+      socket.off('setMuted');
+      socket.off('setToggleCam');
+      clearInterval(interval);
+    };
   });
 
   return (
     <VideoItemWrapper>
       <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />
       <p>{member?.username}</p>
-      {member?.mic ? <MicOnIcon /> : <MicOffIcon />}
-      {member?.cam ? (
-        ''
-      ) : (
+      <MuteWrapper ref={micIconRef}>
+        <MicOffIcon />
+      </MuteWrapper>
+      <CamOffWrapper ref={thumbnailRef}>
         <img src={member?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
-      )}
+      </CamOffWrapper>
     </VideoItemWrapper>
   );
 }
