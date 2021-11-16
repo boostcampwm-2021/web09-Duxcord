@@ -1,7 +1,7 @@
 enum GroupEvent {
-  login = 'logIn',
-  groupID = 'GroupID',
-  groupUserConnection = 'GroupUserConnection',
+  login = 'login',
+  groupID = 'groupID',
+  groupUserConnection = 'groupUserConnection',
   userExit = 'userExit',
   userEnter = 'userEnter',
 }
