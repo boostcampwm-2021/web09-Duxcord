@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useUserdata, useSelectedGroup } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import { GroupDeleteIcon, GroupInviteIcon } from '../../common/Icon';
@@ -10,11 +10,7 @@ function GroupSetting() {
   const selectedGroup = useSelectedGroup();
   const { userdata } = useUserdata();
   const [selectedModal, setSelectedModal] = useState('');
-  const [isLeader, setIsLeader] = useState(false);
-
-  useEffect(() => {
-    setIsLeader(selectedGroup?.leader?.loginID === userdata?.loginID);
-  }, [selectedGroup?.leader?.loginID, userdata?.loginID]);
+  const isLeader = selectedGroup?.leader?.loginID === userdata?.loginID;
 
   const groupInviteModalControl: ModalController = {
     hide: () => setSelectedModal(''),
