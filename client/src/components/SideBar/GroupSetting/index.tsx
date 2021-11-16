@@ -14,7 +14,7 @@ function GroupSetting() {
 
   useEffect(() => {
     setIsLeader(selectedGroup?.leader?.loginID === userdata?.loginID);
-  }, [selectedGroup]);
+  }, [selectedGroup?.leader?.loginID, userdata?.loginID]);
 
   const groupInviteModalControl: ModalController = {
     hide: () => setSelectedModal(''),
