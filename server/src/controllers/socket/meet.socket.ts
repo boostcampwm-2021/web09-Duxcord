@@ -21,7 +21,7 @@ function SocketMeetController(socket) {
     io.to(RoomPrefix.meeting + channelID).emit(MeetEvent.meetChat, chat);
   };
 
-  this.joinMeeting = (meetingID, { loginID, username, thumbnail }) => {
+  this.joinMeeting = (meetingID, { loginID, username, thumbnail, mic, cam }) => {
     socket.join(RoomPrefix.RTC + meetingID);
     socketToMeeting[socket.id] = meetingID;
     const newMember = {
@@ -29,6 +29,8 @@ function SocketMeetController(socket) {
       loginID,
       username,
       thumbnail,
+      mic,
+      cam,
     };
 
     if (meetingID in meetingMembers) {
@@ -56,6 +58,27 @@ function SocketMeetController(socket) {
 
   this.candidate = ({ candidate, receiverID }) => {
     io.to(receiverID).emit(MeetEvent.candidate, { candidate, senderID: socket.id });
+  };
+
+  this.mute = (meetingID, muted, who) => {
+    const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
+    if (!meetingChannel) return;
+    const index = meetingMembers[meetingID.toString()].findIndex(
+      (oneMember) => oneMember.loginID === who,
+    );
+    if (index === -1) return;
+    meetingMembers[meetingID.toString()][index].mic = muted;
+    io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setMuted, who, muted);
+  };
+
+  this.toggleCam = (meetingID, toggleCam, who) => {
+    const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
+    if (!meetingChannel) return;
+    const index = meetingMembers[meetingID.toString()].findIndex(
+      (oneMember) => oneMember.loginID === who,
+    );
+    meetingMembers[meetingID.toString()][index].cam = toggleCam;
+    io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setToggleCam, who, toggleCam);
   };
 
   this.leaveMeeting = () => {

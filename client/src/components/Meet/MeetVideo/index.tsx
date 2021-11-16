@@ -2,8 +2,16 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../utils/socket';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
+import {
+  MeetVideoWrapper,
+  VideoItemWrapper,
+  VideoItem,
+  MuteWrapper,
+  CamOffWrapper,
+  MyImage,
+} from './style';
 import { highlightMyVolume } from '../../../utils/audio';
+import { MicOffIcon } from '@components/common/Icons';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -20,6 +28,8 @@ interface IMeetingUser {
   loginID: string;
   username: string;
   thumbnail: string | null;
+  mic: boolean;
+  cam: boolean;
   stream?: MediaStream;
   pc?: RTCPeerConnection;
 }
@@ -108,7 +118,7 @@ function MeetVideo() {
           socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
-            member: { loginID, username, thumbnail },
+            member: { loginID, username, thumbnail, mic, cam },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);
@@ -145,7 +155,7 @@ function MeetVideo() {
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail });
+    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail, mic, cam });
 
     return () => {
       Socket.leaveChannel({ channelType: MeetEvent.meeting, id });
@@ -175,7 +185,13 @@ function MeetVideo() {
     <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
       <VideoItemWrapper>
         <VideoItem autoPlay playsInline muted ref={myVideoRef} />
+        {cam ? (
+          ''
+        ) : (
+          <MyImage src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+        )}
         <p>{userdata?.username}</p>
+        {mic ? '' : <MicOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
         <OtherVideo key={member.socketID} member={member} />
@@ -186,28 +202,64 @@ function MeetVideo() {
 
 function OtherVideo({ member }: { member: IMeetingUser }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const micIconRef = useRef<HTMLDivElement>(null);
+  const thumbnailRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!ref.current || !member.stream) return;
     ref.current.srcObject = member.stream;
+
+    socket.on(MeetEvent.setMuted, (who, muted) => {
+      if (member.loginID !== who) return;
+
+      if (!muted) {
+        micIconRef.current?.classList.add('mute');
+      } else {
+        micIconRef.current?.classList.remove('mute');
+      }
+    });
+
+    socket.on(MeetEvent.setToggleCam, (who, toggleCam) => {
+      if (member.loginID !== who) return;
+      if (!toggleCam) {
+        thumbnailRef.current?.classList.add('turnOffCam');
+      } else {
+        thumbnailRef.current?.classList.remove('turnOffCam');
+      }
+    });
+
+    if (!member.mic) micIconRef.current?.classList.add('mute');
+    if (!member.cam) thumbnailRef.current?.classList.add('turnOffCam');
+
     const interval = setInterval(() => {
       const receiver = member?.pc?.getReceivers().find((r: { track: { kind: string } }) => {
         return r.track.kind === 'audio';
       });
       const source = receiver?.getSynchronizationSources()[0];
+
       if (source?.audioLevel && source?.audioLevel > 0.001) {
         ref.current?.classList.add('saying');
       } else {
         ref.current?.classList.remove('saying');
       }
     }, 1000);
-    return () => clearInterval(interval);
+    return () => {
+      socket.off(MeetEvent.setMuted);
+      socket.off(MeetEvent.setToggleCam);
+      clearInterval(interval);
+    };
   });
 
   return (
     <VideoItemWrapper>
       <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />
       <p>{member?.username}</p>
+      <MuteWrapper ref={micIconRef}>
+        <MicOffIcon />
+      </MuteWrapper>
+      <CamOffWrapper ref={thumbnailRef}>
+        <img src={member?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
+      </CamOffWrapper>
     </VideoItemWrapper>
   );
 }
