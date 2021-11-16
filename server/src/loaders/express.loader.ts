@@ -5,7 +5,7 @@ import { TypeormStore } from 'typeorm-store';
 import { apiRouter } from '../routes/api.router';
 import { sessionRepository } from './orm.loader';
 
-export const appLoader = (app) => {
+export const expressLoader = (app) => {
   app.set('port', process.env.PORT || 8000);
   if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
@@ -23,8 +23,7 @@ export const appLoader = (app) => {
 
   app.use('/api', apiRouter);
 
-  // 에러 핸들러
-  app.use(function (error, req, res, next) {
+  app.use((error, _req, res) => {
     console.error(error);
     res.status(500).send(error.message);
   });

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSelectedGroup } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import { socket } from '../../../util/socket';
-import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icon';
-import { getURLParams } from '../../../util/getURLParams';
+import { socket } from '../../../utils/socket';
+import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icons';
+import { getURLParams } from '../../../utils/getURLParams';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import { ChannelWrapper, ChannelType } from './style';
@@ -68,20 +68,12 @@ function Channels({ channelType }: Props) {
           <ul>
             {channels?.map((channel: any) => {
               return (
-                <>
-                  <ChannelListItem
-                    key={channel.id}
-                    channelType={channelType}
-                    id={channel.id}
-                    name={channel.name}
-                  />
+                <div key={channel.id}>
+                  <ChannelListItem channelType={channelType} id={channel.id} name={channel.name} />
                   {channelType === 'meeting' && (
-                    <MeetingUserList
-                      key={channel.id + 'userlist'}
-                      meetingUser={meetingUser[channel.id]}
-                    />
+                    <MeetingUserList meetingUser={meetingUser[channel.id]} />
                   )}
-                </>
+                </div>
               );
             })}
           </ul>

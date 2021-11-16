@@ -3,9 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { chattingChannelRepository, userRepository, chatRepository } from '../loaders/orm.loader';
 
 import { Chat } from '../db/entities';
-import { io } from '../loaders/socket.loader';
-import ChatEvent from '../types/socket/ChatEvent';
-import RoomPrefix from '../types/socket/RoomPrefix';
+import { broadcast } from '../utils';
 
 export const createChatMSG = {
   userNotFound: '존재하지 않는 사용자 입니다.',
@@ -46,20 +44,23 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
 
     await chatRepository.save(newChat);
 
-    io.to(RoomPrefix.chatting + chattingChannelID).emit(ChatEvent.chat, {
-      id: newChat.id,
-      createdAt: newChat.createdAt,
-      updatedAt: newChat.updatedAt,
-      content: newChat.content,
-      reactionsCount: newChat.reactionsCount,
-      reactions: [],
-      threadsCount: newChat.threadsCount,
-      threadWriter: null,
-      user: {
-        id: user.id,
-        thumbnail: user.thumbnail,
-        username: user.username,
+    broadcast.newChat({
+      newChat: {
+        id: newChat.id,
+        createdAt: newChat.createdAt,
+        updatedAt: newChat.updatedAt,
+        content: newChat.content,
+        reactionsCount: newChat.reactionsCount,
+        reactions: [],
+        threadsCount: newChat.threadsCount,
+        threadWriter: null,
+        user: {
+          id: user.id,
+          thumbnail: user.thumbnail,
+          username: user.username,
+        },
       },
+      channelID: chattingChannelID,
     });
 
     return res.status(200).send(createChatMSG.success);

@@ -11,7 +11,7 @@ import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
 import { AlertWrapper } from './style';
 import { URL } from 'src/api/URL';
-import { socket } from '../../../util/socket';
+import { socket } from '../../../utils/socket';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 
 function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalController }) {

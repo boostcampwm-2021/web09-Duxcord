@@ -8,7 +8,7 @@ import {
   validatePassword,
   validateForm,
   isSendPossible,
-} from '../../util/checkResponse';
+} from '../../utils/checkResponse';
 import {
   SignUpWrapper,
   Title,
@@ -17,8 +17,8 @@ import {
   SignUpButton,
   ButtonWrapper,
 } from './style';
-import { SIGN_UP_ERROR_MESSAGE } from '../../util/message';
-import { trySignUp } from '../../util/api';
+import { SIGN_UP_ERROR_MESSAGE } from '../../utils/message';
+import { trySignUp } from '../../utils/api';
 
 const { ID_FORM_ERROR, PASSWORD_FORM_ERROR, USERNAME_ERROR, EMPTY_INPUT_ERROR } =
   SIGN_UP_ERROR_MESSAGE;

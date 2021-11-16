@@ -1,8 +1,8 @@
 enum GroupEvent {
-  login = 'logIn',
-  groupID = 'GroupID',
-  groupUserConnection = 'GroupUserConnection',
-  groupDelete = 'GroupDelete',
+  login = 'login',
+  groupID = 'groupID',
+  groupUserConnection = 'groupUserConnection',
+  groupDelete = 'groupDelete',
   userExit = 'userExit',
   userEnter = 'userEnter',
 }

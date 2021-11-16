@@ -1,4 +1,4 @@
-import { CircleDeselectedIcon, CircleSelectedIcon } from '@components/common/Icon';
+import { CircleDeselectedIcon, CircleSelectedIcon } from '@components/common/Icons';
 import { Wrapper, Title, SubTitle } from './style';
 import React, { ReactElement } from 'react';
 

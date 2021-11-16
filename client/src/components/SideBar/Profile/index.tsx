@@ -10,8 +10,8 @@ import {
   MicOnIcon,
   SpeakerOffIcon,
   SpeakerOnIcon,
-} from '../../common/Icon';
-import { socket } from 'src/util/socket';
+} from '../../common/Icons';
+import { socket } from 'src/utils/socket';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 
 function Profile() {

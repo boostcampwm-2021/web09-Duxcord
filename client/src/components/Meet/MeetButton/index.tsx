@@ -1,5 +1,5 @@
 import React from 'react';
-import { MeetingStopIcon, ScreenShareStartIcon } from '../../common/Icon';
+import { MeetingStopIcon, ScreenShareStartIcon } from '../../common/Icons';
 import { MeetButtonWrapper } from './style';
 
 function MeetButton() {

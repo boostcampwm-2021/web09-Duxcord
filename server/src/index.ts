@@ -3,17 +3,13 @@ import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 
-import { ormLoader } from './loaders/orm.loader';
 import { createServer } from 'http';
-import { socketLoader } from './loaders/socket.loader';
-import { appLoader } from './loaders/app.loader';
+import { rootLoader } from './loaders/root.loader';
 
 export const appInit = async () => {
-  await ormLoader();
   const app = express();
   const httpServer = createServer(app);
-  socketLoader(httpServer);
-  appLoader(app);
+  await rootLoader(app, httpServer);
 
   if (process.env.NODE_ENV === 'test') return app;
 

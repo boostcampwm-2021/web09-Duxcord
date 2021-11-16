@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
-import Socket, { socket } from '../../../util/socket';
+import Socket, { socket } from '../../../utils/socket';
 import {
   MeetVideoWrapper,
   VideoItemWrapper,
@@ -10,8 +10,8 @@ import {
   CamOffWrapper,
   MyImage,
 } from './style';
-import { highlightMyVolume } from '../../../util/audio';
-import { MicOffIcon } from '@components/common/Icon';
+import { highlightMyVolume } from '../../../utils/audio';
+import { MicOffIcon } from '@components/common/Icons';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -118,7 +118,7 @@ function MeetVideo() {
           socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
-            member: { socketID: socket.id, loginID, username, thumbnail, mic, cam },
+            member: { loginID, username, thumbnail, mic, cam },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);

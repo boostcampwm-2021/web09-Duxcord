@@ -3,8 +3,8 @@ import useSWR from 'swr';
 import { API_URL } from '../../../api/API_URL';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import { useGroupConnection, useSelectedGroup, useUserdata } from '@hooks/index';
-import { getFetcher } from '../../../util/fetcher';
-import { socket } from '../../../util/socket';
+import { getFetcher } from '../../../utils/fetcher';
+import { socket } from '../../../utils/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
 
 function UserConnection() {

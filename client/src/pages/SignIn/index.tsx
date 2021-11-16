@@ -11,9 +11,9 @@ import {
   LoginButton,
   ErrorResponse,
 } from './style';
-import { SIGN_IN_ERROR_MESSAGE } from '../../util/message';
-import { checkLogin } from '../../util/checkResponse';
-import { tryLogin } from '../../util/api';
+import { SIGN_IN_ERROR_MESSAGE } from '../../utils/message';
+import { checkLogin } from '../../utils/checkResponse';
+import { tryLogin } from '../../utils/api';
 import { STATUS_CODES } from '../../api/STATUS_CODES';
 import { URL } from 'src/api/URL';
 
