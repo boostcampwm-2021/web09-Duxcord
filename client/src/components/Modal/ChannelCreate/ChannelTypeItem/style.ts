@@ -11,6 +11,13 @@ const Wrapper = styled.div`
   background-color: ${Colors.Gray6};
   min-width: 320px;
   padding: 8px;
+
+  /*
+  & svg:first-child {
+    &:hover {
+      cursor: pointer;
+    }
+  }*/
 `;
 
 const Title = styled.div`
