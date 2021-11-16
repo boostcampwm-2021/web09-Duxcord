@@ -12,12 +12,11 @@ const Wrapper = styled.div`
   min-width: 320px;
   padding: 8px;
 
-  /*
   & svg:first-child {
     &:hover {
       cursor: pointer;
     }
-  }*/
+  }
 `;
 
 const Title = styled.div`
