@@ -145,7 +145,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
 
 const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
-  const userID = req.session.userID;
+  const { userID } = req.session;
 
   try {
     const group = await groupRepository.findByIDWithLeaderID(id);
