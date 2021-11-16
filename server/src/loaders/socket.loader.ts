@@ -1,11 +1,11 @@
 import { Server } from 'socket.io';
+import SocketChannelController from '../controllers/socket/channel.socket';
 import SocketGroupController from '../controllers/socket/group.socket';
 import SocketMeetController from '../controllers/socket/meet.socket';
 import ChannelEvent from '../types/socket/ChannelEvent';
 import ConnectionEvent from '../types/socket/ConnectionEvent';
 import GroupEvent from '../types/socket/GroupEvent';
 import MeetEvent from '../types/socket/MeetEvent';
-import RoomPrefix from '../types/socket/RoomPrefix';
 
 export let io: Server;
 export const userConnectionInfo = {};
@@ -20,6 +20,8 @@ export async function socketLoader(httpServer) {
     socket.on(GroupEvent.login, groupController.login);
 
     const channelController = new SocketChannelController(socket);
+    socket.on(ChannelEvent.joinChannel, channelController.joinChannel);
+    socket.on(ChannelEvent.leaveChannel, channelController.leaveChannel);
 
     const meetController = new SocketMeetController(socket);
     socket.on(MeetEvent.meetChat, meetController.meetChat);
