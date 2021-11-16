@@ -118,12 +118,21 @@ export async function socketLoader(httpServer) {
       io.to(receiverID).emit(MeetEvent.answer, { answer, senderID: socket.id });
     });
 
+    socket.on('mute', (meetingID, muted, who) => {
+      console.log('asd');
+      const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID.toString());
+      console.log(meetingMembers, meetingID);
+      if (!meetingChannel) return;
+      io.to(RoomPrefix.RTC + meetingID).emit('setMuted', who, muted);
+    });
+
     const leaveMeeting = () => {
       const meetingID = socketToMeeting[socket.id];
       if (meetingMembers[meetingID])
         meetingMembers[meetingID] = meetingMembers[meetingID].filter(
           (member) => member.socketID !== socket.id,
         );
+      console.log(RoomPrefix.RTC + meetingID);
       io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
     };
     socket.on(MeetEvent.leaveMeeting, leaveMeeting);
