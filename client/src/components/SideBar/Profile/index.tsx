@@ -1,7 +1,7 @@
 import React from 'react';
 import { ProfileWrapper } from './style';
 import { useDispatch } from 'react-redux';
-import { useUserdata, useUserDevice } from '../../../hooks';
+import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import { setUserDevice } from '../../../redux/userDevice/slice';
 import {
   CameraOffIcon,
@@ -11,13 +11,17 @@ import {
   SpeakerOffIcon,
   SpeakerOnIcon,
 } from '../../common/Icon';
+import { socket } from 'src/util/socket';
 
 function Profile() {
   const dispatch = useDispatch();
   const { userdata } = useUserdata();
   const device = useUserDevice();
+  const { id } = useSelectedChannel();
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
+    if (target === 'mic') socket.emit('mute', id, !device[target], userdata.loginID);
+    if (target === 'cam') socket.emit('toggleCam', id, !device[target], userdata.loginID);
     dispatch(setUserDevice({ ...device, [target]: !device[target] }));
   };
 
