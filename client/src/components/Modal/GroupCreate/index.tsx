@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import Modal from '..';
@@ -9,6 +9,7 @@ import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
 import { InputForm, InputImage, InputText } from './style';
 import { URL } from 'src/api/URL';
+import { uploadFileToStorage } from 'src/utils/uploadFile';
 
 function GroupCreateModal({
   controller: { hide, show, previous },
@@ -29,7 +30,10 @@ function GroupCreateModal({
 
   const createGroup = async () => {
     if (groupName === '') return;
-    const response = await postCreateGroup({ groupName: groupName });
+    const response = await postCreateGroup({
+      groupName: groupName,
+      groupThumbnail: fileURL,
+    });
     switch (response.status) {
       case 200:
         const group = await response.json();
@@ -47,10 +51,28 @@ function GroupCreateModal({
     }
   };
 
+  const [fileURL, setFileURL] = useState<string | null>(null);
+
+  const inputImage = useRef<HTMLDivElement>(null);
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (!target.files) return;
+    const file: File = (target.files as FileList)[0];
+    const uploadedFile = await uploadFileToStorage(file);
+    if (uploadedFile && inputImage && inputImage.current) {
+      inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
+      setFileURL(uploadedFile);
+    }
+  };
   const InputFormComponent = (
     <InputForm onSubmit={createGroup}>
-      <InputImage>
-        <input type="file" id="group_thumbnail" style={{ width: 100, height: 100, opacity: 0 }} />
+      <InputImage ref={inputImage}>
+        <input
+          type="file"
+          id="group_thumbnail"
+          onChange={uploadFile}
+          style={{ width: 100, height: 100, opacity: 0 }}
+        />
       </InputImage>
       <InputText
         type="text"

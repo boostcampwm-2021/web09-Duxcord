@@ -19,6 +19,7 @@ const InputImage = styled.div`
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
+  background-size: cover;
 `;
 
 const InputForm = styled.form`
