@@ -30,6 +30,7 @@ import { ReactComponent as ScreenShareStartIcon } from '@assets/icons/ic-screen-
 import { ReactComponent as ScreenShareStopIcon } from '@assets/icons/ic-screen-share-stop.svg';
 import { ReactComponent as CircleDeselectedIcon } from '@assets/icons/ic-circle-deselected.svg';
 import { ReactComponent as CircleSelectedIcon } from '@assets/icons/ic-circle-selected.svg';
+import { ReactComponent as GroupThumbnailUploadIcon } from '@assets/icons/ic-group-thumbnail-upload.svg';
 
 export {
   CameraOffIcon,
@@ -64,4 +65,5 @@ export {
   ScreenShareStopIcon,
   CircleDeselectedIcon,
   CircleSelectedIcon,
+  GroupThumbnailUploadIcon,
 };

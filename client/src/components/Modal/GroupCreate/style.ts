@@ -15,10 +15,19 @@ const InputImage = styled.div`
   margin-bottom: 20px;
   border-radius: 50px;
   border: 4px ${Colors.Gray1} dashed;
-  background-image: url('/icons/btn-image-upload.svg');
+  position: relative;
   background-repeat: no-repeat;
   background-position-x: center;
   background-position-y: center;
+  background-size: cover;
+
+  & svg {
+    position: absolute;
+    width: 92px;
+    top: 10px;
+    left: 0;
+    z-index: -1;
+  }
 `;
 
 const InputForm = styled.form`
@@ -28,4 +37,10 @@ const InputForm = styled.form`
   align-items: center;
 `;
 
-export { InputText, InputImage, InputForm };
+const ErrorDiv = styled.div`
+  color: ${Colors.Red};
+  width: 240px;
+  margin: 8px 0;
+`;
+
+export { InputText, InputImage, InputForm, ErrorDiv };
