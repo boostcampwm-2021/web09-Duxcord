@@ -28,9 +28,15 @@ export const uploadFileToStorage = async (file: File) => {
       ACL: 'public-read',
       Body: file,
     }).promise();
+
     const { $response } = uploadRequest;
-    console.log($response);
-    return `https://kr.object.ncloudstorage.com/duxcord/${uploadName}`;
+    switch ($response.httpResponse.statusCode) {
+      case 200:
+        const createdURL = `${process.env.REACT_APP_S3_ENDPOINT!}/${bucketName}/${uploadName}`;
+        return createdURL;
+      default:
+        throw new Error('Bad Request');
+    }
   } catch (err) {
     console.error(err);
   }

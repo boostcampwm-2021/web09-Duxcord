@@ -7,7 +7,7 @@ import { useGroups } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
-import { InputForm, InputImage, InputText } from './style';
+import { ErrorDiv, InputForm, InputImage, InputText } from './style';
 import { URL } from 'src/api/URL';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
 import { GroupThumbnailUploadIcon } from '../../common/Icons';
@@ -29,6 +29,7 @@ function GroupCreateModal({
     hide();
   };
 
+  const [postError, setPostError] = useState<string | null>(null);
   const createGroup = async () => {
     if (groupName === '') return;
     const response = await postCreateGroup({
@@ -37,6 +38,7 @@ function GroupCreateModal({
     });
     switch (response.status) {
       case 200:
+        setPostError(null);
         const group = await response.json();
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
@@ -45,25 +47,31 @@ function GroupCreateModal({
         break;
       case 400:
         const responseText = await response.text();
-        console.error(responseText);
+        setPostError(responseText);
         break;
       default:
-        console.log('백엔드가 포기한 요청');
+        setPostError('그룹 생성에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
   const [fileURL, setFileURL] = useState<string | null>(null);
+  const [fileError, setFileError] = useState(false);
 
   const inputImage = useRef<HTMLDivElement>(null);
   const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const target = e.target as HTMLInputElement;
-    if (!target.files) return;
-    const file: File = (target.files as FileList)[0];
-    if (!file.type.match('image/jpeg|image/png')) return;
-    const uploadedFile = await uploadFileToStorage(file);
-    if (uploadedFile && inputImage && inputImage.current) {
-      inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
-      setFileURL(uploadedFile);
+    try {
+      const target = e.target as HTMLInputElement;
+      if (!target.files) return;
+      const file: File = (target.files as FileList)[0];
+      if (!file.type.match('image/jpeg|image/png')) return;
+      const uploadedFile = await uploadFileToStorage(file);
+      if (uploadedFile && inputImage && inputImage.current) {
+        inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
+        setFileURL(uploadedFile);
+        setFileError(false);
+      } else setFileError(true);
+    } catch (error) {
+      setFileError(true);
     }
   };
   const InputFormComponent = (
@@ -78,6 +86,9 @@ function GroupCreateModal({
         />
         {!fileURL && <GroupThumbnailUploadIcon />}
       </InputImage>
+      {fileError && (
+        <ErrorDiv>사진을 성공적으로 업로드하지 못했습니다. 다시 시도해주세요.</ErrorDiv>
+      )}
       <InputText
         type="text"
         id="group_name"
@@ -85,6 +96,7 @@ function GroupCreateModal({
         onChange={(e) => updateGroupName(e.target.value)}
         placeholder="그룹 이름을 입력해주세요"
       />
+      {postError && <ErrorDiv>{postError}</ErrorDiv>}
     </InputForm>
   );
 
