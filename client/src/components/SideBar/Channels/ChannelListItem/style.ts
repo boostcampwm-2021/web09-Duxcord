@@ -1,16 +1,23 @@
 import styled from 'styled-components';
 import Colors from '../../../../styles/Colors';
 
-const ListItem = styled.li`
+interface IListItem {
+  selected: boolean;
+}
+
+const ListItem = styled.li<IListItem>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 7px 10px;
   margin: 2px 5px;
   border-radius: 5px;
-  color: ${Colors.Gray1};
+  color: ${(props) => (props.selected ? Colors.Black : Colors.Gray1)};
+  ${(props) => props.selected && `background-color: ${Colors.Gray2}`};
+  ${(props) => props.selected && `font-weight: 600`};
+
   &:hover {
-    background-color: ${Colors.Gray3};
+    background-color: ${(props) => (props.selected ? Colors.Gray2 : Colors.Gray3)};
     cursor: pointer;
     color: ${Colors.Black};
   }
