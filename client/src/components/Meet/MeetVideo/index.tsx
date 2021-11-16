@@ -208,7 +208,9 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
   useEffect(() => {
     if (!ref.current || !member.stream) return;
     ref.current.srcObject = member.stream;
+  }, [member.stream]);
 
+  useEffect(() => {
     socket.on(MeetEvent.setMuted, (who, muted) => {
       if (member.loginID !== who) return;
 
@@ -248,7 +250,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
       socket.off(MeetEvent.setToggleCam);
       clearInterval(interval);
     };
-  });
+  }, [member]);
 
   return (
     <VideoItemWrapper>
