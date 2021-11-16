@@ -22,6 +22,7 @@ import {
   GroupMemberRepository,
   ChatRepository,
   ThreadRepository,
+  WorkgroupRepository,
 } from '../db/repositories';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -29,7 +30,7 @@ dotenv.config();
 export let connection: Connection;
 export let userRepository: UserRepository;
 export let sessionRepository;
-export let groupRepository: Repository<Workgroup>;
+export let groupRepository: WorkgroupRepository;
 export let groupMemberRepository: GroupMemberRepository;
 export let chattingChannelRepository: Repository<ChattingChannel>;
 export let meetingChannelRepository: Repository<MeetingChannel>;
@@ -68,7 +69,7 @@ export const ormLoader = async () => {
   await connectDB();
   userRepository = await getCustomRepository(UserRepository);
   sessionRepository = await getRepository(Session);
-  groupRepository = await getRepository(Workgroup);
+  groupRepository = await getCustomRepository(WorkgroupRepository);
   groupMemberRepository = await getCustomRepository(GroupMemberRepository);
   chattingChannelRepository = await getRepository(ChattingChannel);
   meetingChannelRepository = await getRepository(MeetingChannel);

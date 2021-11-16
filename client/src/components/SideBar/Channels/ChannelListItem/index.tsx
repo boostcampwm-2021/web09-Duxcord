@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useSelectedGroup } from '@hooks/index';
+import { useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { URL } from 'src/api/URL';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icons';
@@ -15,6 +15,7 @@ interface Props {
 
 function ChannelListItem({ channelType, id, name }: Props) {
   const selectedGroup = useSelectedGroup();
+  const { id: selectedChannelID, type: selectedChannelType } = useSelectedChannel();
   const history = useHistory();
   const dispatch = useDispatch();
   const joinChannel = () => {
@@ -23,7 +24,10 @@ function ChannelListItem({ channelType, id, name }: Props) {
   };
 
   return (
-    <ListItem onClick={joinChannel}>
+    <ListItem
+      onClick={joinChannel}
+      selected={id === selectedChannelID && channelType === selectedChannelType}
+    >
       <div>
         {channelType === 'meeting' ? (
           <ChannelMeetingIcon />

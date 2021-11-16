@@ -4,6 +4,7 @@ import { useHistory } from 'react-router';
 import { useGroups, useSelectedGroup } from '@hooks/index';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { setSelectedChat } from '@redux/selectedChat/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
 import { socket } from '../../../util/socket';
 import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
@@ -22,7 +23,7 @@ import { GroupAddIcon } from '../../common/Icons';
 import { URL } from 'src/api/URL';
 
 function GroupNav() {
-  const { groups } = useGroups();
+  const { groups, mutate: mutateGroups } = useGroups();
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -55,6 +56,25 @@ function GroupNav() {
       dispatch(setGroupConnection(connectionList));
     });
 
+    socket.on(GroupEvent.groupDelete, (code) => {
+      mutateGroups(
+        groups.filter((group: any) => group.id !== selectedGroup.id),
+        false,
+      );
+      if (code === selectedGroup?.code) {
+        dispatch(setSelectedGroup(null));
+        dispatch(
+          setSelectedChannel({
+            type: '',
+            id: null,
+            name: '',
+          }),
+        );
+        dispatch(setSelectedChat(null));
+        history.push(URL.groupPage());
+      }
+    });
+
     socket.on(GroupEvent.userExit, (user, code) => {
       dispatch(removeUserConnection(user));
     });
@@ -66,6 +86,7 @@ function GroupNav() {
 
     return () => {
       socket.off(GroupEvent.groupUserConnection);
+      socket.off(GroupEvent.groupDelete);
       socket.off(GroupEvent.userEnter);
       socket.off(GroupEvent.userExit);
     };

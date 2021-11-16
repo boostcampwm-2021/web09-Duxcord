@@ -7,12 +7,14 @@ export class GroupMemberRepository extends Repository<GroupMember> {
     return this.createQueryBuilder('group_member')
       .where('group_member.userId = :id', { id: userID })
       .leftJoinAndSelect('group_member.group', 'group')
+      .leftJoinAndSelect('group.leader', 'user')
       .select([
         'group_member.lastAccessTime',
         'group.id',
         'group.name',
         'group.thumbnail',
         'group.code',
+        'user.loginID',
       ])
       .leftJoinAndSelect('group.meetingChannels', 'meetingChannels')
       .leftJoinAndSelect('group.chattingChannels', 'chattingChannels')

@@ -18,6 +18,11 @@ export async function socketLoader(httpServer) {
     const groupController = new SocketGroupController(socket);
     socket.on(GroupEvent.groupID, groupController.groupID);
     socket.on(GroupEvent.login, groupController.login);
+    socket.on(GroupEvent.groupDelete, (code) => {
+      delete userConnectionInfo[code];
+      io.to(code).emit(GroupEvent.groupDelete, code);
+      socket.leave(code);
+    });
 
     const channelController = new SocketChannelController(socket);
     socket.on(ChannelEvent.joinChannel, channelController.joinChannel);
