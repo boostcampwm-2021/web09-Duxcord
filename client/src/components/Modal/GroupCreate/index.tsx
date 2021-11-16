@@ -10,6 +10,7 @@ import { ModalController } from '@customTypes/modal';
 import { InputForm, InputImage, InputText } from './style';
 import { URL } from 'src/api/URL';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { GroupThumbnailUploadIcon } from '../../common/Icons';
 
 function GroupCreateModal({
   controller: { hide, show, previous },
@@ -58,6 +59,7 @@ function GroupCreateModal({
     const target = e.target as HTMLInputElement;
     if (!target.files) return;
     const file: File = (target.files as FileList)[0];
+    if (!file.type.match('image/jpeg|image/png')) return;
     const uploadedFile = await uploadFileToStorage(file);
     if (uploadedFile && inputImage && inputImage.current) {
       inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
@@ -72,7 +74,9 @@ function GroupCreateModal({
           id="group_thumbnail"
           onChange={uploadFile}
           style={{ width: 100, height: 100, opacity: 0 }}
+          accept="image/jpeg, image/png"
         />
+        {!fileURL && <GroupThumbnailUploadIcon />}
       </InputImage>
       <InputText
         type="text"
