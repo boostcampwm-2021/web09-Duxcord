@@ -14,6 +14,7 @@ export async function socketLoader(httpServer) {
   io = new Server(httpServer);
   io.on(ConnectionEvent.connection, (socket) => {
     socket.on(GroupEvent.groupID, (groupID, user) => {
+      if (!userConnectionInfo[groupID]) return;
       if (user && !userConnectionInfo[groupID].some((v) => v.loginID === user.loginID))
         userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
       socket.emit(GroupEvent.groupUserConnection, userConnectionInfo[groupID]);
