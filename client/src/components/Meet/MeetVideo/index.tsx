@@ -4,6 +4,7 @@ import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../util/socket';
 import { MeetVideoWrapper, VideoItemWrapper, VideoItem } from './style';
 import { highlightMyVolume } from '../../../util/audio';
+import { MicOffIcon, MicOnIcon } from '@components/common/Icon';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -20,6 +21,8 @@ interface IMeetingUser {
   loginID: string;
   username: string;
   thumbnail: string | null;
+  mic: boolean;
+  cam: boolean;
   stream?: MediaStream;
   pc?: RTCPeerConnection;
 }
@@ -67,6 +70,7 @@ function MeetVideo() {
       };
 
       pc.ontrack = (data) => {
+        console.log(member, '연결완료!');
         setMeetingMembers((members): IMeetingUser[] => [
           ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
           {
@@ -108,7 +112,7 @@ function MeetVideo() {
           socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
-            member: { socketID: socket.id, loginID, username, thumbnail },
+            member: { socketID: socket.id, loginID, username, thumbnail, mic, cam },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);
@@ -145,7 +149,11 @@ function MeetVideo() {
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail });
+    socket.on('setMuted', (who, muted) => {
+      console.log(`${who} is muted${muted}`);
+    });
+
+    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail, mic, cam });
 
     return () => {
       Socket.leaveChannel({ channelType: MeetEvent.meeting, id });
@@ -195,6 +203,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
         return r.track.kind === 'audio';
       });
       const source = receiver?.getSynchronizationSources()[0];
+
       if (source?.audioLevel && source?.audioLevel > 0.001) {
         ref.current?.classList.add('saying');
       } else {
@@ -208,6 +217,12 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
     <VideoItemWrapper>
       <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />
       <p>{member?.username}</p>
+      {member?.mic ? <MicOnIcon /> : <MicOffIcon />}
+      {member?.cam ? (
+        ''
+      ) : (
+        <img src={member?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
+      )}
     </VideoItemWrapper>
   );
 }
