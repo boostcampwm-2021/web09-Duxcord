@@ -30,7 +30,7 @@ function Channels({ channelType }: Props) {
   };
 
   useEffect(() => {
-    const meetingchannelList = selectedGroup.meetingChannels.map(
+    const meetingchannelList = selectedGroup.meetingChannels?.map(
       (channel: { id: number }) => channel.id,
     );
 
