@@ -1,21 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initState = {
+  id: '',
   loginID: '',
   username: '',
   thumbnail: null,
   bio: null,
+  isOnline: false,
+  canEdit: false,
 };
 
 const { reducer: selectedOtherUserReducer, actions } = createSlice({
   name: 'selectedOtherUser',
   initialState: initState,
   reducers: {
-    setSelectedOtherUser: (state, { payload: { loginID, username, thumbnail, bio } }) => ({
+    setSelectedOtherUser: (
+      state,
+      { payload: { id, loginID, username, thumbnail, bio, isOnline, canEdit } },
+    ) => ({
+      id,
       loginID,
       username,
       thumbnail,
       bio,
+      isOnline,
+      canEdit,
     }),
   },
 });

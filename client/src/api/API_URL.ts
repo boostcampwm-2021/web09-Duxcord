@@ -5,7 +5,7 @@ export const API_URL = {
     login: '/api/user/signin',
     logout: '/api/user/signout',
     signUp: '/api/user/signup',
-    getOtherUserdata: (userID: number) => `/api/user/${userID}/profile`,
+    getOtherUserdata: (userID: string) => `/api/user/${userID}/profile`,
   },
   channel: {
     postChat: (channelID: number) => `/api/channel/${channelID}/create`,

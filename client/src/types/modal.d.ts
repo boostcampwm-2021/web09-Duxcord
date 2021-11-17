@@ -7,7 +7,7 @@ interface ModalData {
 
 interface ModalController {
   hide: function;
-  show: function;
+  show?: function;
   previous?: function;
 }
 
