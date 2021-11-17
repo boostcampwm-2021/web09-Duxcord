@@ -4,6 +4,7 @@ import {
   socketToMeeting,
   userConnectionInfo,
 } from '../../loaders/socket.loader';
+import ConnectionEvent from '../../types/socket/ConnectionEvent';
 import MeetEvent from '../../types/socket/MeetEvent';
 import RoomPrefix from '../../types/socket/RoomPrefix';
 
@@ -82,20 +83,20 @@ function SocketMeetController(socket) {
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setToggleCam, who, toggleCam);
   };
 
-  this.leaveMeeting = (code) => {
+  this.leaveMeeting = (groupCode) => {
     const meetingID = socketToMeeting[socket.id];
     if (meetingMembers[meetingID])
       meetingMembers[meetingID] = meetingMembers[meetingID].filter(
         (member) => member.socketID !== socket.id,
       );
 
-    if (code === 'transport close') {
-      const code = Object.keys(userConnectionInfo).find((key) =>
+    if (groupCode === ConnectionEvent.close) {
+      const groupCode = Object.keys(userConnectionInfo).find((key) =>
         userConnectionInfo[key].some((v) => v.socketID === socket.id),
       );
-      io.to(code).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+      io.to(groupCode).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
     } else {
-      io.to(code).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+      io.to(groupCode).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
     }
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
   };
