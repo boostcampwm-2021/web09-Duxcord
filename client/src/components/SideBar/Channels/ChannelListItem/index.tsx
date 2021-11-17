@@ -6,7 +6,6 @@ import { URL } from 'src/api/URL';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icons';
 import { ListItem } from './style';
-import { socket } from 'src/utils/socket';
 
 interface Props {
   meetingUserCount: number;

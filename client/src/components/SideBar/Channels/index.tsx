@@ -36,14 +36,14 @@ function Channels({ channelType }: Props) {
       setMeetingUser({ ...meetingUserList });
     });
 
-    socket.on('someoneIn', (targetMeetingUsers, targetMeetingID) => {
+    socket.on(MeetEvent.someoneIn, (targetMeetingUsers, targetMeetingID) => {
       setMeetingUser((prevState) => ({
         ...prevState,
         [targetMeetingID]: targetMeetingUsers,
       }));
     });
 
-    socket.on('someoneOut', (targetMeetingUsers, targetMeetingID) => {
+    socket.on(MeetEvent.someoneOut, (targetMeetingUsers, targetMeetingID) => {
       setMeetingUser((prevState) => ({
         ...prevState,
         [targetMeetingID]: targetMeetingUsers,
@@ -52,6 +52,8 @@ function Channels({ channelType }: Props) {
 
     return () => {
       socket.off(MeetEvent.MeetingUserList);
+      socket.off(MeetEvent.someoneIn);
+      socket.off(MeetEvent.someoneOut);
     };
   }, []);
 
@@ -61,7 +63,7 @@ function Channels({ channelType }: Props) {
     const meetingChannelList = selectedGroup?.meetingChannels?.map(
       (channel: { id: number }) => channel.id,
     );
-    // 현재 클릭된 그룹의 미팅채널별 참여인원들을 받아온다.
+
     socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingChannelList);
   }, [selectedGroup]);
 

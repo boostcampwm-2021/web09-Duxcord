@@ -11,6 +11,8 @@ enum MeetEvent {
   MeetingChannelList = 'MeetingChannelList',
   MeetingUserList = 'MeetingUserList',
   mute = 'mute',
+  someoneIn = 'someoneIn',
+  someoneOut = 'someoneOut',
   setMuted = 'setMuted',
   toggleCam = 'toggleCam',
   setToggleCam = 'setToggleCam',

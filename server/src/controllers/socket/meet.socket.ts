@@ -40,7 +40,7 @@ function SocketMeetController(socket) {
     const membersInMeeting = meetingMembers[meetingID].filter(
       (user) => user.socketID !== socket.id,
     );
-    io.to(code).emit('someoneIn', meetingMembers[meetingID], meetingID);
+    io.to(code).emit(MeetEvent.someoneIn, meetingMembers[meetingID], meetingID);
     io.to(socket.id).emit(MeetEvent.allMeetingMembers, membersInMeeting);
   };
 
@@ -83,7 +83,7 @@ function SocketMeetController(socket) {
       meetingMembers[meetingID] = meetingMembers[meetingID].filter(
         (member) => member.socketID !== socket.id,
       );
-    io.to(code).emit('someoneOut', meetingMembers[meetingID], meetingID);
+    io.to(code).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
   };
 
