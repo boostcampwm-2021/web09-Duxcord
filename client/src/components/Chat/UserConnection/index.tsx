@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import useSWR from 'swr';
+import { useDispatch } from 'react-redux';
 import { API_URL } from '../../../api/API_URL';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import {
@@ -11,7 +12,6 @@ import {
 import { getFetcher } from '../../../utils/fetcher';
 import { socket } from '../../../utils/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
-import { useDispatch } from 'react-redux';
 import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
 import UserInformationModal from '@components/Modal/UserInformation';
 
@@ -62,7 +62,7 @@ function UserConnection() {
             <div>{offLineUser.user.username}</div>
           </UserTile>
         ))}
-      {selectedOtherUser.loginID && (
+      {selectedOtherUser.id && (
         <UserInformationModal controller={{ hide: () => dispatch(setSelectedOtherUser({})) }} />
       )}
     </UserConnectionWrapper>

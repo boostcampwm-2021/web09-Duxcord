@@ -7,3 +7,4 @@ export * from './useSelectedGroup';
 export * from './useUserDevice';
 export * from './useUserdata';
 export * from './useSelectedOtherUser';
+export * from './useOtherUserdata';

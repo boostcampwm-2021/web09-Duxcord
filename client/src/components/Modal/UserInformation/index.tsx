@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { ModalController } from '@customTypes/modal';
 import Modal from '..';
-import { useSelectedOtherUser } from '@hooks/useSelectedOtherUser';
-import { useOtherUserData } from '@hooks/useOtherUserdata';
+import { useSelectedOtherUser, useOtherUserData } from '@hooks/index';
 import { useDispatch } from 'react-redux';
 import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
+import { UserDot, UserImageWrapper, UserImage, UserGridWrapper, UserName, UserBio } from './style';
 
 export default function UserInformationModal({ controller }: { controller: ModalController }) {
   const selectedOtherUser = useSelectedOtherUser();
@@ -13,16 +13,30 @@ export default function UserInformationModal({ controller }: { controller: Modal
 
   useEffect(() => {
     if (otherUserData === undefined) return;
-    dispatch(setSelectedOtherUser({ ...selectedOtherUser, bio: otherUserData.bio }));
+    dispatch(
+      setSelectedOtherUser({
+        ...selectedOtherUser,
+        bio: otherUserData.bio,
+        loginID: otherUserData.loginID,
+      }),
+    );
   }, [otherUserData]);
 
   const UserInformation = (
     <>
-      <div>{selectedOtherUser.username}</div>
-      <div>{selectedOtherUser.thumbnail}</div>
-      <div>{selectedOtherUser.bio}</div>
-      <div>{selectedOtherUser.isOnline}</div>
-      <div>{selectedOtherUser.canEdit}</div>
+      <UserGridWrapper>
+        <UserImageWrapper>
+          <UserImage
+            src={selectedOtherUser.thumbnail ?? '/images/default_profile.png'}
+            alt="user profile"
+          />
+          <UserDot isOnline={selectedOtherUser.isOnline} />
+        </UserImageWrapper>
+        <UserName>
+          {selectedOtherUser.username}({selectedOtherUser.loginID})
+        </UserName>
+      </UserGridWrapper>
+      <UserBio>{selectedOtherUser.bio ?? '소개가 비어있습니다.'}</UserBio>
     </>
   );
 
