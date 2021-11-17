@@ -32,22 +32,40 @@ function Channels({ channelType }: Props) {
   const { groupID } = getURLParams();
 
   useEffect(() => {
-    const meetingchannelList = selectedGroup?.meetingChannels?.map(
-      (channel: { id: number }) => channel.id,
-    );
-
-    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingchannelList);
-  }, [selectedGroup]);
-
-  useEffect(() => {
     socket.on(MeetEvent.MeetingUserList, (meetingUserList) => {
       setMeetingUser({ ...meetingUserList });
     });
 
+    socket.on(MeetEvent.someoneIn, (targetMeetingUsers, targetMeetingID) => {
+      setMeetingUser((prevState) => ({
+        ...prevState,
+        [targetMeetingID]: targetMeetingUsers,
+      }));
+    });
+
+    socket.on(MeetEvent.someoneOut, (targetMeetingUsers, targetMeetingID) => {
+      setMeetingUser((prevState) => ({
+        ...prevState,
+        [targetMeetingID]: targetMeetingUsers,
+      }));
+    });
+
     return () => {
       socket.off(MeetEvent.MeetingUserList);
+      socket.off(MeetEvent.someoneIn);
+      socket.off(MeetEvent.someoneOut);
     };
   }, []);
+
+  useEffect(() => {
+    if (channelType === 'chatting') return;
+
+    const meetingChannelList = selectedGroup?.meetingChannels?.map(
+      (channel: { id: number }) => channel.id,
+    );
+
+    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingChannelList);
+  }, [selectedGroup]);
 
   return (
     <ChannelWrapper>
@@ -69,7 +87,12 @@ function Channels({ channelType }: Props) {
             {channels?.map((channel: any) => {
               return (
                 <div key={channel.id}>
-                  <ChannelListItem channelType={channelType} id={channel.id} name={channel.name} />
+                  <ChannelListItem
+                    meetingUserCount={meetingUser[channel.id]?.length}
+                    channelType={channelType}
+                    id={channel.id}
+                    name={channel.name}
+                  />
                   {channelType === 'meeting' && (
                     <MeetingUserList meetingUser={meetingUser[channel.id]} />
                   )}

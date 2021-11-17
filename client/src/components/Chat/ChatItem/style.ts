@@ -31,4 +31,9 @@ const ChatHeader = styled.div`
   }
 `;
 
-export { ChatWrapper, UserImage, ChatHeader };
+const ChatContent = styled.div`
+  white-space: normal;
+  word-break: break-all;
+`;
+
+export { ChatWrapper, UserImage, ChatHeader, ChatContent };
