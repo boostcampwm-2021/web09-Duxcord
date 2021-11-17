@@ -28,6 +28,16 @@ const InputImage = styled.div`
     left: 0;
     z-index: -1;
   }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  & input {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const InputForm = styled.form`
