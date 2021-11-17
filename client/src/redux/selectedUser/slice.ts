@@ -10,11 +10,11 @@ const initState = {
   isEditable: false,
 };
 
-const { reducer: selectedOtherUserReducer, actions } = createSlice({
-  name: 'selectedOtherUser',
+const { reducer: selectedUserReducer, actions } = createSlice({
+  name: 'selectedUser',
   initialState: initState,
   reducers: {
-    setSelectedOtherUser: (
+    setSelectedUser: (
       state,
       { payload: { id, loginID, username, thumbnail, bio, isOnline, isEditable } },
     ) => ({
@@ -29,6 +29,6 @@ const { reducer: selectedOtherUserReducer, actions } = createSlice({
   },
 });
 
-export const { setSelectedOtherUser } = actions;
+export const { setSelectedUser } = actions;
 
-export default selectedOtherUserReducer;
+export default selectedUserReducer;

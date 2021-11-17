@@ -13,7 +13,7 @@ import {
 } from '../../common/Icons';
 import { socket } from 'src/utils/socket';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function Profile() {
   };
 
   const handleUserSelect = () => {
-    dispatch(setSelectedOtherUser({ ...userdata, isOnline: true, isEditable: true }));
+    dispatch(setSelectedUser({ ...userdata, isOnline: true, isEditable: true }));
   };
 
   return (

@@ -3,16 +3,11 @@ import useSWR from 'swr';
 import { useDispatch } from 'react-redux';
 import { API_URL } from '../../../api/API_URL';
 import GroupEvent from '@customTypes/socket/GroupEvent';
-import {
-  useGroupConnection,
-  useSelectedGroup,
-  useUserdata,
-  useSelectedOtherUser,
-} from '@hooks/index';
+import { useGroupConnection, useSelectedGroup, useUserdata, useSelectedUser } from '@hooks/index';
 import { getFetcher } from '../../../utils/fetcher';
 import { socket } from '../../../utils/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
-import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 import UserInformationModal from '@components/Modal/UserInformation';
 
 function UserConnection() {
@@ -22,13 +17,13 @@ function UserConnection() {
   const { data = [] } = useSWR(API_URL.group.getGroupMembers(selectedGroup?.id), getFetcher);
 
   const dispatch = useDispatch();
-  const selectedOtherUser = useSelectedOtherUser();
+  const selectedUser = useSelectedUser();
 
   const onUserSelected = (user: any, isOnline: boolean) => {
     if (user.loginID === userdata.loginID) {
-      dispatch(setSelectedOtherUser({ ...userdata, isOnline, isEditable: true }));
+      dispatch(setSelectedUser({ ...userdata, isOnline, isEditable: true }));
     } else {
-      dispatch(setSelectedOtherUser({ ...user, isOnline, isEditable: false }));
+      dispatch(setSelectedUser({ ...user, isOnline, isEditable: false }));
     }
   };
 
@@ -62,8 +57,8 @@ function UserConnection() {
             <div>{offLineUser.user.username}</div>
           </UserTile>
         ))}
-      {(selectedOtherUser.id || selectedOtherUser.loginID) && (
-        <UserInformationModal controller={{ hide: () => dispatch(setSelectedOtherUser({})) }} />
+      {(selectedUser.id || selectedUser.loginID) && (
+        <UserInformationModal controller={{ hide: () => dispatch(setSelectedUser({})) }} />
       )}
     </UserConnectionWrapper>
   );

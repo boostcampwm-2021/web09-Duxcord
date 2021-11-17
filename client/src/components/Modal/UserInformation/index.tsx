@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 import { ModalController } from '@customTypes/modal';
 import Modal from '..';
-import { useSelectedOtherUser, useOtherUserData } from '@hooks/index';
+import { useSelectedUser, useOtherUserData } from '@hooks/index';
 import { useDispatch } from 'react-redux';
-import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 import { UserDot, UserImageWrapper, UserImage, UserGridWrapper, UserName, UserBio } from './style';
 import Colors from '@styles/Colors';
 
 export default function UserInformationModal({ controller }: { controller: ModalController }) {
-  const selectedOtherUser = useSelectedOtherUser();
-  const { otherUserData } = useOtherUserData(selectedOtherUser.id);
+  const selectedUser = useSelectedUser();
+  const { otherUserData } = useOtherUserData(selectedUser.id);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (otherUserData === undefined) return;
     dispatch(
-      setSelectedOtherUser({
-        ...selectedOtherUser,
+      setSelectedUser({
+        ...selectedUser,
         bio: otherUserData.bio,
         loginID: otherUserData.loginID,
       }),
@@ -28,20 +28,20 @@ export default function UserInformationModal({ controller }: { controller: Modal
       <UserGridWrapper>
         <UserImageWrapper>
           <UserImage
-            src={selectedOtherUser.thumbnail ?? '/images/default_profile.png'}
+            src={selectedUser.thumbnail ?? '/images/default_profile.png'}
             alt="user profile"
           />
-          <UserDot isOnline={selectedOtherUser.isOnline} />
+          <UserDot isOnline={selectedUser.isOnline} />
         </UserImageWrapper>
         <UserName>
-          {selectedOtherUser.username}({selectedOtherUser.loginID})
+          {selectedUser.username}({selectedUser.loginID})
         </UserName>
       </UserGridWrapper>
-      <UserBio>{selectedOtherUser.bio ?? '소개가 비어있습니다.'}</UserBio>
+      <UserBio>{selectedUser.bio ?? '소개가 비어있습니다.'}</UserBio>
     </>
   );
 
-  const UserEditButton = selectedOtherUser.isEditable
+  const UserEditButton = selectedUser.isEditable
     ? {
         text: '정보 수정하기',
         onClickHandler: () => {},

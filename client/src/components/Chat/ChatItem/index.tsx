@@ -3,13 +3,13 @@ import { useDispatch } from 'react-redux';
 import { postLikeChat } from '../../../api/postLikeChat';
 import { STATUS_CODES } from '../../../api/STATUS_CODES';
 import { setSelectedChat } from '@redux/selectedChat/slice';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 import { ChatData } from '@customTypes/chats';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
 import { ChatWrapper, UserImage, ChatHeader } from './style';
-import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
-import { useUserdata } from '@hooks/useUserdata';
+import { useUserdata } from '@hooks/index';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
   const {
@@ -44,9 +44,9 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
 
   const onUserSelected = () => {
     if (user.id === userdata.id) {
-      dispatch(setSelectedOtherUser({ ...userdata, isOnline: true, isEditable: true }));
+      dispatch(setSelectedUser({ ...userdata, isOnline: true, isEditable: true }));
     } else {
-      dispatch(setSelectedOtherUser({ ...user, isOnline: true, isEditable: false }));
+      dispatch(setSelectedUser({ ...user, isOnline: true, isEditable: false }));
     }
   };
 
