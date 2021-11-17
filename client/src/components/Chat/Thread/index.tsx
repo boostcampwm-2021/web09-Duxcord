@@ -9,11 +9,11 @@ import { ChatData } from '@customTypes/chats';
 import { getFetcher } from '../../../utils/fetcher';
 import { socket } from '../../../utils/socket';
 import ChannelEvent from '@customTypes/socket/ChannelEvent';
-import { FileSelectIcon, ThreadCloseIcon } from '../../common/Icons';
+import { ThreadCloseIcon } from '../../common/Icons';
 import ThreadItem from '../ThreadItem';
 import {
-  ButtonWrapper,
   Input,
+  InputWrapper,
   Wrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
@@ -75,8 +75,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   };
 
   return (
-    <ThreadWrapper>
-      <div>
+    <Wrapper>
+      <ThreadWrapper>
         <ThreadHeaderWrapper>
           <div>
             <div>Thread</div>
@@ -98,18 +98,15 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
         <ThreadChatWrapper ref={threadChatListRef}>
           {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>
-      </div>
-      <Wrapper onSubmit={createThread}>
-        <ButtonWrapper>
-          <FileSelectIcon />
-        </ButtonWrapper>
+      </ThreadWrapper>
+      <InputWrapper onSubmit={createThread}>
         <Input
-          placeholder="Message to channel"
+          placeholder="Message to thread"
           value={threadInput}
           onChange={(e) => setThreadInput(e.target.value)}
         />
-      </Wrapper>
-    </ThreadWrapper>
+      </InputWrapper>
+    </Wrapper>
   );
 }
 

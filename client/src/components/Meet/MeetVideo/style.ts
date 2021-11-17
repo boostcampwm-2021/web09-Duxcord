@@ -38,10 +38,7 @@ const VideoItemWrapper = styled.div`
   .saying {
     border: 3px solid ${Colors.Blue};
   }
-  .mute {
-    display: block;
-  }
-  .turnOffCam {
+  img {
     display: block;
     position: absolute;
   }
@@ -60,12 +57,4 @@ const VideoItem = styled.video`
   margin-bottom: 10px;
 `;
 
-const MuteWrapper = styled.div`
-  display: none;
-`;
-
-const CamOffWrapper = styled.div`
-  display: none;
-`;
-
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MuteWrapper, CamOffWrapper, MyImage };
+export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MyImage };
