@@ -2,7 +2,7 @@ import React, { FormEvent, useRef } from 'react';
 import { postChat } from '../../../api/postChat';
 import { useSelectedChannel } from '@hooks/index';
 import { FileSelectIcon } from '../../common/Icons';
-import { ButtonWrapper, Input, Wrapper } from './style';
+import { ButtonWrapper, InputWrapper, Wrapper } from './style';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
@@ -23,7 +23,10 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
       <ButtonWrapper>
         <FileSelectIcon />
       </ButtonWrapper>
-      <Input ref={chatInputRef} placeholder="Message to channel" />
+      <InputWrapper>
+        <input ref={chatInputRef} placeholder="Message to channel" />
+        <div></div>
+      </InputWrapper>
     </Wrapper>
   );
 }
