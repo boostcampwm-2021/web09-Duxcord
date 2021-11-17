@@ -1,4 +1,9 @@
-import { io, meetingMembers, socketToMeeting } from '../../loaders/socket.loader';
+import {
+  io,
+  meetingMembers,
+  socketToMeeting,
+  userConnectionInfo,
+} from '../../loaders/socket.loader';
 import MeetEvent from '../../types/socket/MeetEvent';
 import RoomPrefix from '../../types/socket/RoomPrefix';
 
@@ -7,7 +12,7 @@ function SocketMeetController(socket) {
     const meetingUserList = {};
     Object.entries(meetingMembers).forEach(([channel, user]) => {
       const channelID = Number(channel);
-      if (!meetingchannelList.includes(channelID)) return;
+      if (!meetingchannelList?.includes(channelID)) return;
       meetingUserList[channelID] = user;
     });
     return meetingUserList;
@@ -83,7 +88,15 @@ function SocketMeetController(socket) {
       meetingMembers[meetingID] = meetingMembers[meetingID].filter(
         (member) => member.socketID !== socket.id,
       );
-    io.to(code).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+
+    if (code === 'transport close') {
+      const code = Object.keys(userConnectionInfo).find((key) =>
+        userConnectionInfo[key].some((v) => v.socketID === socket.id),
+      );
+      io.to(code).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+    } else {
+      io.to(code).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+    }
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
   };
 
