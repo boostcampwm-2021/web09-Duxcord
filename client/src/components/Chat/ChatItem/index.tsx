@@ -7,7 +7,7 @@ import { ChatData } from '@customTypes/chats';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
-import { ChatWrapper, UserImage, ChatHeader } from './style';
+import { ChatWrapper, UserImage, ChatHeader, ChatContent } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
   const {
@@ -50,7 +50,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           <div>{username}</div>
           <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
         </ChatHeader>
-        <div>{content}</div>
+        <ChatContent>{content}</ChatContent>
         <div>
           {reactionsCount !== 0 && (
             <ChatReaction
