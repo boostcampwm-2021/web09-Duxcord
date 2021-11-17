@@ -3,17 +3,20 @@ import Colors from '../../styles/Colors';
 
 const ChatPart = styled.div`
   display: flex;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const ChatContainer = styled.div`
-  flex: 1;
   width: 70%;
+  height: calc(100vh - 50px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const Chats = styled.div`
   overflow: overlay;
-  flex: 1;
-  height: calc(100vh - 108px);
 
   &::-webkit-scrollbar {
     display: none;
@@ -30,4 +33,8 @@ const Chats = styled.div`
   }
 `;
 
-export { ChatContainer, Chats, ChatPart };
+const ChatInputWrapper = styled.div`
+  width: 100%;
+`;
+
+export { ChatContainer, Chats, ChatPart, ChatInputWrapper };

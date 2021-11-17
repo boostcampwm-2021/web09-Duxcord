@@ -69,7 +69,7 @@ const OriginalChatWrapper = styled.div`
   & > div {
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+    margin-left: 15px;
     justify-content: space-between;
     width: 100%;
     word-break: break-all;
