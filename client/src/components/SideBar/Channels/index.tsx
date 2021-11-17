@@ -85,7 +85,12 @@ function Channels({ channelType }: Props) {
             {channels?.map((channel: any) => {
               return (
                 <div key={channel.id}>
-                  <ChannelListItem channelType={channelType} id={channel.id} name={channel.name} />
+                  <ChannelListItem
+                    meetingUserCount={meetingUser[channel.id]?.length}
+                    channelType={channelType}
+                    id={channel.id}
+                    name={channel.name}
+                  />
                   {channelType === 'meeting' && (
                     <MeetingUserList meetingUser={meetingUser[channel.id]} />
                   )}
