@@ -43,6 +43,13 @@ function Channels({ channelType }: Props) {
       }));
     });
 
+    socket.on('someoneOut', (targetMeetingUsers, targetMeetingID) => {
+      setMeetingUser((prevState) => ({
+        ...prevState,
+        [targetMeetingID]: targetMeetingUsers,
+      }));
+    });
+
     return () => {
       socket.off(MeetEvent.MeetingUserList);
     };

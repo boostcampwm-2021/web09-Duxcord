@@ -165,7 +165,7 @@ function MeetVideo() {
       socket.off(MeetEvent.answer);
       socket.off(MeetEvent.candidate);
       socket.off(MeetEvent.leaveMember);
-      socket.emit(MeetEvent.leaveMeeting);
+      socket.emit(MeetEvent.leaveMeeting, code);
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };

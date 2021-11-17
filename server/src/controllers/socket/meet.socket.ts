@@ -77,12 +77,13 @@ function SocketMeetController(socket) {
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setToggleCam, who, toggleCam);
   };
 
-  this.leaveMeeting = () => {
+  this.leaveMeeting = (code) => {
     const meetingID = socketToMeeting[socket.id];
     if (meetingMembers[meetingID])
       meetingMembers[meetingID] = meetingMembers[meetingID].filter(
         (member) => member.socketID !== socket.id,
       );
+    io.to(code).emit('someoneOut', meetingMembers[meetingID], meetingID);
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.leaveMember, socket.id);
   };
 
