@@ -31,7 +31,7 @@ export default function UserInformationModal({ controller }: { controller: Modal
             src={selectedUser.thumbnail ?? '/images/default_profile.png'}
             alt="user profile"
           />
-          <UserDot isOnline={selectedUser.isOnline} />
+          {selectedUser.isOnline !== null && <UserDot isOnline={selectedUser.isOnline} />}
         </UserImageWrapper>
         <UserName>
           {selectedUser.username}({selectedUser.loginID})
