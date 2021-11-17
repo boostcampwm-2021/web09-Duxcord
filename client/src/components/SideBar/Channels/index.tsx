@@ -34,11 +34,11 @@ function Channels({ channelType }: Props) {
   useEffect(() => {
     if (channelType === 'chatting') return;
 
-    const meetingchannelList = selectedGroup?.meetingChannels?.map(
+    const meetingChannelList = selectedGroup?.meetingChannels?.map(
       (channel: { id: number }) => channel.id,
     );
     // 현재 클릭된 그룹의 미팅채널별 참여인원들을 받아온다.
-    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingchannelList);
+    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingChannelList);
   }, [selectedGroup]);
 
   useEffect(() => {

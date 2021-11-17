@@ -92,7 +92,7 @@ function SocketMeetController(socket) {
 
   this.meetingChannelUserList = (code, meetingchannelList) => {
     const meetingUserList = checkMeetingUserList(meetingchannelList);
-    io.to(code).emit(MeetEvent.MeetingUserList, meetingUserList);
+    io.to(socket.id).emit(MeetEvent.MeetingUserList, meetingUserList);
   };
 }
 
