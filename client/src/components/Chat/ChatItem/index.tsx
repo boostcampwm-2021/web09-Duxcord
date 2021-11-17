@@ -44,9 +44,9 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
 
   const onUserSelected = () => {
     if (user.id === userdata.id) {
-      dispatch(setSelectedOtherUser({ ...userdata, isOnline: true, canEdit: true }));
+      dispatch(setSelectedOtherUser({ ...userdata, isOnline: true, isEditable: true }));
     } else {
-      dispatch(setSelectedOtherUser({ ...user, isOnline: true }));
+      dispatch(setSelectedOtherUser({ ...user, isOnline: true, isEditable: false }));
     }
   };
 

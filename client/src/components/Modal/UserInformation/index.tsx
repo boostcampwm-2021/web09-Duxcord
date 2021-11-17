@@ -5,6 +5,7 @@ import { useSelectedOtherUser, useOtherUserData } from '@hooks/index';
 import { useDispatch } from 'react-redux';
 import { setSelectedOtherUser } from '@redux/selectedOtherUser/slice';
 import { UserDot, UserImageWrapper, UserImage, UserGridWrapper, UserName, UserBio } from './style';
+import Colors from '@styles/Colors';
 
 export default function UserInformationModal({ controller }: { controller: ModalController }) {
   const selectedOtherUser = useSelectedOtherUser();
@@ -40,5 +41,21 @@ export default function UserInformationModal({ controller }: { controller: Modal
     </>
   );
 
-  return <Modal props={{ middleContent: UserInformation }} controller={controller} />;
+  const UserEditButton = selectedOtherUser.isEditable
+    ? {
+        text: '정보 수정하기',
+        onClickHandler: () => {},
+        color: Colors.Blue,
+      }
+    : null;
+
+  return (
+    <Modal
+      props={{
+        middleContent: UserInformation,
+        bottomRightButton: UserEditButton,
+      }}
+      controller={controller}
+    />
+  );
 }

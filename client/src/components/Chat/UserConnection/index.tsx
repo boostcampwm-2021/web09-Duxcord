@@ -26,9 +26,9 @@ function UserConnection() {
 
   const onUserSelected = (user: any, isOnline: boolean) => {
     if (user.loginID === userdata.loginID) {
-      dispatch(setSelectedOtherUser({ ...userdata, isOnline, canEdit: true }));
+      dispatch(setSelectedOtherUser({ ...userdata, isOnline, isEditable: true }));
     } else {
-      dispatch(setSelectedOtherUser({ ...user, isOnline }));
+      dispatch(setSelectedOtherUser({ ...user, isOnline, isEditable: false }));
     }
   };
 
@@ -62,7 +62,7 @@ function UserConnection() {
             <div>{offLineUser.user.username}</div>
           </UserTile>
         ))}
-      {selectedOtherUser.id && (
+      {(selectedOtherUser.id || selectedOtherUser.loginID) && (
         <UserInformationModal controller={{ hide: () => dispatch(setSelectedOtherUser({})) }} />
       )}
     </UserConnectionWrapper>

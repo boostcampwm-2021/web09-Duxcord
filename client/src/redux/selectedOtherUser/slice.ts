@@ -7,7 +7,7 @@ const initState = {
   thumbnail: null,
   bio: null,
   isOnline: false,
-  canEdit: false,
+  isEditable: false,
 };
 
 const { reducer: selectedOtherUserReducer, actions } = createSlice({
@@ -16,7 +16,7 @@ const { reducer: selectedOtherUserReducer, actions } = createSlice({
   reducers: {
     setSelectedOtherUser: (
       state,
-      { payload: { id, loginID, username, thumbnail, bio, isOnline, canEdit } },
+      { payload: { id, loginID, username, thumbnail, bio, isOnline, isEditable } },
     ) => ({
       id,
       loginID,
@@ -24,7 +24,7 @@ const { reducer: selectedOtherUserReducer, actions } = createSlice({
       thumbnail,
       bio,
       isOnline,
-      canEdit,
+      isEditable,
     }),
   },
 });
