@@ -32,6 +32,23 @@ function Channels({ channelType }: Props) {
   const { groupID } = getURLParams();
 
   useEffect(() => {
+    socket.on(MeetEvent.MeetingUserList, (meetingUserList) => {
+      setMeetingUser({ ...meetingUserList });
+    });
+
+    socket.on('someoneIn', (targetMeetingUsers, targetMeetingID) => {
+      setMeetingUser((prevState) => ({
+        ...prevState,
+        [targetMeetingID]: targetMeetingUsers,
+      }));
+    });
+
+    return () => {
+      socket.off(MeetEvent.MeetingUserList);
+    };
+  }, []);
+
+  useEffect(() => {
     if (channelType === 'chatting') return;
 
     const meetingChannelList = selectedGroup?.meetingChannels?.map(
@@ -40,16 +57,6 @@ function Channels({ channelType }: Props) {
     // 현재 클릭된 그룹의 미팅채널별 참여인원들을 받아온다.
     socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingChannelList);
   }, [selectedGroup]);
-
-  useEffect(() => {
-    socket.on(MeetEvent.MeetingUserList, (meetingUserList) => {
-      setMeetingUser({ ...meetingUserList });
-    });
-
-    return () => {
-      socket.off(MeetEvent.MeetingUserList);
-    };
-  }, []);
 
   return (
     <ChannelWrapper>

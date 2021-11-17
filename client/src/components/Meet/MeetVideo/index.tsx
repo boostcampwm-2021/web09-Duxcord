@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
+import { useSelectedChannel, useSelectedGroup, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../utils/socket';
 import {
   MeetVideoWrapper,
@@ -38,6 +38,7 @@ function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
   const { mic, cam } = useUserDevice();
+  const { code } = useSelectedGroup();
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
@@ -155,7 +156,7 @@ function MeetVideo() {
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail, mic, cam });
+    socket.emit(MeetEvent.joinMeeting, id, code, { loginID, username, thumbnail, mic, cam });
 
     return () => {
       Socket.leaveChannel({ channelType: MeetEvent.meeting, id });

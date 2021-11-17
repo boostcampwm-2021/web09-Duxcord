@@ -6,6 +6,7 @@ import { URL } from 'src/api/URL';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icons';
 import { ListItem } from './style';
+import { socket } from 'src/utils/socket';
 
 interface Props {
   channelType: 'chatting' | 'meeting';
@@ -18,6 +19,7 @@ function ChannelListItem({ channelType, id, name }: Props) {
   const { id: selectedChannelID, type: selectedChannelType } = useSelectedChannel();
   const history = useHistory();
   const dispatch = useDispatch();
+
   const joinChannel = () => {
     history.push(URL.channelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));

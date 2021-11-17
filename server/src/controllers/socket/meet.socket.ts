@@ -8,11 +8,7 @@ function SocketMeetController(socket) {
     Object.entries(meetingMembers).forEach(([channel, user]) => {
       const channelID = Number(channel);
       if (!meetingchannelList.includes(channelID)) return;
-      if (meetingUserList[channelID]) {
-        meetingUserList[channelID].push(user);
-      } else {
-        meetingUserList[channelID] = [user];
-      }
+      meetingUserList[channelID] = user;
     });
     return meetingUserList;
   };
@@ -21,7 +17,7 @@ function SocketMeetController(socket) {
     io.to(RoomPrefix.meeting + channelID).emit(MeetEvent.meetChat, chat);
   };
 
-  this.joinMeeting = (meetingID, { loginID, username, thumbnail, mic, cam }) => {
+  this.joinMeeting = (meetingID, code, { loginID, username, thumbnail, mic, cam }) => {
     socket.join(RoomPrefix.RTC + meetingID);
     socketToMeeting[socket.id] = meetingID;
     const newMember = {
@@ -44,7 +40,7 @@ function SocketMeetController(socket) {
     const membersInMeeting = meetingMembers[meetingID].filter(
       (user) => user.socketID !== socket.id,
     );
-
+    io.to(code).emit('someoneIn', meetingMembers[meetingID], meetingID);
     io.to(socket.id).emit(MeetEvent.allMeetingMembers, membersInMeeting);
   };
 
