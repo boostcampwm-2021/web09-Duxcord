@@ -76,6 +76,7 @@ const ShowChatButton = styled.button`
   top: 10px;
   background: none;
   border: none;
+  z-index: 10;
 
   svg {
     width: 25px;
