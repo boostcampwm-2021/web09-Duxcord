@@ -1,7 +1,7 @@
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { useRef, useEffect } from 'react';
 import { IMeetingUser } from '..';
-import { VideoItemWrapper, VideoItem } from '../style';
+import { VideoItemWrapper, VideoItem, Thumbnail } from '../style';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
@@ -47,7 +47,9 @@ function OtherVideo({
         <p>{`${username}(${loginID})`}</p>
         {mic || <MicOffIcon />}
         {speaker || <SpeakerOffIcon />}
-        {cam || <img src={thumbnail || '/images/default_profile.png'} alt="profile"></img>}
+        {cam || (
+          <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
+        )}
       </VideoItemWrapper>
       {screen && (
         <VideoItemWrapper>

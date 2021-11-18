@@ -44,7 +44,10 @@ const VideoItemWrapper = styled.div`
   }
 `;
 
-const MyImage = styled.img`
+const Thumbnail = styled.img`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
   position: absolute;
 `;
 
@@ -57,4 +60,4 @@ const VideoItem = styled.video`
   margin-bottom: 10px;
 `;
 
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MyImage };
+export { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail };
