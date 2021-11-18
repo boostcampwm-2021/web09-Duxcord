@@ -4,11 +4,11 @@ import { IMeetingUser } from '..';
 import { VideoItemWrapper, VideoItem } from '../style';
 
 function OtherVideo({ member }: { member: IMeetingUser }) {
-  const ref = useRef<HTMLVideoElement>(null);
+  const camRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!ref.current || !member.stream) return;
-    ref.current.srcObject = member.stream;
+    if (!camRef.current || !member.stream) return;
+    camRef.current.srcObject = member.stream;
   }, [member.stream]);
 
   useEffect(() => {
@@ -18,9 +18,9 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
       });
       const source = receiver?.getSynchronizationSources()[0];
       if (source?.audioLevel && source?.audioLevel > 0.001) {
-        ref.current?.classList.add('saying');
+        camRef.current?.classList.add('saying');
       } else {
-        ref.current?.classList.remove('saying');
+        camRef.current?.classList.remove('saying');
       }
     }, 1000);
     return () => {
@@ -30,7 +30,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
 
   return (
     <VideoItemWrapper>
-      <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />
+        <VideoItem key={member.socketID} autoPlay playsInline ref={camRef} />
       <p>{member?.username}</p>
       {member.mic || <MicOffIcon />}
       {member.cam || (
