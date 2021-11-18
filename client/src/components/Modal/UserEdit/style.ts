@@ -1,11 +1,35 @@
 import Colors from '@styles/Colors';
 import styled from 'styled-components';
 
-const UserImage = styled.input`
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  border: 4px dashed ${Colors.Gray1};
+const InputImage = styled.div`
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  border-radius: 50px;
+  border: 4px ${Colors.Gray1} dashed;
+  position: relative;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  background-size: cover;
+
+  & img {
+    position: absolute;
+    width: 92px;
+    top: 10px;
+    left: 0;
+    z-index: -1;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  & input {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const UserImageWrapper = styled.div`
@@ -48,4 +72,10 @@ const UserBio = styled.textarea`
   }
 `;
 
-export { UserImage, UserImageWrapper, UserGridWrapper, UserName, UserBio };
+const ErrorDiv = styled.div`
+  color: ${Colors.Red};
+  width: 240px;
+  margin: 8px 0;
+`;
+
+export { InputImage, UserImageWrapper, UserGridWrapper, UserName, UserBio, ErrorDiv };
