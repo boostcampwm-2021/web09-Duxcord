@@ -3,7 +3,7 @@ import { useRef, useEffect } from 'react';
 import { IMeetingUser } from '..';
 import { VideoItemWrapper, VideoItem } from '../style';
 
-function OtherVideo({ member }: { member: IMeetingUser }) {
+function OtherVideo({ member, speaker }: { member: IMeetingUser; speaker: boolean }) {
   const ref = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
 
   return (
     <VideoItemWrapper>
-      <VideoItem key={member.socketID} autoPlay playsInline ref={ref} />
+      <VideoItem key={member.socketID} muted={!speaker} autoPlay playsInline ref={ref} />
       <p>{member?.username}</p>
       {member.mic || <MicOffIcon />}
       {member.cam || (

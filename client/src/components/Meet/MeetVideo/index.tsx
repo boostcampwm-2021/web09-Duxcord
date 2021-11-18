@@ -31,7 +31,7 @@ export interface IMeetingUser {
 function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
-  const { mic, cam } = useUserDevice();
+  const { mic, cam, speaker } = useUserDevice();
   const { code } = useSelectedGroup();
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
@@ -214,7 +214,7 @@ function MeetVideo() {
         {mic ? '' : <MicOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
-        <OtherVideo key={member.socketID} member={member} />
+        <OtherVideo key={member.socketID} member={member} speaker={speaker} />
       ))}
     </MeetVideoWrapper>
   );
