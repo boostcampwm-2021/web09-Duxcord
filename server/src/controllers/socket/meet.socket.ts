@@ -83,6 +83,16 @@ function SocketMeetController(socket) {
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setToggleCam, who, toggleCam);
   };
 
+  this.speaker = (meetingID, speaker, who) => {
+    const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
+    if (!meetingChannel) return;
+    const index = meetingMembers[meetingID.toString()].findIndex(
+      (oneMember) => oneMember.loginID === who,
+    );
+    meetingMembers[meetingID.toString()][index].speaker = speaker;
+    io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setSpeaker, who, speaker);
+  };
+
   this.leaveMeeting = (groupCode) => {
     const meetingID = socketToMeeting[socket.id];
     if (meetingMembers[meetingID])
