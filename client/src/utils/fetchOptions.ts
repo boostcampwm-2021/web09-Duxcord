@@ -20,4 +20,15 @@ const deleteFetchOptions = (): RequestInit => {
   };
 };
 
-export { postFetchOptions, deleteFetchOptions };
+const patchFetchOptions = (body: Body): RequestInit => {
+  return {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  };
+};
+
+export { postFetchOptions, deleteFetchOptions, patchFetchOptions };

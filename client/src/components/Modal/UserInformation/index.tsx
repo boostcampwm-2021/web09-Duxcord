@@ -44,7 +44,7 @@ export default function UserInformationModal({ controller }: { controller: Modal
   const UserEditButton = selectedUser.isEditable
     ? {
         text: '정보 수정하기',
-        onClickHandler: () => {},
+        onClickHandler: controller.next,
         color: Colors.Blue,
       }
     : null;
