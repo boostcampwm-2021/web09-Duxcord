@@ -21,6 +21,7 @@ const FileInputWrapper = styled.div`
   & input {
     width: 40px;
     height: 40px;
+    opacity: 0;
     &:hover {
       cursor: pointer;
     }

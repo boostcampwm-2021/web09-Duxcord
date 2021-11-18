@@ -41,13 +41,7 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
     <Wrapper onSubmit={onSubmitChat}>
       <FileInputWrapper ref={fileInputRef}>
         <FileSelectIcon />
-        <input
-          type="file"
-          id="chat_upload"
-          onChange={uploadFile}
-          style={{ width: 40, height: 40, opacity: 0 }}
-          accept="image/jpeg, image/png"
-        />
+        <input type="file" id="chat_upload" onChange={uploadFile} accept="image/jpeg, image/png" />
       </FileInputWrapper>
       <ChatInputWrapper>
         <input ref={chatInputRef} placeholder="Message to channel" />
