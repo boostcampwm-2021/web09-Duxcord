@@ -4,6 +4,7 @@ import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
 import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
+import Empty from '@components/common/Empty';
 import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
@@ -43,7 +44,15 @@ function Main() {
       <SideBar />
       <MainWrapper>
         <ChannelHeader />
-        {selectedChannel.type && (selectedChannel.type === 'chatting' ? <Chat /> : <Meet />)}
+        {selectedChannel.type ? (
+          selectedChannel.type === 'chatting' ? (
+            <Chat />
+          ) : (
+            <Meet />
+          )
+        ) : (
+          <Empty />
+        )}
       </MainWrapper>
     </Layout>
   );
