@@ -44,6 +44,18 @@ function MeetVideo() {
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
 
+  const applyDeviceStatus = useCallback(
+    ({ stream, video, audio }: { stream: MediaStream; video: boolean; audio: boolean }) => {
+      stream?.getVideoTracks().forEach((track) => {
+        track.enabled = video;
+      });
+      stream?.getAudioTracks().forEach((track) => {
+        track.enabled = audio;
+      });
+    },
+    [],
+  );
+
   const getMyStream = async () => {
     let myStream;
     try {
@@ -59,6 +71,7 @@ function MeetVideo() {
       myVideoRef.current.srcObject = myStream;
       highlightMyVolume(myStream, myVideoRef.current);
     }
+    applyDeviceStatus({ stream: myStream, video: cam, audio: mic });
     myStreamRef.current = myStream;
   };
 
@@ -248,12 +261,8 @@ function MeetVideo() {
   }, [id]);
 
   useEffect(() => {
-    myStreamRef.current?.getAudioTracks().forEach((track) => {
-      track.enabled = mic;
-    });
-    myStreamRef.current?.getVideoTracks().forEach((track) => {
-      track.enabled = cam;
-    });
+    if (myStreamRef.current)
+      applyDeviceStatus({ stream: myStreamRef.current, video: cam, audio: mic });
   }, [mic, cam]);
 
   useEffect(() => {
