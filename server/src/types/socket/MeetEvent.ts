@@ -10,12 +10,14 @@ enum MeetEvent {
   leaveMeeting = 'leaveMeeting',
   MeetingChannelList = 'MeetingChannelList',
   MeetingUserList = 'MeetingUserList',
-  mute = 'mute',
   someoneIn = 'someoneIn',
   someoneOut = 'someoneOut',
+  mute = 'mute',
   setMuted = 'setMuted',
   toggleCam = 'toggleCam',
   setToggleCam = 'setToggleCam',
+  speaker = 'speaker',
+  setSpeaker = 'setSpeaker',
 }
 
 export default MeetEvent;
