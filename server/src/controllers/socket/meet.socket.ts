@@ -75,7 +75,6 @@ function SocketMeetController(socket) {
   };
 
   this.toggleCam = (meetingID, toggleCam) => {
-    console.log(meetingID, socket.id);
     const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
     if (!meetingChannel) return;
     const index = meetingMembers[meetingID.toString()].findIndex(
@@ -93,7 +92,7 @@ function SocketMeetController(socket) {
       (oneMember) => oneMember.socketID === socket.id,
     );
     if (index === -1) return;
-    console.log(meetingMembers[meetingID.toString()][index]);
+
     meetingMembers[meetingID.toString()][index].speaker = speaker;
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setSpeaker, speaker, socket.id);
   };

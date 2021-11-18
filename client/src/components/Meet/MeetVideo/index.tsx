@@ -195,9 +195,7 @@ function MeetVideo() {
     });
 
     socket.on(MeetEvent.setToggleCam, (camStatus, socketID) => {
-      console.log(meetingMembers, socketID);
       setMeetingMembers((members) => {
-        console.log(members, socketID);
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
         member.cam = camStatus;
@@ -206,7 +204,6 @@ function MeetVideo() {
     });
 
     socket.on(MeetEvent.setSpeaker, (speakerStatue, socketID) => {
-      console.log(meetingMembers, socketID);
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
