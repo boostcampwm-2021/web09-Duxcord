@@ -12,7 +12,7 @@ function LogoutModal({ controller: { hide, show } }: { controller: ModalControll
   const finishModal = () => hide();
   const logOut = async () => {
     const isSuccess = await postLogout();
-    if (isSuccess) history.push(URL.loginPage);
+    if (isSuccess) history.replace(URL.loginPage);
     window.location.reload();
   };
 

@@ -120,7 +120,9 @@ function SignUp() {
             <p>가입하기</p>
           </SignUpButton>
           <div>
-            <Link to="/">이미 계정이 있으신가요?</Link>
+            <Link to="/" replace>
+              이미 계정이 있으신가요?
+            </Link>
           </div>
         </ButtonWrapper>
       </SignUpWrapper>
