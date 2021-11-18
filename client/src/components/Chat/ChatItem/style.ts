@@ -17,6 +17,7 @@ const UserImage = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 25px;
+  object-fit: cover;
 `;
 
 const FileWrapper = styled.div`
@@ -26,6 +27,7 @@ const FileWrapper = styled.div`
     max-width: 300px;
     height: 120px;
     margin-right: 10px;
+    object-fit: cover;
   }
 `;
 
