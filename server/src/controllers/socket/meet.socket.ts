@@ -92,7 +92,7 @@ function SocketMeetController(socket) {
 
     if (groupCode === ConnectionEvent.close) {
       const groupCodes = Object.keys(userConnectionInfo).filter((key) =>
-        userConnectionInfo[key].some((v) => v.socketID === socket.id),
+        userConnectionInfo[key].some((v) => v.socketID.includes(socket.id)),
       );
       groupCodes.forEach((groupCode) => {
         io.to(groupCode).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
