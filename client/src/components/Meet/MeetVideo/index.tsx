@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useSelectedGroup, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../utils/socket';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem, MyImage } from './style';
+import { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail } from './style';
 import { highlightMyVolume } from '../../../utils/audio';
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import OtherVideo from './OtherVideo';
@@ -322,7 +322,7 @@ function MeetVideo() {
           {cam ? (
             ''
           ) : (
-            <MyImage src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+            <Thumbnail src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
           )}
           <p>{`${userdata?.username}(${userdata?.loginID})`}</p>
           {mic ? '' : <MicOffIcon />}
