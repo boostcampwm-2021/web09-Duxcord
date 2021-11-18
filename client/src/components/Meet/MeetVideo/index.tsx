@@ -242,6 +242,8 @@ function MeetVideo() {
       socket.emit(MeetEvent.leaveMeeting);
 
       Object.values(pcs.current).forEach((pc) => pc.close());
+      myStreamRef.current?.getTracks().forEach((track) => track.stop());
+      myScreenStreamRef.current?.getTracks().forEach((track) => track.stop());
     };
   }, [id]);
 
