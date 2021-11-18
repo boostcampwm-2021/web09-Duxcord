@@ -26,7 +26,7 @@ function SocketGroupController(socket) {
         userConnectionInfo[code] = [{ ...user, socketID: socket.id }];
       }
     });
-
+    console.log(userConnectionInfo);
     const userDisconnect = () => {
       Object.keys(userConnectionInfo).forEach((v) => {
         userConnectionInfo[v] = userConnectionInfo[v].filter((a) => a.loginID !== user.loginID);
