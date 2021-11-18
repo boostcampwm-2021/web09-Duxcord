@@ -78,7 +78,7 @@ function SignIn() {
           <ErrorResponse>{checkLogin(status, responseText)}</ErrorResponse>
           <SignUpPart>
             <p>계정이 필요한가요?</p>
-            <Link to="/signup">
+            <Link to="/signup" replace>
               <p>가입하기</p>
             </Link>
           </SignUpPart>
