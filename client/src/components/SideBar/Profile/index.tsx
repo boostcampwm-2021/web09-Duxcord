@@ -13,6 +13,7 @@ import {
 } from '../../common/Icons';
 import { socket } from 'src/utils/socket';
 import MeetEvent from '@customTypes/socket/MeetEvent';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 
 function Profile() {
   const dispatch = useDispatch();
@@ -27,9 +28,13 @@ function Profile() {
     dispatch(setUserDevice({ ...device, [target]: !device[target] }));
   };
 
+  const handleUserSelect = () => {
+    dispatch(setSelectedUser({ ...userdata, isOnline: true, isEditable: true }));
+  };
+
   return (
     <ProfileWrapper>
-      <div>
+      <div onClick={handleUserSelect}>
         <div>
           <img src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
         </div>

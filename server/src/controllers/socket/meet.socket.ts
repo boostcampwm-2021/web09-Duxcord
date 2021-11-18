@@ -105,10 +105,12 @@ function SocketMeetController(socket) {
       );
 
     if (groupCode === ConnectionEvent.close) {
-      const groupCode = Object.keys(userConnectionInfo).find((key) =>
-        userConnectionInfo[key].some((v) => v.socketID === socket.id),
+      const groupCodes = Object.keys(userConnectionInfo).filter((key) =>
+        userConnectionInfo[key].some((v) => v.socketID.includes(socket.id)),
       );
-      io.to(groupCode).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+      groupCodes.forEach((groupCode) => {
+        io.to(groupCode).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
+      });
     } else {
       io.to(groupCode).emit(MeetEvent.someoneOut, meetingMembers[meetingID], meetingID);
     }
