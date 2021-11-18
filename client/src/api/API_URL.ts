@@ -5,6 +5,7 @@ export const API_URL = {
     login: '/api/user/signin',
     logout: '/api/user/signout',
     signUp: '/api/user/signup',
+    editProfile: '/api/user/profile',
     getOtherUserdata: (userID: string) => `/api/user/${userID}/profile`,
   },
   channel: {

@@ -49,7 +49,10 @@ function UserConnection() {
       {groupConnection.map((oneUser: any, i: number) => (
         <UserTile key={i} onClick={() => onUserSelected(oneUser, true)}>
           <div>
-            <UserImage src={'/images/default_profile.png'} alt="user profile" />
+            <UserImage
+              src={oneUser.thumbnail ?? '/images/default_profile.png'}
+              alt="user profile"
+            />
             <div className="on-line"></div>
           </div>
           <div>{oneUser.username}</div>
@@ -63,7 +66,10 @@ function UserConnection() {
         .map((offLineUser: any, i: number) => (
           <UserTile key={i} onClick={() => onUserSelected(offLineUser.user, false)}>
             <div>
-              <UserImage src={'/images/default_profile.png'} alt="user profile" />
+              <UserImage
+                src={offLineUser.thumbnail ?? '/images/default_profile.png'}
+                alt="user profile"
+              />
               <div className="off-line"></div>
             </div>
             <div>{offLineUser.user.username}</div>

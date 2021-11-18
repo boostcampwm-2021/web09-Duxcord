@@ -1,7 +1,7 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ModalController } from '@customTypes/modal';
 import Modal from '..';
-import { useSelectedUser } from '@hooks/index';
+import { useUserdata, useSelectedUser } from '@hooks/index';
 import {
   UserImageWrapper,
   UserGridWrapper,
@@ -12,15 +12,27 @@ import {
 } from './style';
 import Colors from '@styles/Colors';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { patchUserdata } from 'src/api/patchUserdata';
+import { useDispatch } from 'react-redux';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 
 export default function UserEditModal({ controller }: { controller: ModalController }) {
+  const { userdata, mutate: mutateUserdata } = useUserdata();
   const selectedUser = useSelectedUser();
-  const [newUserName, setNewUserName] = useState(selectedUser.username);
-  const [newBio, setNewBio] = useState(selectedUser.bio ?? '');
+  const [newUserName, setNewUserName] = useState(userdata.username);
+  const [newBio, setNewBio] = useState(userdata.bio ?? '');
+
+  const [thumbnail, setThumbnail] = useState<string | null>(userdata.thumbnail);
+  const [fileError, setFileError] = useState(false);
   const inputImage = useRef<HTMLDivElement>(null);
 
-  const [fileURL, setFileURL] = useState<string | null>(null);
-  const [fileError, setFileError] = useState(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!inputImage.current) return;
+    if (!thumbnail) inputImage.current.style.backgroundImage = `url('/images/default_profile.png')`;
+    else inputImage.current.style.backgroundImage = `url('${thumbnail}')`;
+  }, [thumbnail]);
 
   const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
@@ -30,13 +42,26 @@ export default function UserEditModal({ controller }: { controller: ModalControl
       if (!file.type.match('image/jpeg|image/png')) return;
       const uploadedFile = await uploadFileToStorage(file);
       if (uploadedFile && inputImage && inputImage.current) {
-        inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
-        setFileURL(uploadedFile);
+        setThumbnail(uploadedFile);
         setFileError(false);
       } else setFileError(true);
     } catch (error) {
       setFileError(true);
     }
+  };
+
+  const editProfile = async () => {
+    await patchUserdata({ username: newUserName, bio: newBio, thumbnail: thumbnail });
+    mutateUserdata({ ...userdata, username: newUserName, bio: newBio, thumbnail: thumbnail });
+    dispatch(
+      setSelectedUser({
+        ...selectedUser,
+        username: newUserName,
+        bio: newBio,
+        thumbnail: thumbnail,
+      }),
+    );
+    controller.hide();
   };
 
   const UserEditForm = (
@@ -51,12 +76,6 @@ export default function UserEditModal({ controller }: { controller: ModalControl
               accept="image/jpeg, image/png"
               onChange={uploadFile}
             />
-            {!fileURL && (
-              <img
-                src={selectedUser.thumbnail ?? '/images/default_profile.png'}
-                alt="user thumbnail"
-              />
-            )}
           </InputImage>
         </UserImageWrapper>
         {fileError && (
@@ -69,7 +88,7 @@ export default function UserEditModal({ controller }: { controller: ModalControl
             setNewUserName(e.target.value);
           }}
         />
-        <div>({selectedUser.loginID})</div>
+        <div>({userdata.loginID})</div>
       </UserGridWrapper>
       <UserBio
         onChange={(e) => {
@@ -81,13 +100,11 @@ export default function UserEditModal({ controller }: { controller: ModalControl
     </>
   );
 
-  const UserEditButton = selectedUser.isEditable
-    ? {
-        text: '정보 저장하기',
-        onClickHandler: () => {},
-        color: Colors.Blue,
-      }
-    : null;
+  const UserEditButton = {
+    text: '정보 저장하기',
+    onClickHandler: editProfile,
+    color: Colors.Blue,
+  };
 
   return (
     <Modal
