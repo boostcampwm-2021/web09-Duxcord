@@ -1,7 +1,7 @@
-import React from 'react';
-import { ProfileWrapper } from './style';
+import React, { useState } from 'react';
+import { DeviceControl, ProfileWrapper } from './style';
 import { useDispatch } from 'react-redux';
-import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
+import { useSelectedChannel, useUserdata, useUserDevice, useSelectedUser } from '@hooks/index';
 import { setUserDevice } from '../../../redux/userDevice/slice';
 import {
   CameraOffIcon,
@@ -14,12 +14,27 @@ import {
 import { socket } from 'src/utils/socket';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { setSelectedUser } from '@redux/selectedUser/slice';
+import UserInformationModal from '@components/Modal/UserInformation';
+import UserEditModal from '@components/Modal/UserEdit';
 
 function Profile() {
   const dispatch = useDispatch();
   const { userdata } = useUserdata();
   const device = useUserDevice();
   const { id } = useSelectedChannel();
+
+  const selectedUser = useSelectedUser();
+
+  const [userEditMode, setUserEditMode] = useState(false);
+  const userEditModalController = {
+    hide: () => setUserEditMode(false),
+    show: () => setUserEditMode(true),
+  };
+
+  const userInformationModalController = {
+    hide: () => dispatch(setSelectedUser({})),
+    next: userEditModalController.show,
+  };
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
     if (target === 'mic') socket.emit(MeetEvent.mute, id, !device[target]);
@@ -40,7 +55,7 @@ function Profile() {
         </div>
         <p>{userdata?.username}</p>
       </div>
-      <div>
+      <DeviceControl>
         <div onClick={() => onToggleDevice('mic')}>
           {device.mic ? <MicOnIcon /> : <MicOffIcon />}
         </div>
@@ -50,7 +65,11 @@ function Profile() {
         <div onClick={() => onToggleDevice('cam')}>
           {device.cam ? <CameraOnIcon /> : <CameraOffIcon />}
         </div>
-      </div>
+      </DeviceControl>
+      {(selectedUser.id || selectedUser.loginID) && (
+        <UserInformationModal controller={userInformationModalController} />
+      )}
+      {userEditMode && <UserEditModal controller={userEditModalController} />}
     </ProfileWrapper>
   );
 }

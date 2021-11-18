@@ -88,7 +88,7 @@ const Top = styled.div`
 `;
 
 const Background = styled.div<IHideAnimation>`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
