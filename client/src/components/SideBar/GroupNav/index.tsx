@@ -1,25 +1,36 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useGroups } from '../../../hooks/useGroups';
-import { setSelectedChannel } from '../../../redux/selectedChannel/slice';
-import { setSelectedGroup } from '../../../redux/selectedGroup/slice';
+import { useGroups, useSelectedGroup } from '@hooks/index';
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { setSelectedChat } from '@redux/selectedChat/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
-import { socket } from '../../../util/socket';
-import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
-import { ModalController } from '../../../types/modal';
+import { socket } from '../../../utils/socket';
+import {
+  GroupListWrapper,
+  GroupList,
+  GroupWrapper,
+  Group,
+  GroupListDivider,
+  AddGroupButton,
+} from './style';
+import { ModalController } from '@customTypes/modal';
 import {
   addUserConnection,
   removeUserConnection,
   setGroupConnection,
-} from '../../../redux/groupConnection/slice';
+} from '@redux/groupConnection/slice';
 import GroupCreateModal from '../../Modal/GroupCreate';
 import GroupAddModal from '../../Modal/GroupAdd';
-import { useSelectedGroup } from '../../../hooks/useSelectedGroup';
 import { mutate } from 'swr';
+import { API_URL } from '../../../api/API_URL';
+import GroupEvent from '@customTypes/socket/GroupEvent';
+import { GroupAddIcon } from '../../common/Icons';
+import { URL } from 'src/api/URL';
 
 function GroupNav() {
-  const { groups } = useGroups();
+  const { groups, mutate: mutateGroups } = useGroups();
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -41,47 +52,68 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(`/main?group=${group.id}`);
+    history.replace(URL.groupPage(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
-    // group.id의 키에 있는 애들 다 알려줘~!
-    socket.emit('GroupID', group.code);
+    socket.emit(GroupEvent.groupID, group.code);
   };
 
   useEffect(() => {
-    socket.on('GroupUserConnection', (connectionList) => {
+    socket.on(GroupEvent.groupUserConnection, (connectionList) => {
       dispatch(setGroupConnection(connectionList));
     });
 
-    socket.on('userExit', (user, code) => {
+    socket.on(GroupEvent.groupDelete, (code) => {
+      mutateGroups(
+        groups.filter((group: any) => group.id !== selectedGroup.id),
+        false,
+      );
+      if (code === selectedGroup?.code) {
+        dispatch(setSelectedGroup(null));
+        dispatch(
+          setSelectedChannel({
+            type: '',
+            id: null,
+            name: '',
+          }),
+        );
+        dispatch(setSelectedChat(null));
+        history.replace(URL.groupPage());
+      }
+    });
+
+    socket.on(GroupEvent.userExit, (user, code) => {
       dispatch(removeUserConnection(user));
     });
 
-    socket.on('userEnter', (user, code) => {
+    socket.on(GroupEvent.userEnter, (user, code) => {
       if (code === selectedGroup?.code) dispatch(addUserConnection(user));
-      mutate(`/api/group/${selectedGroup?.id}/members`);
+      mutate(API_URL.group.getGroupMembers(selectedGroup?.id));
     });
 
     return () => {
-      socket.off('GroupUserConnection');
-      socket.off('userExit');
-      socket.off('userEnter');
+      socket.off(GroupEvent.groupUserConnection);
+      socket.off(GroupEvent.groupDelete);
+      socket.off(GroupEvent.userEnter);
+      socket.off(GroupEvent.userExit);
     };
-  }, [dispatch]);
+  }, [dispatch, selectedGroup?.code, selectedGroup?.id]);
 
   return (
     <GroupListWrapper>
       <GroupList>
         {groups?.map((group: any) => (
-          <Group key={group.id} onClick={selectGroup(group)}>
-            {group.name}
-          </Group>
+          <GroupWrapper name={group.name}>
+            <Group key={group.id} onClick={selectGroup(group)} thumbnail={group.thumbnail}>
+              <p>{!group.thumbnail && group.name}</p>
+            </Group>
+          </GroupWrapper>
         ))}
       </GroupList>
       <GroupListDivider />
       <div>
         <AddGroupButton onClick={groupAddModalControl.show}>
-          <img src="/icons/addGroup.png" alt="addGroup" />
+          <GroupAddIcon />
         </AddGroupButton>
       </div>
       {selectedModal === 'ADD' ? (

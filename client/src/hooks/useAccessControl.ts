@@ -1,25 +1,22 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { API_URL } from '../api/API_URL';
-import { STATUS_CODES } from '../api/STATUS_CODES';
+import { URL } from '../api/URL';
 import { useUserdata } from './useUserdata';
 
 export const useAccessControl = ({
   signIn = true,
-  redirectPath = '/',
+  redirectPath = URL.loginPage,
 }: {
   signIn: boolean;
   redirectPath: string;
 }) => {
   const history = useHistory();
-  const { userdata } = useUserdata();
+  const { userdata, isValidating } = useUserdata();
 
   useEffect(() => {
-    if (userdata && signIn) return;
-    fetch(API_URL.user.getUserdata).then(({ status }) => {
-      const accessible =
-        (signIn && status === STATUS_CODES.OK) || (!signIn && status >= STATUS_CODES.BAD_REQUEST);
-      if (!accessible) history.push(redirectPath);
-    });
-  }, []);
+    if (isValidating) return;
+    const isAccessible = (signIn && userdata) || (!signIn && !userdata);
+    if (!isAccessible) history.replace(redirectPath);
+  }, [isValidating, userdata, history, signIn, redirectPath]);
 };

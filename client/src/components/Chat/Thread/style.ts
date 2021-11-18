@@ -1,24 +1,20 @@
 import styled from 'styled-components';
 import Colors from '../../../styles/Colors';
 
-const Wrapper = styled.form`
-  background-color: ${Colors.White};
-  display: grid;
-  gap: 2px;
-  grid-template-columns: 40px auto;
-  padding: 20px;
-  padding-top: 0;
-  position: relative;
-  bottom: 14px;
-`;
-
-const ThreadWrapper = styled.div`
+const Wrapper = styled.div`
   background-color: ${Colors.White};
   width: 30%;
+  height: calc(100vh - 50px);
   border-left: 1px solid ${Colors.Gray4};
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+`;
+
+const ThreadWrapper = styled.div`
+  height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: column;
 `;
 
 const ThreadHeaderWrapper = styled.div`
@@ -27,7 +23,7 @@ const ThreadHeaderWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid ${Colors.Gray4};
-  & > img {
+  & > svg {
     width: 15px;
     height: 15px;
     cursor: pointer;
@@ -45,8 +41,19 @@ const ThreadHeaderWrapper = styled.div`
 `;
 
 const ThreadChatWrapper = styled.div`
-  height: calc(100vh - 270px);
+  flex: 1;
   overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${Colors.Gray2};
+    border-radius: 10px;
+  }
+  &:hover::-webkit-scrollbar {
+    display: block;
+    width: 15px;
+  }
 `;
 
 const OriginalChatWrapper = styled.div`
@@ -62,7 +69,7 @@ const OriginalChatWrapper = styled.div`
   & > div {
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+    margin-left: 15px;
     justify-content: space-between;
     width: 100%;
     word-break: break-all;
@@ -80,19 +87,6 @@ const OriginalChatWrapper = styled.div`
   }
 `;
 
-const ButtonWrapper = styled.div`
-  background-color: ${Colors.Gray2};
-  border-bottom-left-radius: 12px;
-  border-top-left-radius: 12px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
 const ChatLengthWrapper = styled.p`
   margin-top: -9.5px;
   background-color: ${Colors.White};
@@ -100,11 +94,16 @@ const ChatLengthWrapper = styled.p`
   display: table;
 `;
 
+const InputWrapper = styled.form`
+  background-color: ${Colors.White};
+  padding: 0 20px 18px 20px;
+`;
+
 const Input = styled.input`
+  width: 100%;
   background-color: ${Colors.Gray2};
   padding: 12px;
-  border-top-right-radius: 12px;
-  border-bottom-right-radius: 12px;
+  border-radius: 12px;
   height: 40px;
   outline: none;
   border: none;
@@ -112,9 +111,9 @@ const Input = styled.input`
 `;
 
 export {
-  Wrapper,
+  InputWrapper,
   Input,
-  ButtonWrapper,
+  Wrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
   OriginalChatWrapper,

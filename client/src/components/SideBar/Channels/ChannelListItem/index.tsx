@@ -1,32 +1,45 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useSelectedGroup } from '../../../../hooks/useSelectedGroup';
+import { useSelectedGroup, useSelectedChannel } from '@hooks/index';
+import { URL } from 'src/api/URL';
 import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
+import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icons';
 import { ListItem } from './style';
 
 interface Props {
+  meetingUserCount: number;
   channelType: 'chatting' | 'meeting';
   id: number;
   name: string;
 }
 
-function ChannelListItem({ channelType, id, name }: Props) {
+function ChannelListItem({ channelType, meetingUserCount, id, name }: Props) {
   const selectedGroup = useSelectedGroup();
+  const { id: selectedChannelID, type: selectedChannelType } = useSelectedChannel();
   const history = useHistory();
   const dispatch = useDispatch();
+
   const joinChannel = () => {
-    history.push(`/main?group=${selectedGroup?.id}&type=${channelType}&id=${id}`);
+    if (meetingUserCount >= 5 && channelType === 'meeting') return;
+    history.replace(URL.channelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 
   return (
-    <ListItem onClick={joinChannel}>
+    <ListItem
+      onClick={joinChannel}
+      selected={id === selectedChannelID && channelType === selectedChannelType}
+    >
       <div>
-        <img src={'/icons/' + channelType + 'Channel.png'} alt={channelType + 'Channel'} />
+        {channelType === 'meeting' ? (
+          <ChannelMeetingIcon />
+        ) : channelType === 'chatting' ? (
+          <ChannelChattingIcon />
+        ) : null}
         <p>{name}</p>
       </div>
-      <img src="/icons/delete.png" alt="deleteChannel" />
+      <GroupDeleteIcon />
     </ListItem>
   );
 }

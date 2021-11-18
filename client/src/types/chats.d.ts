@@ -9,6 +9,11 @@ interface ChatData {
   threadWriter: null | User;
   threadLastTime: null | Date;
   user: User;
+  files: Files[];
+}
+
+interface Files {
+  src: string;
 }
 
 interface User {

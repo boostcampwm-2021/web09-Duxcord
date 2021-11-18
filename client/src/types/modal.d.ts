@@ -2,13 +2,14 @@ interface ModalData {
   title?: string;
   subTitle?: string;
   middleContent: ReactElement<any, any>;
-  bottomRightButton?: ModalButton;
+  bottomRightButton?: ModalButton | null;
 }
 
 interface ModalController {
   hide: function;
-  show: function;
+  show?: function;
   previous?: function;
+  next?: function;
 }
 
 interface ModalButton {

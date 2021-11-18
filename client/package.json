@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@craco/craco": "^6.4.0",
     "@reduxjs/toolkit": "^1.6.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -13,6 +14,8 @@
     "@types/react-dom": "^17.0.10",
     "@types/react-redux": "^7.1.20",
     "@types/styled-components": "^5.1.15",
+    "aws-sdk": "^2.1029.0",
+    "dotenv": "^8.2.0",
     "http-proxy-middleware": "^2.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -28,10 +31,10 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject"
   },
   "eslintConfig": {
     "extends": [
@@ -54,6 +57,7 @@
   "devDependencies": {
     "@types/jest-plugin-context": "^2.9.4",
     "@types/react-router-dom": "^5.3.2",
+    "craco-alias": "^3.0.1",
     "eslint-plugin-prettier": "^4.0.0",
     "jest-plugin-context": "^2.9.0",
     "prettier": "^2.4.1"

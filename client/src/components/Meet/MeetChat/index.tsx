@@ -1,11 +1,12 @@
 import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useSelectedChannel } from '../../../hooks/useSelectedChannel';
-import { useUserdata } from '../../../hooks/useUserdata';
-import { socket } from '../../../util/socket';
-import { ChatHeader, UserImage } from '../../Chat/ChatItem/style';
+import MeetEvent from '@customTypes/socket/MeetEvent';
+import { useSelectedChannel, useUserdata } from '@hooks/index';
+import { socket } from '../../../utils/socket';
+import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icons';
 import {
   Chat,
   ChatList,
+  ChatHeader,
   ChatWrap,
   CloseChatButton,
   Input,
@@ -23,7 +24,6 @@ interface IChat {
   createdAt: string;
 }
 
-const MEET_CHAT = 'meetChat';
 const THRESHOLD = 300;
 
 function MeetChat() {
@@ -39,48 +39,53 @@ function MeetChat() {
     if (!chatInputRef.current || !userdata) return;
     const message = chatInputRef.current.value;
     if (message.trim() === '') return;
-    socket.emit(MEET_CHAT, {
+    socket.emit(MeetEvent.meetChat, {
       channelID,
       chat: { ...userdata, message, createdAt: new Date().toLocaleTimeString('ko-KR') },
     });
     chatInputRef.current.value = '';
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = ({ smooth }: { smooth: boolean }) => {
     if (!chatListRef.current) return;
-    chatListRef.current.scrollTop = chatListRef.current.scrollHeight;
+    chatListRef.current.scrollTo({
+      top: chatListRef.current.scrollHeight,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
   };
 
   useLayoutEffect(() => {
-    scrollToBottom();
+    scrollToBottom({ smooth: false });
   }, [show]);
 
   useEffect(() => {
-    socket.on(MEET_CHAT, (chat: IChat) => {
+    socket.on(MeetEvent.meetChat, (chat: IChat) => {
       setChats((chats) => [...chats, chat]);
       if (!chatListRef.current) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
-      if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom();
+      if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom({ smooth: true });
     });
 
     return () => {
-      socket.off(MEET_CHAT);
+      socket.off(MeetEvent.meetChat);
     };
   }, []);
 
   return show ? (
     <ChatWrap>
-      <CloseChatButton onClick={() => setShow(false)}>
-        <img src="/icons/btn-close-meetchat.svg" alt="close chat icon" />
+      <CloseChatButton>
+        <ChatCloseIcon onClick={() => setShow(false)} />
       </CloseChatButton>
       <ChatList ref={chatListRef}>
         {chats.map(({ id, loginID, username, thumbnail, message, createdAt }) => (
           <Chat key={id}>
-            <UserImage src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
-            <ChatHeader>
-              <div>{`${username}(${loginID})`}</div>
-              <div>{createdAt}</div>
-            </ChatHeader>
+            <div>
+              <img src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
+              <ChatHeader>
+                <div>{`${username}(${loginID})`}</div>
+                <div>{createdAt}</div>
+              </ChatHeader>
+            </div>
             <Message>{message}</Message>
           </Chat>
         ))}
@@ -91,7 +96,7 @@ function MeetChat() {
     </ChatWrap>
   ) : (
     <ShowChatButton onClick={() => setShow(true)}>
-      <img src="/icons/btn-show-meetchat.svg" alt="show chat icon" />
+      <ChatOpenIcon />
     </ShowChatButton>
   );
 }

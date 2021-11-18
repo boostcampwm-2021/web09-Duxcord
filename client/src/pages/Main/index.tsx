@@ -1,15 +1,14 @@
 import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import ChannelHeader from '../../components/ChannelHeader';
-import Chat from '../../components/Chat';
-import Meet from '../../components/Meet';
-import SideBar from '../../components/SideBar';
-import { useGroups } from '../../hooks/useGroups';
-import { useSelectedChannel } from '../../hooks/useSelectedChannel';
-import { useSelectedGroup } from '../../hooks/useSelectedGroup';
-import { setSelectedChannel } from '../../redux/selectedChannel/slice';
-import { setSelectedGroup } from '../../redux/selectedGroup/slice';
-import { getURLParams } from '../../util/getURLParams';
+import ChannelHeader from '@components/ChannelHeader';
+import Chat from '@components/Chat';
+import Meet from '@components/Meet';
+import SideBar from '@components/SideBar';
+import Empty from '@components/common/Empty';
+import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { getURLParams } from '../../utils/getURLParams';
 import { Layout, MainWrapper } from './style';
 
 function Main() {
@@ -20,11 +19,12 @@ function Main() {
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    if (selectedGroup !== null) return;
+    if (isValidating) return;
+    if (selectedGroup !== null || groupID === null) return;
 
     const group = groups?.find((group: any) => group.id.toString() === groupID) ?? null;
 
-    if (group === null || groupID === null) return;
+    if (group === null) return;
 
     dispatch(setSelectedGroup(group));
 
@@ -44,7 +44,15 @@ function Main() {
       <SideBar />
       <MainWrapper>
         <ChannelHeader />
-        {selectedChannel.type && (selectedChannel.type === 'chatting' ? <Chat /> : <Meet />)}
+        {selectedChannel.type ? (
+          selectedChannel.type === 'chatting' ? (
+            <Chat />
+          ) : (
+            <Meet />
+          )
+        ) : (
+          <Empty />
+        )}
       </MainWrapper>
     </Layout>
   );

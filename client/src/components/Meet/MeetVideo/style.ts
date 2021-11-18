@@ -1,3 +1,4 @@
+import Colors from '@styles/Colors';
 import styled from 'styled-components';
 
 interface IMeetVideoWrapper {
@@ -34,6 +35,17 @@ const VideoItemWrapper = styled.div`
   & p {
     align-self: center;
   }
+  .saying {
+    border: 3px solid ${Colors.Blue};
+  }
+  img {
+    display: block;
+    position: absolute;
+  }
+`;
+
+const MyImage = styled.img`
+  position: absolute;
 `;
 
 const VideoItem = styled.video`
@@ -45,4 +57,4 @@ const VideoItem = styled.video`
   margin-bottom: 10px;
 `;
 
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem };
+export { MeetVideoWrapper, VideoItemWrapper, VideoItem, MyImage };

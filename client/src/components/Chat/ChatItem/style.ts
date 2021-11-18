@@ -18,6 +18,17 @@ const UserImage = styled.img`
   height: 50px;
   border-radius: 25px;
 `;
+
+const FileWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  & img {
+    max-width: 300px;
+    height: 120px;
+    margin-right: 10px;
+  }
+`;
+
 const ChatHeader = styled.div`
   display: flex;
   gap: 12px;
@@ -31,4 +42,9 @@ const ChatHeader = styled.div`
   }
 `;
 
-export { ChatWrapper, UserImage, ChatHeader };
+const ChatContent = styled.div`
+  white-space: normal;
+  word-break: break-all;
+`;
+
+export { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent };

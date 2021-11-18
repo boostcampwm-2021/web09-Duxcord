@@ -20,7 +20,7 @@ const ThreadPreviewWrapper = styled.div`
   }
   & > p:nth-child(3) {
     font-size: 12px;
-    color: ${Colors.Gray2};
+    color: ${Colors.Gray7};
   }
 `;
 

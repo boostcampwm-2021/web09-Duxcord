@@ -32,6 +32,43 @@ const ChatList = styled.ul`
   }
 `;
 
+const ChatHeader = styled.div`
+  display: flex;
+  align-items: center;
+  & div:first-child {
+    font-weight: bold;
+    font-size: 15px;
+    margin-right: 3px;
+  }
+  & div:last-child {
+    color: ${Colors.Gray1};
+    font-size: 12px;
+  }
+`;
+
+const Chat = styled.li`
+  margin-top: 5px;
+  & div {
+    display: flex;
+    & img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: ${Colors.Gray2};
+      margin-right: 5px;
+    }
+  }
+`;
+
+const Message = styled.span`
+  display: inline-block;
+  margin-left: 30px;
+  padding: 12px;
+  background-color: ${Colors.Gray3};
+  border-radius: 15px;
+  overflow-wrap: break-word;
+`;
+
 const ShowChatButton = styled.button`
   cursor: pointer;
   position: absolute;
@@ -40,7 +77,7 @@ const ShowChatButton = styled.button`
   background: none;
   border: none;
 
-  img {
+  svg {
     width: 25px;
     height: 25px;
   }
@@ -54,22 +91,10 @@ const CloseChatButton = styled.button`
   background: none;
   border: none;
 
-  img {
+  svg {
     width: 20px;
     height: 20px;
   }
-`;
-
-const Chat = styled.li`
-  margin-top: 5px;
-`;
-
-const Message = styled.span`
-  display: inline-block;
-  padding: 12px;
-  background-color: ${Colors.Gray3};
-  border-radius: 15px;
-  overflow-wrap: break-word;
 `;
 
 const InputWrap = styled.form`
@@ -86,4 +111,14 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-export { ChatWrap, ChatList, ShowChatButton, CloseChatButton, Message, Chat, Input, InputWrap };
+export {
+  ChatWrap,
+  ChatList,
+  ChatHeader,
+  ShowChatButton,
+  CloseChatButton,
+  Message,
+  Chat,
+  Input,
+  InputWrap,
+};
