@@ -1,8 +1,14 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { chattingChannelRepository, userRepository, chatRepository } from '../loaders/orm.loader';
+import {
+  chattingChannelRepository,
+  userRepository,
+  chatRepository,
+  fileRepository,
+} from '../loaders/orm.loader';
 
 import { Chat } from '../db/entities';
+import { File } from '../db/entities';
 import { broadcast } from '../utils';
 
 export const createChatMSG = {
@@ -27,6 +33,7 @@ const getChat = async (req: Request, res: Response, next: NextFunction) => {
 const createChat = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { content } = req.body;
+    const { files } = req.body;
     const { chattingChannelID } = req.params;
     const { userID } = req.session;
     const user = await userRepository.findOne({ where: { id: userID } });
@@ -35,7 +42,7 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     if (!user) return res.status(400).send(createChatMSG.userNotFound);
-    if (!content.trim()) return res.status(400).send(createChatMSG.emptyChat);
+    if (!content.trim() && !files.length) return res.status(400).send(createChatMSG.emptyChat);
 
     const newChat = new Chat();
     newChat.content = content;
@@ -43,6 +50,20 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
     newChat.chattingChannel = chattingChannel;
 
     await chatRepository.save(newChat);
+
+    const chat = await chatRepository.findOne({
+      where: { id: newChat.id },
+    });
+
+    files.forEach(async (file) => {
+      const newFile = new File();
+      newFile.src = file;
+      newFile.chat = chat;
+
+      await fileRepository.save(newFile);
+    });
+
+    const sendFiles = files.map((file) => ({ src: file }));
 
     broadcast.newChat({
       newChat: {
@@ -59,6 +80,7 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
           thumbnail: user.thumbnail,
           username: user.username,
         },
+        files: sendFiles,
       },
       channelID: chattingChannelID,
     });
