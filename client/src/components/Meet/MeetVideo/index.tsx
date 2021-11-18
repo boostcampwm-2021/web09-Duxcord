@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import { useSelectedChannel, useUserdata, useUserDevice } from '@hooks/index';
+import { useSelectedChannel, useSelectedGroup, useUserdata, useUserDevice } from '@hooks/index';
 import Socket, { socket } from '../../../utils/socket';
 import { MeetVideoWrapper, VideoItemWrapper, VideoItem, MyImage } from './style';
 import { highlightMyVolume } from '../../../utils/audio';
-import { MicOffIcon } from '@components/common/Icons';
+import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import OtherVideo from './OtherVideo';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
@@ -24,6 +24,7 @@ export interface IMeetingUser {
   thumbnail: string | null;
   mic: boolean;
   cam: boolean;
+  speaker: boolean;
   stream?: MediaStream;
   pc?: RTCPeerConnection;
 }
@@ -31,7 +32,8 @@ export interface IMeetingUser {
 function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
-  const { mic, cam } = useUserDevice();
+  const { mic, cam, speaker } = useUserDevice();
+  const { code } = useSelectedGroup();
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
@@ -112,7 +114,7 @@ function MeetVideo() {
           socket.emit(MeetEvent.offer, {
             offer,
             receiverID: member.socketID,
-            member: { loginID, username, thumbnail, mic, cam },
+            member: { loginID, username, thumbnail, mic, cam, speaker },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);
@@ -149,7 +151,14 @@ function MeetVideo() {
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
-    socket.emit(MeetEvent.joinMeeting, id, { loginID, username, thumbnail, mic, cam });
+    socket.emit(MeetEvent.joinMeeting, id, code, {
+      loginID,
+      username,
+      thumbnail,
+      mic,
+      cam,
+      speaker,
+    });
 
     return () => {
       Socket.leaveChannel({ channelType: MeetEvent.meeting, id });
@@ -158,7 +167,7 @@ function MeetVideo() {
       socket.off(MeetEvent.answer);
       socket.off(MeetEvent.candidate);
       socket.off(MeetEvent.leaveMember);
-      socket.emit(MeetEvent.leaveMeeting);
+      socket.emit(MeetEvent.leaveMeeting, code);
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
@@ -194,9 +203,19 @@ function MeetVideo() {
       });
     });
 
+    socket.on(MeetEvent.setSpeaker, (who, speakerStatue) => {
+      setMeetingMembers((members) => {
+        const member = members.find((member) => member.loginID === who);
+        if (!member) return members;
+        member.speaker = speakerStatue;
+        return [...members];
+      });
+    });
+
     return () => {
       socket.off(MeetEvent.setMuted);
       socket.off(MeetEvent.setToggleCam);
+      socket.off(MeetEvent.setSpeaker);
     };
   }, []);
 
@@ -211,6 +230,7 @@ function MeetVideo() {
         )}
         <p>{userdata?.username}</p>
         {mic ? '' : <MicOffIcon />}
+        {speaker ? '' : <SpeakerOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
         <OtherVideo key={member.socketID} member={member} />

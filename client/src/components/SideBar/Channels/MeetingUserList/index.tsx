@@ -9,7 +9,7 @@ function MeetingUserList({ meetingUser }: Props) {
   return (
     <>
       {meetingUser &&
-        meetingUser[0].map((user: any) => {
+        meetingUser.map((user: any) => {
           return (
             <MeetingUserListWrapper key={user.loginID}>
               <MeetingUserProfileWrapper>

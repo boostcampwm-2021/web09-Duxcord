@@ -8,17 +8,20 @@ import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../
 import { ListItem } from './style';
 
 interface Props {
+  meetingUserCount: number;
   channelType: 'chatting' | 'meeting';
   id: number;
   name: string;
 }
 
-function ChannelListItem({ channelType, id, name }: Props) {
+function ChannelListItem({ channelType, meetingUserCount, id, name }: Props) {
   const selectedGroup = useSelectedGroup();
   const { id: selectedChannelID, type: selectedChannelType } = useSelectedChannel();
   const history = useHistory();
   const dispatch = useDispatch();
+
   const joinChannel = () => {
+    if (meetingUserCount >= 5 && channelType === 'meeting') return;
     history.push(URL.channelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
