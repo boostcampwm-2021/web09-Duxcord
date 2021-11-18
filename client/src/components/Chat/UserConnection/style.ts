@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import Colors from '../../../styles/Colors';
 
 const UserConnectionWrapper = styled.div`
-  background-color: ${Colors.Gray4};
-  width: 20%;
+  background-color: ${Colors.Gray6};
+  width: 30%;
   height: calc(100vh - 50px);
   padding: 10px;
   overflow-y: scroll;
@@ -15,12 +15,13 @@ const UserConnectionWrapper = styled.div`
 `;
 
 const Text = styled.div`
+  margin-top: 20px;
   font-size: 21.39px;
 `;
 
 const UserImage = styled.img`
-  width: 25px;
-  height: 25px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
 `;
 
@@ -32,16 +33,16 @@ const UserTile = styled.div`
   background-color: ${Colors.White};
   width: 100%;
   height: 40px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
+  padding: 30px 20px;
   & > div:nth-child(1) {
     border-radius: 25px;
     background-color: ${Colors.Gray1};
     display: flex;
     position: relative;
-    width: 25px;
-    height: 25px;
-    margin: 0 5px 0;
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
     & > div {
       width: 12px;
       height: 12px;

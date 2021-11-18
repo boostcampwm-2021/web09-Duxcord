@@ -37,6 +37,7 @@ export let meetingChannelRepository: Repository<MeetingChannel>;
 export let chatRepository: ChatRepository;
 export let threadRepository: ThreadRepository;
 export let reactionRepository: Repository<Reaction>;
+export let fileRepository: Repository<File>;
 
 const connectDB = async () => {
   connection = await createConnection({
@@ -76,4 +77,5 @@ export const ormLoader = async () => {
   chatRepository = await getCustomRepository(ChatRepository);
   threadRepository = await getCustomRepository(ThreadRepository);
   reactionRepository = await getRepository(Reaction);
+  fileRepository = await getRepository(File);
 };

@@ -1,5 +1,5 @@
 interface Body {
-  [Key: string]: string | null;
+  [Key: string]: string | string[] | null;
 }
 
 const postFetchOptions = (body: Body): RequestInit => {

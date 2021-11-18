@@ -22,7 +22,7 @@ function ChannelListItem({ channelType, meetingUserCount, id, name }: Props) {
 
   const joinChannel = () => {
     if (meetingUserCount >= 5 && channelType === 'meeting') return;
-    history.push(URL.channelPage(selectedGroup?.id, channelType, id));
+    history.replace(URL.channelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 

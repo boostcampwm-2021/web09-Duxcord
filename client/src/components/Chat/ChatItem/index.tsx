@@ -9,7 +9,7 @@ import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
 import { useUserdata } from '@hooks/index';
-import { ChatWrapper, UserImage, ChatHeader, ChatContent } from './style';
+import { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
   const {
@@ -22,6 +22,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
     threadWriter,
     threadLastTime,
     reactions,
+    files,
   } = chatData;
 
   const dispatch = useDispatch();
@@ -67,6 +68,14 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
         </ChatHeader>
         <ChatContent>{content}</ChatContent>
+        <FileWrapper>
+          {files &&
+            files.map((file) => (
+              <div key={file.src}>
+                <img src={file.src} />
+              </div>
+            ))}
+        </FileWrapper>
         <div>
           {reactionsCount !== 0 && (
             <ChatReaction

@@ -45,7 +45,7 @@ function GroupNav() {
   };
 
   const selectGroup = (group: any) => () => {
-    history.push(URL.groupPage(group.id));
+    history.replace(URL.groupPage(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
     socket.emit(GroupEvent.groupID, group.code);
@@ -71,7 +71,7 @@ function GroupNav() {
           }),
         );
         dispatch(setSelectedChat(null));
-        history.push(URL.groupPage());
+        history.replace(URL.groupPage());
       }
     });
 

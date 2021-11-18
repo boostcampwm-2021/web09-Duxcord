@@ -43,7 +43,9 @@ function UserConnection() {
           <div>{oneUser.username}</div>
         </UserTile>
       ))}
-      <Text>Offline</Text>
+      {data.filter(
+        ({ user }: any) => !groupConnection.map((v: any) => v.loginID).includes(user.loginID),
+      ).length !== 0 && <Text>Offline</Text>}
       {data
         .filter(
           ({ user }: any) => !groupConnection.map((v: any) => v.loginID).includes(user.loginID),

@@ -42,7 +42,7 @@ const ThreadHeaderWrapper = styled.div`
 
 const ThreadChatWrapper = styled.div`
   flex: 1;
-  overflow: overlay;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -69,7 +69,7 @@ const OriginalChatWrapper = styled.div`
   & > div {
     display: flex;
     flex-direction: column;
-    margin-left: 30px;
+    margin-left: 15px;
     justify-content: space-between;
     width: 100%;
     word-break: break-all;

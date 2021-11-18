@@ -28,6 +28,7 @@ export class ChatRepository extends Repository<Chat> {
         'threadWriter.username',
         'threadWriter.thumbnail',
       ])
+      .leftJoinAndSelect('chat.files', 'files')
       .orderBy('chat.createdAt', 'DESC')
       .skip(chatPerPage * (page - 1))
       .take(chatPerPage)

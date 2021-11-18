@@ -22,9 +22,9 @@ function Profile() {
   const { id } = useSelectedChannel();
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
-    if (target === 'mic') socket.emit(MeetEvent.mute, id, !device[target], userdata.loginID);
-    if (target === 'speaker') socket.emit(MeetEvent.speaker, id, !device[target], userdata.loginID);
-    if (target === 'cam') socket.emit(MeetEvent.toggleCam, id, !device[target], userdata.loginID);
+    if (target === 'mic') socket.emit(MeetEvent.mute, id, !device[target]);
+    if (target === 'speaker') socket.emit(MeetEvent.speaker, id, !device[target]);
+    if (target === 'cam') socket.emit(MeetEvent.toggleCam, id, !device[target]);
     dispatch(setUserDevice({ ...device, [target]: !device[target] }));
   };
 

@@ -32,7 +32,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.push(URL.groupPage(group.id));
+        history.replace(URL.groupPage(group.id));
         break;
       case 400:
         const responseText = await response.text();

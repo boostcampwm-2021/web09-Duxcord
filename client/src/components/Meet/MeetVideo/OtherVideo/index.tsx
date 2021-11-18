@@ -5,8 +5,10 @@ import { VideoItemWrapper, VideoItem } from '../style';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
+  muted,
 }: {
   member: IMeetingUser;
+  muted: boolean;
 }) {
   const camRef = useRef<HTMLVideoElement>(null);
   const screenRef = useRef<HTMLVideoElement>(null);
@@ -41,7 +43,7 @@ function OtherVideo({
   return (
     <>
       <VideoItemWrapper>
-        <VideoItem muted={!speaker} autoPlay playsInline ref={camRef} />
+        <VideoItem muted={muted} autoPlay playsInline ref={camRef} />
         <p>{`${username}(${loginID})`}</p>
         {mic || <MicOffIcon />}
         {speaker || <SpeakerOffIcon />}
@@ -49,7 +51,7 @@ function OtherVideo({
       </VideoItemWrapper>
       {screen && (
         <VideoItemWrapper>
-          <VideoItem key={socketID} autoPlay playsInline ref={screenRef} />
+          <VideoItem key={socketID} muted={muted} autoPlay playsInline ref={screenRef} />
           <p>{`${username}(${loginID})님의 화면`}</p>
         </VideoItemWrapper>
       )}
