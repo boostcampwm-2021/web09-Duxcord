@@ -46,13 +46,16 @@ function MeetChat() {
     chatInputRef.current.value = '';
   };
 
-  const scrollToBottom = () => {
+  const scrollToBottom = ({ smooth }: { smooth: boolean }) => {
     if (!chatListRef.current) return;
-    chatListRef.current.scrollTo({ top: chatListRef.current.scrollHeight, behavior: 'smooth' });
+    chatListRef.current.scrollTo({
+      top: chatListRef.current.scrollHeight,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
   };
 
   useLayoutEffect(() => {
-    scrollToBottom();
+    scrollToBottom({ smooth: false });
   }, [show]);
 
   useEffect(() => {
@@ -60,7 +63,7 @@ function MeetChat() {
       setChats((chats) => [...chats, chat]);
       if (!chatListRef.current) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
-      if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom();
+      if (scrollHeight - (scrollTop + clientHeight) < THRESHOLD) scrollToBottom({ smooth: true });
     });
 
     return () => {
