@@ -3,23 +3,27 @@ import { useRef, useEffect } from 'react';
 import { IMeetingUser } from '..';
 import { VideoItemWrapper, VideoItem } from '../style';
 
-function OtherVideo({ member }: { member: IMeetingUser }) {
+function OtherVideo({
+  member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
+}: {
+  member: IMeetingUser;
+}) {
   const camRef = useRef<HTMLVideoElement>(null);
   const screenRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!camRef.current || !member.stream) return;
-    camRef.current.srcObject = member.stream;
-  }, [member.stream]);
+    if (!camRef.current || !stream) return;
+    camRef.current.srcObject = stream;
+  }, [stream]);
 
   useEffect(() => {
-    if (!screenRef.current || !member.screen) return;
-    screenRef.current.srcObject = member.screen;
-  }, [member.screen]);
+    if (!screenRef.current || !screen) return;
+    screenRef.current.srcObject = screen;
+  }, [screen]);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const receiver = member?.pc?.getReceivers().find((r: { track: { kind: string } }) => {
+      const receiver = pc?.getReceivers().find((r: { track: { kind: string } }) => {
         return r.track.kind === 'audio';
       });
       const source = receiver?.getSynchronizationSources()[0];
@@ -32,29 +36,21 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
     return () => {
       clearInterval(interval);
     };
-  }, [member]);
+  }, [pc]);
 
   return (
     <>
       <VideoItemWrapper>
-        <VideoItem
-          key={member.socketID}
-          muted={!member.speaker}
-          autoPlay
-          playsInline
-          ref={camRef}
-        />
-        <p>{member?.username}</p>
-        {member.mic || <MicOffIcon />}
-        {member.speaker || <SpeakerOffIcon />}
-        {member.cam || (
-          <img src={member?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
-        )}
+        <VideoItem muted={!speaker} autoPlay playsInline ref={camRef} />
+        <p>{`${username}(${loginID})`}</p>
+        {mic || <MicOffIcon />}
+        {speaker || <SpeakerOffIcon />}
+        {cam || <img src={thumbnail || '/images/default_profile.png'} alt="profile"></img>}
       </VideoItemWrapper>
-      {member.screen && (
+      {screen && (
         <VideoItemWrapper>
-          <VideoItem key={member.socketID} autoPlay playsInline ref={screenRef} />
-          <p>{member?.username + '님의 화면'}</p>
+          <VideoItem key={socketID} autoPlay playsInline ref={screenRef} />
+          <p>{`${username}(${loginID})님의 화면`}</p>
         </VideoItemWrapper>
       )}
     </>

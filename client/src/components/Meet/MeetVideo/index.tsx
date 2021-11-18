@@ -324,14 +324,14 @@ function MeetVideo() {
           ) : (
             <MyImage src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
           )}
-          <p>{userdata?.username}</p>
+          <p>{`${userdata?.username}(${userdata?.loginID})`}</p>
           {mic ? '' : <MicOffIcon />}
           {speaker ? '' : <SpeakerOffIcon />}
         </VideoItemWrapper>
         {screenShare && (
           <VideoItemWrapper>
             <VideoItem autoPlay playsInline muted ref={myScreenRef} />
-            <p>{userdata?.username + '님의 화면'}</p>
+            <p>{`${userdata?.username}(${userdata?.loginID})님의 화면`}</p>
           </VideoItemWrapper>
         )}
         {meetingMembers.map((member) => (
