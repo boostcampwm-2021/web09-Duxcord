@@ -6,7 +6,10 @@ function SocketGroupController(socket) {
   this.groupID = (groupID, user) => {
     if (!userConnectionInfo[groupID]) return;
     if (user && !userConnectionInfo[groupID]?.some((v) => v.loginID === user.loginID))
-      userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
+      userConnectionInfo[groupID] = [
+        ...userConnectionInfo[groupID],
+        { ...user, socketID: socket.id },
+      ];
     socket.emit(GroupEvent.groupUserConnection, userConnectionInfo[groupID]);
   };
 
@@ -17,10 +20,10 @@ function SocketGroupController(socket) {
       io.to(`${code}`).emit(GroupEvent.userEnter, user, code);
       if (userConnectionInfo[code]) {
         if (!userConnectionInfo[code].map((v) => v.loginID).includes(user.loginID)) {
-          userConnectionInfo[code].push(user);
+          userConnectionInfo[code].push({ ...user, socketID: socket.id });
         }
       } else {
-        userConnectionInfo[code] = [user];
+        userConnectionInfo[code] = [{ ...user, socketID: socket.id }];
       }
     });
 
