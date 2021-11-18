@@ -47,7 +47,7 @@ function SignIn() {
 
     try {
       const loginResponse = await tryLogin(ID, password);
-      if (loginResponse.status === STATUS_CODES.OK) history.push(URL.groupPage());
+      if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.groupPage());
       setResponseState({ ...responseState, ...loginResponse });
     } catch (error) {
       console.log(error);

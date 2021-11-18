@@ -40,7 +40,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
           );
           dispatch(setSelectedChat(null));
           hide();
-          history.push(URL.groupPage());
+          history.replace(URL.groupPage());
           break;
         case 400:
           const responseText = await response.text();

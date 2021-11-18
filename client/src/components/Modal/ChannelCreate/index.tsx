@@ -49,7 +49,7 @@ export default function ChannelCreateModal({
       }, false);
       controller.hide();
       if (channelType === 'chatting') {
-        history.push(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
+        history.replace(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
         dispatch(
           setSelectedChannel({
             type: channelType,

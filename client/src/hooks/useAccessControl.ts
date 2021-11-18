@@ -17,6 +17,6 @@ export const useAccessControl = ({
   useEffect(() => {
     if (isValidating) return;
     const isAccessible = (signIn && userdata) || (!signIn && !userdata);
-    if (!isAccessible) history.push(redirectPath);
+    if (!isAccessible) history.replace(redirectPath);
   }, [isValidating, userdata, history, signIn, redirectPath]);
 };
