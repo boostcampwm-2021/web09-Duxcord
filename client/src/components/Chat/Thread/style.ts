@@ -42,7 +42,7 @@ const ThreadHeaderWrapper = styled.div`
 
 const ThreadChatWrapper = styled.div`
   flex: 1;
-  overflow: overlay;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
   }

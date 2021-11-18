@@ -16,10 +16,11 @@ const ChatContainer = styled.div`
 `;
 
 const Chats = styled.div`
-  overflow: overlay;
-
+  height: 100%;
+  overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+    width: 15px;
   }
 
   &::-webkit-scrollbar-thumb {
