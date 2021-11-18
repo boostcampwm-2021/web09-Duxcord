@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useSWR from 'swr';
 import { useDispatch } from 'react-redux';
 import { API_URL } from '../../../api/API_URL';
 import GroupEvent from '@customTypes/socket/GroupEvent';
-import { useGroupConnection, useSelectedGroup, useUserdata, useSelectedUser } from '@hooks/index';
+import { useGroupConnection, useSelectedGroup, useUserdata } from '@hooks/index';
 import { getFetcher } from '../../../utils/fetcher';
 import { socket } from '../../../utils/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
 import { setSelectedUser } from '@redux/selectedUser/slice';
-import UserInformationModal from '@components/Modal/UserInformation';
-import UserEditModal from '@components/Modal/UserEdit';
 
 function UserConnection() {
   const selectedGroup = useSelectedGroup();
@@ -18,18 +16,6 @@ function UserConnection() {
   const { data = [] } = useSWR(API_URL.group.getGroupMembers(selectedGroup?.id), getFetcher);
 
   const dispatch = useDispatch();
-  const selectedUser = useSelectedUser();
-
-  const [userEditMode, setUserEditMode] = useState(false);
-  const userEditModalController = {
-    hide: () => setUserEditMode(false),
-    show: () => setUserEditMode(true),
-  };
-
-  const userInformationModalController = {
-    hide: () => dispatch(setSelectedUser({})),
-    next: userEditModalController.show,
-  };
 
   const onUserSelected = (user: any, isOnline: boolean) => {
     if (user.loginID === userdata.loginID) {
@@ -77,10 +63,6 @@ function UserConnection() {
             <div>{offLineUser.user.username}</div>
           </UserTile>
         ))}
-      {(selectedUser.id || selectedUser.loginID) && (
-        <UserInformationModal controller={userInformationModalController} />
-      )}
-      {userEditMode && <UserEditModal controller={userEditModalController} />}
     </UserConnectionWrapper>
   );
 }

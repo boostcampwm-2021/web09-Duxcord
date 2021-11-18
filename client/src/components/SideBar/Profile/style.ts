@@ -31,20 +31,21 @@ const ProfileWrapper = styled.div`
       max-width: 100px;
     }
   }
-  & > div:last-child {
-    display: flex;
-    align-items: center;
-    & svg {
-      width: 30px;
-      height: 30px;
-      padding: 5px;
-      &:hover {
-        cursor: pointer;
-        background-color: ${Colors.Gray2};
-        border-radius: 5px;
-      }
+`;
+
+const DeviceControl = styled.div`
+  display: flex;
+  align-items: center;
+  & svg {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    &:hover {
+      cursor: pointer;
+      background-color: ${Colors.Gray2};
+      border-radius: 5px;
     }
   }
 `;
 
-export { ProfileWrapper };
+export { ProfileWrapper, DeviceControl };
