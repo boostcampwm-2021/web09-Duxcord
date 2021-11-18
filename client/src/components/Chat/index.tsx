@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import ChatItem from './ChatItem';
-import { ChatContainer, Chats, ChatPart } from './style';
+import { ChatContainer, Chats, ChatPart, ChatInputWrapper } from './style';
 import { ChatData } from '@customTypes/chats';
 import ChatInput from './ChatInput';
 import useSWRInfinite from 'swr/infinite';
@@ -125,7 +125,9 @@ function Chat() {
               <ChatItem key={chat.id} chatData={chat} />
             ))}
         </Chats>
-        <ChatInput scrollToBottom={scrollToBottom} />
+        <ChatInputWrapper>
+          <ChatInput scrollToBottom={scrollToBottom} />
+        </ChatInputWrapper>
       </ChatContainer>
       {selectedChat ? <Thread selectedChat={selectedChat} /> : <UserConnection />}
     </ChatPart>
