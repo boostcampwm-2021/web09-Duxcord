@@ -185,27 +185,27 @@ function MeetVideo() {
   }, [mic, cam, myStream]);
 
   useEffect(() => {
-    socket.on(MeetEvent.setMuted, (who, micStatus) => {
+    socket.on(MeetEvent.setMuted, (micStatus, socketID) => {
       setMeetingMembers((members) => {
-        const member = members.find((member) => member.loginID === who);
+        const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
         member.mic = micStatus;
         return [...members];
       });
     });
 
-    socket.on(MeetEvent.setToggleCam, (who, camStatus) => {
+    socket.on(MeetEvent.setToggleCam, (camStatus, socketID) => {
       setMeetingMembers((members) => {
-        const member = members.find((member) => member.loginID === who);
+        const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
         member.cam = camStatus;
         return [...members];
       });
     });
 
-    socket.on(MeetEvent.setSpeaker, (who, speakerStatue) => {
+    socket.on(MeetEvent.setSpeaker, (speakerStatue, socketID) => {
       setMeetingMembers((members) => {
-        const member = members.find((member) => member.loginID === who);
+        const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
         member.speaker = speakerStatue;
         return [...members];
@@ -233,7 +233,7 @@ function MeetVideo() {
         {speaker ? '' : <SpeakerOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
-        <OtherVideo key={member.socketID} member={member} />
+        <OtherVideo key={member.socketID} member={member} muted={speaker} />
       ))}
     </MeetVideoWrapper>
   );
