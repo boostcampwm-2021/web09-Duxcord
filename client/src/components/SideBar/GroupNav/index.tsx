@@ -7,7 +7,14 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import GroupJoinModal from '../../Modal/GroupJoin';
 import { socket } from '../../../utils/socket';
-import { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton } from './style';
+import {
+  GroupListWrapper,
+  GroupList,
+  GroupWrapper,
+  Group,
+  GroupListDivider,
+  AddGroupButton,
+} from './style';
 import { ModalController } from '@customTypes/modal';
 import {
   addUserConnection,
@@ -96,9 +103,11 @@ function GroupNav() {
     <GroupListWrapper>
       <GroupList>
         {groups?.map((group: any) => (
-          <Group key={group.id} onClick={selectGroup(group)} thumbnail={group.thumbnail}>
-            {!group.thumbnail && group.name}
-          </Group>
+          <GroupWrapper name={group.name}>
+            <Group key={group.id} onClick={selectGroup(group)} thumbnail={group.thumbnail}>
+              <p>{!group.thumbnail && group.name}</p>
+            </Group>
+          </GroupWrapper>
         ))}
       </GroupList>
       <GroupListDivider />

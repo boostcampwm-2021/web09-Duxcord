@@ -6,6 +6,32 @@ const radiusChange = keyframes`
   to { border-radius: 30%; }
 `;
 
+const colorChange = keyframes`
+  from {
+    border-radius: 50%;
+    background-color: ${Colors.White};
+  }
+  to {
+    border-radius: 30%;
+    background-color: ${Colors.Blue};
+  }
+`;
+
+const colorIconChange = keyframes`
+  from { stroke: ${Colors.Blue}; }
+  to { stroke: ${Colors.White}; }
+`;
+
+const colorTextChange = keyframes`
+  from { color: ${Colors.Black}; }
+  to { color: ${Colors.White}; }
+`;
+
+const nameShow = keyframes`
+  from { opacity: 0; }
+  to { opacity: 1; }
+`;
+
 const GroupListWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -25,9 +51,6 @@ const GroupListDivider = styled.div`
 `;
 
 const GroupList = styled.div`
-  & div:not(:last-child) {
-    margin-bottom: 10px;
-  }
   overflow-y: scroll;
   height: 100%;
   -ms-overflow-style: none;
@@ -37,9 +60,31 @@ const GroupList = styled.div`
   }
 `;
 
+interface IGroupWrapper {
+  name: string;
+}
+
 interface IGroup {
   thumbnail: string | null;
 }
+
+const GroupWrapper = styled.div<IGroupWrapper>`
+  display: flex;
+  position: relative;
+  align-items: center;
+  margin: 10px 0;
+  width: 48px;
+  height: 48px;
+  &:hover:after {
+    content: '${(props) => props.name}';
+    position: fixed;
+    left: 70px;
+    background-color: ${Colors.White};
+    padding: 12px;
+    border-radius: 6px;
+    animation: ${nameShow} 0.1s linear both;
+  }
+`;
 
 const Group = styled.div<IGroup>`
   display: flex;
@@ -53,11 +98,20 @@ const Group = styled.div<IGroup>`
   overflow: hidden;
   ${(props) =>
     props.thumbnail
-      ? `background-image: url('${props.thumbnail}'); background-size: cover; background-repeat: no-repeat;background-position-x: center;background-position-y: center; `
+      ? `
+        background-image: url('${props.thumbnail}');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position-x: center;
+        background-position-y: center;
+      `
       : `background-color: ${Colors.White};`}
   &:hover {
     cursor: pointer;
-    animation: ${radiusChange} 0.1s linear both;
+    animation: ${(props) => (props.thumbnail ? radiusChange : colorChange)} 0.1s linear both;
+    & p {
+      animation: ${colorTextChange} 0.1s linear both;
+    }
   }
 `;
 
@@ -72,12 +126,18 @@ const AddGroupButton = styled.button`
   background-color: ${Colors.White};
   &:hover {
     cursor: pointer;
-    animation: ${radiusChange} 0.1s linear both;
+    animation: ${colorChange} 0.1s linear both;
+    & path {
+      animation: ${colorIconChange} 0.1s linear both;
+    }
   }
   & svg {
-    width: 48px;
-    height: 48px;
+    width: 30px;
+    height: 30px;
+    & path {
+      stroke: ${Colors.Blue};
+    }
   }
 `;
 
-export { GroupListWrapper, GroupList, Group, GroupListDivider, AddGroupButton };
+export { GroupListWrapper, GroupList, GroupWrapper, Group, GroupListDivider, AddGroupButton };
