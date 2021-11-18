@@ -233,7 +233,7 @@ function MeetVideo() {
         {speaker ? '' : <SpeakerOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
-        <OtherVideo key={member.socketID} member={member} speaker={speaker} />
+        <OtherVideo key={member.socketID} member={member} />
       ))}
     </MeetVideoWrapper>
   );
