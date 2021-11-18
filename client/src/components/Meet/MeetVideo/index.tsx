@@ -236,7 +236,7 @@ function MeetVideo() {
         {speaker ? '' : <SpeakerOffIcon />}
       </VideoItemWrapper>
       {meetingMembers.map((member) => (
-        <OtherVideo key={member.socketID} member={member} />
+        <OtherVideo key={member.socketID} member={member} muted={speaker} />
       ))}
     </MeetVideoWrapper>
   );

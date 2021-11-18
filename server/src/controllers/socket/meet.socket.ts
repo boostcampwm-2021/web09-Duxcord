@@ -23,7 +23,7 @@ function SocketMeetController(socket) {
     io.to(RoomPrefix.meeting + channelID).emit(MeetEvent.meetChat, chat);
   };
 
-  this.joinMeeting = (meetingID, code, { loginID, username, thumbnail, mic, cam }) => {
+  this.joinMeeting = (meetingID, code, { loginID, username, thumbnail, mic, cam, speaker }) => {
     socket.join(RoomPrefix.RTC + meetingID);
     socketToMeeting[socket.id] = meetingID;
     const newMember = {
@@ -33,6 +33,7 @@ function SocketMeetController(socket) {
       thumbnail,
       mic,
       cam,
+      speaker,
     };
 
     if (meetingID in meetingMembers) {
@@ -92,6 +93,7 @@ function SocketMeetController(socket) {
       (oneMember) => oneMember.socketID === socket.id,
     );
     if (index === -1) return;
+    console.log(meetingMembers[meetingID.toString()][index]);
     meetingMembers[meetingID.toString()][index].speaker = speaker;
     io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setSpeaker, speaker, socket.id);
   };
