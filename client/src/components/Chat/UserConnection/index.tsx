@@ -55,7 +55,7 @@ function UserConnection() {
           <UserTile key={i} onClick={() => onUserSelected(offLineUser.user, false)}>
             <div>
               <UserImage
-                src={offLineUser.thumbnail ?? '/images/default_profile.png'}
+                src={offLineUser.user.thumbnail ?? '/images/default_profile.png'}
                 alt="user profile"
               />
               <div className="off-line"></div>

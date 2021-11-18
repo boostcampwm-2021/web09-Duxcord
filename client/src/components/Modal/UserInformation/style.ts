@@ -5,6 +5,7 @@ const UserImage = styled.img`
   width: 96px;
   height: 96px;
   border-radius: 50%;
+  object-fit: cover;
 `;
 
 interface IUserDot {

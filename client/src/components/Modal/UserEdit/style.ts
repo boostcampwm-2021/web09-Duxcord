@@ -16,6 +16,8 @@ const InputImage = styled.div`
   & img {
     position: absolute;
     width: 92px;
+    width: 92px;
+    object-fit: cover;
     top: 10px;
     left: 0;
     z-index: -1;
