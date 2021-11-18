@@ -6,7 +6,10 @@ function SocketGroupController(socket) {
   this.groupID = (groupID, user) => {
     if (!userConnectionInfo[groupID]) return;
     if (user && !userConnectionInfo[groupID]?.some((v) => v.loginID === user.loginID))
-      userConnectionInfo[groupID] = [...userConnectionInfo[groupID], user];
+      userConnectionInfo[groupID] = [
+        ...userConnectionInfo[groupID],
+        { ...user, socketID: socket.id },
+      ];
     socket.emit(GroupEvent.groupUserConnection, userConnectionInfo[groupID]);
   };
 
@@ -16,20 +19,34 @@ function SocketGroupController(socket) {
       socket.join(`${code}`);
       io.to(`${code}`).emit(GroupEvent.userEnter, user, code);
       if (userConnectionInfo[code]) {
-        if (!userConnectionInfo[code].map((v) => v.loginID).includes(user.loginID)) {
-          userConnectionInfo[code].push(user);
+        const currentUserIndex = userConnectionInfo[code].findIndex(
+          (v) => v.loginID === user.loginID,
+        );
+        if (currentUserIndex === -1) {
+          userConnectionInfo[code].push({ ...user, socketID: [socket.id] });
+        } else {
+          userConnectionInfo[code][currentUserIndex].socketID.push(socket.id);
         }
       } else {
-        userConnectionInfo[code] = [user];
+        userConnectionInfo[code] = [{ ...user, socketID: [socket.id] }];
       }
     });
 
     const userDisconnect = () => {
       Object.keys(userConnectionInfo).forEach((v) => {
-        userConnectionInfo[v] = userConnectionInfo[v].filter((a) => a.loginID !== user.loginID);
-      });
-      groups?.forEach(({ code }) => {
-        io.to(`${code}`).emit(GroupEvent.userExit, user, code);
+        let isCompleteDisconnect = false;
+        userConnectionInfo[v].forEach((oneUser) => {
+          if (oneUser.loginID === user.loginID) {
+            oneUser.socketID = oneUser.socketID.filter((socketID) => socketID !== socket.id);
+          }
+          if (oneUser.socketID.length === 0) isCompleteDisconnect = true;
+        });
+        if (isCompleteDisconnect) {
+          userConnectionInfo[v] = userConnectionInfo[v].filter((a) => a.loginID !== user.loginID);
+          groups?.forEach(({ code }) => {
+            io.to(`${code}`).emit(GroupEvent.userExit, user, code);
+          });
+        }
       });
     };
 

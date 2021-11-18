@@ -1,4 +1,4 @@
-import { MicOffIcon } from '@components/common/Icons';
+import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { useRef, useEffect } from 'react';
 import { IMeetingUser } from '..';
 import { VideoItemWrapper, VideoItem } from '../style';
@@ -37,9 +37,16 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
   return (
     <>
       <VideoItemWrapper>
-        <VideoItem key={member.socketID} autoPlay playsInline ref={camRef} />
+        <VideoItem
+          key={member.socketID}
+          muted={!member.speaker}
+          autoPlay
+          playsInline
+          ref={camRef}
+        />
         <p>{member?.username}</p>
         {member.mic || <MicOffIcon />}
+        {member.speaker || <SpeakerOffIcon />}
         {member.cam || (
           <img src={member?.thumbnail || '/images/default_profile.png'} alt="profile"></img>
         )}

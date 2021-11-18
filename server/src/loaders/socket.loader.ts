@@ -39,5 +39,6 @@ export async function socketLoader(httpServer) {
     socket.on(MeetEvent.MeetingChannelList, meetController.meetingChannelUserList);
     socket.on(MeetEvent.mute, meetController.mute);
     socket.on(MeetEvent.toggleCam, meetController.toggleCam);
+    socket.on(MeetEvent.speaker, meetController.speaker);
   });
 }

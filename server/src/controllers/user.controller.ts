@@ -106,7 +106,7 @@ const getUserData = async (req: Request, res: Response, next: NextFunction) => {
     const { userID } = req.session;
     const userdata = await userRepository.findByID(userID);
 
-    return res.status(200).json(userdata);
+    return res.status(200).json({ ...userdata, id: userID });
   } catch (error) {
     next(error);
   }

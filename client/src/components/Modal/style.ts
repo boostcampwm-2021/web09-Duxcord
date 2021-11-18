@@ -15,6 +15,10 @@ const Wrapper = styled.div<IHideAnimation>`
   min-width: 300px;
   animation: ${(props) => (props.isHidden ? 'zoomOut' : 'zoomIn')} 0.3s forwards;
 
+  &:hover {
+    cursor: default;
+  }
+
   & div {
     text-align: center;
   }
@@ -59,6 +63,10 @@ const BottomRightButton = styled.button`
   border-radius: 8px;
   color: white;
   background-color: ${(props) => props.color || Colors.Black};
+
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const Bottom = styled.div`
@@ -66,6 +74,17 @@ const Bottom = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 16px;
+`;
+
+const Top = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  & svg {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 `;
 
 const Background = styled.div<IHideAnimation>`
@@ -82,6 +101,11 @@ const Background = styled.div<IHideAnimation>`
   display: flex;
   animation: ${(props) => (props.isHidden ? 'fadeOut' : 'fadeIn')} 0.3s forwards;
   backdrop-filter: blur(1px);
+
+  &:hover {
+    cursor: default;
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;
@@ -111,4 +135,4 @@ const SubTitle = styled.h2`
   margin-bottom: 20px;
 `;
 
-export { Background, Wrapper, BottomRightButton, BottomLeftButton, Bottom, Title, SubTitle };
+export { Background, Wrapper, BottomRightButton, BottomLeftButton, Bottom, Top, Title, SubTitle };

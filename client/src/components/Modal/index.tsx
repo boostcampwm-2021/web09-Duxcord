@@ -9,6 +9,7 @@ import {
   Title,
   SubTitle,
   BottomLeftButton,
+  Top,
 } from './style';
 
 function Modal({
@@ -30,9 +31,9 @@ function Modal({
   return (
     <Background onClick={hideModal} isHidden={hidden}>
       <Wrapper onClick={(e) => e.stopPropagation()} isHidden={hidden}>
-        <div style={{ textAlign: 'right' }}>
+        <Top>
           <ModalCloseIcon onClick={hideModal} />
-        </div>
+        </Top>
         {title && <Title>{title}</Title>}
         {subTitle && <SubTitle>{subTitle}</SubTitle>}
         <div>{middleContent}</div>
