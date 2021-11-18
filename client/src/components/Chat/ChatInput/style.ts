@@ -10,19 +10,29 @@ const Wrapper = styled.form`
   width: 100%;
 `;
 
-const ButtonWrapper = styled.div`
+const FileInputWrapper = styled.div`
   background-color: ${Colors.Gray2};
   border-bottom-left-radius: 12px;
   border-top-left-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  &:hover {
-    cursor: pointer;
+  position: relative;
+  & input {
+    width: 40px;
+    height: 40px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  & svg {
+    position: absolute;
+    width: 20px;
+    height: 20px;
   }
 `;
 
-const InputWrapper = styled.div`
+const ChatInputWrapper = styled.div`
   background-color: ${Colors.Gray2};
   padding: 12px;
   border-top-right-radius: 12px;
@@ -34,14 +44,17 @@ const InputWrapper = styled.div`
     border: none;
     width: 100%;
     background-color: inherit;
+    margin-bottom: 5px;
   }
   & > div {
-    width: 400px;
+    height: 120px;
     display: flex;
-    overflow: overlay;
+    flex-wrap: wrap;
+    overflow: scroll;
     &::-webkit-scrollbar {
       display: none;
     }
+    scrollbar-width: none;
     & img {
       width: 120px;
       height: 120px;
@@ -50,4 +63,4 @@ const InputWrapper = styled.div`
   }
 `;
 
-export { Wrapper, InputWrapper, ButtonWrapper };
+export { Wrapper, FileInputWrapper, ChatInputWrapper };
