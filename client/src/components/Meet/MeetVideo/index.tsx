@@ -18,6 +18,23 @@ const pcConfig = {
   ],
 };
 
+const applyDeviceStatus = ({
+  stream,
+  video,
+  audio,
+}: {
+  stream: MediaStream;
+  video: boolean;
+  audio: boolean;
+}) => {
+  stream?.getVideoTracks().forEach((track) => {
+    track.enabled = video;
+  });
+  stream?.getAudioTracks().forEach((track) => {
+    track.enabled = audio;
+  });
+};
+
 export interface IMeetingUser {
   socketID: string;
   loginID: string;
@@ -36,25 +53,13 @@ function MeetVideo() {
   const { mic, cam } = useUserDevice();
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
-  const myStreamRef = useRef<MediaStream | null>(null);
+  const myStreamRef = useRef<MediaStream>();
   const myScreenRef = useRef<HTMLVideoElement>(null);
-  const myScreenStreamRef = useRef<MediaStream | null>(null);
+  const myScreenStreamRef = useRef<MediaStream>();
   const [screenShare, setScreenShare] = useState(false);
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
-
-  const applyDeviceStatus = useCallback(
-    ({ stream, video, audio }: { stream: MediaStream; video: boolean; audio: boolean }) => {
-      stream?.getVideoTracks().forEach((track) => {
-        track.enabled = video;
-      });
-      stream?.getAudioTracks().forEach((track) => {
-        track.enabled = audio;
-      });
-    },
-    [],
-  );
 
   const getMyStream = async () => {
     let myStream;
@@ -172,7 +177,7 @@ function MeetVideo() {
         );
         screenSenders.forEach((sender) => pc.removeTrack(sender));
       });
-      myScreenStreamRef.current = null;
+      myScreenStreamRef.current = undefined;
     }
   }, [screenShare]);
 
