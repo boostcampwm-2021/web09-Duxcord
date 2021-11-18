@@ -2,11 +2,11 @@ import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from '
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import { useSelectedChannel, useUserdata } from '@hooks/index';
 import { socket } from '../../../utils/socket';
-import { ChatHeader, UserImage } from '../../Chat/ChatItem/style';
 import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icons';
 import {
   Chat,
   ChatList,
+  ChatHeader,
   ChatWrap,
   CloseChatButton,
   Input,
@@ -76,11 +76,13 @@ function MeetChat() {
       <ChatList ref={chatListRef}>
         {chats.map(({ id, loginID, username, thumbnail, message, createdAt }) => (
           <Chat key={id}>
-            <UserImage src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
-            <ChatHeader>
-              <div>{`${username}(${loginID})`}</div>
-              <div>{createdAt}</div>
-            </ChatHeader>
+            <div>
+              <img src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
+              <ChatHeader>
+                <div>{`${username}(${loginID})`}</div>
+                <div>{createdAt}</div>
+              </ChatHeader>
+            </div>
             <Message>{message}</Message>
           </Chat>
         ))}
