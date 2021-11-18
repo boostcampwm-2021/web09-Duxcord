@@ -62,15 +62,15 @@ function SocketMeetController(socket) {
     io.to(receiverID).emit(MeetEvent.candidate, { candidate, senderID: socket.id });
   };
 
-  this.mute = (meetingID, muted, who) => {
+  this.mute = (meetingID, muted) => {
     const meetingChannel = Object.keys(meetingMembers).find((v) => v === meetingID?.toString());
     if (!meetingChannel) return;
     const index = meetingMembers[meetingID.toString()].findIndex(
-      (oneMember) => oneMember.loginID === who,
+      (oneMember) => oneMember.socketID === socket.id,
     );
     if (index === -1) return;
     meetingMembers[meetingID.toString()][index].mic = muted;
-    io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setMuted, who, muted);
+    io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setMuted, muted, socket.id);
   };
 
   this.toggleCam = (meetingID, toggleCam, who) => {
