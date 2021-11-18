@@ -6,6 +6,7 @@ import { MeetVideoWrapper, VideoItemWrapper, VideoItem, MyImage } from './style'
 import { highlightMyVolume } from '../../../utils/audio';
 import { MicOffIcon } from '@components/common/Icons';
 import OtherVideo from './OtherVideo';
+import MeetButton from './MeetButton';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -25,6 +26,7 @@ export interface IMeetingUser {
   mic: boolean;
   cam: boolean;
   stream?: MediaStream;
+  screen?: MediaStream;
   pc?: RTCPeerConnection;
 }
 
@@ -34,7 +36,10 @@ function MeetVideo() {
   const { mic, cam } = useUserDevice();
   const videoWrapperRef = useRef<HTMLDivElement>(null);
   const myVideoRef = useRef<HTMLVideoElement>(null);
-  const [myStream, setMyStream] = useState<MediaStream | null>(null);
+  const myStreamRef = useRef<MediaStream | null>(null);
+  const myScreenRef = useRef<HTMLVideoElement>(null);
+  const myScreenStreamRef = useRef<MediaStream | null>(null);
+  const [screenShare, setScreenShare] = useState(false);
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
@@ -54,46 +59,109 @@ function MeetVideo() {
       myVideoRef.current.srcObject = myStream;
       highlightMyVolume(myStream, myVideoRef.current);
     }
-    setMyStream(myStream);
+    myStreamRef.current = myStream;
   };
 
-  const createPeerConnection = useCallback(
-    (member: IMeetingUser) => {
-      const pc = new RTCPeerConnection(pcConfig);
+  const createPeerConnection = useCallback((member: IMeetingUser) => {
+    if (pcs.current[member.socketID]) return pcs.current[member.socketID];
+    const pc = new RTCPeerConnection(pcConfig);
 
-      pc.onicecandidate = (data) => {
-        if (!data.candidate) return;
+    pc.onicecandidate = (data) => {
+      if (!data.candidate) return;
 
-        socket.emit(MeetEvent.candidate, {
-          candidate: data.candidate,
+      socket.emit(MeetEvent.candidate, {
+        candidate: data.candidate,
+        receiverID: member.socketID,
+      });
+    };
+
+    pc.onnegotiationneeded = async () => {
+      try {
+        const offer = await pc.createOffer();
+        await pc.setLocalDescription(new RTCSessionDescription(offer));
+        socket.emit(MeetEvent.offer, {
+          offer,
           receiverID: member.socketID,
+          member: {},
         });
-      };
-
-      pc.ontrack = (data) => {
-        setMeetingMembers((members): IMeetingUser[] => [
-          ...members.filter((m: IMeetingUser) => m.socketID !== member.socketID),
-          {
-            ...member,
-            stream: data.streams[0],
-            pc,
-          },
-        ]);
-      };
-
-      if (myStream) {
-        myStream.getTracks().forEach((track) => {
-          if (myStream) pc.addTrack(track, myStream);
-        });
+      } catch (e) {
+        console.error(e);
       }
-      return pc;
-    },
-    [myStream],
-  );
+    };
+
+    pc.ontrack = (e) => {
+      setMeetingMembers((members): IMeetingUser[] => {
+        let mem = members.find((m) => m.socketID === member.socketID);
+        if (!mem) {
+          mem = { ...member, pc };
+          members.push(mem);
+        }
+
+        const newStream = e.streams[0];
+
+        if (mem.stream && mem.stream.id !== e.streams[0].id) {
+          newStream.onremovetrack = () => {
+            setMeetingMembers((members) => {
+              const m = members.find((m) => m.socketID === member.socketID);
+              if (!m) return members;
+              delete m.screen;
+              return [...members];
+            });
+          };
+          mem.screen = newStream;
+        } else {
+          mem.stream = newStream;
+        }
+
+        return [...members];
+      });
+    };
+
+    myStreamRef.current?.getTracks().forEach((track) => {
+      if (myStreamRef.current) pc.addTrack(track, myStreamRef.current);
+    });
+
+    myScreenStreamRef.current?.getTracks().forEach((track) => {
+      if (myScreenStreamRef.current) pc.addTrack(track, myScreenStreamRef.current);
+    });
+
+    return pc;
+  }, []);
+
+  const getMyScreen = async () => {
+    try {
+      const myScreen = await navigator.mediaDevices.getDisplayMedia({
+        audio: true,
+        video: true,
+      });
+
+      if (myScreenRef.current) myScreenRef.current.srcObject = myScreen;
+
+      myScreen.getTracks().forEach((track) => {
+        track.onended = () => setScreenShare(false);
+        Object.values(pcs.current).forEach((pc) => pc.addTrack(track, myScreen));
+      });
+
+      myScreenStreamRef.current = myScreen;
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
-    getMyStream();
-  }, []);
+    if (screenShare) getMyScreen();
+    else {
+      Object.values(pcs.current).forEach((pc) => {
+        const senders = pc.getSenders();
+        const tracks = myScreenStreamRef.current?.getTracks();
+        const screenSenders = senders.filter((sender) =>
+          tracks?.some((track) => track.id === sender.track?.id),
+        );
+        screenSenders.forEach((sender) => pc.removeTrack(sender));
+      });
+      myScreenStreamRef.current = null;
+    }
+  }, [screenShare]);
 
   useEffect(() => {
     if (id === null || userdata === undefined) return;
@@ -101,9 +169,10 @@ function MeetVideo() {
 
     Socket.joinChannel({ channelType: MeetEvent.meeting, id });
     socket.on(MeetEvent.allMeetingMembers, async (members) => {
+      await getMyStream();
       members.forEach(async (member: IMeetingUser) => {
         try {
-          const pc = await createPeerConnection(member);
+          const pc = createPeerConnection(member);
           if (!pc) return;
           pcs.current = { ...pcs.current, [member.socketID]: pc };
           const offer = await pc.createOffer();
@@ -121,25 +190,37 @@ function MeetVideo() {
     });
 
     socket.on(MeetEvent.offer, async ({ offer, member }) => {
-      const pc = createPeerConnection(member);
-      if (!pc) return;
-      pcs.current[member.socketID] = pc;
-      pc.setRemoteDescription(new RTCSessionDescription(offer));
-      const answer = await pc.createAnswer();
-      pc.setLocalDescription(new RTCSessionDescription(answer));
-      socket.emit(MeetEvent.answer, { answer, receiverID: member.socketID });
+      try {
+        const pc = createPeerConnection(member);
+        if (!pc) return;
+        pcs.current[member.socketID] = pc;
+        pc.setRemoteDescription(new RTCSessionDescription(offer));
+        const answer = await pc.createAnswer();
+        pc.setLocalDescription(new RTCSessionDescription(answer));
+        socket.emit(MeetEvent.answer, { answer, receiverID: member.socketID });
+      } catch (e) {
+        console.error(e);
+      }
     });
 
-    socket.on(MeetEvent.answer, ({ answer, senderID }) => {
-      const pc = pcs.current[senderID];
-      if (!pc) return;
-      pc.setRemoteDescription(new RTCSessionDescription(answer));
+    socket.on(MeetEvent.answer, async ({ answer, senderID }) => {
+      try {
+        const pc = pcs.current[senderID];
+        if (!pc) return;
+        await pc.setRemoteDescription(new RTCSessionDescription(answer));
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     socket.on(MeetEvent.candidate, async ({ candidate, senderID }) => {
-      const pc = pcs.current[senderID];
-      if (!pc) return;
-      await pc.addIceCandidate(new RTCIceCandidate(candidate));
+      try {
+        const pc = pcs.current[senderID];
+        if (!pc) return;
+        await pc.addIceCandidate(new RTCIceCandidate(candidate));
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     socket.on(MeetEvent.leaveMember, (memberID) => {
@@ -162,18 +243,16 @@ function MeetVideo() {
 
       Object.values(pcs.current).forEach((pc) => pc.close());
     };
-  }, [id, userdata, createPeerConnection]);
+  }, [id]);
 
   useEffect(() => {
-    if (myStream) {
-      myStream.getAudioTracks().forEach((track) => {
-        track.enabled = mic;
-      });
-      myStream.getVideoTracks().forEach((track) => {
-        track.enabled = cam;
-      });
-    }
-  }, [mic, cam, myStream]);
+    myStreamRef.current?.getAudioTracks().forEach((track) => {
+      track.enabled = mic;
+    });
+    myStreamRef.current?.getVideoTracks().forEach((track) => {
+      track.enabled = cam;
+    });
+  }, [mic, cam]);
 
   useEffect(() => {
     socket.on(MeetEvent.setMuted, (who, micStatus) => {
@@ -201,21 +280,40 @@ function MeetVideo() {
   }, []);
 
   return (
-    <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
-      <VideoItemWrapper>
-        <VideoItem autoPlay playsInline muted ref={myVideoRef} />
-        {cam ? (
-          ''
-        ) : (
-          <MyImage src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+    <>
+      <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
+        <VideoItemWrapper>
+          <VideoItem autoPlay playsInline muted ref={myVideoRef} />
+          {cam ? (
+            ''
+          ) : (
+            <MyImage src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+          )}
+          <p>{userdata?.username}</p>
+          {mic ? '' : <MicOffIcon />}
+        </VideoItemWrapper>
+        {screenShare && (
+          <VideoItemWrapper>
+            <VideoItem autoPlay playsInline muted ref={myScreenRef} />
+            <p>{userdata?.username + '님의 화면'}</p>
+          </VideoItemWrapper>
         )}
-        <p>{userdata?.username}</p>
-        {mic ? '' : <MicOffIcon />}
-      </VideoItemWrapper>
-      {meetingMembers.map((member) => (
-        <OtherVideo key={member.socketID} member={member} />
-      ))}
-    </MeetVideoWrapper>
+        {meetingMembers.map((member) => (
+          <OtherVideo key={member.socketID} member={member} />
+        ))}
+      </MeetVideoWrapper>
+      <MeetButton
+        onClick={() => {
+          if (screenShare) {
+            const tracks = myScreenStreamRef.current?.getTracks();
+            tracks?.forEach((track) => track.stop());
+            setScreenShare(false);
+          } else {
+            setScreenShare(true);
+          }
+        }}
+      />
+    </>
   );
 }
 
