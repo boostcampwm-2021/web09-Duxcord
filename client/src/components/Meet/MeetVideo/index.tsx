@@ -194,18 +194,21 @@ function MeetVideo() {
       });
     });
 
-    socket.on(MeetEvent.setToggleCam, (who, camStatus) => {
+    socket.on(MeetEvent.setToggleCam, (camStatus, socketID) => {
+      console.log(meetingMembers, socketID);
       setMeetingMembers((members) => {
-        const member = members.find((member) => member.loginID === who);
+        console.log(members, socketID);
+        const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
         member.cam = camStatus;
         return [...members];
       });
     });
 
-    socket.on(MeetEvent.setSpeaker, (who, speakerStatue) => {
+    socket.on(MeetEvent.setSpeaker, (speakerStatue, socketID) => {
+      console.log(meetingMembers, socketID);
       setMeetingMembers((members) => {
-        const member = members.find((member) => member.loginID === who);
+        const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
         member.speaker = speakerStatue;
         return [...members];

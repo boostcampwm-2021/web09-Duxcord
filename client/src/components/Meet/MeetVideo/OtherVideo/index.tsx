@@ -30,7 +30,7 @@ function OtherVideo({ member }: { member: IMeetingUser }) {
 
   return (
     <VideoItemWrapper>
-      <VideoItem key={member.socketID} muted={!member.speaker} autoPlay playsInline ref={ref} />
+      <VideoItem muted={!member.speaker} autoPlay playsInline ref={ref} />
       <p>{member?.username}</p>
       {member.mic || <MicOffIcon />}
       {member.speaker || <SpeakerOffIcon />}
