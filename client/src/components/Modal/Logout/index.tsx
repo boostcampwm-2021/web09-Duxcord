@@ -1,11 +1,12 @@
+import React from 'react';
 import { useHistory } from 'react-router';
-import Modal from '..';
-import { ModalController } from '@customTypes/modal';
 
+import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
-import { MiddlePart } from './style';
-import { postLogout } from '../../../api/postLogout';
+import { postLogout } from 'src/api/postLogout';
 import { URL } from 'src/api/URL';
+import Modal from '..';
+import { MiddlePart } from './style';
 
 function LogoutModal({ controller: { hide, show } }: { controller: ModalController }) {
   const history = useHistory();

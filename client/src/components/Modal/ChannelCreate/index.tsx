@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { useSelectedGroup, useGroups } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
+import { postCreateChannel } from 'src/api/postCreateChannel';
+import { URL } from 'src/api/URL';
 import Modal from '..';
 import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
 import { Label, Wrapper, Input, ErrorMessage } from './style';
-import { postCreateChannel } from 'src/api/postCreateChannel';
-import { useSelectedGroup } from '@hooks/useSelectedGroup';
-import { useGroups } from '@hooks/useGroups';
-import { useHistory } from 'react-router';
-import { URL } from 'src/api/URL';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { useDispatch } from 'react-redux';
 
 export default function ChannelCreateModal({
   initialChannelType,

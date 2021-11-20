@@ -1,16 +1,17 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import Modal from '..';
-import { postCreateGroup } from '../../../api/postCreateGroup';
-import { useGroups } from '@hooks/index';
+
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import Colors from '@styles/Colors';
+import { useGroups } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
-import { ErrorDiv, InputForm, InputImage, InputText } from './style';
+import Colors from '@styles/Colors';
 import { URL } from 'src/api/URL';
+import { postCreateGroup } from 'src/api/postCreateGroup';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
-import { GroupThumbnailUploadIcon } from '../../common/Icons';
+import Modal from '..';
+import { GroupThumbnailUploadIcon } from '@components/common/Icons';
+import { ErrorDiv, InputForm, InputImage, InputText } from './style';
 
 function GroupCreateModal({
   controller: { hide, show, previous },

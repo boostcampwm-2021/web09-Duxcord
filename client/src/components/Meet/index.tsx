@@ -1,8 +1,8 @@
 import React from 'react';
+
 import MeetVideo from './MeetVideo';
-import MeetButton from './MeetVideo/MeetButton';
-import { MeetWrapper, VideoSection } from './style';
 import MeetChat from './MeetChat';
+import { MeetWrapper, VideoSection } from './style';
 
 function Meet() {
   return (

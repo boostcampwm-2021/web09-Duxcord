@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postLikeChat } from '../../../api/postLikeChat';
-import { STATUS_CODES } from '../../../api/STATUS_CODES';
+
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
+import { useUserdata } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
+import { postLikeChat } from 'src/api/postLikeChat';
+import { STATUS_CODES } from 'src/api/STATUS_CODES';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
-import { useUserdata } from '@hooks/index';
 import { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {

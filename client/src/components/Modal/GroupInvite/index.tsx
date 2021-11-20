@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Modal from '..';
+
 import { useSelectedGroup } from '@hooks/index';
-import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
+import Colors from '@styles/Colors';
+import Modal from '..';
 import { CodeWrapper } from './style';
 
 const pasteCodeMessage = {

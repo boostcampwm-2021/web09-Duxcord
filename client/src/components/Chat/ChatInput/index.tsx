@@ -1,9 +1,10 @@
 import React, { FormEvent, useRef, useState } from 'react';
-import { postChat } from '../../../api/postChat';
+
 import { useSelectedChannel } from '@hooks/index';
-import { FileSelectIcon } from '../../common/Icons';
-import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
+import { postChat } from 'src/api/postChat';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { FileSelectIcon } from '@components/common/Icons';
+import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();

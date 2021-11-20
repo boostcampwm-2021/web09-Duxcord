@@ -1,5 +1,6 @@
+import React, { useRef, useEffect } from 'react';
+
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { useRef, useEffect } from 'react';
 import { IMeetingUser } from '..';
 import { VideoItemWrapper, VideoItem, Thumbnail } from '../style';
 

@@ -1,18 +1,19 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import Modal from '..';
-import { deleteGroup } from '../../../api/deleteGroup';
-import { useSelectedGroup, useGroups } from '@hooks/index';
+
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
-import Colors from '@styles/Colors';
+import { useSelectedGroup, useGroups } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
-import { AlertWrapper } from './style';
-import { URL } from 'src/api/URL';
-import { socket } from '../../../utils/socket';
 import GroupEvent from '@customTypes/socket/GroupEvent';
+import Colors from '@styles/Colors';
+import { URL } from 'src/api/URL';
+import { deleteGroup } from 'src/api/deleteGroup';
+import { socket } from 'src/utils/socket';
+import Modal from '..';
+import { AlertWrapper } from './style';
 
 function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalController }) {
   const selectedGroup = useSelectedGroup();

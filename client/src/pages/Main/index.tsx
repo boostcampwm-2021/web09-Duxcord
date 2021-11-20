@@ -1,14 +1,15 @@
 import React, { useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
+
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
+import { getURLParams } from 'src/utils/getURLParams';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
 import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
-import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { getURLParams } from '../../utils/getURLParams';
 import { Layout, MainWrapper } from './style';
 
 function Main() {
