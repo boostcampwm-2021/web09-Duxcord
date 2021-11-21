@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
+
 import { useSelectedGroup } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import { socket } from '../../../utils/socket';
-import { ChannelAddIcon, ChannelOpenIcon } from '../../common/Icons';
-import { getURLParams } from '../../../utils/getURLParams';
+import { ModalController } from '@customTypes/modal';
+import { socket } from 'src/utils/socket';
+import { getURLParams } from 'src/utils/getURLParams';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
-import { ChannelWrapper, ChannelType } from './style';
 import ChannelCreateModal from '@components/Modal/ChannelCreate';
-import { ModalController } from '@customTypes/modal';
+import { ChannelAddIcon, ChannelOpenIcon } from '@components/common/Icons';
+import { ChannelWrapper, ChannelType } from './style';
 
 interface Props {
   channelType: 'chatting' | 'meeting';

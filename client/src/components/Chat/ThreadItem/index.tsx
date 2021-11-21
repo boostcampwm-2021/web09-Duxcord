@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { ThreadData } from '@customTypes/threads';
 import { Wrapper } from './style';
 

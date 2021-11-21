@@ -1,12 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
-import { useGroups, useSelectedGroup } from '@hooks/index';
+import { mutate } from 'swr';
+
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
-import GroupJoinModal from '../../Modal/GroupJoin';
-import { socket } from '../../../utils/socket';
+import {
+  addUserConnection,
+  removeUserConnection,
+  setGroupConnection,
+} from '@redux/groupConnection/slice';
+import { useGroups, useSelectedGroup } from '@hooks/index';
+import { ModalController } from '@customTypes/modal';
+import GroupEvent from '@customTypes/socket/GroupEvent';
+import { API_URL } from 'src/api/API_URL';
+import { URL } from 'src/api/URL';
+import { socket } from 'src/utils/socket';
+import GroupCreateModal from '@components/Modal/GroupCreate';
+import GroupAddModal from '@components/Modal/GroupAdd';
+import GroupJoinModal from '@components/Modal/GroupJoin';
+import { GroupAddIcon } from '@components/common/Icons';
 import {
   GroupListWrapper,
   GroupList,
@@ -15,19 +29,6 @@ import {
   GroupListDivider,
   AddGroupButton,
 } from './style';
-import { ModalController } from '@customTypes/modal';
-import {
-  addUserConnection,
-  removeUserConnection,
-  setGroupConnection,
-} from '@redux/groupConnection/slice';
-import GroupCreateModal from '../../Modal/GroupCreate';
-import GroupAddModal from '../../Modal/GroupAdd';
-import { mutate } from 'swr';
-import { API_URL } from '../../../api/API_URL';
-import GroupEvent from '@customTypes/socket/GroupEvent';
-import { GroupAddIcon } from '../../common/Icons';
-import { URL } from 'src/api/URL';
 
 function GroupNav() {
   const { groups, mutate: mutateGroups } = useGroups();

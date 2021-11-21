@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ModalController } from '@customTypes/modal';
-import Modal from '..';
+import { useDispatch } from 'react-redux';
+
+import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata, useSelectedUser } from '@hooks/index';
+import { ModalController } from '@customTypes/modal';
+import Colors from '@styles/Colors';
+import { patchUserdata } from 'src/api/patchUserdata';
+import { uploadFileToStorage } from 'src/utils/uploadFile';
+import Modal from '..';
 import {
   UserImageWrapper,
   UserGridWrapper,
@@ -10,11 +16,6 @@ import {
   ErrorDiv,
   InputImage,
 } from './style';
-import Colors from '@styles/Colors';
-import { uploadFileToStorage } from 'src/utils/uploadFile';
-import { patchUserdata } from 'src/api/patchUserdata';
-import { useDispatch } from 'react-redux';
-import { setSelectedUser } from '@redux/selectedUser/slice';
 
 export default function UserEditModal({ controller }: { controller: ModalController }) {
   const { userdata, mutate: mutateUserdata } = useUserdata();

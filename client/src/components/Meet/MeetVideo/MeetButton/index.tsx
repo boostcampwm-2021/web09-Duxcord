@@ -1,5 +1,6 @@
 import React from 'react';
-import { MeetingStopIcon, ScreenShareStartIcon } from '../../../common/Icons';
+
+import { MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
 import { MeetButtonWrapper } from './style';
 
 function MeetButton({ onClick }: { onClick: () => void }) {

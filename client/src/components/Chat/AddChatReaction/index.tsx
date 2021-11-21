@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { LikeIcon, ThreadOpenIcon } from '../../common/Icons';
 import { Wrapper } from './style';
 

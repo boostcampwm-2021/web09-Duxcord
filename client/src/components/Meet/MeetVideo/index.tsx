@@ -1,12 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-import MeetEvent from '@customTypes/socket/MeetEvent';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+
 import { useSelectedChannel, useSelectedGroup, useUserdata, useUserDevice } from '@hooks/index';
-import Socket, { socket } from '../../../utils/socket';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail } from './style';
-import { highlightMyVolume } from '../../../utils/audio';
-import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
+import MeetEvent from '@customTypes/socket/MeetEvent';
+import Socket, { socket } from 'src/utils/socket';
+import { highlightMyVolume } from 'src/utils/audio';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
+import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
+import { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail } from './style';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 

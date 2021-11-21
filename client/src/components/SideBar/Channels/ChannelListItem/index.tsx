@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { URL } from 'src/api/URL';
-import { setSelectedChannel } from '../../../../redux/selectedChannel/slice';
-import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '../../../common/Icons';
+import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '@components/common/Icons';
 import { ListItem } from './style';
 
 interface Props {
