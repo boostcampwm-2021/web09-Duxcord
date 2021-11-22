@@ -45,9 +45,9 @@ const ChatInputWrapper = styled.div`
     border: none;
     width: 100%;
     background-color: inherit;
-    margin-bottom: 5px;
   }
   & > div {
+    margin-top: 5px;
     height: 120px;
     display: flex;
     flex-wrap: wrap;

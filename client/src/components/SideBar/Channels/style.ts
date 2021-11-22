@@ -22,7 +22,7 @@ const ChannelType = styled.div`
     font-size: 12px;
     font-weight: bold;
     color: ${Colors.Gray1};
-    & img {
+    & svg {
       width: 8px;
       height: 8px;
       margin-right: 8px;
