@@ -24,10 +24,13 @@ const Wrapper = styled.div`
     word-break: break-all;
   }
   & h2 {
+    font-size: 16px;
     font-weight: 700;
   }
   & p {
     color: ${Colors.Gray1};
+    font-size: 13px;
+    line-height: 16px;
   }
 `;
 

@@ -77,12 +77,16 @@ const OriginalChatWrapper = styled.div`
   & > div > div {
     display: flex;
     align-items: center;
+    margin: 5px 0;
     & > p:first-child {
+      font-size: 16px;
       font-weight: 700;
       margin-right: 5px;
     }
-    & > p:not(:first-child) {
+    & > p:last-child {
       font-size: 13px;
+      line-height: 16px;
+      color: ${Colors.Gray1};
     }
   }
 `;
@@ -115,7 +119,6 @@ const FileWrapper = styled.div`
   flex-wrap: wrap;
   max-height: 200px;
   overflow-y: scroll;
-  margin-top: 10px;
   &::-webkit-scrollbar {
     width: 5px;
   }
