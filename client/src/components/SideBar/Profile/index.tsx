@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { setUserDevice } from '@redux/userDevice/slice';
+import { bringUserDevice, setUserDevice } from '@redux/userDevice/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useSelectedChannel, useUserdata, useUserDevice, useSelectedUser } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
@@ -47,6 +47,10 @@ function Profile() {
   const handleUserSelect = () => {
     dispatch(setSelectedUser({ ...userdata, isOnline: true, isEditable: true }));
   };
+
+  useEffect(() => {
+    dispatch(bringUserDevice());
+  }, []);
 
   return (
     <ProfileWrapper>
