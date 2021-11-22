@@ -88,7 +88,7 @@ function MeetChat() {
       </CloseChatButton>
       <ChatList ref={chatListRef}>
         {chats.map(({ id, loginID, username, thumbnail, message, createdAt }) => (
-          <Chat key={id} isSender={loginID === userdata.loginID}>
+          <Chat key={id + message + createdAt} isSender={loginID === userdata.loginID}>
             <div>
               <img src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
               <ChatHeader>
