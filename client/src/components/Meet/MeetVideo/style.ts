@@ -58,29 +58,33 @@ const VideoWrapper = styled.div`
   max-width: 700px;
   height: 0;
   padding-bottom: 56.25%;
-  border-radius: 20px;
-  justify-self: center;
-  align-self: center;
-  display: flex;
-  flex-direction: column;
-
   margin-bottom: 10px;
+
   & p {
     position: absolute;
     bottom: 10px;
-    align-self: center;
+    left: 10px;
+    padding: 3px 8px;
+    border-radius: 5px;
     color: ${Colors.White};
+    background-color: rgba(0, 0, 0, 0.3);
   }
   .saying {
     border: 3px solid ${Colors.Blue};
   }
 `;
 
+const ThumbnailWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
+
 const Thumbnail = styled.img`
   display: block;
-  position: absolute;
-  margin: auto 0;
-  align-self: center;
   width: 100px;
   height: 100px;
   object-fit: cover;
@@ -92,10 +96,19 @@ const Video = styled.video`
   width: 100%;
   height: 100%;
   object-fit: contain;
-  margin: auto 0;
-  align-self: center;
   border-radius: 20px;
-  background-color: ${Colors.Black};
+  background-color: ${Colors.Gray4};
+`;
+
+const DeviceStatus = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+
+  svg {
+    margin-right: 5px;
+  }
 `;
 
 const VideoSection = styled.section`
@@ -106,4 +119,4 @@ const VideoSection = styled.section`
   height: 100%;
 `;
 
-export { Videos, VideoWrapper, Video, Thumbnail, VideoSection };
+export { Videos, VideoWrapper, Video, Thumbnail, ThumbnailWrapper, VideoSection, DeviceStatus };

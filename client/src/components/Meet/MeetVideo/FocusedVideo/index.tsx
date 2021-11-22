@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from 'react';
+
+import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { SelectedVideo } from '..';
-import { Video, VideoWrapper } from './style';
+import { ThumbnailWrapper, Thumbnail } from '../style';
+import { UserInfo, Video, VideoWrapper, DeviceStatus } from './style';
 
 function FocusedVideo({
-  selectedVideo,
+  selectedVideo: { loginID, username, stream, thumbnail, mic, cam, speaker, isScreen },
   onClick,
 }: {
   selectedVideo: SelectedVideo;
@@ -12,14 +15,22 @@ function FocusedVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (videoRef.current && selectedVideo.stream) videoRef.current.srcObject = selectedVideo.stream;
-  }, [selectedVideo]);
+    if (videoRef.current && stream) videoRef.current.srcObject = stream;
+  }, [stream]);
 
   return (
     <VideoWrapper onClick={onClick}>
-      <Video autoPlay playsInline ref={videoRef}>
-        <p>{selectedVideo?.username}</p>
-      </Video>
+      <Video autoPlay playsInline ref={videoRef} />
+      <UserInfo>{`${username}(${loginID})${isScreen && ' 님의 화면'}`}</UserInfo>
+      <DeviceStatus>
+        {mic || <MicOffIcon />}
+        {speaker || <SpeakerOffIcon />}
+      </DeviceStatus>
+      <ThumbnailWrapper>
+        {cam || (
+          <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
+        )}
+      </ThumbnailWrapper>
     </VideoWrapper>
   );
 }
