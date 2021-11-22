@@ -7,7 +7,7 @@ import { highlightMyVolume } from 'src/utils/audio';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail } from './style';
+import { Videos, VideoWrapper, Video, Thumbnail, VideoSection } from './style';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -343,13 +343,13 @@ function MeetVideo() {
   }, []);
 
   return (
-    <>
+    <VideoSection>
       {selectedVideo && (
         <FocusedVideo selectedVideo={selectedVideo} deselectVideo={deselectVideo} />
       )}
-      <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
-        <VideoItemWrapper>
-          <VideoItem autoPlay playsInline muted ref={myVideoRef} />
+      <Videos ref={videoWrapperRef} videoCount={videoCount || 0}>
+        <VideoWrapper>
+          <Video autoPlay playsInline muted ref={myVideoRef} />
           {cam ? (
             ''
           ) : (
@@ -358,12 +358,12 @@ function MeetVideo() {
           <p>{`${userdata?.username}(${userdata?.loginID})`}</p>
           {mic ? '' : <MicOffIcon />}
           {speaker ? '' : <SpeakerOffIcon />}
-        </VideoItemWrapper>
+        </VideoWrapper>
         {screenShare && (
-          <VideoItemWrapper>
-            <VideoItem autoPlay playsInline muted ref={myScreenRef} />
+          <VideoWrapper>
+            <Video autoPlay playsInline muted ref={myScreenRef} />
             <p>{`${userdata?.username}(${userdata?.loginID})님의 화면`}</p>
-          </VideoItemWrapper>
+          </VideoWrapper>
         )}
         {meetingMembers.map((member) => (
           <OtherVideo
@@ -373,7 +373,7 @@ function MeetVideo() {
             selectVideo={selectVideo}
           />
         ))}
-      </MeetVideoWrapper>
+      </Videos>
       <MeetButton
         onScreenShareClick={() => {
           if (screenShare) {
@@ -385,7 +385,7 @@ function MeetVideo() {
           }
         }}
       />
-    </>
+    </VideoSection>
   );
 }
 

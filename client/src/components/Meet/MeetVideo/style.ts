@@ -5,7 +5,7 @@ interface IMeetVideoWrapper {
   videoCount: number;
 }
 
-const MeetVideoWrapper = styled.div<IMeetVideoWrapper>`
+const Videos = styled.div<IMeetVideoWrapper>`
   margin: 0 auto;
   display: grid;
   width: 100%;
@@ -22,7 +22,7 @@ const MeetVideoWrapper = styled.div<IMeetVideoWrapper>`
       : 'max-width: 1500px; grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));'}
 `;
 
-const VideoItemWrapper = styled.div`
+const VideoWrapper = styled.div`
   width: 100%;
   max-width: 700px;
   height: 100%;
@@ -52,7 +52,7 @@ const Thumbnail = styled.img`
   position: absolute;
 `;
 
-const VideoItem = styled.video`
+const Video = styled.video`
   width: 100%;
   max-width: 700px;
   border-radius: 20px;
@@ -61,4 +61,13 @@ const VideoItem = styled.video`
   margin-bottom: 10px;
 `;
 
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail };
+const VideoSection = styled.section`
+  display: flex;
+  flex-direction: column;
+  background-color: ${Colors.Gray3};
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+`;
+
+export { Videos, VideoWrapper, Video, Thumbnail, VideoSection };

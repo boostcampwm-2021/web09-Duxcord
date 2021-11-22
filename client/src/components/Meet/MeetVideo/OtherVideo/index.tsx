@@ -2,7 +2,7 @@ import React, { useRef, useEffect } from 'react';
 
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { IMeetingUser, SelectedVideo } from '..';
-import { VideoItemWrapper, VideoItem, Thumbnail } from '../style';
+import { VideoWrapper, Video, Thumbnail } from '../style';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
@@ -55,8 +55,8 @@ function OtherVideo({
 
   return (
     <>
-      <VideoItemWrapper>
-        <VideoItem
+      <VideoWrapper>
+        <Video
           muted={muted}
           autoPlay
           playsInline
@@ -72,10 +72,10 @@ function OtherVideo({
         {cam || (
           <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
         )}
-      </VideoItemWrapper>
+      </VideoWrapper>
       {screen && (
-        <VideoItemWrapper>
-          <VideoItem
+        <VideoWrapper>
+          <Video
             key={socketID}
             muted={muted}
             autoPlay
@@ -87,7 +87,7 @@ function OtherVideo({
             })}
           />
           <p>{`${username}(${loginID})님의 화면`}</p>
-        </VideoItemWrapper>
+        </VideoWrapper>
       )}
     </>
   );
