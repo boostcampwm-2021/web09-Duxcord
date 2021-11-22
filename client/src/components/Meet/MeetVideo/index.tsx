@@ -378,6 +378,7 @@ function MeetVideo() {
             member={member}
             muted={!speaker}
             selectVideo={selectVideo}
+            selectedVideo={selectedVideo}
           />
         ))}
       </Videos>

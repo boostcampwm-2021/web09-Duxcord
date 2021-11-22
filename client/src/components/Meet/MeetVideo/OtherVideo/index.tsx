@@ -1,17 +1,26 @@
 import React, { useRef, useEffect } from 'react';
 
-import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
+import { CameraOnIcon, MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { IMeetingUser, SelectedVideo } from '..';
-import { VideoWrapper, Video, Thumbnail, DeviceStatus, ThumbnailWrapper } from '../style';
+import {
+  VideoWrapper,
+  Video,
+  Thumbnail,
+  DeviceStatus,
+  ThumbnailWrapper,
+  SelectVideoIndicator,
+} from '../style';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
   muted,
   selectVideo,
+  selectedVideo,
 }: {
   member: IMeetingUser;
   muted: boolean;
-  selectVideo: (videoInfo: SelectedVideo) => (e: any) => void;
+  selectVideo: (videoInfo: SelectedVideo) => () => void;
+  selectedVideo: SelectedVideo | null;
 }) {
   const camRef = useRef<HTMLVideoElement>(null);
   const screenRef = useRef<HTMLVideoElement>(null);
@@ -73,6 +82,11 @@ function OtherVideo({
           {mic || <MicOffIcon />}
           {speaker || <SpeakerOffIcon />}
         </DeviceStatus>
+        {stream && selectedVideo?.stream?.id === stream?.id && (
+          <SelectVideoIndicator>
+            <CameraOnIcon />
+          </SelectVideoIndicator>
+        )}
       </VideoWrapper>
       {screen && (
         <VideoWrapper
@@ -84,6 +98,11 @@ function OtherVideo({
         >
           <Video key={socketID} muted={muted} autoPlay playsInline ref={screenRef} />
           <p>{`${username}(${loginID}) 님의 화면`}</p>
+          {screen && selectedVideo?.stream?.id === screen?.id && (
+            <SelectVideoIndicator>
+              <CameraOnIcon />
+            </SelectVideoIndicator>
+          )}
         </VideoWrapper>
       )}
     </>

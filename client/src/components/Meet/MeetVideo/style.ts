@@ -83,6 +83,16 @@ const ThumbnailWrapper = styled.div`
   height: 100%;
 `;
 
+const SelectVideoIndicator = styled(ThumbnailWrapper)`
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+
+  svg {
+    width: 80px;
+    height: 80px;
+  }
+`;
+
 const Thumbnail = styled.img`
   display: block;
   width: 100px;
@@ -119,4 +129,13 @@ const VideoSection = styled.section`
   height: 100%;
 `;
 
-export { Videos, VideoWrapper, Video, Thumbnail, ThumbnailWrapper, VideoSection, DeviceStatus };
+export {
+  Videos,
+  VideoWrapper,
+  Video,
+  Thumbnail,
+  ThumbnailWrapper,
+  VideoSection,
+  DeviceStatus,
+  SelectVideoIndicator,
+};
