@@ -92,7 +92,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           <div>
             <div>
               <p>{username}</p>
-              <p>{new Date(createdAt).toLocaleTimeString('ko-KR')}</p>
+              <p>{new Date(createdAt).toLocaleTimeString('ko-KR').slice(0, -3)}</p>
             </div>
             <div>{content}</div>
             <FileWrapper>

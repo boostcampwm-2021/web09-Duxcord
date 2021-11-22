@@ -18,7 +18,7 @@ function ThreadPreview({
     <ThreadPreviewWrapper onClick={selectChat}>
       <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
       <p>{count}개의 댓글</p>
-      <p>({new Date(threadLastTime).toLocaleTimeString('ko-KR')})</p>
+      <p>({new Date(threadLastTime).toLocaleTimeString('ko-KR').slice(0, -3)})</p>
     </ThreadPreviewWrapper>
   );
 }
