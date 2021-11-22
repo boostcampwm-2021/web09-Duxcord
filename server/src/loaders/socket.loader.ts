@@ -23,6 +23,9 @@ export async function socketLoader(httpServer) {
       io.to(code).emit(GroupEvent.groupDelete, code);
       socket.leave(code);
     });
+    socket.on(GroupEvent.channelDelete, ({ id, type, code }) => {
+      io.to(code).emit(GroupEvent.channelDelete, { id, type, code });
+    });
 
     const channelController = new SocketChannelController(socket);
     socket.on(ChannelEvent.joinChannel, channelController.joinChannel);

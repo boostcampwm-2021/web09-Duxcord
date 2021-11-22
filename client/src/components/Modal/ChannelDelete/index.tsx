@@ -6,7 +6,9 @@ import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
+import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
+import { socket } from 'src/utils/socket';
 import { deleteChannel } from 'src/api/deleteChannel';
 import { URL } from 'src/api/URL';
 import Modal from '..';
@@ -28,25 +30,20 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
       });
       switch (response.status) {
         case 200:
-          //socket.emit(GroupEvent.groupDelete, selectedGroup.code);
+          socket.emit(GroupEvent.channelDelete, {
+            code: selectedGroup.code,
+            id: selectedChannel.id,
+            type: selectedChannel.type,
+          });
           mutateGroups(
             groups.map((group: any) => {
               if (group.id !== selectedGroup.id) return group;
               else {
-                if (selectedChannel.type === 'meeting')
-                  return {
-                    ...group,
-                    meetingChannels: group.meetingChannels.filter(
-                      (channel: any) => channel.id !== selectedChannel.id,
-                    ),
-                  };
-                else
-                  return {
-                    ...group,
-                    chattingChannels: group.chattingChannels.filter(
-                      (channel: any) => channel.id !== selectedChannel.id,
-                    ),
-                  };
+                const tempGroup = group;
+                tempGroup[`${selectedChannel.type}Channels`].filter(
+                  (channel: any) => channel.id !== selectedChannel.id,
+                );
+                return tempGroup;
               }
             }),
             false,
