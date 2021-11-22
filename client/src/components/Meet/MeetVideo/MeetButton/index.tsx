@@ -7,10 +7,10 @@ function MeetButton({ onClick }: { onClick: () => void }) {
   return (
     <MeetButtonWrapper>
       <button onClick={onClick}>
-        <ScreenShareStartIcon stroke="white" />
+        <ScreenShareStartIcon />
       </button>
       <button>
-        <MeetingStopIcon stroke="white" />
+        <MeetingStopIcon />
       </button>
     </MeetButtonWrapper>
   );
