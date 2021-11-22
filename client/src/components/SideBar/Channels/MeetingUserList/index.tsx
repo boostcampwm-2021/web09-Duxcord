@@ -13,7 +13,10 @@ function MeetingUserList({ meetingUser }: Props) {
           return (
             <MeetingUserListWrapper key={user.socketID}>
               <MeetingUserProfileWrapper>
-                <MeetingUserProfile src="/images/default_profile.png" alt="profile" />
+                <MeetingUserProfile
+                  src={user.thumbnail ?? '/images/default_profile.png'}
+                  alt="profile"
+                />
               </MeetingUserProfileWrapper>
               <p>{`${user.username}(${user.loginID})`}</p>
             </MeetingUserListWrapper>

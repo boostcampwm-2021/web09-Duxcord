@@ -17,11 +17,13 @@ import {
   Input,
   InputWrapper,
   Wrapper,
+  FileWrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
   OriginalChatWrapper,
   ThreadChatWrapper,
   ChatLengthWrapper,
+  ChatLength,
 } from './style';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
@@ -32,6 +34,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
     createdAt,
     content,
     user: { username, thumbnail },
+    files,
   } = selectedChat;
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
@@ -90,12 +93,24 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           <div>
             <div>
               <p>{username}</p>
-              <p>{new Date(createdAt).toLocaleTimeString('ko-KR')}</p>
+              <p>{new Date(createdAt).toLocaleTimeString('ko-KR').slice(0, -3)}</p>
             </div>
             <div>{content}</div>
+            <FileWrapper>
+              {files &&
+                files.map((file) => (
+                  <div key={file.src}>
+                    <img src={file.src} />
+                  </div>
+                ))}
+            </FileWrapper>
           </div>
         </OriginalChatWrapper>
-        <ChatLengthWrapper>{data?.length}개의 댓글</ChatLengthWrapper>
+        <ChatLengthWrapper>
+          <ChatLength>
+            <p>{data?.length}</p>개의 댓글
+          </ChatLength>
+        </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
           {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>

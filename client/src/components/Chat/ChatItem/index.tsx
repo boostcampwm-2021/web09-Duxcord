@@ -70,7 +70,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
       <div>
         <ChatHeader>
           <div>{user.username}</div>
-          <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
+          <div>{new Date(createdAt).toLocaleTimeString('ko-KR').slice(0, -3)}</div>
         </ChatHeader>
         <ChatContent>{content}</ChatContent>
         <FileWrapper>

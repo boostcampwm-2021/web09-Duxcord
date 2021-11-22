@@ -16,7 +16,7 @@ function ThreadItem({ threadData }: { threadData: ThreadData }) {
       <div>
         <div>
           <h2>{username}</h2>
-          <p>{new Date(createdAt).toLocaleTimeString('ko-KR')}</p>
+          <p>{new Date(createdAt).toLocaleTimeString('ko-KR').slice(0, -3)}</p>
         </div>
         <div>{content}</div>
       </div>

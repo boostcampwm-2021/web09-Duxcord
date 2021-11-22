@@ -3,7 +3,7 @@ import Colors from '../../../styles/Colors';
 
 const Wrapper = styled.div`
   background-color: ${Colors.White};
-  width: 30%;
+  width: 300px;
   height: calc(100vh - 50px);
   border-left: 1px solid ${Colors.Gray4};
   display: flex;
@@ -36,6 +36,10 @@ const ThreadHeaderWrapper = styled.div`
     & > div:first-child {
       font-size: 20px;
       font-weight: 700;
+    }
+    & > div:last-child {
+      margin-left: 5px;
+      color: ${Colors.Gray1};
     }
   }
 `;
@@ -77,21 +81,32 @@ const OriginalChatWrapper = styled.div`
   & > div > div {
     display: flex;
     align-items: center;
+    margin: 5px 0;
     & > p:first-child {
+      font-size: 16px;
       font-weight: 700;
       margin-right: 5px;
     }
-    & > p:not(:first-child) {
+    & > p:last-child {
       font-size: 13px;
+      line-height: 16px;
+      color: ${Colors.Gray1};
     }
   }
 `;
 
-const ChatLengthWrapper = styled.p`
+const ChatLengthWrapper = styled.div``;
+
+const ChatLength = styled.p`
   margin-top: -9.5px;
   background-color: ${Colors.White};
   padding: 0 12px;
   display: table;
+  color: ${Colors.Gray1};
+  & p {
+    display: inline-block;
+    margin-right: 1px;
+  }
 `;
 
 const InputWrapper = styled.form`
@@ -110,13 +125,37 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const FileWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 200px;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${Colors.Gray2};
+    border-radius: 10px;
+  }
+  & div {
+    margin-top: 10px;
+  }
+  & img {
+    max-width: 200px;
+    height: 120px;
+    object-fit: cover;
+  }
+`;
+
 export {
   InputWrapper,
   Input,
   Wrapper,
+  FileWrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
   OriginalChatWrapper,
   ThreadChatWrapper,
   ChatLengthWrapper,
+  ChatLength,
 };
