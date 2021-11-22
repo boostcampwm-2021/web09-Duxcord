@@ -1,6 +1,30 @@
 import styled from 'styled-components';
 import Colors from '../../styles/Colors';
 
+const Section = styled.div`
+  width: 100%;
+`;
+
+const StickyWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  width: 100%;
+  position: sticky;
+  top: 5px;
+  z-index: 2;
+  & > button {
+    font-weight: bold;
+    font-size: 13px;
+    height: 28px;
+    z-index: 10;
+    line-height: 27px;
+    padding: 0 16px;
+    border-radius: 24px;
+    background-color: ${Colors.White};
+    border: 1.5px solid ${Colors.Gray2};
+  }
+`;
 const ChatPart = styled.div`
   display: flex;
   width: 100%;
@@ -38,4 +62,4 @@ const ChatInputWrapper = styled.div`
   width: 100%;
 `;
 
-export { ChatContainer, Chats, ChatPart, ChatInputWrapper };
+export { ChatContainer, Chats, ChatPart, ChatInputWrapper, StickyWrapper, Section };
