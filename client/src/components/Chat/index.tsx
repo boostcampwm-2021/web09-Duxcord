@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { useSelectedChannel, useSelectedChat } from '@hooks/index';
@@ -22,6 +22,7 @@ const THRESHOLD = 300;
 
 function Chat() {
   const { id } = useSelectedChannel();
+  const [init, setInit] = useState(true);
   const selectedChat = useSelectedChat();
   const {
     data: chats,
@@ -54,9 +55,14 @@ function Chat() {
       if (chats) {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
         chatListRef.current?.scrollTo({ top: height });
+        if (init) {
+          console.log('지금');
+          chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
+          setInit(false);
+        }
       }
     })();
-  }, [isValidating]);
+  }, [isValidating, init]);
 
   useEffect(() => {
     const chatListEl = chatListRef.current;
@@ -71,7 +77,7 @@ function Chat() {
   };
 
   useEffect(() => {
-    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
+    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
   }, [isEmpty]);
 
   const onChat = useCallback(
