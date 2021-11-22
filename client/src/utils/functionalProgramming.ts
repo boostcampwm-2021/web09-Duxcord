@@ -6,4 +6,12 @@ const map = (f: (a: HTMLElement) => Promise<any>, iter: any) => {
   return res;
 };
 
-export { map };
+const filter = (chatsList: NodeListOf<Element> | undefined, length: number) => {
+  let res: Element[] = [];
+  chatsList?.forEach((v, i) => {
+    if (i < length) res.push(v);
+  });
+  return res;
+};
+
+export { map, filter };
