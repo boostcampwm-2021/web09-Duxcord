@@ -59,7 +59,7 @@ function OtherVideo({
         onClick={selectVideo({
           ...videoInfo,
           stream: stream,
-          isScreen: true,
+          isScreen: false,
         })}
       >
         <Video muted={muted} autoPlay playsInline ref={camRef} />
