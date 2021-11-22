@@ -26,6 +26,7 @@ const ListItem = styled.li<IListItem>`
     align-items: center;
     & svg {
       margin-right: 5px;
+      z-index: 99;
     }
     & p {
       max-width: 180px;
