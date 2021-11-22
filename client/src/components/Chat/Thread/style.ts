@@ -110,10 +110,34 @@ const Input = styled.input`
   box-sizing: border-box;
 `;
 
+const FileWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 200px;
+  overflow-y: scroll;
+  margin-top: 10px;
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${Colors.Gray2};
+    border-radius: 10px;
+  }
+  & div {
+    margin-top: 10px;
+  }
+  & img {
+    max-width: 200px;
+    height: 120px;
+    object-fit: cover;
+  }
+`;
+
 export {
   InputWrapper,
   Input,
   Wrapper,
+  FileWrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
   OriginalChatWrapper,
