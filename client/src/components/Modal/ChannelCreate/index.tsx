@@ -12,6 +12,7 @@ import Modal from '..';
 import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
 import { Label, Wrapper, Input, ErrorMessage } from './style';
+import { Group } from '@customTypes/group';
 
 export default function ChannelCreateModal({
   initialChannelType,
@@ -36,8 +37,8 @@ export default function ChannelCreateModal({
     });
     try {
       const createdChannel = await response.json();
-      mutateGroups((groups: any) => {
-        return groups.map((group: any) => {
+      mutateGroups((groups: Group[]) => {
+        return groups.map((group: Group) => {
           if (group.id !== selectedGroup.id) return group;
           const tempGroup = group;
           tempGroup[`${channelType}Channels`] = [

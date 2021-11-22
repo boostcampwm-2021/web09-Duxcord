@@ -86,7 +86,7 @@ const GroupWrapper = styled.div<IGroupWrapper>`
   }
 `;
 
-const Group = styled.div<IGroup>`
+const GroupItem = styled.div<IGroup>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -140,4 +140,4 @@ const AddGroupButton = styled.button`
   }
 `;
 
-export { GroupListWrapper, GroupList, GroupWrapper, Group, GroupListDivider, AddGroupButton };
+export { GroupListWrapper, GroupList, GroupWrapper, GroupItem, GroupListDivider, AddGroupButton };
