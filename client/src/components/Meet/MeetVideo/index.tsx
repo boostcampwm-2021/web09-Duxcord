@@ -340,7 +340,7 @@ function MeetVideo() {
         ))}
       </MeetVideoWrapper>
       <MeetButton
-        onClick={() => {
+        onScreenShareClick={() => {
           if (screenShare) {
             const tracks = myScreenStreamRef.current?.getTracks();
             tracks?.forEach((track) => track.stop());
