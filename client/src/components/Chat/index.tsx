@@ -13,7 +13,8 @@ import ChatInput from './ChatInput';
 import ChatItem from './ChatItem';
 import UserConnection from './UserConnection';
 import Thread from './Thread';
-import { ChatContainer, Chats, ChatPart, ChatInputWrapper } from './style';
+import { ChatContainer, Chats, ChatPart, ChatInputWrapper, StickyWrapper, Section } from './style';
+import { makeChatSection } from 'src/utils/makeChatSection';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
@@ -114,17 +115,21 @@ function Chat() {
       socket.off(ThreadEvent.thread);
     };
   }, [onChat, onLike, onThread]);
-
+  console.log(makeChatSection(chats));
   return (
     <ChatPart>
       <ChatContainer>
         <Chats ref={chatListRef}>
-          {chats
-            ?.flat()
-            .reverse()
-            .map((chat) => (
-              <ChatItem key={chat.id} chatData={chat} />
-            ))}
+          {Object.entries(makeChatSection(chats)).map(([day, dayChats]) => (
+            <Section>
+              <StickyWrapper>
+                <button>{day}</button>
+              </StickyWrapper>
+              {dayChats.map((chat: ChatData) => (
+                <ChatItem key={chat.id} chatData={chat} />
+              ))}
+            </Section>
+          ))}
         </Chats>
         <ChatInputWrapper>
           <ChatInput scrollToBottom={scrollToBottom} />
