@@ -17,7 +17,7 @@ const { reducer: userDeviceReducer, actions } = createSlice({
     },
     bringUserDevice: (state) => {
       const userDevice = loadItem('userDevice');
-      return userDevice ? { ...JSON.parse(userDevice) } : { ...initState };
+      return userDevice ? { ...userDevice } : { ...initState };
     },
   },
 });

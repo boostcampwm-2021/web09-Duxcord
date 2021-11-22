@@ -5,7 +5,7 @@ const saveItem = (key: string, value: { mic: boolean; speaker: boolean; cam: boo
 const loadItem = (key: string) => {
   const data = localStorage.getItem(key);
 
-  return data && JSON.parse(data);
+  return data ? JSON.parse(data) : null;
 };
 
 export { saveItem, loadItem };
