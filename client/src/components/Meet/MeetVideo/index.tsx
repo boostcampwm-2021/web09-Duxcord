@@ -1,6 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-import { useSelectedChannel, useSelectedGroup, useUserdata, useUserDevice } from '@hooks/index';
+import {
+  useSelectedChannel,
+  useSelectedGroup,
+  useSelectVideo,
+  useUserdata,
+  useUserDevice,
+} from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import Socket, { socket } from 'src/utils/socket';
 import { highlightMyVolume } from 'src/utils/audio';
@@ -84,18 +90,7 @@ function MeetVideo() {
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
-  const [selectedVideo, setSelectedVideo] = useState<SelectedVideo | null>(null);
-
-  const deselectVideo = () => setSelectedVideo(null);
-  const selectVideo = useCallback(
-    (videoInfo: SelectedVideo) => () => {
-      setSelectedVideo((selectedVideo) => {
-        if (selectedVideo?.stream?.id === videoInfo?.stream?.id) return null;
-        else return { ...videoInfo };
-      });
-    },
-    [],
-  );
+  const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
 
   const getMyStream = async () => {
     let myStream;
