@@ -121,7 +121,7 @@ function Chat() {
       <ChatContainer>
         <Chats ref={chatListRef}>
           {Object.entries(makeChatSection(chats)).map(([day, dayChats]) => (
-            <Section>
+            <Section key={day}>
               <StickyWrapper>
                 <button>{day}</button>
               </StickyWrapper>
