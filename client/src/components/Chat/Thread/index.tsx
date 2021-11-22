@@ -23,6 +23,7 @@ import {
   OriginalChatWrapper,
   ThreadChatWrapper,
   ChatLengthWrapper,
+  ChatLength,
 } from './style';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
@@ -105,7 +106,11 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             </FileWrapper>
           </div>
         </OriginalChatWrapper>
-        <ChatLengthWrapper>{data?.length}개의 댓글</ChatLengthWrapper>
+        <ChatLengthWrapper>
+          <ChatLength>
+            <p>{data?.length}</p>개의 댓글
+          </ChatLength>
+        </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
           {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>

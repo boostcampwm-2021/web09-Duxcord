@@ -37,6 +37,10 @@ const ThreadHeaderWrapper = styled.div`
       font-size: 20px;
       font-weight: 700;
     }
+    & > div:last-child {
+      margin-left: 5px;
+      color: ${Colors.Gray1};
+    }
   }
 `;
 
@@ -91,11 +95,18 @@ const OriginalChatWrapper = styled.div`
   }
 `;
 
-const ChatLengthWrapper = styled.p`
+const ChatLengthWrapper = styled.div``;
+
+const ChatLength = styled.p`
   margin-top: -9.5px;
   background-color: ${Colors.White};
   padding: 0 12px;
   display: table;
+  color: ${Colors.Gray1};
+  & p {
+    display: inline-block;
+    margin-right: 1px;
+  }
 `;
 
 const InputWrapper = styled.form`
@@ -146,4 +157,5 @@ export {
   OriginalChatWrapper,
   ThreadChatWrapper,
   ChatLengthWrapper,
+  ChatLength,
 };
