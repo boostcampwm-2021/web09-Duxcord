@@ -22,15 +22,19 @@ function FocusedVideo({
     <VideoWrapper onClick={onClick}>
       <Video autoPlay playsInline ref={videoRef} />
       <UserInfo>{`${username}(${loginID})${isScreen && ' 님의 화면'}`}</UserInfo>
-      <DeviceStatus>
-        {mic || <MicOffIcon />}
-        {speaker || <SpeakerOffIcon />}
-      </DeviceStatus>
-      <ThumbnailWrapper>
-        {cam || (
-          <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
-        )}
-      </ThumbnailWrapper>
+      {isScreen || (
+        <>
+          <DeviceStatus>
+            {mic || <MicOffIcon />}
+            {speaker || <SpeakerOffIcon />}
+          </DeviceStatus>
+          <ThumbnailWrapper>
+            {cam || (
+              <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
+            )}
+          </ThumbnailWrapper>
+        </>
+      )}
     </VideoWrapper>
   );
 }
