@@ -1,9 +1,9 @@
 const saveItem = (key: string, value: { mic: boolean; speaker: boolean; cam: boolean }) => {
-  localStorage.setItem(key, JSON.stringify(value));
+  sessionStorage.setItem(key, JSON.stringify(value));
 };
 
 const loadItem = (key: string) => {
-  const data = localStorage.getItem(key);
+  const data = sessionStorage.getItem(key);
 
   return data ? JSON.parse(data) : null;
 };
