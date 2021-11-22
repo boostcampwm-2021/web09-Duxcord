@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Colors from '../../../styles/Colors';
 
 const ThreadPreviewWrapper = styled.div`
-  margin-top: 5px;
+  margin-top: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;

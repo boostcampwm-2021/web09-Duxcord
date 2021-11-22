@@ -3,7 +3,7 @@ import Colors from '../../../styles/Colors';
 
 const Wrapper = styled.div`
   background-color: ${Colors.White};
-  width: 300px;
+  width: 30%;
   height: calc(100vh - 50px);
   border-left: 1px solid ${Colors.Gray4};
   display: flex;

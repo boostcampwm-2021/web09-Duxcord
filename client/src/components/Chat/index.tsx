@@ -138,7 +138,7 @@ function Chat() {
 
   return (
     <ChatPart>
-      <ChatContainer>
+      <ChatContainer isSelectedChat={!!selectedChat}>
         <Chats ref={chatListRef}>
           {Object.entries(makeChatSection(chats)).map(([day, dayChats]) => (
             <Section key={day}>
