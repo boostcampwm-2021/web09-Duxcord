@@ -56,7 +56,6 @@ function Chat() {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
         chatListRef.current?.scrollTo({ top: height });
         if (init) {
-          console.log('지금');
           chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
           setInit(false);
         }
