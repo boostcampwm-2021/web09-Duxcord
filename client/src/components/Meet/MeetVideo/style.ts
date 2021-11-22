@@ -67,7 +67,7 @@ const VideoWrapper = styled.div`
     padding: 3px 8px;
     border-radius: 5px;
     color: ${Colors.White};
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
   }
   .saying {
     border: 3px solid ${Colors.Blue};
@@ -97,7 +97,7 @@ const Video = styled.video`
   height: 100%;
   object-fit: contain;
   border-radius: 20px;
-  background-color: ${Colors.Gray4};
+  background-color: black;
 `;
 
 const DeviceStatus = styled.div`
