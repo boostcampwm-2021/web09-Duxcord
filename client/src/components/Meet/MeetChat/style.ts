@@ -116,6 +116,16 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
+const NewMessageIndicator = styled.div`
+  position: absolute;
+  top: -3px;
+  right: 0;
+  background-color: ${Colors.Red};
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+`;
+
 export {
   ChatWrap,
   ChatList,
@@ -126,4 +136,5 @@ export {
   Chat,
   Input,
   InputWrap,
+  NewMessageIndicator,
 };

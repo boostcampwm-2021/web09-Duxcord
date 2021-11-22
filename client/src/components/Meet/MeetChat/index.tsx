@@ -14,6 +14,7 @@ import {
   InputWrap,
   Message,
   ShowChatButton,
+  NewMessageIndicator,
 } from './style';
 
 interface IChat {
@@ -34,6 +35,7 @@ function MeetChat() {
   const chatListRef = useRef<HTMLUListElement>(null);
   const chatInputRef = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
+  const [existUnread, setExistUnread] = useState(false);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -56,8 +58,15 @@ function MeetChat() {
   };
 
   useLayoutEffect(() => {
-    scrollToBottom({ smooth: false });
+    if (show) {
+      setExistUnread(false);
+      scrollToBottom({ smooth: false });
+    }
   }, [show]);
+
+  useEffect(() => {
+    if (!show && chats.length) setExistUnread(true);
+  }, [chats]);
 
   useEffect(() => {
     socket.on(MeetEvent.meetChat, (chat: IChat) => {
@@ -98,6 +107,7 @@ function MeetChat() {
   ) : (
     <ShowChatButton onClick={() => setShow(true)}>
       <ChatOpenIcon />
+      {existUnread && <NewMessageIndicator />}
     </ShowChatButton>
   );
 }
