@@ -31,8 +31,12 @@ const ChatPart = styled.div`
   justify-content: space-between;
 `;
 
-const ChatContainer = styled.div`
-  width: calc(100% - 300px);
+interface IChatContainer {
+  isSelectedChat: boolean;
+}
+
+const ChatContainer = styled.div<IChatContainer>`
+  ${(props) => (props.isSelectedChat ? `width: 70%;` : `width: calc(100% - 300px);`)}
   height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
