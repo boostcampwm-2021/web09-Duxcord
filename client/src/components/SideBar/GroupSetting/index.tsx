@@ -28,9 +28,7 @@ function GroupSetting() {
       {selectedGroup && selectedGroup.name && (
         <div>
           <GroupInviteIcon onClick={groupInviteModalControl.show} />
-          {isLeader && (
-            <GroupDeleteIcon width="24px" height="24px" onClick={groupDeleteModalControl.show} />
-          )}
+          {isLeader && <GroupDeleteIcon onClick={groupDeleteModalControl.show} />}
         </div>
       )}
       {selectedModal === 'INVITE' ? (
