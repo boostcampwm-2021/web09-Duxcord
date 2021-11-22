@@ -19,8 +19,8 @@ const getDay = (targetDay: string) => {
   const month = ('0' + (1 + date.getMonth())).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
 
-  const WEEKDAY = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
-  return `${month}월 ${day}일 ${WEEKDAY[date.getDay()]}`;
+  const WEEKDAY = ['일', '월', '화', '수', '목', '금', '토'];
+  return `${month}월 ${day}일 ${WEEKDAY[date.getDay()]}요일`;
 };
 
 export { makeChatSection };
