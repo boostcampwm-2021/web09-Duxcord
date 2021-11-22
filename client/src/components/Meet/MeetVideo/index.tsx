@@ -80,8 +80,11 @@ function MeetVideo() {
 
   const deselectVideo = () => setSelectedVideo(null);
   const selectVideo = useCallback(
-    (videoInfo: SelectedVideo) => (e: any) => {
-      setSelectedVideo(videoInfo);
+    (videoInfo: SelectedVideo) => () => {
+      setSelectedVideo((selectedVideo) => {
+        if (selectedVideo?.stream?.id === videoInfo?.stream?.id) return null;
+        else return { ...videoInfo };
+      });
     },
     [],
   );
