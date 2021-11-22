@@ -21,7 +21,7 @@ function FocusedVideo({
   return (
     <VideoWrapper onClick={onClick}>
       <Video autoPlay playsInline ref={videoRef} />
-      <UserInfo>{`${username}(${loginID})${isScreen && ' 님의 화면'}`}</UserInfo>
+      <UserInfo>{`${username}(${loginID})${isScreen ? ' 님의 화면' : ''}`}</UserInfo>
       {isScreen || (
         <>
           <DeviceStatus>
