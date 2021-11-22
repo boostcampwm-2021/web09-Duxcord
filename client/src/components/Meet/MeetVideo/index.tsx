@@ -8,6 +8,7 @@ import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { Videos, VideoWrapper, Video, Thumbnail, VideoSection } from './style';
+import FocusedVideo from './FocusedVideo';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -344,10 +345,8 @@ function MeetVideo() {
 
   return (
     <VideoSection>
-      {selectedVideo && (
-        <FocusedVideo selectedVideo={selectedVideo} deselectVideo={deselectVideo} />
-      )}
-      <Videos ref={videoWrapperRef} videoCount={videoCount || 0}>
+      {selectedVideo && <FocusedVideo selectedVideo={selectedVideo} onClick={deselectVideo} />}
+      <Videos ref={videoWrapperRef} videoCount={videoCount || 0} focused={selectedVideo !== null}>
         <VideoWrapper>
           <Video autoPlay playsInline muted ref={myVideoRef} />
           {cam ? (
@@ -386,27 +385,6 @@ function MeetVideo() {
         }}
       />
     </VideoSection>
-  );
-}
-
-function FocusedVideo({
-  selectedVideo,
-  deselectVideo,
-}: {
-  selectedVideo: SelectedVideo;
-  deselectVideo: () => void;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    if (videoRef.current && selectedVideo.stream) videoRef.current.srcObject = selectedVideo.stream;
-  }, [selectedVideo]);
-
-  return (
-    <div>
-      <video autoPlay playsInline ref={videoRef} onClick={deselectVideo} />
-      {selectedVideo?.username}
-    </div>
   );
 }
 

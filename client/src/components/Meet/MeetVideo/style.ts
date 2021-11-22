@@ -1,11 +1,12 @@
 import Colors from '@styles/Colors';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-interface IMeetVideoWrapper {
+interface VideosProps {
   videoCount: number;
+  focused: boolean;
 }
 
-const Videos = styled.div<IMeetVideoWrapper>`
+const normal = css<VideosProps>`
   margin: 0 auto;
   display: grid;
   width: 100%;
@@ -22,52 +23,87 @@ const Videos = styled.div<IMeetVideoWrapper>`
       : 'max-width: 1500px; grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));'}
 `;
 
+const focused = css`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  max-width: 300px;
+  height: 100%;
+  padding: 20px;
+`;
+
+const Videos = styled.div<VideosProps>`
+  ${(props) => (props.focused ? focused : normal)}
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${Colors.Gray2};
+    border-radius: 10px;
+  }
+
+  &:hover::-webkit-scrollbar {
+    display: block;
+    width: 15px;
+  }
+`;
+
 const VideoWrapper = styled.div`
+  position: relative;
   width: 100%;
   max-width: 700px;
-  height: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  border-radius: 20px;
   justify-self: center;
   align-self: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+
+  margin-bottom: 10px;
   & p {
+    position: absolute;
+    bottom: 10px;
     align-self: center;
+    color: ${Colors.White};
   }
   .saying {
     border: 3px solid ${Colors.Blue};
   }
-  img {
-    display: block;
-    position: absolute;
-  }
 `;
 
 const Thumbnail = styled.img`
+  display: block;
+  position: absolute;
+  margin: auto 0;
+  align-self: center;
   width: 100px;
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
-  position: absolute;
 `;
 
 const Video = styled.video`
+  position: absolute;
   width: 100%;
-  max-width: 700px;
-  border-radius: 20px;
-  justify-self: center;
+  height: 100%;
+  object-fit: contain;
+  margin: auto 0;
   align-self: center;
-  margin-bottom: 10px;
+  border-radius: 20px;
+  background-color: ${Colors.Black};
 `;
 
 const VideoSection = styled.section`
   display: flex;
-  flex-direction: column;
+  justify-content: end;
   background-color: ${Colors.Gray3};
   width: 100%;
   height: 100%;
-  padding: 10px;
 `;
 
 export { Videos, VideoWrapper, Video, Thumbnail, VideoSection };

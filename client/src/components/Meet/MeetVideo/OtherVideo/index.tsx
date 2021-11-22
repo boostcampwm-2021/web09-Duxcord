@@ -63,6 +63,7 @@ function OtherVideo({
           ref={camRef}
           onClick={selectVideo({
             ...videoInfo,
+            stream: stream,
             isScreen: true,
           })}
         />
@@ -83,6 +84,7 @@ function OtherVideo({
             ref={screenRef}
             onClick={selectVideo({
               ...videoInfo,
+              stream: screen,
               isScreen: true,
             })}
           />
