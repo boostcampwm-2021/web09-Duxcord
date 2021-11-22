@@ -3,7 +3,7 @@ import Colors from '../../../styles/Colors';
 
 const UserConnectionWrapper = styled.div`
   background-color: ${Colors.Gray6};
-  width: 30%;
+  width: 300px;
   height: calc(100vh - 50px);
   padding: 10px;
   overflow-y: scroll;
