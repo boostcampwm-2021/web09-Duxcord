@@ -28,6 +28,7 @@ const ListItem = styled.li<IListItem>`
       width: 24px;
       height: 24px;
       margin-right: 5px;
+      z-index: 99;
     }
     & p {
       max-width: 180px;

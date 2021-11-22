@@ -8,6 +8,7 @@ import { getURLParams } from 'src/utils/getURLParams';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import ChannelCreateModal from '@components/Modal/ChannelCreate';
+import ChannelDeleteModal from '@components/Modal/ChannelDelete';
 import { ChannelAddIcon, ChannelOpenIcon } from '@components/common/Icons';
 import { ChannelWrapper, ChannelType } from './style';
 
@@ -25,10 +26,15 @@ function Channels({ channelType }: Props) {
     selectedGroup?.[channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'];
   const [meetingUser, setMeetingUser] = useState<IMeetingUser>({});
   const [channelToCreate, setChannelToCreate] = useState<'chatting' | 'meeting' | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const modalController: ModalController = {
-    hide: () => setShowModal(false),
-    show: () => setShowModal(true),
+  const [showChannelCreateModal, setShowChannelCreateModal] = useState(false);
+  const channelCreateModalController: ModalController = {
+    hide: () => setShowChannelCreateModal(false),
+    show: () => setShowChannelCreateModal(true),
+  };
+  const [showChannelDeleteModal, setShowChannelDeleteModal] = useState(false);
+  const channelDeleteModalController: ModalController = {
+    hide: () => setShowChannelDeleteModal(false),
+    show: () => setShowChannelDeleteModal(true),
   };
   const { groupID } = getURLParams();
 
@@ -80,7 +86,7 @@ function Channels({ channelType }: Props) {
             <ChannelAddIcon
               onClick={() => {
                 setChannelToCreate(channelType);
-                modalController.show();
+                channelCreateModalController.show();
               }}
             />
           </ChannelType>
@@ -93,6 +99,7 @@ function Channels({ channelType }: Props) {
                     channelType={channelType}
                     id={channel.id}
                     name={channel.name}
+                    showChannelDeleteModal={channelDeleteModalController.show}
                   />
                   {channelType === 'meeting' && (
                     <MeetingUserList meetingUser={meetingUser[channel.id]} />
@@ -101,8 +108,14 @@ function Channels({ channelType }: Props) {
               );
             })}
           </ul>
-          {channelToCreate && showModal && (
-            <ChannelCreateModal initialChannelType={channelToCreate} controller={modalController} />
+          {channelToCreate && showChannelCreateModal && (
+            <ChannelCreateModal
+              initialChannelType={channelToCreate}
+              controller={channelCreateModalController}
+            />
+          )}
+          {showChannelDeleteModal && (
+            <ChannelDeleteModal controller={channelDeleteModalController} />
           )}
         </>
       )}

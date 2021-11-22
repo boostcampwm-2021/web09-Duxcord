@@ -13,3 +13,8 @@ groupRouter.post(
 );
 groupRouter.post('/join', accessControl({ signIn: true }), groupController.joinGroup);
 groupRouter.delete('/:id', accessControl({ signIn: true }), groupController.deleteGroup);
+groupRouter.delete(
+  '/:groupID/:channelType/:channelID',
+  accessControl({ signIn: true }),
+  groupController.deleteChannel,
+);

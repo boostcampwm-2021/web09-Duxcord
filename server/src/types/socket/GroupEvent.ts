@@ -5,6 +5,7 @@ enum GroupEvent {
   groupDelete = 'groupDelete',
   userExit = 'userExit',
   userEnter = 'userEnter',
+  channelDelete = 'channelDelete',
 }
 
 export default GroupEvent;
