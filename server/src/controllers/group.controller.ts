@@ -170,7 +170,7 @@ const deleteChannel = async (req: Request, res: Response, next: NextFunction) =>
 
     if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
     if (group.leader.id !== userID) return res.status(400).send('채널 삭제 권한이 없습니다.');
-    if (channelType !== 'meeting' && channelType !== 'chatting')
+    if (!['meeting', 'chatting'].includes(channelType))
       return res.status(400).send(MSG.wrongChannelType);
 
     if (channelType === 'meeting') {

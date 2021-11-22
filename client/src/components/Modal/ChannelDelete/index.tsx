@@ -82,7 +82,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
   return (
     <Modal
       props={{
-        title: '그룹 삭제하기',
+        title: '채널 삭제하기',
         middleContent: AlertComponent,
         bottomRightButton: {
           text: '삭제하기',
