@@ -24,7 +24,7 @@ const FileWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   & div {
-    margin-top: 5px;
+    margin-top: 10px;
   }
   & img {
     max-width: 300px;
@@ -37,7 +37,6 @@ const FileWrapper = styled.div`
 const ChatHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
   color: ${Colors.Gray1};
   margin-bottom: 8px;
 
@@ -45,6 +44,7 @@ const ChatHeader = styled.div`
     font-weight: 600;
     font-size: 16px;
     color: ${Colors.Black};
+    margin-right: 5px;
   }
   & > div:last-child {
     font-size: 13px;
