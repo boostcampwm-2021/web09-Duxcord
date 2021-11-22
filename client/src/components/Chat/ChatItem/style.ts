@@ -23,6 +23,9 @@ const UserImage = styled.img`
 const FileWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  & div {
+    margin-top: 5px;
+  }
   & img {
     max-width: 300px;
     height: 120px;
