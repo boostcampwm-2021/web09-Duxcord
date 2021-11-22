@@ -1,13 +1,16 @@
 const makeChatSection = (chats: any[] | undefined) => {
   const chatSection: { [key: string]: any } = {};
-  chats?.flat()?.forEach((chat) => {
-    const day = getDay(chat['createdAt']);
-    if (chatSection[day]) {
-      chatSection[day].push(chat);
-    } else {
-      chatSection[day] = [chat];
-    }
-  });
+  chats
+    ?.flat()
+    .reverse()
+    ?.forEach((chat) => {
+      const day = getDay(chat['createdAt']);
+      if (chatSection[day]) {
+        chatSection[day].push(chat);
+      } else {
+        chatSection[day] = [chat];
+      }
+    });
   return chatSection;
 };
 
