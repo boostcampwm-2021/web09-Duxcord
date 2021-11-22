@@ -22,7 +22,7 @@ const THRESHOLD = 300;
 
 function Chat() {
   const { id } = useSelectedChannel();
-  const [init, setInit] = useState(true);
+  const [isInitialized, setIsInitialized] = useState(true);
   const selectedChat = useSelectedChat();
   const {
     data: chats,
@@ -55,13 +55,13 @@ function Chat() {
       if (chats) {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
         chatListRef.current?.scrollTo({ top: height });
-        if (init) {
+        if (isInitialized) {
           chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
-          setInit(false);
+          setIsInitialized(false);
         }
       }
     })();
-  }, [isValidating, init]);
+  }, [isValidating, isInitialized]);
 
   useEffect(() => {
     const chatListEl = chatListRef.current;

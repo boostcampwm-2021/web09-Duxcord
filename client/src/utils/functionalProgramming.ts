@@ -1,5 +1,5 @@
 const map = (f: (a: HTMLElement) => Promise<any>, iter: any) => {
-  let res = [];
+  const res = [];
   for (const a of iter) {
     res.push(f(a));
   }
@@ -7,7 +7,7 @@ const map = (f: (a: HTMLElement) => Promise<any>, iter: any) => {
 };
 
 const filter = (chatsList: NodeListOf<Element> | undefined, length: number) => {
-  let res: Element[] = [];
+  const res: Element[] = [];
   chatsList?.forEach((v, i) => {
     if (i < length) res.push(v);
   });
@@ -15,7 +15,7 @@ const filter = (chatsList: NodeListOf<Element> | undefined, length: number) => {
 };
 
 const mapAsync = (f: (a: Promise<any>) => Promise<any>, iter: any) => {
-  let res = [];
+  const res = [];
   for (const a of iter) {
     res.push(a.then(f));
   }
