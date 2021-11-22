@@ -14,6 +14,7 @@ import { deleteGroup } from 'src/api/deleteGroup';
 import { socket } from 'src/utils/socket';
 import Modal from '..';
 import { AlertWrapper } from './style';
+import { Group } from '@customTypes/group';
 
 function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalController }) {
   const selectedGroup = useSelectedGroup();
@@ -28,7 +29,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
         case 200:
           socket.emit(GroupEvent.groupDelete, selectedGroup.code);
           mutateGroups(
-            groups.filter((group: any) => group.id !== selectedGroup.id),
+            groups.filter((group: Group) => group.id !== selectedGroup.id),
             false,
           );
           dispatch(setSelectedGroup(null));

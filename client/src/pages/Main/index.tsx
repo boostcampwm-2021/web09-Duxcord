@@ -11,6 +11,7 @@ import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
+import { Group } from '@customTypes/group';
 
 function Main() {
   const { groups, isValidating } = useGroups();
@@ -23,7 +24,7 @@ function Main() {
     if (isValidating) return;
     if (selectedGroup !== null || groupID === null) return;
 
-    const group = groups?.find((group: any) => group.id.toString() === groupID) ?? null;
+    const group = groups?.find((group: Group) => group.id.toString() === groupID) ?? null;
 
     if (group === null) return;
 
