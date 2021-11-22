@@ -57,7 +57,11 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
   const selectChat = () => dispatch(setSelectedChat(chatData));
 
   return (
-    <ChatWrapper onMouseEnter={() => setIsFocused(true)} onMouseLeave={() => setIsFocused(false)}>
+    <ChatWrapper
+      className="ChatItem"
+      onMouseEnter={() => setIsFocused(true)}
+      onMouseLeave={() => setIsFocused(false)}
+    >
       <UserImage
         src={user.thumbnail ?? '/images/default_profile.png'}
         alt="user profile"
