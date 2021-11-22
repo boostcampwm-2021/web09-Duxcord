@@ -1,4 +1,15 @@
-const makeChatSection = (chats: any[] | undefined) => {};
+const makeChatSection = (chats: any[] | undefined) => {
+  const chatSection: { [key: string]: any } = {};
+  chats?.flat()?.forEach((chat) => {
+    const day = getDay(chat['createdAt']);
+    if (chatSection[day]) {
+      chatSection[day].push(chat);
+    } else {
+      chatSection[day] = [chat];
+    }
+  });
+  return chatSection;
+};
 
 const getDay = (targetDay: string) => {
   const date = new Date(targetDay);
