@@ -115,7 +115,7 @@ function Chat() {
       socket.off(ThreadEvent.thread);
     };
   }, [onChat, onLike, onThread]);
-  console.log(makeChatSection(chats));
+
   return (
     <ChatPart>
       <ChatContainer>
