@@ -32,7 +32,7 @@ const ChatPart = styled.div`
 `;
 
 const ChatContainer = styled.div`
-  width: 70%;
+  width: calc(100% - 300px);
   height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;

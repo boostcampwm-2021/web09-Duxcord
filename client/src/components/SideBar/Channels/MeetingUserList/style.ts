@@ -29,6 +29,7 @@ const MeetingUserProfileWrapper = styled.div`
 const MeetingUserProfile = styled.img`
   width: 30px;
   height: 30px;
+  border-radius: 50%;
 `;
 
 export { MeetingUserListWrapper, MeetingUserProfileWrapper, MeetingUserProfile };

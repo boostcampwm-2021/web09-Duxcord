@@ -7,6 +7,7 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { getFetcher } from '../utils/fetcher';
 import { socket } from '../utils/socket';
 import { useSelectedGroup } from './useSelectedGroup';
+import { Group } from '@customTypes/group';
 
 const getGroupsFetcher = async (url: string) => {
   try {
@@ -33,7 +34,7 @@ export const useGroups = () => {
     if (selectedGroup === null) return;
 
     const updatedSelectedGroup =
-      groups?.find((group: any) => group.id === selectedGroup.id) ?? null;
+      groups?.find((group: Group) => group.id === selectedGroup.id) ?? null;
 
     dispatch(setSelectedGroup(updatedSelectedGroup));
   }, [groups, dispatch]);

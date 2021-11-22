@@ -1,9 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import Colors from '../../../styles/Colors';
+
+const colorChange = keyframes`
+  from { background-color: ${Colors.White}; }
+  to { background-color: ${Colors.Gray4}; }
+`;
 
 const UserConnectionWrapper = styled.div`
   background-color: ${Colors.Gray6};
-  width: 30%;
+  width: 300px;
   height: calc(100vh - 50px);
   padding: 10px;
   overflow-y: scroll;
@@ -36,6 +41,10 @@ const UserTile = styled.div`
   height: 40px;
   margin: 10px 0;
   padding: 30px 20px;
+  cursor: pointer;
+  &:hover {
+    animation: ${colorChange} 0.2s ease-out both;
+  }
   & > div:nth-child(1) {
     border-radius: 25px;
     background-color: ${Colors.Gray1};

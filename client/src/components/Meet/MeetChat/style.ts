@@ -18,17 +18,12 @@ const ChatList = styled.ul`
   height: calc(100% - 52px);
 
   &::-webkit-scrollbar {
-    display: none;
+    width: 5px;
   }
 
   &::-webkit-scrollbar-thumb {
     background: ${Colors.Gray2};
     border-radius: 10px;
-  }
-
-  &:hover::-webkit-scrollbar {
-    display: block;
-    width: 10px;
   }
 `;
 
@@ -38,7 +33,7 @@ const ChatHeader = styled.div`
   & div:first-child {
     font-weight: bold;
     font-size: 15px;
-    margin-right: 3px;
+    margin: 0 3px;
   }
   & div:last-child {
     color: ${Colors.Gray1};
@@ -46,27 +41,36 @@ const ChatHeader = styled.div`
   }
 `;
 
-const Chat = styled.li`
+interface IChat {
+  isSender: boolean;
+}
+
+const Chat = styled.li<IChat>`
   margin-top: 5px;
+  ${(props) => props.isSender && `text-align: right;`}
   & div {
     display: flex;
+    ${(props) => props.isSender && `flex-direction: row-reverse;`}
     & img {
       width: 40px;
       height: 40px;
       border-radius: 50%;
       background-color: ${Colors.Gray2};
-      margin-right: 5px;
+      ${(props) => (props.isSender ? `margin-right: 3px;` : `margin-left: 3px;`)}
     }
+  }
+  & span {
+    ${(props) => (props.isSender ? `margin-right: 30px;` : `margin-left: 30px;`)}
   }
 `;
 
 const Message = styled.span`
   display: inline-block;
-  margin-left: 30px;
   padding: 12px;
   background-color: ${Colors.Gray3};
   border-radius: 15px;
   overflow-wrap: break-word;
+  word-break: break-all;
 `;
 
 const ShowChatButton = styled.button`

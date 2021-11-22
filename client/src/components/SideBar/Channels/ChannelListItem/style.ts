@@ -25,6 +25,8 @@ const ListItem = styled.li<IListItem>`
     display: flex;
     align-items: center;
     & svg {
+      width: 24px;
+      height: 24px;
       margin-right: 5px;
       z-index: 99;
     }

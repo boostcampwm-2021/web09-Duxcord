@@ -25,10 +25,11 @@ import {
   GroupListWrapper,
   GroupList,
   GroupWrapper,
-  Group,
+  GroupItem,
   GroupListDivider,
   AddGroupButton,
 } from './style';
+import { Group } from '@customTypes/group';
 
 function GroupNav() {
   const { groups, mutate: mutateGroups } = useGroups();
@@ -53,7 +54,7 @@ function GroupNav() {
     show: () => setSelectedModal('ADD'),
   };
 
-  const selectGroup = (group: any) => () => {
+  const selectGroup = (group: Group) => () => {
     history.replace(URL.groupPage(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
@@ -67,7 +68,7 @@ function GroupNav() {
 
     socket.on(GroupEvent.groupDelete, (code) => {
       mutateGroups(
-        groups.filter((group: any) => group.id !== selectedGroup.id),
+        groups.filter((group: Group) => group.id !== selectedGroup.id),
         false,
       );
       if (code === selectedGroup?.code) {
@@ -131,11 +132,11 @@ function GroupNav() {
   return (
     <GroupListWrapper>
       <GroupList>
-        {groups?.map((group: any) => (
-          <GroupWrapper name={group.name} key={group.id}>
-            <Group onClick={selectGroup(group)} thumbnail={group.thumbnail}>
+        {groups?.map((group: Group) => (
+          <GroupWrapper name={group.name}>
+            <GroupItem key={group.id} onClick={selectGroup(group)} thumbnail={group.thumbnail}>
               <p>{!group.thumbnail && group.name}</p>
-            </Group>
+            </GroupItem>
           </GroupWrapper>
         ))}
       </GroupList>
