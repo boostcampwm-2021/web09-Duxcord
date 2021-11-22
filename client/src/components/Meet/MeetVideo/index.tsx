@@ -49,6 +49,18 @@ export interface IMeetingUser {
   pc?: RTCPeerConnection;
 }
 
+export interface SelectedVideo {
+  socketID: string;
+  loginID: string;
+  username: string;
+  thumbnail: null | string;
+  stream?: MediaStream;
+  mic: boolean;
+  cam: boolean;
+  speaker: boolean;
+  isScreen: boolean;
+}
+
 function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
@@ -63,6 +75,15 @@ function MeetVideo() {
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
+  const [selectedVideo, setSelectedVideo] = useState<SelectedVideo | null>(null);
+
+  const deselectVideo = () => setSelectedVideo(null);
+  const selectVideo = useCallback(
+    (videoInfo: SelectedVideo) => (e: any) => {
+      setSelectedVideo(videoInfo);
+    },
+    [],
+  );
 
   const getMyStream = async () => {
     let myStream;
@@ -122,6 +143,9 @@ function MeetVideo() {
 
         if (mem.stream && mem.stream.id !== e.streams[0].id) {
           newStream.onremovetrack = () => {
+            setSelectedVideo((selectedVideo) =>
+              selectedVideo?.socketID === mem?.socketID ? null : selectedVideo,
+            );
             setMeetingMembers((members) => {
               const m = members.find((m) => m.socketID === member.socketID);
               if (!m) return members;
@@ -248,6 +272,9 @@ function MeetVideo() {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
       delete pcs.current[memberID];
+      setSelectedVideo((selectedVideo) =>
+        selectedVideo?.socketID === memberID ? null : selectedVideo,
+      );
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
@@ -317,6 +344,9 @@ function MeetVideo() {
 
   return (
     <>
+      {selectedVideo && (
+        <FocusedVideo selectedVideo={selectedVideo} deselectVideo={deselectVideo} />
+      )}
       <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
         <VideoItemWrapper>
           <VideoItem autoPlay playsInline muted ref={myVideoRef} />
@@ -336,7 +366,12 @@ function MeetVideo() {
           </VideoItemWrapper>
         )}
         {meetingMembers.map((member) => (
-          <OtherVideo key={member.socketID} member={member} muted={!speaker} />
+          <OtherVideo
+            key={member.socketID}
+            member={member}
+            muted={!speaker}
+            selectVideo={selectVideo}
+          />
         ))}
       </MeetVideoWrapper>
       <MeetButton
@@ -351,6 +386,27 @@ function MeetVideo() {
         }}
       />
     </>
+  );
+}
+
+function FocusedVideo({
+  selectedVideo,
+  deselectVideo,
+}: {
+  selectedVideo: SelectedVideo;
+  deselectVideo: () => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (videoRef.current && selectedVideo.stream) videoRef.current.srcObject = selectedVideo.stream;
+  }, [selectedVideo]);
+
+  return (
+    <div>
+      <video autoPlay playsInline ref={videoRef} onClick={deselectVideo} />
+      {selectedVideo?.username}
+    </div>
   );
 }
 

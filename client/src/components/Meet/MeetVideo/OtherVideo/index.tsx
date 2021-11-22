@@ -1,18 +1,30 @@
 import React, { useRef, useEffect } from 'react';
 
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { IMeetingUser } from '..';
+import { IMeetingUser, SelectedVideo } from '..';
 import { VideoItemWrapper, VideoItem, Thumbnail } from '../style';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
   muted,
+  selectVideo,
 }: {
   member: IMeetingUser;
   muted: boolean;
+  selectVideo: (videoInfo: SelectedVideo) => (e: any) => void;
 }) {
   const camRef = useRef<HTMLVideoElement>(null);
   const screenRef = useRef<HTMLVideoElement>(null);
+  const videoInfo = {
+    socketID,
+    loginID,
+    username,
+    thumbnail,
+    stream,
+    mic,
+    cam,
+    speaker,
+  };
 
   useEffect(() => {
     if (!camRef.current || !stream) return;
@@ -44,7 +56,16 @@ function OtherVideo({
   return (
     <>
       <VideoItemWrapper>
-        <VideoItem muted={muted} autoPlay playsInline ref={camRef} />
+        <VideoItem
+          muted={muted}
+          autoPlay
+          playsInline
+          ref={camRef}
+          onClick={selectVideo({
+            ...videoInfo,
+            isScreen: true,
+          })}
+        />
         <p>{`${username}(${loginID})`}</p>
         {mic || <MicOffIcon />}
         {speaker || <SpeakerOffIcon />}
@@ -54,7 +75,17 @@ function OtherVideo({
       </VideoItemWrapper>
       {screen && (
         <VideoItemWrapper>
-          <VideoItem key={socketID} muted={muted} autoPlay playsInline ref={screenRef} />
+          <VideoItem
+            key={socketID}
+            muted={muted}
+            autoPlay
+            playsInline
+            ref={screenRef}
+            onClick={selectVideo({
+              ...videoInfo,
+              isScreen: true,
+            })}
+          />
           <p>{`${username}(${loginID})님의 화면`}</p>
         </VideoItemWrapper>
       )}
