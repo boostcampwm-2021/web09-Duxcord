@@ -22,4 +22,11 @@ const mapAsync = (f: (a: Promise<any>) => Promise<any>, iter: any) => {
   return res;
 };
 
-export { map, mapAsync, filter };
+const reduceAsync = async (f: (a: number, b: number) => number, acc: number, iter: any) => {
+  for await (const ab of iter) {
+    acc = f(acc, ab);
+  }
+  return acc;
+};
+
+export { map, mapAsync, filter, reduceAsync };
