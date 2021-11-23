@@ -52,10 +52,10 @@ interface ILine {
 }
 const Line = styled.div<ILine>`
   background-color: ${(props) => (props.type === 'warning' ? Colors.Red : Colors.Green)};
-  animation: ${(props) => props.duration}s forwards timer;
+  animation: ${(props) => props.duration}s linear timer;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 0%;
   height: 8px;
   border-radius: 2px;
 

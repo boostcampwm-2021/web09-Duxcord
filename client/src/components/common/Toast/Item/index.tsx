@@ -9,6 +9,7 @@ export default function ToastItem({ message, type, duration }: ToastData) {
 
   useEffect(() => {
     const setDurationInterval = setInterval(() => setLeftTime((prev: number) => prev - 1), 1000);
+
     return () => clearInterval(setDurationInterval);
   }, []);
 
@@ -19,8 +20,7 @@ export default function ToastItem({ message, type, duration }: ToastData) {
     }, duration!);
 
     return () => clearTimeout(setExitTimeout);
-  });
-
+  }, []);
   return (
     <Wrapper isClosing={isClosing}>
       <GridWrapper color={type}>
