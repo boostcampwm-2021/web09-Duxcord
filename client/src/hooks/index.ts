@@ -8,3 +8,4 @@ export * from './useUserDevice';
 export * from './useUserdata';
 export * from './useSelectedUser';
 export * from './useOtherUserdata';
+export * from './useSelectVideo';

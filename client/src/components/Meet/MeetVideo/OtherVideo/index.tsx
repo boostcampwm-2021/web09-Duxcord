@@ -1,18 +1,39 @@
 import React, { useRef, useEffect } from 'react';
 
-import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { IMeetingUser } from '..';
-import { VideoItemWrapper, VideoItem, Thumbnail } from '../style';
+import { CameraOnIcon, MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
+import { IMeetingUser, SelectedVideo } from '..';
+import {
+  VideoWrapper,
+  Video,
+  Thumbnail,
+  DeviceStatus,
+  ThumbnailWrapper,
+  SelectVideoIndicator,
+} from '../style';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
   muted,
+  selectVideo,
+  selectedVideo,
 }: {
   member: IMeetingUser;
   muted: boolean;
+  selectVideo: (videoInfo: SelectedVideo) => () => void;
+  selectedVideo: SelectedVideo | null;
 }) {
   const camRef = useRef<HTMLVideoElement>(null);
   const screenRef = useRef<HTMLVideoElement>(null);
+  const videoInfo = {
+    socketID,
+    loginID,
+    username,
+    thumbnail,
+    stream,
+    mic,
+    cam,
+    speaker,
+  };
 
   useEffect(() => {
     if (!camRef.current || !stream) return;
@@ -43,20 +64,46 @@ function OtherVideo({
 
   return (
     <>
-      <VideoItemWrapper>
-        <VideoItem muted={muted} autoPlay playsInline ref={camRef} />
+      <VideoWrapper
+        onClick={selectVideo({
+          ...videoInfo,
+          stream: stream,
+          isScreen: false,
+        })}
+      >
+        <Video muted={muted} autoPlay playsInline ref={camRef} />
+        <ThumbnailWrapper>
+          {cam || (
+            <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
+          )}
+        </ThumbnailWrapper>
         <p>{`${username}(${loginID})`}</p>
-        {mic || <MicOffIcon />}
-        {speaker || <SpeakerOffIcon />}
-        {cam || (
-          <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
+        <DeviceStatus>
+          {mic || <MicOffIcon />}
+          {speaker || <SpeakerOffIcon />}
+        </DeviceStatus>
+        {stream && selectedVideo?.stream?.id === stream?.id && (
+          <SelectVideoIndicator>
+            <CameraOnIcon />
+          </SelectVideoIndicator>
         )}
-      </VideoItemWrapper>
+      </VideoWrapper>
       {screen && (
-        <VideoItemWrapper>
-          <VideoItem key={socketID} muted={muted} autoPlay playsInline ref={screenRef} />
-          <p>{`${username}(${loginID})님의 화면`}</p>
-        </VideoItemWrapper>
+        <VideoWrapper
+          onClick={selectVideo({
+            ...videoInfo,
+            stream: screen,
+            isScreen: true,
+          })}
+        >
+          <Video key={socketID} muted={muted} autoPlay playsInline ref={screenRef} />
+          <p>{`${username}(${loginID}) 님의 화면`}</p>
+          {screen && selectedVideo?.stream?.id === screen?.id && (
+            <SelectVideoIndicator>
+              <CameraOnIcon />
+            </SelectVideoIndicator>
+          )}
+        </VideoWrapper>
       )}
     </>
   );
