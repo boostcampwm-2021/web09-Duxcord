@@ -3,17 +3,21 @@ import styled from 'styled-components';
 
 const VideoWrapper = styled.div`
   position: relative;
-  display: flex;
   width: calc(100% - 300px);
-  height: 100%;
+  height: calc(100% - 160px);
+  margin: auto 0;
+  margin-left: 20px;
 `;
 
 const Video = styled.video`
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  justify-self: center;
-  align-self: center;
   object-fit: contain;
+  border-radius: 20px;
+  background-color: black;
 `;
 
 const UserInfo = styled.p`
