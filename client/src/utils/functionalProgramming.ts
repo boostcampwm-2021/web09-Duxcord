@@ -27,6 +27,17 @@ const mapAsync = curry((f: (a: Promise<any>) => Promise<any>, iter: any) => {
   return res;
 });
 
+const reduce = curry((f: (a: any, b: any) => any, acc: any, iter: any) => {
+  if (!iter) {
+    iter = acc[Symbol.iterator]();
+    acc = iter.next().value;
+  }
+  for (const a of iter) {
+    acc = f(acc, a);
+  }
+  return acc;
+});
+
 const reduceAsync = curry(async (f: (a: number, b: number) => number, acc: any, iter: any) => {
   if (!iter) {
     iter = acc[Symbol.iterator]();
@@ -38,4 +49,6 @@ const reduceAsync = curry(async (f: (a: number, b: number) => number, acc: any, 
   return acc;
 });
 
-export { map, mapAsync, filter, reduceAsync };
+const go = (...args: any) => reduce((a: any, f: any) => f(a), args, undefined);
+
+export { map, mapAsync, filter, reduceAsync, go };
