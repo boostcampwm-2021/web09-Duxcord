@@ -74,10 +74,4 @@ const UserBio = styled.textarea`
   }
 `;
 
-const ErrorDiv = styled.div`
-  color: ${Colors.Red};
-  width: 240px;
-  margin: 8px 0;
-`;
-
-export { InputImage, UserImageWrapper, UserGridWrapper, UserName, UserBio, ErrorDiv };
+export { InputImage, UserImageWrapper, UserGridWrapper, UserName, UserBio };

@@ -77,7 +77,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           {files &&
             files.map((file) => (
               <div key={file.src}>
-                <img src={file.src} />
+                <img src={file.src} alt="chat file" />
               </div>
             ))}
         </FileWrapper>
