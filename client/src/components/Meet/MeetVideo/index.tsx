@@ -1,13 +1,28 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
-import { useSelectedChannel, useSelectedGroup, useUserdata, useUserDevice } from '@hooks/index';
+import {
+  useSelectedChannel,
+  useSelectedGroup,
+  useSelectVideo,
+  useUserdata,
+  useUserDevice,
+} from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import Socket, { socket } from 'src/utils/socket';
 import { highlightMyVolume } from 'src/utils/audio';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail } from './style';
+import {
+  Videos,
+  VideoWrapper,
+  Video,
+  Thumbnail,
+  VideoSection,
+  DeviceStatus,
+  ThumbnailWrapper,
+} from './style';
+import FocusedVideo from './FocusedVideo';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -49,6 +64,18 @@ export interface IMeetingUser {
   pc?: RTCPeerConnection;
 }
 
+export interface SelectedVideo {
+  socketID: string;
+  loginID: string;
+  username: string;
+  thumbnail: null | string;
+  stream?: MediaStream;
+  mic: boolean;
+  cam: boolean;
+  speaker: boolean;
+  isScreen: boolean;
+}
+
 function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
@@ -63,6 +90,7 @@ function MeetVideo() {
   const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
+  const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
 
   const getMyStream = async () => {
     let myStream;
@@ -122,6 +150,9 @@ function MeetVideo() {
 
         if (mem.stream && mem.stream.id !== e.streams[0].id) {
           newStream.onremovetrack = () => {
+            setSelectedVideo((selectedVideo) =>
+              selectedVideo?.socketID === mem?.socketID ? null : selectedVideo,
+            );
             setMeetingMembers((members) => {
               const m = members.find((m) => m.socketID === member.socketID);
               if (!m) return members;
@@ -248,6 +279,9 @@ function MeetVideo() {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
       delete pcs.current[memberID];
+      setSelectedVideo((selectedVideo) =>
+        selectedVideo?.socketID === memberID ? null : selectedVideo,
+      );
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
     });
 
@@ -285,6 +319,11 @@ function MeetVideo() {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
+        setSelectedVideo((selectedVideo) => {
+          if (selectedVideo?.socketID === member.socketID)
+            return { ...selectedVideo, mic: micStatus };
+          else return selectedVideo;
+        });
         member.mic = micStatus;
         return [...members];
       });
@@ -294,16 +333,26 @@ function MeetVideo() {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
+        setSelectedVideo((selectedVideo) => {
+          if (selectedVideo?.socketID === member.socketID)
+            return { ...selectedVideo, cam: camStatus };
+          else return selectedVideo;
+        });
         member.cam = camStatus;
         return [...members];
       });
     });
 
-    socket.on(MeetEvent.setSpeaker, (speakerStatue, socketID) => {
+    socket.on(MeetEvent.setSpeaker, (speakerStatus, socketID) => {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
-        member.speaker = speakerStatue;
+        setSelectedVideo((selectedVideo) => {
+          if (selectedVideo?.socketID === member.socketID)
+            return { ...selectedVideo, speaker: speakerStatus };
+          else return selectedVideo;
+        });
+        member.speaker = speakerStatus;
         return [...members];
       });
     });
@@ -316,29 +365,38 @@ function MeetVideo() {
   }, []);
 
   return (
-    <>
-      <MeetVideoWrapper ref={videoWrapperRef} videoCount={videoCount || 0}>
-        <VideoItemWrapper>
-          <VideoItem autoPlay playsInline muted ref={myVideoRef} />
-          {cam ? (
-            ''
-          ) : (
-            <Thumbnail src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
-          )}
+    <VideoSection>
+      {selectedVideo && <FocusedVideo selectedVideo={selectedVideo} onClick={deselectVideo} />}
+      <Videos ref={videoWrapperRef} videoCount={videoCount || 0} focused={selectedVideo !== null}>
+        <VideoWrapper>
+          <Video autoPlay playsInline muted ref={myVideoRef} />
+          <ThumbnailWrapper>
+            {cam || (
+              <Thumbnail src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
+            )}
+          </ThumbnailWrapper>
           <p>{`${userdata?.username}(${userdata?.loginID})`}</p>
-          {mic ? '' : <MicOffIcon />}
-          {speaker ? '' : <SpeakerOffIcon />}
-        </VideoItemWrapper>
+          <DeviceStatus>
+            {mic || <MicOffIcon />}
+            {speaker || <SpeakerOffIcon />}
+          </DeviceStatus>
+        </VideoWrapper>
         {screenShare && (
-          <VideoItemWrapper>
-            <VideoItem autoPlay playsInline muted ref={myScreenRef} />
-            <p>{`${userdata?.username}(${userdata?.loginID})님의 화면`}</p>
-          </VideoItemWrapper>
+          <VideoWrapper>
+            <Video autoPlay playsInline muted ref={myScreenRef} />
+            <p>{`${userdata?.username}(${userdata?.loginID}) 님의 화면`}</p>
+          </VideoWrapper>
         )}
         {meetingMembers.map((member) => (
-          <OtherVideo key={member.socketID} member={member} muted={!speaker} />
+          <OtherVideo
+            key={member.socketID}
+            member={member}
+            muted={!speaker}
+            selectVideo={selectVideo}
+            selectedVideo={selectedVideo}
+          />
         ))}
-      </MeetVideoWrapper>
+      </Videos>
       <MeetButton
         onScreenShareClick={() => {
           if (screenShare) {
@@ -350,7 +408,7 @@ function MeetVideo() {
           }
         }}
       />
-    </>
+    </VideoSection>
   );
 }
 

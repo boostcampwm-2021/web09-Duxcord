@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import Colors from '@styles/Colors';
 
 const MeetButtonWrapper = styled.div`
+  position: absolute;
+  left: auto;
+  right: auto;
+  bottom: 10px;
   width: 100%;
   height: 10%;
   display: flex;
