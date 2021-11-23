@@ -60,7 +60,7 @@ export default function UserEditModal({ controller }: { controller: ModalControl
       controller.hide();
       fireToast({ message: TOAST_MESSAGE.SUCCESS.PROFILE_EDIT, type: 'success' });
     } catch (error) {
-      fireToast({ message: TOAST_MESSAGE.ERROR.PROFILE_EDIT, type: 'success' });
+      fireToast({ message: TOAST_MESSAGE.ERROR.PROFILE_EDIT, type: 'warning' });
     }
   };
 

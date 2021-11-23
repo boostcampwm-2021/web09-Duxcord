@@ -49,13 +49,13 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
           break;
         case 400:
           const responseText = await response.text();
-          fireToast({ message: responseText, type: 'success' });
+          fireToast({ message: responseText, type: 'warning' });
           break;
         default:
-          fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'success' });
+          fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });
       }
     } catch (error) {
-      fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_DELETE, type: 'success' });
+      fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_DELETE, type: 'warning' });
     }
   };
 

@@ -40,10 +40,10 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
         break;
       case 400:
         const responseText = await response.text();
-        fireToast({ message: responseText, type: 'success' });
+        fireToast({ message: responseText, type: 'warning' });
         break;
       default:
-        fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_INVITATION, type: 'success' });
+        fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_INVITATION, type: 'warning' });
     }
   };
 
