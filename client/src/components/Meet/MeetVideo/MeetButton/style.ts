@@ -3,11 +3,9 @@ import Colors from '@styles/Colors';
 
 const MeetButtonWrapper = styled.div`
   position: absolute;
-  left: auto;
-  right: auto;
+  left: 50%;
   bottom: 10px;
-  width: 100%;
-  height: 10%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: center;
   & button {
