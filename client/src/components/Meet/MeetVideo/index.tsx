@@ -319,6 +319,11 @@ function MeetVideo() {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
+        setSelectedVideo((selectedVideo) => {
+          if (selectedVideo?.socketID === member.socketID)
+            return { ...selectedVideo, mic: micStatus };
+          else return selectedVideo;
+        });
         member.mic = micStatus;
         return [...members];
       });
@@ -328,16 +333,26 @@ function MeetVideo() {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
+        setSelectedVideo((selectedVideo) => {
+          if (selectedVideo?.socketID === member.socketID)
+            return { ...selectedVideo, cam: camStatus };
+          else return selectedVideo;
+        });
         member.cam = camStatus;
         return [...members];
       });
     });
 
-    socket.on(MeetEvent.setSpeaker, (speakerStatue, socketID) => {
+    socket.on(MeetEvent.setSpeaker, (speakerStatus, socketID) => {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
-        member.speaker = speakerStatue;
+        setSelectedVideo((selectedVideo) => {
+          if (selectedVideo?.socketID === member.socketID)
+            return { ...selectedVideo, speaker: speakerStatus };
+          else return selectedVideo;
+        });
+        member.speaker = speakerStatus;
         return [...members];
       });
     });
