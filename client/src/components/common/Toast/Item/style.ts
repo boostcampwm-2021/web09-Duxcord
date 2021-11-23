@@ -1,11 +1,37 @@
 import Colors from '@styles/Colors';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
+interface IWrapper {
+  isClosing: boolean;
+}
+const Wrapper = styled.div<IWrapper>`
   color: ${(props) => (props.color === 'warning' ? Colors.Red : Colors.Black)};
   background-color: white;
-  border-radius: 12px;
+  border-radius: 2px;
   position: relative;
+  animation: 0.3s forwards ${(props) => (props.isClosing ? 'slideToTop' : 'slideFromRight')};
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+
+  @keyframes slideToTop {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+  }
+  @keyframes slideFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
 `;
 
 const GridWrapper = styled.div`
@@ -13,6 +39,11 @@ const GridWrapper = styled.div`
   display: grid;
   grid-template-columns: 5fr 1fr;
   padding: 16px;
+
+  & > div:nth-child(2) {
+    text-align: right;
+    color: ${Colors.Gray2};
+  }
 `;
 
 interface ILine {
@@ -21,7 +52,7 @@ interface ILine {
 }
 const Line = styled.div<ILine>`
   background-color: ${(props) => (props.type === 'warning' ? Colors.Red : Colors.Green)};
-  animation: ${(props) => props.duration}s linear timer;
+  animation: ${(props) => props.duration}s forwards timer;
   position: absolute;
   bottom: 0;
   width: 100%;
