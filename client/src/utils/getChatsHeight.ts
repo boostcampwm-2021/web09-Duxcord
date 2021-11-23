@@ -5,7 +5,7 @@ const getChatsHeight = async (chatListRef: React.RefObject<HTMLDivElement>, leng
   const chatItems = chatListRef.current?.querySelectorAll('.ChatItem');
   const target = filter(chatItems, length);
   const dayPillHeights = Object.keys(makeChatSection(target)).length * 30;
-  console.log(target);
+
   let count = -1;
   const result = await reduceAsync(
     (a, b) => a + b,
