@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { useGroups } from '@hooks/index';
+import { useGroups, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { URL } from 'src/api/URL';
@@ -30,6 +30,8 @@ function GroupCreateModal({
     hide();
   };
 
+  const { fireToast } = useToast();
+
   const [postError, setPostError] = useState<string | null>(null);
   const createGroup = async () => {
     if (groupName === '') return;
@@ -45,6 +47,7 @@ function GroupCreateModal({
         dispatch(setSelectedGroup(group));
         finishModal();
         history.replace(URL.groupPage(group.id));
+        fireToast({ message: '그룹 생성에 성공하셨습니다', type: 'success', duration: 4000 });
         break;
       case 400:
         const responseText = await response.text();
