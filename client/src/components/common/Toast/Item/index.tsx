@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import { ToastData } from '@customTypes/toast';
-import { GridWrapper, Line, Wrapper } from './style';
+import { InnerWrapper, Line, Wrapper } from './style';
 
 export default function ToastItem({ message, type, duration }: ToastData) {
-  const [leftTime, setLeftTime] = useState<number>(duration! / 1000);
   const [isClosing, setIsClosing] = useState(false);
-
-  useEffect(() => {
-    const setDurationInterval = setInterval(() => setLeftTime((prev: number) => prev - 1), 1000);
-
-    return () => clearInterval(setDurationInterval);
-  }, []);
 
   useEffect(() => {
     const setExitTimeout = setTimeout(() => {
@@ -21,12 +14,12 @@ export default function ToastItem({ message, type, duration }: ToastData) {
 
     return () => clearTimeout(setExitTimeout);
   }, []);
+
   return (
     <Wrapper isClosing={isClosing}>
-      <GridWrapper color={type}>
+      <InnerWrapper color={type}>
         <div>{message}</div>
-        <div>{leftTime}</div>
-      </GridWrapper>
+      </InnerWrapper>
       <Line type={type} duration={duration! / 1000} />
     </Wrapper>
   );

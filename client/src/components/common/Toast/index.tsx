@@ -6,7 +6,7 @@ import ToastItem from './Item';
 
 export default function Toast() {
   const toasts = useToasts();
-  if (toasts.length === 0) return <></>;
+
   return (
     <Wrapper>
       {toasts.map((toast) => (

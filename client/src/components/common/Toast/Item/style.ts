@@ -34,16 +34,12 @@ const Wrapper = styled.div<IWrapper>`
   }
 `;
 
-const GridWrapper = styled.div`
+const InnerWrapper = styled.div`
   width: 100%;
-  display: grid;
-  grid-template-columns: 5fr 1fr;
-  padding: 16px;
-
-  & > div:nth-child(2) {
-    text-align: right;
-    color: ${Colors.Gray2};
-  }
+  padding-top: 16px;
+  padding-bottom: 22px;
+  padding-right: 28px;
+  padding-left: 28px;
 `;
 
 interface ILine {
@@ -69,4 +65,4 @@ const Line = styled.div<ILine>`
   } ;
 `;
 
-export { Wrapper, GridWrapper, Line };
+export { Wrapper, InnerWrapper, Line };
