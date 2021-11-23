@@ -51,4 +51,9 @@ const reduceAsync = curry(async (f: (a: number, b: number) => number, acc: any, 
 
 const go = (...args: any) => reduce((a: any, f: any) => f(a), args, undefined);
 
-export { map, mapAsync, filter, reduceAsync, go };
+const add = curry(async (a: number, b: Promise<number>) => {
+  const totalHeight = await b;
+  return totalHeight + a;
+});
+
+export { map, mapAsync, filter, reduceAsync, go, add };
