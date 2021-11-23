@@ -22,7 +22,7 @@ const getChatsHeight = async (chatListRef: React.RefObject<HTMLDivElement>, leng
       return resolve(target[count].clientHeight);
     });
 
-  const result = await go(
+  const result = go(
     target,
     map(loadOneChatItemImages),
     mapAsync(getOneElement),
