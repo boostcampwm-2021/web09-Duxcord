@@ -50,6 +50,7 @@ function Chat() {
   }, [isReachingEnd, setSize]);
 
   useEffect(() => {
+    if (chatListRef?.current?.scrollTop !== 0) return;
     (async () => {
       if (chats) {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
