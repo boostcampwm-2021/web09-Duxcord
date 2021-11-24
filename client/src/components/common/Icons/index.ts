@@ -2,20 +2,15 @@ import { ReactComponent as CameraOffIcon } from '@assets/icons/ic-camera-off.svg
 import { ReactComponent as CameraOnIcon } from '@assets/icons/ic-camera-on.svg';
 import { ReactComponent as ModalCloseIcon } from '@assets/icons/ic-modal-close.svg';
 import { ReactComponent as MicOffIcon } from '@assets/icons/ic-mic-off.svg';
-import { ReactComponent as HeaderAlertIcon } from '@assets/icons/ic-header-alert.svg';
 import { ReactComponent as FileSelectIcon } from '@assets/icons/ic-file-select.svg';
 import { ReactComponent as MicOnIcon } from '@assets/icons/ic-mic-on.svg';
-import { ReactComponent as HeaderFixIcon } from '@assets/icons/ic-header-fix.svg';
 import { ReactComponent as GroupAddIcon } from '@assets/icons/ic-group-add.svg';
 import { ReactComponent as SpeakerOffIcon } from '@assets/icons/ic-speaker-off.svg';
-import { ReactComponent as HeaderMentionIcon } from '@assets/icons/ic-header-mention.svg';
 import { ReactComponent as GroupDeleteIcon } from '@assets/icons/ic-group-delete.svg';
 import { ReactComponent as SpeakerOnIcon } from '@assets/icons/ic-speaker-on.svg';
-import { ReactComponent as HeaderQuestionIcon } from '@assets/icons/ic-header-question.svg';
 import { ReactComponent as ChannelAddIcon } from '@assets/icons/ic-channel-add.svg';
 import { ReactComponent as GroupInviteIcon } from '@assets/icons/ic-group-invite.svg';
 import { ReactComponent as ThreadCloseIcon } from '@assets/icons/ic-thread-close.svg';
-import { ReactComponent as HeaderUsersIcon } from '@assets/icons/ic-header-users.svg';
 import { ReactComponent as ChannelOpenIcon } from '@assets/icons/ic-channel-open.svg';
 import { ReactComponent as ImageAddIcon } from '@assets/icons/ic-image-add.svg';
 import { ReactComponent as ThreadOpenIcon } from '@assets/icons/ic-thread-open.svg';
@@ -37,20 +32,15 @@ export {
   CameraOnIcon,
   ModalCloseIcon,
   MicOffIcon,
-  HeaderAlertIcon,
   FileSelectIcon,
   MicOnIcon,
-  HeaderFixIcon,
   GroupAddIcon,
   SpeakerOffIcon,
-  HeaderMentionIcon,
   GroupDeleteIcon,
   SpeakerOnIcon,
-  HeaderQuestionIcon,
   ChannelAddIcon,
   GroupInviteIcon,
   ThreadCloseIcon,
-  HeaderUsersIcon,
   ChannelOpenIcon,
   ImageAddIcon,
   ThreadOpenIcon,
