@@ -13,8 +13,8 @@ const S3 = new AWS.S3({
   endpoint,
   region,
   credentials: {
-    accessKeyId: access_key!,
-    secretAccessKey: secret_key!,
+    accessKeyId: access_key,
+    secretAccessKey: secret_key,
   },
   signatureVersion: 'v4',
 });
