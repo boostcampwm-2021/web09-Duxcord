@@ -6,8 +6,6 @@ import {
   useSelectVideo,
   useUserdata,
   useUserDevice,
-  useSoundEffect,
-  SoundEffect,
 } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import Socket, { socket } from 'src/utils/socket';
@@ -25,6 +23,7 @@ import {
   ThumbnailWrapper,
 } from './style';
 import FocusedVideo from './FocusedVideo';
+import { playSoundEffect, SoundEffect } from 'src/utils/playSoundEffect';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -99,7 +98,6 @@ function MeetVideo() {
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
   const streamIDMetaData = useRef<{ [socketID: string]: StreamIDMetaData }>({});
-  const playSoundEffect = useSoundEffect();
 
   const getMyStream = async () => {
     let myStream;
