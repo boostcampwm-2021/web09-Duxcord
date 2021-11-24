@@ -17,6 +17,7 @@ import MeetButton from './MeetButton';
 import { Videos, VideoSection } from './style';
 import FocusedVideo from './FocusedVideo';
 import MyVideo from './MyVideo';
+import { MeetingMember, StreamIDMetaData } from '@customTypes/meet';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -44,36 +45,6 @@ const applyDeviceStatus = ({
     track.enabled = audio;
   });
 };
-
-export interface MeetingMember {
-  socketID: string;
-  loginID: string;
-  username: string;
-  thumbnail: string | null;
-  mic: boolean;
-  cam: boolean;
-  speaker: boolean;
-  stream?: MediaStream;
-  screen?: MediaStream;
-  pc?: RTCPeerConnection;
-}
-
-export interface SelectedVideo {
-  socketID: string;
-  loginID: string;
-  username: string;
-  thumbnail: null | string;
-  stream?: MediaStream;
-  mic: boolean;
-  cam: boolean;
-  speaker: boolean;
-  isScreen: boolean;
-}
-
-interface StreamIDMetaData {
-  camera: string;
-  screen: string;
-}
 
 function MeetVideo() {
   const { userdata } = useUserdata();

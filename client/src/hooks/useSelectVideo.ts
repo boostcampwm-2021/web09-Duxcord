@@ -1,5 +1,5 @@
+import { SelectedVideo } from '@customTypes/meet';
 import { useState, useCallback } from 'react';
-import { SelectedVideo } from '@components/Meet/MeetVideo';
 
 export const useSelectVideo = () => {
   const [selectedVideo, setSelectedVideo] = useState<SelectedVideo | null>(null);
