@@ -2,12 +2,13 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
+import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
+import { TOAST_MESSAGE } from 'src/utils/message';
 import { socket } from 'src/utils/socket';
 import { deleteChannel } from 'src/api/deleteChannel';
 import { URL } from 'src/api/URL';
@@ -18,6 +19,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
   const selectedGroup = useSelectedGroup();
   const selectedChannel = useSelectedChannel();
   const { groups, mutate: mutateGroups } = useGroups();
+  const { fireToast } = useToast();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -58,16 +60,16 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
           dispatch(setSelectedChat(null));
           controller.hide();
           history.replace(URL.groupPage(selectedGroup.id));
+          fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_DELETE, type: 'success' });
           break;
         case 400:
-          const responseText = await response.text();
-          console.error(responseText);
+          fireToast({ message: TOAST_MESSAGE.ERROR.CHANNEL_DELETE, type: 'warning' });
           break;
         default:
-          console.log('백엔드가 포기한 요청');
+          fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });
       }
     } catch (error) {
-      console.error(error);
+      fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });
     }
   };
 

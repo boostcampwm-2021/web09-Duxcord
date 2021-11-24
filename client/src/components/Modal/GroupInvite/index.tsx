@@ -1,42 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { useSelectedGroup } from '@hooks/index';
+import { useSelectedGroup, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
+import { TOAST_MESSAGE } from 'src/utils/message';
 import Modal from '..';
 import { CodeWrapper } from './style';
 
-const pasteCodeMessage = {
-  IDLE: '',
-  SUCCESS: '복사가 완료되었습니다.',
-  FAIL: '복사에 실패했습니다. 다시 시도해주세요',
-};
-
 function GroupInviteModal({ controller: { hide, show } }: { controller: ModalController }) {
   const selectedGroup = useSelectedGroup();
-  const [copied, setCopied] = useState(pasteCodeMessage.IDLE);
+  const { fireToast } = useToast();
 
   const pasteGroupCode = async () => {
     try {
       await window.navigator.clipboard.writeText(selectedGroup.code);
-      setCopied(pasteCodeMessage.SUCCESS);
+      fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_CODE_COPY, type: 'success' });
     } catch (error) {
-      console.error(error);
-      setCopied(pasteCodeMessage.FAIL);
+      fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_CODE_COPY, type: 'warning' });
     }
   };
 
-  const finishModal = () => {
-    setCopied(pasteCodeMessage.IDLE);
-    hide();
-  };
-
-  const CodeComponent = (
-    <>
-      <CodeWrapper onClick={pasteGroupCode}>{selectedGroup.code}</CodeWrapper>
-      <div>{copied}</div>
-    </>
-  );
+  const CodeComponent = <CodeWrapper onClick={pasteGroupCode}>{selectedGroup.code}</CodeWrapper>;
 
   return (
     <Modal
@@ -49,7 +33,7 @@ function GroupInviteModal({ controller: { hide, show } }: { controller: ModalCon
           onClickHandler: pasteGroupCode,
         },
       }}
-      controller={{ hide: finishModal, show }}
+      controller={{ hide, show }}
     />
   );
 }

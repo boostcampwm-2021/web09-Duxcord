@@ -125,6 +125,7 @@ const DeviceStatus = styled.div`
 `;
 
 const VideoSection = styled.section`
+  position: relative;
   display: flex;
   justify-content: end;
   background-color: ${Colors.Gray3};
