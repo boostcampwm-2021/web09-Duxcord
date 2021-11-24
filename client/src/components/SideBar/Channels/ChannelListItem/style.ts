@@ -37,4 +37,8 @@ const ListItem = styled.li<IListItem>`
   }
 `;
 
-export { ListItem };
+const ChannelMeetingCount = styled.div`
+  font-stretch: expanded;
+`;
+
+export { ListItem, ChannelMeetingCount };
