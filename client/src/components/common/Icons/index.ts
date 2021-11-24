@@ -31,10 +31,12 @@ import { ReactComponent as ScreenShareStopIcon } from '@assets/icons/ic-screen-s
 import { ReactComponent as CircleDeselectedIcon } from '@assets/icons/ic-circle-deselected.svg';
 import { ReactComponent as CircleSelectedIcon } from '@assets/icons/ic-circle-selected.svg';
 import { ReactComponent as GroupThumbnailUploadIcon } from '@assets/icons/ic-group-thumbnail-upload.svg';
+import { ReactComponent as CaptureIcon } from '@assets/icons/ic-capture.svg';
 
 export {
   CameraOffIcon,
   CameraOnIcon,
+  CaptureIcon,
   ModalCloseIcon,
   MicOffIcon,
   HeaderAlertIcon,
