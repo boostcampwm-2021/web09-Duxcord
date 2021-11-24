@@ -51,12 +51,16 @@ function SocketMeetController(socket) {
     io.to(socket.id).emit(MeetEvent.allMeetingMembers, membersInMeeting);
   };
 
-  this.answer = ({ answer, receiverID }) => {
-    io.to(receiverID).emit(MeetEvent.answer, { answer, senderID: socket.id });
+  this.offer = ({ offer, receiverID, member, streamID }) => {
+    io.to(receiverID).emit(MeetEvent.offer, {
+      offer,
+      member: { socketID: socket.id, ...member },
+      streamID,
+    });
   };
 
-  this.offer = ({ offer, receiverID, member }) => {
-    io.to(receiverID).emit(MeetEvent.offer, { offer, member: { socketID: socket.id, ...member } });
+  this.answer = ({ answer, receiverID, streamID }) => {
+    io.to(receiverID).emit(MeetEvent.answer, { answer, senderID: socket.id, streamID });
   };
 
   this.candidate = ({ candidate, receiverID }) => {
