@@ -8,7 +8,8 @@ import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { URL } from 'src/api/URL';
 import { postCreateGroup } from 'src/api/postCreateGroup';
-import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { uploadFileWithPresignedUrl } from 'src/utils/uploadFile';
+import getPresignedUrl from 'src/utils/getPresignedUrl';
 import Modal from '..';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
 import { ErrorDiv, InputForm, InputImage, InputText } from './style';
@@ -65,10 +66,13 @@ function GroupCreateModal({
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
       if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadedFile = await uploadFileToStorage(file);
+      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
+      const presignedUrl = await getPresignedUrl(uploadName);
+      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
       if (uploadedFile && inputImage && inputImage.current) {
-        inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
-        setFileURL(uploadedFile);
+        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
+        inputImage.current.style.backgroundImage = `url('${uploadedURL}')`;
+        setFileURL(uploadedURL);
         setFileError(false);
       } else setFileError(true);
     } catch (error) {
