@@ -14,17 +14,9 @@ import Socket, { socket } from 'src/utils/socket';
 import { highlightMyVolume } from 'src/utils/audio';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
-import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import {
-  Videos,
-  VideoWrapper,
-  Video,
-  Thumbnail,
-  VideoSection,
-  DeviceStatus,
-  ThumbnailWrapper,
-} from './style';
+import { Videos, VideoSection } from './style';
 import FocusedVideo from './FocusedVideo';
+import MyVideo from './MyVideo';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -413,25 +405,14 @@ function MeetVideo() {
     <VideoSection>
       {selectedVideo && <FocusedVideo selectedVideo={selectedVideo} onClick={deselectVideo} />}
       <Videos ref={videoWrapperRef} videoCount={videoCount || 0} focused={selectedVideo !== null}>
-        <VideoWrapper>
-          <Video autoPlay playsInline muted ref={myVideoRef} />
-          <ThumbnailWrapper>
-            {cam || (
-              <Thumbnail src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />
-            )}
-          </ThumbnailWrapper>
-          <p>{`${userdata?.username}(${userdata?.loginID})`}</p>
-          <DeviceStatus>
-            {mic || <MicOffIcon />}
-            {speaker || <SpeakerOffIcon />}
-          </DeviceStatus>
-        </VideoWrapper>
-        {screenShare && (
-          <VideoWrapper>
-            <Video autoPlay playsInline muted ref={myScreenRef} />
-            <p>{`${userdata?.username}(${userdata?.loginID}) 님의 화면`}</p>
-          </VideoWrapper>
-        )}
+        <MyVideo
+          myVideoRef={myVideoRef}
+          myScreenRef={myScreenRef}
+          cam={cam}
+          mic={mic}
+          speaker={speaker}
+          screenShare={screenShare}
+        />
         {meetingMembers.map((member) => (
           <OtherVideo
             key={member.socketID}
