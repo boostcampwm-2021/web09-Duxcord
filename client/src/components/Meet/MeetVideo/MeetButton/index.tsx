@@ -7,6 +7,7 @@ import { useSelectedGroup } from '@hooks/index';
 import { URL } from 'src/api/URL';
 import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
 import { DarkRedButton, GrayButton, MeetButtonWrapper } from './style';
+import { capture } from 'src/utils/capture';
 
 function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) {
   const selectedGroup = useSelectedGroup();
@@ -24,7 +25,9 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
     history.replace(URL.groupPage(selectedGroup.id));
   };
 
-  const onMeetingCaptureClick = () => {};
+  const onMeetingCaptureClick = () => {
+    capture();
+  };
 
   return (
     <MeetButtonWrapper>
