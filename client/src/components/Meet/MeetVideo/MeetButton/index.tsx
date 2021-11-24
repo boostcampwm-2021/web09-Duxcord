@@ -5,8 +5,8 @@ import { useHistory } from 'react-router';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup } from '@hooks/index';
 import { URL } from 'src/api/URL';
-import { MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
-import { MeetButtonWrapper } from './style';
+import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
+import { DarkRedButton, GrayButton, MeetButtonWrapper } from './style';
 
 function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) {
   const selectedGroup = useSelectedGroup();
@@ -24,14 +24,19 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
     history.replace(URL.groupPage(selectedGroup.id));
   };
 
+  const onMeetingCaptureClick = () => {};
+
   return (
     <MeetButtonWrapper>
-      <button onClick={onScreenShareClick}>
+      <GrayButton onClick={onScreenShareClick}>
         <ScreenShareStartIcon />
-      </button>
-      <button onClick={onMeetingStopClick}>
+      </GrayButton>
+      <GrayButton onClick={onMeetingCaptureClick}>
+        <CaptureIcon />
+      </GrayButton>
+      <DarkRedButton onClick={onMeetingStopClick}>
         <MeetingStopIcon />
-      </button>
+      </DarkRedButton>
     </MeetButtonWrapper>
   );
 }
