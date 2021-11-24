@@ -99,8 +99,6 @@ function MeetVideo() {
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
   const streamIDMetaData = useRef<{ [socketID: string]: StreamIDMetaData }>({});
-  const joinSoundEffectRef = useRef<HTMLAudioElement>(null);
-  const leaveSoundEffectRef = useRef<HTMLAudioElement>(null);
   const playSoundEffect = useSoundEffect();
 
   const getMyStream = async () => {
