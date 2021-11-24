@@ -54,8 +54,9 @@ function SocketMeetController(socket) {
   this.offer = ({ offer, receiverID, member, streamID }) => {
     io.to(receiverID).emit(MeetEvent.offer, {
       offer,
-      member: { socketID: socket.id, ...member },
+      member,
       streamID,
+      senderID: socket.id,
     });
   };
 
