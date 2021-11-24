@@ -1,6 +1,6 @@
 const soundFileNames = ['meet_join.wav', 'meet_leave.wav'];
-const SOUND_PATH = '/sounds/';
-const soundEffects = soundFileNames.map((filename) => new Audio(SOUND_PATH + filename));
+const SOUNDS_PATH = '/sounds/';
+const soundEffects = soundFileNames.map((filename) => new Audio(SOUNDS_PATH + filename));
 
 export const useSoundEffect = () => {
   const playSoundEffect = (soundEffect: SoundEffect) => {
