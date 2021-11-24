@@ -29,9 +29,10 @@ function ChannelListItem({
   const history = useHistory();
   const dispatch = useDispatch();
   const isLeader = selectedGroup?.leader?.loginID === userdata?.loginID;
+  const MAX_MEETING_USER_COUNT = 5;
 
   const joinChannel = () => {
-    if (meetingUserCount >= 5 && channelType === 'meeting') return;
+    if (meetingUserCount >= MAX_MEETING_USER_COUNT && channelType === 'meeting') return;
     history.replace(URL.channelPage(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
@@ -49,6 +50,11 @@ function ChannelListItem({
         ) : null}
         <p>{name}</p>
       </div>
+      {channelType === 'meeting' && meetingUserCount !== 0 && (
+        <div>
+          {meetingUserCount}/{MAX_MEETING_USER_COUNT}
+        </div>
+      )}
       {isLeader && (
         <GroupDeleteIcon
           onClick={(e) => {
