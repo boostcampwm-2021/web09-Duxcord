@@ -45,7 +45,7 @@ const applyDeviceStatus = ({
   });
 };
 
-export interface IMeetingUser {
+export interface MeetingMember {
   socketID: string;
   loginID: string;
   username: string;
@@ -86,7 +86,7 @@ function MeetVideo() {
   const myScreenRef = useRef<HTMLVideoElement>(null);
   const myScreenStreamRef = useRef<MediaStream>();
   const [screenShare, setScreenShare] = useState(false);
-  const [meetingMembers, setMeetingMembers] = useState<IMeetingUser[]>([]);
+  const [meetingMembers, setMeetingMembers] = useState<MeetingMember[]>([]);
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
@@ -112,7 +112,7 @@ function MeetVideo() {
     myStreamRef.current = myStream;
   };
 
-  const createPeerConnection = useCallback((member: IMeetingUser) => {
+  const createPeerConnection = useCallback((member: MeetingMember) => {
     if (pcs.current[member.socketID]) return pcs.current[member.socketID];
     const pc = new RTCPeerConnection(pcConfig);
 
@@ -144,7 +144,7 @@ function MeetVideo() {
     };
 
     pc.ontrack = (e) => {
-      setMeetingMembers((members): IMeetingUser[] => {
+      setMeetingMembers((members): MeetingMember[] => {
         let mem = members.find((m) => m.socketID === member.socketID);
         if (!mem) {
           mem = { ...member, pc };
@@ -243,7 +243,7 @@ function MeetVideo() {
     Socket.joinChannel({ channelType: MeetEvent.meeting, id });
     socket.on(MeetEvent.allMeetingMembers, async (members) => {
       await getMyStream();
-      members.forEach(async (member: IMeetingUser) => {
+      members.forEach(async (member: MeetingMember) => {
         try {
           const pc = createPeerConnection(member);
           if (!pc) return;
