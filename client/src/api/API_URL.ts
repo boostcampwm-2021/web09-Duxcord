@@ -7,6 +7,7 @@ export const API_URL = {
     signUp: '/api/user/signup',
     editProfile: '/api/user/profile',
     getOtherUserdata: (userID: string) => `/api/user/${userID}/profile`,
+    getPresignedUrl: '/api/user/presignedurl',
   },
   channel: {
     postChat: (channelID: number) => `/api/channel/${channelID}/create`,
