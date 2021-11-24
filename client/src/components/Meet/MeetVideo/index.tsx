@@ -211,6 +211,16 @@ function MeetVideo() {
     }
   };
 
+  const onScreenShareClick = () => {
+    if (screenShare) {
+      const tracks = myScreenStreamRef.current?.getTracks();
+      tracks?.forEach((track) => track.stop());
+      setScreenShare(false);
+    } else {
+      setScreenShare(true);
+    }
+  };
+
   useEffect(() => {
     if (screenShare) getMyScreen();
     else {
@@ -423,17 +433,7 @@ function MeetVideo() {
           />
         ))}
       </Videos>
-      <MeetButton
-        onScreenShareClick={() => {
-          if (screenShare) {
-            const tracks = myScreenStreamRef.current?.getTracks();
-            tracks?.forEach((track) => track.stop());
-            setScreenShare(false);
-          } else {
-            setScreenShare(true);
-          }
-        }}
-      />
+      <MeetButton onScreenShareClick={onScreenShareClick} />
     </VideoSection>
   );
 }
