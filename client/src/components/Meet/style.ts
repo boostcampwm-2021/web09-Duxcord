@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Colors from '../../styles/Colors';
 
 const MeetWrapper = styled.div`
   position: relative;
