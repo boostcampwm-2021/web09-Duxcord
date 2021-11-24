@@ -21,6 +21,7 @@ import {
   VideoSection,
   DeviceStatus,
   ThumbnailWrapper,
+  SoundEffect,
 } from './style';
 import FocusedVideo from './FocusedVideo';
 
@@ -97,6 +98,8 @@ function MeetVideo() {
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
   const streamIDMetaData = useRef<{ [socketID: string]: StreamIDMetaData }>({});
+  const joinSoundEffectRef = useRef<HTMLAudioElement>(null);
+  const leaveSoundEffectRef = useRef<HTMLAudioElement>(null);
 
   const getMyStream = async () => {
     let myStream;
@@ -154,6 +157,11 @@ function MeetVideo() {
         if (!mem) {
           mem = { ...member, pc };
           members.push(mem);
+          try {
+            joinSoundEffectRef.current?.play();
+          } catch (e) {
+            console.error(e);
+          }
         }
 
         const newStream = e.streams[0];
@@ -307,6 +315,11 @@ function MeetVideo() {
         selectedVideo?.socketID === memberID ? null : selectedVideo,
       );
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
+      try {
+        leaveSoundEffectRef.current?.play();
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     socket.emit(MeetEvent.joinMeeting, id, code, {
@@ -432,6 +445,8 @@ function MeetVideo() {
           }
         }}
       />
+      <SoundEffect ref={joinSoundEffectRef} src="/audios/meet_join.wav" />
+      <SoundEffect ref={leaveSoundEffectRef} src="/audios/meet_leave.wav" />
     </VideoSection>
   );
 }

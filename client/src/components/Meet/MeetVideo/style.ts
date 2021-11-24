@@ -133,6 +133,10 @@ const VideoSection = styled.section`
   height: 100%;
 `;
 
+const SoundEffect = styled.audio`
+  display: hidden;
+`;
+
 export {
   Videos,
   VideoWrapper,
@@ -142,4 +146,5 @@ export {
   VideoSection,
   DeviceStatus,
   SelectVideoIndicator,
+  SoundEffect,
 };
