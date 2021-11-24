@@ -1,4 +1,4 @@
-import { map, mapAsync, reduceAsync, filter, go, add } from './functionalProgramming';
+import { map, mapAsync, filter, go, add, reduce } from './functionalProgramming';
 import { makeChatSection } from './makeChatSection';
 
 const addEventToImg = (img: HTMLElement) =>
@@ -6,7 +6,7 @@ const addEventToImg = (img: HTMLElement) =>
     img.onload = () => resolve();
   });
 
-const loadOneChatItemImages = (chatItem: HTMLElement) =>
+const addLoadEvent = (chatItem: HTMLElement) =>
   Promise.all(go(chatItem.querySelectorAll('img'), map(addEventToImg)));
 
 const getChatsHeight = async (chatListRef: React.RefObject<HTMLDivElement>, length: number) => {
@@ -14,23 +14,16 @@ const getChatsHeight = async (chatListRef: React.RefObject<HTMLDivElement>, leng
   const target = filter(chatItems, length);
   const dayPillHeights = Object.keys(makeChatSection(target)).length * 30;
 
-  let count = -1;
+  const loadImage = () => new Promise<void>((resolve) => resolve());
 
-  const getOneElement = () =>
-    new Promise((resolve) => {
-      count += 1;
-      return resolve(target[count].clientHeight);
-    });
+  await go(target, map(addLoadEvent), mapAsync(loadImage));
 
-  const result = go(
+  return go(
     target,
-    map(loadOneChatItemImages),
-    mapAsync(getOneElement),
-    reduceAsync((a: number, b: number) => a + b),
+    map((chatItem: HTMLElement) => chatItem.clientHeight),
+    reduce(add),
     add(dayPillHeights),
   );
-
-  return result;
 };
 
 export { getChatsHeight };

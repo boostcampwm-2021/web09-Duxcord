@@ -2,10 +2,11 @@ import React, { FormEvent, useRef, useState } from 'react';
 
 import { useSelectedChannel, useToast } from '@hooks/index';
 import { postChat } from 'src/api/postChat';
-import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { uploadFileWithPresignedUrl } from 'src/utils/uploadFile';
 import { TOAST_MESSAGE } from 'src/utils/message';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
+import getPresignedUrl from 'src/utils/getPresignedUrl';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
@@ -31,9 +32,12 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
       if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadedFile = await uploadFileToStorage(file);
+      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
+      const presignedUrl = await getPresignedUrl(uploadName);
+      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
       if (uploadedFile && fileInputRef && fileInputRef.current) {
-        setFileURL([...fileURL, uploadedFile]);
+        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
+        setFileURL([...fileURL, uploadedURL]);
         fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
       }
     } catch (error) {

@@ -6,6 +6,8 @@ import {
   useSelectVideo,
   useUserdata,
   useUserDevice,
+  useSoundEffect,
+  SoundEffect,
 } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import Socket, { socket } from 'src/utils/socket';
@@ -76,6 +78,11 @@ export interface SelectedVideo {
   isScreen: boolean;
 }
 
+interface StreamIDMetaData {
+  camera: string;
+  screen: string;
+}
+
 function MeetVideo() {
   const { userdata } = useUserdata();
   const { id } = useSelectedChannel();
@@ -91,6 +98,8 @@ function MeetVideo() {
   const pcs = useRef<{ [socketID: string]: RTCPeerConnection }>({});
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
+  const streamIDMetaData = useRef<{ [socketID: string]: StreamIDMetaData }>({});
+  const playSoundEffect = useSoundEffect();
 
   const getMyStream = async () => {
     let myStream;
@@ -132,6 +141,10 @@ function MeetVideo() {
           offer,
           receiverID: member.socketID,
           member: {},
+          streamID: {
+            camera: myStreamRef.current?.id,
+            screen: myScreenStreamRef.current?.id,
+          },
         });
       } catch (e) {
         console.error(e);
@@ -144,11 +157,19 @@ function MeetVideo() {
         if (!mem) {
           mem = { ...member, pc };
           members.push(mem);
+          try {
+            playSoundEffect(SoundEffect.JoinMeeting);
+          } catch (e) {
+            console.error(e);
+          }
         }
 
         const newStream = e.streams[0];
+        const { camera, screen } = streamIDMetaData.current[mem.socketID];
 
-        if (mem.stream && mem.stream.id !== e.streams[0].id) {
+        if (camera === newStream.id) {
+          mem.stream = newStream;
+        } else if (screen === newStream.id) {
           newStream.onremovetrack = () => {
             setSelectedVideo((selectedVideo) =>
               selectedVideo?.socketID === mem?.socketID ? null : selectedVideo,
@@ -161,8 +182,6 @@ function MeetVideo() {
             });
           };
           mem.screen = newStream;
-        } else {
-          mem.stream = newStream;
         }
 
         return [...members];
@@ -234,6 +253,10 @@ function MeetVideo() {
             offer,
             receiverID: member.socketID,
             member: { loginID, username, thumbnail, mic, cam, speaker },
+            streamID: {
+              camera: myStreamRef.current?.id,
+              screen: myScreenStreamRef.current?.id,
+            },
           });
         } catch (e) {
           console.error(MeetEvent.allMeetingMembers, e);
@@ -241,24 +264,33 @@ function MeetVideo() {
       });
     });
 
-    socket.on(MeetEvent.offer, async ({ offer, member }) => {
+    socket.on(MeetEvent.offer, async ({ offer, member, streamID }) => {
       try {
         const pc = createPeerConnection(member);
         if (!pc) return;
+        streamIDMetaData.current[member.socketID] = streamID;
         pcs.current[member.socketID] = pc;
         pc.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await pc.createAnswer();
         pc.setLocalDescription(new RTCSessionDescription(answer));
-        socket.emit(MeetEvent.answer, { answer, receiverID: member.socketID });
+        socket.emit(MeetEvent.answer, {
+          answer,
+          receiverID: member.socketID,
+          streamID: {
+            camera: myStreamRef.current?.id,
+            screen: myScreenStreamRef.current?.id,
+          },
+        });
       } catch (e) {
         console.error(e);
       }
     });
 
-    socket.on(MeetEvent.answer, async ({ answer, senderID }) => {
+    socket.on(MeetEvent.answer, async ({ answer, senderID, streamID }) => {
       try {
         const pc = pcs.current[senderID];
         if (!pc) return;
+        streamIDMetaData.current[senderID] = streamID;
         await pc.setRemoteDescription(new RTCSessionDescription(answer));
       } catch (e) {
         console.error(e);
@@ -283,6 +315,11 @@ function MeetVideo() {
         selectedVideo?.socketID === memberID ? null : selectedVideo,
       );
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
+      try {
+        playSoundEffect(SoundEffect.LeaveMeeting);
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     socket.emit(MeetEvent.joinMeeting, id, code, {
@@ -361,6 +398,14 @@ function MeetVideo() {
       socket.off(MeetEvent.setMuted);
       socket.off(MeetEvent.setToggleCam);
       socket.off(MeetEvent.setSpeaker);
+    };
+  }, []);
+
+  useEffect(() => {
+    playSoundEffect(SoundEffect.JoinMeeting);
+
+    return () => {
+      playSoundEffect(SoundEffect.LeaveMeeting);
     };
   }, []);
 
