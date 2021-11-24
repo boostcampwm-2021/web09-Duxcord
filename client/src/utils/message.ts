@@ -28,6 +28,7 @@ const TOAST_MESSAGE = {
     CHANNEL_CREATE: '채널 생성에 실패했습니다.',
     CHANNEL_DELETE: '채널 삭제에 실패했습니다.',
     PROFILE_EDIT: '프로필 수정에 실패했습니다.',
+    CAPTURE: '화면 캡쳐에 실패했습니다.',
   },
   SUCCESS: {
     COMMON: '요청이 성공했습니다.',
@@ -40,6 +41,7 @@ const TOAST_MESSAGE = {
     CHANNEL_DELETE: '채널 삭제에 성공했습니다.',
     PROFILE_EDIT: '프로필 수정에 성공했습니다.',
     LOGOUT: '로그아웃되었습니다.',
+    CAPTURE: '화면 캡쳐에 성공했습니다. 이미지가 저장됩니다.',
   },
 };
 
