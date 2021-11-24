@@ -44,10 +44,11 @@ function Chat() {
   }, [id]);
 
   const onScroll = useCallback(() => {
+    if (isValidating) return;
     if (chatListRef?.current?.scrollTop === 0 && !isReachingEnd) {
       setSize((size) => size + 1);
     }
-  }, [isReachingEnd, setSize]);
+  }, [isReachingEnd, setSize, isValidating]);
 
   useEffect(() => {
     if (chatListRef?.current?.scrollTop && chatListRef?.current?.scrollTop > 0) return;
