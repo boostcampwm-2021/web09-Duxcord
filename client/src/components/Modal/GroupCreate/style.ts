@@ -47,10 +47,4 @@ const InputForm = styled.form`
   align-items: center;
 `;
 
-const ErrorDiv = styled.div`
-  color: ${Colors.Red};
-  width: 240px;
-  margin: 8px 0;
-`;
-
-export { InputText, InputImage, InputForm, ErrorDiv };
+export { InputText, InputImage, InputForm };

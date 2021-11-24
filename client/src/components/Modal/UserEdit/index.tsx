@@ -2,20 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setSelectedUser } from '@redux/selectedUser/slice';
-import { useUserdata, useSelectedUser } from '@hooks/index';
+import { useUserdata, useSelectedUser, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { patchUserdata } from 'src/api/patchUserdata';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { TOAST_MESSAGE } from 'src/utils/message';
 import Modal from '..';
-import {
-  UserImageWrapper,
-  UserGridWrapper,
-  UserName,
-  UserBio,
-  ErrorDiv,
-  InputImage,
-} from './style';
+import { UserImageWrapper, UserGridWrapper, UserName, UserBio, InputImage } from './style';
 
 export default function UserEditModal({ controller }: { controller: ModalController }) {
   const { userdata, mutate: mutateUserdata } = useUserdata();
@@ -24,10 +18,10 @@ export default function UserEditModal({ controller }: { controller: ModalControl
   const [newBio, setNewBio] = useState(userdata.bio ?? '');
 
   const [thumbnail, setThumbnail] = useState<string | null>(userdata.thumbnail);
-  const [fileError, setFileError] = useState(false);
   const inputImage = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
+  const { fireToast } = useToast();
 
   useEffect(() => {
     if (!inputImage.current) return;
@@ -44,25 +38,30 @@ export default function UserEditModal({ controller }: { controller: ModalControl
       const uploadedFile = await uploadFileToStorage(file);
       if (uploadedFile && inputImage && inputImage.current) {
         setThumbnail(uploadedFile);
-        setFileError(false);
-      } else setFileError(true);
+        fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
+      } else fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     } catch (error) {
-      setFileError(true);
+      fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     }
   };
 
   const editProfile = async () => {
-    await patchUserdata({ username: newUserName, bio: newBio, thumbnail: thumbnail });
-    mutateUserdata({ ...userdata, username: newUserName, bio: newBio, thumbnail: thumbnail });
-    dispatch(
-      setSelectedUser({
-        ...selectedUser,
-        username: newUserName,
-        bio: newBio,
-        thumbnail: thumbnail,
-      }),
-    );
-    controller.hide();
+    try {
+      await patchUserdata({ username: newUserName, bio: newBio, thumbnail: thumbnail });
+      mutateUserdata({ ...userdata, username: newUserName, bio: newBio, thumbnail: thumbnail });
+      dispatch(
+        setSelectedUser({
+          ...selectedUser,
+          username: newUserName,
+          bio: newBio,
+          thumbnail: thumbnail,
+        }),
+      );
+      controller.hide();
+      fireToast({ message: TOAST_MESSAGE.SUCCESS.PROFILE_EDIT, type: 'success' });
+    } catch (error) {
+      fireToast({ message: TOAST_MESSAGE.ERROR.PROFILE_EDIT, type: 'warning' });
+    }
   };
 
   const UserEditForm = (
@@ -79,9 +78,6 @@ export default function UserEditModal({ controller }: { controller: ModalControl
             />
           </InputImage>
         </UserImageWrapper>
-        {fileError && (
-          <ErrorDiv>사진을 성공적으로 업로드하지 못했습니다. 다시 시도해주세요.</ErrorDiv>
-        )}
         <UserName
           type="text"
           value={newUserName}

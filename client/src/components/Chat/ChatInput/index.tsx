@@ -1,13 +1,15 @@
 import React, { FormEvent, useRef, useState } from 'react';
 
-import { useSelectedChannel } from '@hooks/index';
+import { useSelectedChannel, useToast } from '@hooks/index';
 import { postChat } from 'src/api/postChat';
 import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { TOAST_MESSAGE } from 'src/utils/message';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
+  const { fireToast } = useToast();
   const chatInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmitChat = async (e: FormEvent) => {
@@ -32,9 +34,10 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
       const uploadedFile = await uploadFileToStorage(file);
       if (uploadedFile && fileInputRef && fileInputRef.current) {
         setFileURL([...fileURL, uploadedFile]);
+        fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
       }
     } catch (error) {
-      console.log(error);
+      fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     }
   };
 
@@ -50,7 +53,7 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
           <div>
             {fileURL.map((url) => (
               <div key={url}>
-                <img src={url} />
+                <img src={url} alt="chatting images" />
               </div>
             ))}
           </div>

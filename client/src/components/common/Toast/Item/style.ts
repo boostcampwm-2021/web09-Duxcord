@@ -47,7 +47,7 @@ interface ILine {
   type: 'success' | 'warning';
 }
 const Line = styled.div<ILine>`
-  background-color: ${(props) => (props.type === 'warning' ? Colors.Red : Colors.Green)};
+  background-color: ${(props) => (props.type === 'warning' ? Colors.DarkRed : Colors.Green)};
   animation: ${(props) => props.duration}s linear timer;
   position: absolute;
   bottom: 0;

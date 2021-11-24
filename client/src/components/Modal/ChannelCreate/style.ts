@@ -1,4 +1,3 @@
-import Colors from '@styles/Colors';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -20,8 +19,4 @@ const Input = styled.input`
   padding: 8px;
 `;
 
-const ErrorMessage = styled.div`
-  color: ${Colors.DarkRed};
-`;
-
-export { Label, Input, Wrapper, ErrorMessage };
+export { Label, Input, Wrapper };
