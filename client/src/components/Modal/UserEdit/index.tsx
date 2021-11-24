@@ -6,7 +6,9 @@ import { useUserdata, useSelectedUser } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { patchUserdata } from 'src/api/patchUserdata';
-import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { uploadFileWithPresignedUrl } from 'src/utils/uploadFile';
+import getPresignedUrl from 'src/utils/getPresignedUrl';
+
 import Modal from '..';
 import {
   UserImageWrapper,
@@ -41,9 +43,12 @@ export default function UserEditModal({ controller }: { controller: ModalControl
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
       if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadedFile = await uploadFileToStorage(file);
+      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
+      const presignedUrl = await getPresignedUrl(uploadName);
+      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
       if (uploadedFile && inputImage && inputImage.current) {
-        setThumbnail(uploadedFile);
+        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
+        setThumbnail(uploadedURL);
         setFileError(false);
       } else setFileError(true);
     } catch (error) {
