@@ -1,8 +1,9 @@
 import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import MeetEvent from '@customTypes/socket/MeetEvent';
+
 import { useSelectedChannel, useUserdata } from '@hooks/index';
-import { socket } from '../../../utils/socket';
-import { ChatCloseIcon, ChatOpenIcon } from '../../common/Icons';
+import MeetEvent from '@customTypes/socket/MeetEvent';
+import { socket } from '@utils/socket';
+import { ChatCloseIcon, ChatOpenIcon } from '@components/common/Icons';
 import {
   Chat,
   ChatList,
@@ -13,6 +14,7 @@ import {
   InputWrap,
   Message,
   ShowChatButton,
+  NewMessageIndicator,
 } from './style';
 
 interface IChat {
@@ -33,6 +35,7 @@ function MeetChat() {
   const chatListRef = useRef<HTMLUListElement>(null);
   const chatInputRef = useRef<HTMLInputElement>(null);
   const [show, setShow] = useState(false);
+  const [existUnread, setExistUnread] = useState(false);
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -55,8 +58,15 @@ function MeetChat() {
   };
 
   useLayoutEffect(() => {
-    scrollToBottom({ smooth: false });
+    if (show) {
+      setExistUnread(false);
+      scrollToBottom({ smooth: false });
+    }
   }, [show]);
+
+  useEffect(() => {
+    if (!show && chats.length) setExistUnread(true);
+  }, [chats]);
 
   useEffect(() => {
     socket.on(MeetEvent.meetChat, (chat: IChat) => {
@@ -78,7 +88,7 @@ function MeetChat() {
       </CloseChatButton>
       <ChatList ref={chatListRef}>
         {chats.map(({ id, loginID, username, thumbnail, message, createdAt }) => (
-          <Chat key={id}>
+          <Chat key={id + message + createdAt} isSender={loginID === userdata.loginID}>
             <div>
               <img src={thumbnail ?? '/images/default_profile.png'} alt="user profile" />
               <ChatHeader>
@@ -97,6 +107,7 @@ function MeetChat() {
   ) : (
     <ShowChatButton onClick={() => setShow(true)}>
       <ChatOpenIcon />
+      {existUnread && <NewMessageIndicator />}
     </ShowChatButton>
   );
 }

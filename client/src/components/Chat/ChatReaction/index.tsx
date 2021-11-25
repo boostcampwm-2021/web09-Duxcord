@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Wrapper } from './style';
 
 function ChatReaction({

@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { ModalController } from '@customTypes/modal';
-import Modal from '..';
-import { useSelectedUser, useOtherUserData } from '@hooks/index';
 import { useDispatch } from 'react-redux';
+
 import { setSelectedUser } from '@redux/selectedUser/slice';
-import { UserDot, UserImageWrapper, UserImage, UserGridWrapper, UserName, UserBio } from './style';
+import { useSelectedUser, useOtherUserData } from '@hooks/index';
+import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
+import Modal from '..';
+import { UserDot, UserImageWrapper, UserImage, UserGridWrapper, UserName, UserBio } from './style';
 
 export default function UserInformationModal({ controller }: { controller: ModalController }) {
   const selectedUser = useSelectedUser();

@@ -1,11 +1,12 @@
 import Colors from '@styles/Colors';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-interface IMeetVideoWrapper {
+interface VideosProps {
   videoCount: number;
+  focused: boolean;
 }
 
-const MeetVideoWrapper = styled.div<IMeetVideoWrapper>`
+const normal = css<VideosProps>`
   margin: 0 auto;
   display: grid;
   width: 100%;
@@ -22,43 +23,123 @@ const MeetVideoWrapper = styled.div<IMeetVideoWrapper>`
       : 'max-width: 1500px; grid-template-columns: repeat(auto-fit, minmax(30%, 1fr));'}
 `;
 
-const VideoItemWrapper = styled.div`
-  width: 100%;
-  max-width: 700px;
-  height: 100%;
-  justify-self: center;
-  align-self: center;
+const focused = css`
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  width: 300px;
+  max-width: 300px;
+  height: 100%;
+  padding: 20px;
+`;
+
+const Videos = styled.div<VideosProps>`
+  ${(props) => (props.focused ? focused : normal)}
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: ${Colors.Gray2};
+    border-radius: 10px;
+  }
+
+  &:hover::-webkit-scrollbar {
+    display: block;
+    width: 15px;
+  }
+`;
+
+const VideoWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  height: 0;
+  padding-bottom: 56.25%;
+  margin-bottom: 10px;
+
   & p {
-    align-self: center;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    color: ${Colors.White};
+    background-color: rgba(255, 255, 255, 0.3);
   }
   .saying {
     border: 3px solid ${Colors.Blue};
   }
-  img {
-    display: block;
-    position: absolute;
+`;
+
+const ThumbnailWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+`;
+
+const SelectVideoIndicator = styled(ThumbnailWrapper)`
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 20px;
+
+  svg {
+    width: 50px;
+    height: 50px;
+    path {
+      fill: ${Colors.Gray3};
+    }
   }
 `;
 
 const Thumbnail = styled.img`
+  display: block;
   width: 100px;
   height: 100px;
   object-fit: cover;
   border-radius: 50%;
+`;
+
+const Video = styled.video`
   position: absolute;
-`;
-
-const VideoItem = styled.video`
   width: 100%;
-  max-width: 700px;
+  height: 100%;
+  object-fit: contain;
   border-radius: 20px;
-  justify-self: center;
-  align-self: center;
-  margin-bottom: 10px;
+  background-color: black;
 `;
 
-export { MeetVideoWrapper, VideoItemWrapper, VideoItem, Thumbnail };
+const DeviceStatus = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 10;
+
+  svg {
+    margin-right: 5px;
+  }
+`;
+
+const VideoSection = styled.section`
+  position: relative;
+  display: flex;
+  justify-content: end;
+  background-color: ${Colors.Gray3};
+  width: 100%;
+  height: 100%;
+`;
+
+export {
+  Videos,
+  VideoWrapper,
+  Video,
+  Thumbnail,
+  ThumbnailWrapper,
+  VideoSection,
+  DeviceStatus,
+  SelectVideoIndicator,
+};

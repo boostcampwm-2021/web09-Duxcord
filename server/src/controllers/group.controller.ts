@@ -9,6 +9,7 @@ import {
 } from '../loaders/orm.loader';
 import { ChattingChannel, MeetingChannel, Workgroup } from '../db/entities';
 import { ChannelType } from '../types/ChannelType';
+import { Repository } from 'typeorm';
 
 const nullCheck = (data) => data !== undefined && data !== null && data !== '';
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
@@ -160,4 +161,48 @@ const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export default { createGroup, getGroupMembers, createChannel, joinGroup, deleteGroup };
+const deleteChannel = async (req: Request, res: Response, next: NextFunction) => {
+  const { groupID, channelID, channelType } = req.params;
+  const { userID } = req.session;
+
+  try {
+    const group = await groupRepository.findByIDWithLeaderID(groupID);
+
+    if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
+    if (group.leader.id !== userID) return res.status(400).send('채널 삭제 권한이 없습니다.');
+    if (!['meeting', 'chatting'].includes(channelType))
+      return res.status(400).send(MSG.wrongChannelType);
+
+    if (channelType === 'meeting') {
+      const channel = await meetingChannelRepository.findOne({
+        where: { id: channelID },
+        relations: ['group'],
+      });
+      if (!channel) return res.status(400).send('존재하지 않는 채널 아이디입니다.');
+      if (channel.group.id.toString() !== groupID)
+        return res.status(400).send('해당 그룹에는 해당 채널이 존재하지 않습니다.');
+      await meetingChannelRepository.remove(channel);
+    } else {
+      const channel = await chattingChannelRepository.findOne({
+        where: { id: channelID },
+        relations: ['group'],
+      });
+      if (!channel) return res.status(400).send('존재하지 않는 채널 아이디입니다.');
+      if (channel.group.id.toString() !== groupID)
+        return res.status(400).send('해당 그룹에는 해당 채널이 존재하지 않습니다.');
+      await chattingChannelRepository.remove(channel);
+    }
+    res.status(200).json('채널이 삭제되었습니다.');
+  } catch (error) {
+    next(error);
+  }
+};
+
+export default {
+  createGroup,
+  getGroupMembers,
+  createChannel,
+  joinGroup,
+  deleteGroup,
+  deleteChannel,
+};

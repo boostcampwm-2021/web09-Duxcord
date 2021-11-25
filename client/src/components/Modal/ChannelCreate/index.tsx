@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+
+import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
+import { Group } from '@customTypes/group';
 import Colors from '@styles/Colors';
+import { TOAST_MESSAGE } from '@utils/message';
+import { postCreateChannel } from '@api/postCreateChannel';
+import { URL } from '@api/URL';
 import Modal from '..';
 import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
-import { Label, Wrapper, Input, ErrorMessage } from './style';
-import { postCreateChannel } from 'src/api/postCreateChannel';
-import { useSelectedGroup } from '@hooks/useSelectedGroup';
-import { useGroups } from '@hooks/useGroups';
-import { useHistory } from 'react-router';
-import { URL } from 'src/api/URL';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { useDispatch } from 'react-redux';
+import { Label, Wrapper, Input } from './style';
 
 export default function ChannelCreateModal({
   initialChannelType,
@@ -22,11 +24,12 @@ export default function ChannelCreateModal({
 }) {
   const [channelType, setChannelType] = useState(initialChannelType);
   const [channelName, setChannelName] = useState('');
-  const [errorMessage, setErrorMessage] = useState(false);
   const selectedGroup = useSelectedGroup();
   const history = useHistory();
   const dispatch = useDispatch();
   const { mutate: mutateGroups } = useGroups();
+
+  const { fireToast } = useToast();
 
   const createChannel = async () => {
     const response = await postCreateChannel({
@@ -36,8 +39,8 @@ export default function ChannelCreateModal({
     });
     try {
       const createdChannel = await response.json();
-      mutateGroups((groups: any) => {
-        return groups.map((group: any) => {
+      mutateGroups((groups: Group[]) => {
+        return groups.map((group: Group) => {
           if (group.id !== selectedGroup.id) return group;
           const tempGroup = group;
           tempGroup[`${channelType}Channels`] = [
@@ -58,8 +61,9 @@ export default function ChannelCreateModal({
           }),
         );
       }
+      fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_CREATE, type: 'success' });
     } catch (e) {
-      setErrorMessage(true);
+      fireToast({ message: TOAST_MESSAGE.ERROR.CHANNEL_CREATE, type: 'warning' });
     }
   };
   const ChannelCreateForm = (
@@ -87,7 +91,6 @@ export default function ChannelCreateModal({
           setChannelName(e.target.value);
         }}
       />
-      {errorMessage && <ErrorMessage>채널 생성에 실패했습니다. 다시 시도해주세요.</ErrorMessage>}
     </Wrapper>
   );
   return (

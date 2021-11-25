@@ -1,16 +1,14 @@
 import React from 'react';
+
 import MeetVideo from './MeetVideo';
-import MeetButton from './MeetVideo/MeetButton';
-import { MeetWrapper, VideoSection } from './style';
 import MeetChat from './MeetChat';
+import { MeetWrapper } from './style';
 
 function Meet() {
   return (
     <MeetWrapper>
       <MeetChat />
-      <VideoSection>
-        <MeetVideo />
-      </VideoSection>
+      <MeetVideo />
     </MeetWrapper>
   );
 }

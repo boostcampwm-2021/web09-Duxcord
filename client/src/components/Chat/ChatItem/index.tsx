@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { postLikeChat } from '../../../api/postLikeChat';
-import { STATUS_CODES } from '../../../api/STATUS_CODES';
+
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
+import { useUserdata } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
+import { postLikeChat } from '@api/postLikeChat';
+import { STATUS_CODES } from '@api/STATUS_CODES';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
-import { useUserdata } from '@hooks/index';
 import { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
@@ -56,7 +57,11 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
   const selectChat = () => dispatch(setSelectedChat(chatData));
 
   return (
-    <ChatWrapper onMouseEnter={() => setIsFocused(true)} onMouseLeave={() => setIsFocused(false)}>
+    <ChatWrapper
+      className="ChatItem"
+      onMouseEnter={() => setIsFocused(true)}
+      onMouseLeave={() => setIsFocused(false)}
+    >
       <UserImage
         src={user.thumbnail ?? '/images/default_profile.png'}
         alt="user profile"
@@ -65,14 +70,14 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
       <div>
         <ChatHeader>
           <div>{user.username}</div>
-          <div>{new Date(createdAt).toLocaleTimeString('ko-KR')}</div>
+          <div>{new Date(createdAt).toLocaleTimeString('ko-KR').slice(0, -3)}</div>
         </ChatHeader>
         <ChatContent>{content}</ChatContent>
         <FileWrapper>
           {files &&
             files.map((file) => (
               <div key={file.src}>
-                <img src={file.src} />
+                <img src={file.src} alt="chat file" />
               </div>
             ))}
         </FileWrapper>

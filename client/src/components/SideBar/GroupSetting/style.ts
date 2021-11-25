@@ -22,6 +22,8 @@ const GroupSettingWrapper = styled.div`
   }
   & > div svg {
     margin-left: 10px;
+    width: 20px;
+    height: 20px;
   }
 `;
 

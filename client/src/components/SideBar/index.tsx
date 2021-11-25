@@ -1,5 +1,6 @@
 import React from 'react';
-import { useSelectedGroup } from '../../hooks';
+
+import { useSelectedGroup } from '@hooks/index';
 import Channels from './Channels';
 import GroupNav from './GroupNav';
 import GroupSetting from './GroupSetting';

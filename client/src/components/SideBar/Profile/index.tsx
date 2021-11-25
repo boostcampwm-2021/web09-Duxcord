@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { DeviceControl, ProfileWrapper } from './style';
 import { useDispatch } from 'react-redux';
+
+import { setUserDevice } from '@redux/userDevice/slice';
+import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useSelectedChannel, useUserdata, useUserDevice, useSelectedUser } from '@hooks/index';
-import { setUserDevice } from '../../../redux/userDevice/slice';
+import MeetEvent from '@customTypes/socket/MeetEvent';
+import { socket } from '@utils/socket';
+import UserInformationModal from '@components/Modal/UserInformation';
+import UserEditModal from '@components/Modal/UserEdit';
 import {
   CameraOffIcon,
   CameraOnIcon,
@@ -10,12 +15,8 @@ import {
   MicOnIcon,
   SpeakerOffIcon,
   SpeakerOnIcon,
-} from '../../common/Icons';
-import { socket } from 'src/utils/socket';
-import MeetEvent from '@customTypes/socket/MeetEvent';
-import { setSelectedUser } from '@redux/selectedUser/slice';
-import UserInformationModal from '@components/Modal/UserInformation';
-import UserEditModal from '@components/Modal/UserEdit';
+} from '@components/common/Icons';
+import { DeviceControl, ProfileWrapper } from './style';
 
 function Profile() {
   const dispatch = useDispatch();

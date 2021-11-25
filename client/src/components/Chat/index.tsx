@@ -1,26 +1,35 @@
-import React, { useCallback, useEffect, useRef } from 'react';
-import ChatItem from './ChatItem';
-import { ChatContainer, Chats, ChatPart, ChatInputWrapper } from './style';
-import { ChatData } from '@customTypes/chats';
-import ChatInput from './ChatInput';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
-import Socket, { socket } from '../../utils/socket';
-import { getFetcher } from '../../utils/fetcher';
-import UserConnection from './UserConnection';
-import Thread from './Thread';
-import { API_URL } from '../../api/API_URL';
+
+import { useSelectedChannel, useSelectedChat } from '@hooks/index';
 import LikeEvent from '@customTypes/socket/LikeEvent';
 import ThreadEvent from '@customTypes/socket/ThreadEvent';
 import ChatEvent from '@customTypes/socket/ChatEvent';
-import { useSelectedChannel, useSelectedChat } from '@hooks/index';
+import { ChatData } from '@customTypes/chats';
+import { API_URL } from '@api/API_URL';
+import Socket, { socket } from '@utils/socket';
+import { getFetcher } from '@utils/fetcher';
+import ChatInput from './ChatInput';
+import ChatItem from './ChatItem';
+import UserConnection from './UserConnection';
+import Thread from './Thread';
+import { ChatContainer, Chats, ChatPart, ChatInputWrapper, StickyWrapper, Section } from './style';
+import { makeChatSection } from '@utils/makeChatSection';
+import { getChatsHeight } from '@utils/getChatsHeight';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
 
 function Chat() {
   const { id } = useSelectedChannel();
+  const [isInitialized, setIsInitialized] = useState(true);
   const selectedChat = useSelectedChat();
-  const { data: chats, mutate, setSize } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
+  const {
+    data: chats,
+    mutate,
+    setSize,
+    isValidating,
+  } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
   const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
@@ -35,11 +44,25 @@ function Chat() {
   }, [id]);
 
   const onScroll = useCallback(() => {
+    if (isValidating) return;
     if (chatListRef?.current?.scrollTop === 0 && !isReachingEnd) {
-      chatListRef.current.scrollTo({ top: THRESHOLD });
       setSize((size) => size + 1);
     }
-  }, [isReachingEnd, setSize]);
+  }, [isReachingEnd, setSize, isValidating]);
+
+  useEffect(() => {
+    if (chatListRef?.current?.scrollTop && chatListRef?.current?.scrollTop > 0) return;
+    (async () => {
+      if (chats) {
+        const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
+        chatListRef.current?.scrollTo({ top: height });
+        if (isInitialized) {
+          chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
+          setIsInitialized(false);
+        }
+      }
+    })();
+  }, [isValidating, isInitialized]);
 
   useEffect(() => {
     const chatListEl = chatListRef.current;
@@ -54,7 +77,7 @@ function Chat() {
   };
 
   useEffect(() => {
-    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
+    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
   }, [isEmpty]);
 
   const onChat = useCallback(
@@ -116,14 +139,18 @@ function Chat() {
 
   return (
     <ChatPart>
-      <ChatContainer>
+      <ChatContainer isSelectedChat={!!selectedChat}>
         <Chats ref={chatListRef}>
-          {chats
-            ?.flat()
-            .reverse()
-            .map((chat) => (
-              <ChatItem key={chat.id} chatData={chat} />
-            ))}
+          {Object.entries(makeChatSection(chats)).map(([day, dayChats]) => (
+            <Section key={day}>
+              <StickyWrapper>
+                <button>{day}</button>
+              </StickyWrapper>
+              {dayChats.map((chat: ChatData) => (
+                <ChatItem key={chat.id} chatData={chat} />
+              ))}
+            </Section>
+          ))}
         </Chats>
         <ChatInputWrapper>
           <ChatInput scrollToBottom={scrollToBottom} />

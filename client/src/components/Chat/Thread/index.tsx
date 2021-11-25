@@ -1,27 +1,30 @@
 import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
-import { API_URL } from '../../../api/API_URL';
-import { postCreateThread } from '../../../api/postCreateThread';
-import { useSelectedChannel } from '@hooks/index';
+
 import { setSelectedChat } from '@redux/selectedChat/slice';
+import { useSelectedChannel } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
-import { getFetcher } from '../../../utils/fetcher';
-import { socket } from '../../../utils/socket';
 import ChannelEvent from '@customTypes/socket/ChannelEvent';
-import { ThreadCloseIcon } from '../../common/Icons';
+import ThreadType from '@customTypes/socket/ThreadEvent';
+import { API_URL } from '@api/API_URL';
+import { postCreateThread } from '@api/postCreateThread';
+import { getFetcher } from '@utils/fetcher';
+import { socket } from '@utils/socket';
 import ThreadItem from '../ThreadItem';
+import { ThreadCloseIcon } from '../../common/Icons';
 import {
   Input,
   InputWrapper,
   Wrapper,
+  FileWrapper,
   ThreadWrapper,
   ThreadHeaderWrapper,
   OriginalChatWrapper,
   ThreadChatWrapper,
   ChatLengthWrapper,
+  ChatLength,
 } from './style';
-import ThreadType from '@customTypes/socket/ThreadEvent';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const { mutate, data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
@@ -31,6 +34,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
     createdAt,
     content,
     user: { username, thumbnail },
+    files,
   } = selectedChat;
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
@@ -89,12 +93,24 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           <div>
             <div>
               <p>{username}</p>
-              <p>{new Date(createdAt).toLocaleTimeString('ko-KR')}</p>
+              <p>{new Date(createdAt).toLocaleTimeString('ko-KR').slice(0, -3)}</p>
             </div>
             <div>{content}</div>
+            <FileWrapper>
+              {files &&
+                files.map((file) => (
+                  <div key={file.src}>
+                    <img src={file.src} />
+                  </div>
+                ))}
+            </FileWrapper>
           </div>
         </OriginalChatWrapper>
-        <ChatLengthWrapper>{data?.length}개의 댓글</ChatLengthWrapper>
+        <ChatLengthWrapper>
+          <ChatLength>
+            <p>{data?.length}</p>개의 댓글
+          </ChatLength>
+        </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
           {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>

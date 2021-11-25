@@ -23,6 +23,9 @@ const UserImage = styled.img`
 const FileWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  & div {
+    margin-top: 10px;
+  }
   & img {
     max-width: 300px;
     height: 120px;
@@ -33,14 +36,19 @@ const FileWrapper = styled.div`
 
 const ChatHeader = styled.div`
   display: flex;
-  gap: 12px;
+  align-items: center;
   color: ${Colors.Gray1};
   margin-bottom: 8px;
 
   & > div:first-child {
     font-weight: 600;
-    font-size: 15px;
+    font-size: 16px;
     color: ${Colors.Black};
+    margin-right: 5px;
+  }
+  & > div:last-child {
+    font-size: 13px;
+    line-height: 16px;
   }
 `;
 

@@ -5,6 +5,7 @@ import SocketMeetController from '../controllers/socket/meet.socket';
 import ChannelEvent from '../types/socket/ChannelEvent';
 import ConnectionEvent from '../types/socket/ConnectionEvent';
 import GroupEvent from '../types/socket/GroupEvent';
+import { InitEvent } from '../types/socket/InitEvent';
 import MeetEvent from '../types/socket/MeetEvent';
 
 export let io: Server;
@@ -23,6 +24,9 @@ export async function socketLoader(httpServer) {
       io.to(code).emit(GroupEvent.groupDelete, code);
       socket.leave(code);
     });
+    socket.on(GroupEvent.channelDelete, ({ id, type, code }) => {
+      io.to(code).emit(GroupEvent.channelDelete, { id, type, code });
+    });
 
     const channelController = new SocketChannelController(socket);
     socket.on(ChannelEvent.joinChannel, channelController.joinChannel);
@@ -40,5 +44,7 @@ export async function socketLoader(httpServer) {
     socket.on(MeetEvent.mute, meetController.mute);
     socket.on(MeetEvent.toggleCam, meetController.toggleCam);
     socket.on(MeetEvent.speaker, meetController.speaker);
+
+    io.to(socket.id).emit(InitEvent.INIT_END);
   });
 }

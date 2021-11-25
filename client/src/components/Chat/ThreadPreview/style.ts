@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Colors from '../../../styles/Colors';
 
 const ThreadPreviewWrapper = styled.div`
-  margin-top: 5px;
+  margin-top: 10px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -14,12 +14,14 @@ const ThreadPreviewWrapper = styled.div`
     background-color: ${Colors.Gray1};
   }
   & > p:nth-child(2) {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 600;
+    line-height: 18px;
     margin-right: 5px;
   }
   & > p:nth-child(3) {
     font-size: 12px;
+    line-height: 18px;
     color: ${Colors.Gray7};
   }
 `;
