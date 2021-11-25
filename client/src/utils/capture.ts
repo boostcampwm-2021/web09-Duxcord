@@ -1,7 +1,7 @@
 import { getBrowser } from './browserChecker';
 import { TOAST_MESSAGE } from './message';
 
-interface HTMLVideoElementWithCaputreStream extends HTMLVideoElement {
+interface HTMLVideoElementWithCaptureStream extends HTMLVideoElement {
   captureStream(): MediaStream;
 }
 
@@ -23,7 +23,7 @@ const capture = async () => {
 
   const videos = document.querySelectorAll(
     'video.user-video',
-  ) as unknown as Array<HTMLVideoElementWithCaputreStream>;
+  ) as unknown as Array<HTMLVideoElementWithCaptureStream>;
   if (videos.length === 0) throw TOAST_MESSAGE.ERROR.CAPTURE.NO_VIDEO;
   const canvas = document.createElement('canvas');
 
@@ -31,7 +31,7 @@ const capture = async () => {
   canvas.height = (CAPTURE.CROP_HEIGHT + CAPTURE.PADDING) * videos.length + CAPTURE.PADDING_BOTTOM;
   const context = canvas.getContext('2d');
 
-  const imageLoad = async (video: HTMLVideoElementWithCaputreStream) => {
+  const imageLoad = async (video: HTMLVideoElementWithCaptureStream) => {
     const videoStream = video.captureStream().getTracks()[1];
     if (!videoStream) return;
     const imageCapture = new ImageCapture(videoStream);
