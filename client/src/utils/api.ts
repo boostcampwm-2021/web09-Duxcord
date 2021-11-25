@@ -1,5 +1,5 @@
-import { API_URL } from './constraints/API_URL';
-import { postFetchOptions } from './fetchOptions';
+import { API_URL } from '@utils/constraints/API_URL';
+import { postFetchOptions } from '@utils/fetchOptions';
 
 const tryLogin = async (loginID: string, password: string) => {
   const response = await fetch(API_URL.USER.POST_SIGN_IN, postFetchOptions({ loginID, password }));

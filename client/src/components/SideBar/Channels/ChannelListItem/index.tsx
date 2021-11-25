@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useSelectedChannel, useUserdata } from '@hooks/index';
-import { URL } from 'src/utils/constraints/URL';
+import { URL } from '@utils/constraints/URL';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '@components/common/Icons';
 import { ListItem } from './style';
 import ChannelMeetingCount from './ChannelMeetingCount';

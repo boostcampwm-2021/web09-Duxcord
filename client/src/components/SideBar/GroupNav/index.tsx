@@ -14,9 +14,9 @@ import {
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import GroupEvent from '@customTypes/socket/GroupEvent';
-import { API_URL } from 'src/utils/constraints/API_URL';
-import { URL } from 'src/utils/constraints/URL';
-import { socket } from 'src/utils/socket';
+import { API_URL } from '@utils/constraints/API_URL';
+import { URL } from '@utils/constraints/URL';
+import { socket } from '@utils/socket';
 import GroupCreateModal from '@components/Modal/GroupCreate';
 import GroupAddModal from '@components/Modal/GroupAdd';
 import GroupJoinModal from '@components/Modal/GroupJoin';

@@ -1,6 +1,6 @@
 import { InitEvent } from '@customTypes/socket/InitEvent';
 import { useState, useEffect } from 'react';
-import { socket } from 'src/utils/socket';
+import { socket } from '@utils/socket';
 
 export const useSocket = () => {
   const [isLoading, setIsLoading] = useState(true);

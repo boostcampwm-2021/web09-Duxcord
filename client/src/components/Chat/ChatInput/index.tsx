@@ -1,12 +1,12 @@
 import React, { FormEvent, useRef, useState } from 'react';
 
 import { useSelectedChannel, useToast } from '@hooks/index';
-import { postChat } from 'src/api/postChat';
-import { uploadFileWithPresignedUrl } from 'src/utils/uploadFile';
-import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
+import { postChat } from '@api/postChat';
+import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
-import getPresignedUrl from 'src/utils/getPresignedUrl';
+import getPresignedUrl from '@utils/getPresignedUrl';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();

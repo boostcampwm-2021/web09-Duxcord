@@ -4,9 +4,9 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
-import { URL } from 'src/utils/constraints/URL';
-import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
-import { capture } from 'src/utils/capture';
+import { URL } from '@utils/constraints/URL';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
+import { capture } from '@utils/capture';
 import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
 import { DarkRedButton, GreenButton, YellowButton, MeetButtonWrapper } from './style';
 

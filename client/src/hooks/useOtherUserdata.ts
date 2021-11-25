@@ -1,6 +1,7 @@
-import { API_URL } from 'src/utils/constraints/API_URL';
-import { getFetcher } from 'src/utils/fetcher';
 import useSWR from 'swr';
+
+import { API_URL } from '@utils/constraints/API_URL';
+import { getFetcher } from '@utils/fetcher';
 
 export const useOtherUserData = (userID?: string) => {
   const { data: otherUserData, ...rest } = useSWR(

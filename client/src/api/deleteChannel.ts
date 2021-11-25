@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 import { deleteFetchOptions } from '../utils/fetchOptions';
 import { API_URL } from '../utils/constraints/API_URL';
+=======
+import { deleteFetchOptions } from '@utils/fetchOptions';
+import { API_URL } from './API_URL';
+>>>>>>> dev
 
 export const deleteChannel = ({
   groupID,
