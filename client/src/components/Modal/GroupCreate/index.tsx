@@ -11,8 +11,8 @@ import { postCreateGroup } from '@api/postCreateGroup';
 import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
 import getPresignedUrl from '@utils/getPresignedUrl';
 import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
-import Modal from '..';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
+import Modal from '..';
 import { InputForm, InputImage, InputText } from './style';
 
 function GroupCreateModal({

@@ -10,9 +10,9 @@ import Colors from '@styles/Colors';
 import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
 import { URL } from '@utils/constraints/URL';
 import { postCreateChannel } from '@api/postCreateChannel';
-import Modal from '..';
-import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
+import ChannelTypeItem from './ChannelTypeItem';
+import Modal from '..';
 import { Label, Wrapper, Input } from './style';
 
 export default function ChannelCreateModal({

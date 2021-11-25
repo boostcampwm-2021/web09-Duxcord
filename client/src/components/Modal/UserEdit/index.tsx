@@ -4,11 +4,11 @@ import { useDispatch } from 'react-redux';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata, useSelectedUser, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
-import Colors from '@styles/Colors';
 import { patchUserdata } from '@api/patchUserdata';
 import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
 import getPresignedUrl from '@utils/getPresignedUrl';
 import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { UserImageWrapper, UserGridWrapper, UserName, UserBio, InputImage } from './style';
 
