@@ -3,6 +3,7 @@ import Colors from '../../../../styles/Colors';
 
 interface IListItem {
   selected: boolean;
+  isLeader: boolean;
 }
 
 const ListItem = styled.li<IListItem>`
@@ -15,11 +16,20 @@ const ListItem = styled.li<IListItem>`
   color: ${(props) => (props.selected ? Colors.Black : Colors.Gray1)};
   ${(props) => props.selected && `background-color: ${Colors.Gray2}`};
   ${(props) => props.selected && `font-weight: 600`};
+  & > svg {
+    display: none;
+  }
 
   &:hover {
     background-color: ${(props) => (props.selected ? Colors.Gray2 : Colors.Gray3)};
     cursor: pointer;
     color: ${Colors.Black};
+    .count {
+      ${({ isLeader }) => isLeader && 'display:none'};
+    }
+    & > svg {
+      display: inline-block;
+    }
   }
   & div {
     display: flex;

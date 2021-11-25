@@ -41,6 +41,7 @@ function ChannelListItem({
     <ListItem
       onClick={joinChannel}
       selected={id === selectedChannelID && channelType === selectedChannelType}
+      isLeader={isLeader}
     >
       <div>
         {channelType === 'meeting' ? (
@@ -51,7 +52,7 @@ function ChannelListItem({
         <p>{name}</p>
       </div>
       {channelType === 'meeting' && !!meetingUserCount && (
-        <ChannelMeetingCount>
+        <ChannelMeetingCount className="count">
           {meetingUserCount}/{MAX_MEETING_USER_COUNT}
         </ChannelMeetingCount>
       )}
