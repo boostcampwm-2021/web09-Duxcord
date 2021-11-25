@@ -7,8 +7,14 @@ import GlobalStyle from '@styles/GlobalStyle';
 import { Switch } from 'react-router-dom';
 import RestrictedRoute from '@components/common/RestrictedRoute';
 import Toast from '@components/common/Toast';
+import { useSocket } from '@hooks/index';
+import Loading from '@pages/Loading';
 
 function App() {
+  const isLoading = useSocket();
+
+  if (isLoading) return <Loading />;
+
   return (
     <div className="App">
       <GlobalStyle />
