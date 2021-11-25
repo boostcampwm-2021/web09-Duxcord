@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import Colors from '../../../../styles/Colors';
 
-interface IListItem {
+interface ListItemProps {
   selected: boolean;
   isLeader: boolean;
 }
 
-const ListItem = styled.li<IListItem>`
+const ListItem = styled.li<ListItemProps>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,18 +47,4 @@ const ListItem = styled.li<IListItem>`
   }
 `;
 
-const ChannelMeetingCount = styled.div`
-  background-color: ${Colors.White};
-  padding: 3px 7px;
-  border-radius: 5px;
-  & p {
-    font-size: 14px;
-    font-weight: normal;
-    color: ${Colors.Gray1};
-    & span:nth-child(2) {
-      margin: 0 2px;
-    }
-  }
-`;
-
-export { ListItem, ChannelMeetingCount };
+export { ListItem };

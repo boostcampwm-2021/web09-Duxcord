@@ -6,7 +6,8 @@ import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useSelectedChannel, useUserdata } from '@hooks/index';
 import { URL } from 'src/api/URL';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '@components/common/Icons';
-import { ListItem, ChannelMeetingCount } from './style';
+import { ListItem } from './style';
+import ChannelMeetingCount from './ChannelMeetingCount';
 
 interface Props {
   showChannelDeleteModal: () => void;
@@ -15,6 +16,8 @@ interface Props {
   id: number;
   name: string;
 }
+
+const MAX_MEETING_USER_COUNT = 5;
 
 function ChannelListItem({
   showChannelDeleteModal,
@@ -29,7 +32,6 @@ function ChannelListItem({
   const history = useHistory();
   const dispatch = useDispatch();
   const isLeader = selectedGroup?.leader?.loginID === userdata?.loginID;
-  const MAX_MEETING_USER_COUNT = 5;
 
   const joinChannel = () => {
     if (meetingUserCount >= MAX_MEETING_USER_COUNT && channelType === 'meeting') return;
@@ -52,13 +54,7 @@ function ChannelListItem({
         <p>{name}</p>
       </div>
       {channelType === 'meeting' && !!meetingUserCount && (
-        <ChannelMeetingCount className="count">
-          <p>
-            <span>{meetingUserCount}</span>
-            <span>/</span>
-            <span>{MAX_MEETING_USER_COUNT}</span>
-          </p>
-        </ChannelMeetingCount>
+        <ChannelMeetingCount meetingUserCount={meetingUserCount} />
       )}
       {isLeader && (
         <GroupDeleteIcon
