@@ -8,6 +8,7 @@ import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';
 import { useSelectedGroup } from './useSelectedGroup';
 import { Group } from '@customTypes/group';
+import { PublicConfiguration } from 'swr/dist/types';
 
 const getGroupsFetcher = async (url: string) => {
   try {
@@ -20,8 +21,8 @@ const getGroupsFetcher = async (url: string) => {
   }
 };
 
-export const useGroups = () => {
-  const { data: groups, ...rest } = useSWR(API_URL.user.getGroups, getGroupsFetcher);
+export const useGroups = (options?: Partial<PublicConfiguration>) => {
+  const { data: groups, ...rest } = useSWR(API_URL.user.getGroups, getGroupsFetcher, options);
   const { data: userData } = useSWR(API_URL.user.getUserdata, getFetcher);
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
