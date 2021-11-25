@@ -48,7 +48,17 @@ const ListItem = styled.li<IListItem>`
 `;
 
 const ChannelMeetingCount = styled.div`
-  font-stretch: expanded;
+  background-color: ${Colors.White};
+  padding: 3px 7px;
+  border-radius: 5px;
+  & p {
+    font-size: 14px;
+    font-weight: normal;
+    color: ${Colors.Gray1};
+    & span:nth-child(2) {
+      margin: 0 2px;
+    }
+  }
 `;
 
 export { ListItem, ChannelMeetingCount };

@@ -53,7 +53,11 @@ function ChannelListItem({
       </div>
       {channelType === 'meeting' && !!meetingUserCount && (
         <ChannelMeetingCount className="count">
-          {meetingUserCount}/{MAX_MEETING_USER_COUNT}
+          <p>
+            <span>{meetingUserCount}</span>
+            <span>/</span>
+            <span>{MAX_MEETING_USER_COUNT}</span>
+          </p>
         </ChannelMeetingCount>
       )}
       {isLeader && (
