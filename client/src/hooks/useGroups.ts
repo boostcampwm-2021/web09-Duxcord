@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 import { API_URL } from '@utils/constraints/API_URL';
-import GroupEvent from '@customTypes/socket/GroupEvent';
+import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';
@@ -27,7 +27,7 @@ export const useGroups = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (userData) socket.emit(GroupEvent.login, groups, userData);
+    if (userData) socket.emit(SOCKET.GROUP_EVENT.LOGIN, groups, userData);
   }, [userData, groups]);
 
   useLayoutEffect(() => {

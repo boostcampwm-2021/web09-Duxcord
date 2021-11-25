@@ -6,7 +6,6 @@ import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hook
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
-import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
 import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
 import { URL } from '@utils/constraints/URL';
@@ -14,6 +13,7 @@ import { socket } from '@utils/socket';
 import { deleteChannel } from '@api/deleteChannel';
 import Modal from '..';
 import { AlertWrapper } from './style';
+import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
 
 export default function ChannelDeleteModal({ controller }: { controller: ModalController }) {
   const selectedGroup = useSelectedGroup();
@@ -32,7 +32,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
       });
       switch (response.status) {
         case 200:
-          socket.emit(GroupEvent.channelDelete, {
+          socket.emit(SOCKET.GROUP_EVENT.DELETE_CHANNEL, {
             code: selectedGroup.code,
             id: selectedChannel.id,
             type: selectedChannel.type,

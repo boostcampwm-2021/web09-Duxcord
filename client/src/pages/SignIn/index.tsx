@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { STATUS_CODES } from '@api/STATUS_CODES';
+import { STATUS_CODES } from '@utils/constraints/STATUS_CODES';
 import { URL } from '@utils/constraints/URL';
 import { SIGN_IN_ERROR_MESSAGE } from '@utils/constraints/MESSAGE';
 import { checkLogin } from '@utils/checkResponse';
