@@ -168,6 +168,7 @@ function MeetVideo() {
       myScreenStreamRef.current = myScreen;
     } catch (e) {
       console.error(e);
+      setScreenShare(false);
     }
   };
 
