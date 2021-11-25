@@ -1,3 +1,6 @@
+import { getBrowser } from './browserChecker';
+import { TOAST_MESSAGE } from './message';
+
 interface HTMLVideoElementWithCaputreStream extends HTMLVideoElement {
   captureStream(): MediaStream;
 }
@@ -14,9 +17,13 @@ const isWideImage = (imageBitmap: ImageBitmap) =>
   CAPTURE.CROP_HEIGHT / CAPTURE.CROP_WIDTH > imageBitmap.height / imageBitmap.width;
 
 const capture = async () => {
+  if (['Firefox', 'Internet Explorer', 'Safari'].includes(getBrowser()))
+    throw TOAST_MESSAGE.ERROR.CAPTURE.NOT_SUPPORTED_BROWSER;
+
   const videos = document.querySelectorAll(
     'video.user-video',
   ) as unknown as Array<HTMLVideoElementWithCaputreStream>;
+  if (videos.length === 0) throw TOAST_MESSAGE.ERROR.CAPTURE.NO_VIDEO;
   const canvas = document.createElement('canvas');
 
   canvas.width = CAPTURE.CROP_WIDTH + 2 * CAPTURE.PADDING;
@@ -25,7 +32,9 @@ const capture = async () => {
 
   let index = 0;
   for (const video of videos) {
-    const imageCapture = new ImageCapture(video.captureStream().getTracks()[1]);
+    const videoStream = video.captureStream().getTracks()[1];
+    if (!videoStream) continue;
+    const imageCapture = new ImageCapture(videoStream);
     const imageBitmap = await imageCapture.grabFrame();
     const { width: bitmapWidth, height: bitmapHeight } = imageBitmap;
     const isWide = isWideImage(imageBitmap);
