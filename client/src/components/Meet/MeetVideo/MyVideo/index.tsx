@@ -18,7 +18,7 @@ function MyVideo({ myVideoRef, myScreenRef, cam, mic, speaker, screenShare }: My
   return (
     <>
       <VideoWrapper>
-        <Video autoPlay playsInline muted ref={myVideoRef} />
+        <Video autoPlay playsInline muted ref={myVideoRef} className={cam ? 'user-video' : ''} />
         <ThumbnailWrapper>
           {cam || (
             <Thumbnail src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />

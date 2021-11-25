@@ -18,6 +18,7 @@ enum MeetEvent {
   setToggleCam = 'setToggleCam',
   speaker = 'speaker',
   setSpeaker = 'setSpeaker',
+  captureStart = 'captureStart',
 }
 
 export default MeetEvent;

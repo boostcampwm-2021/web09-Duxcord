@@ -3,15 +3,18 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { useSelectedGroup } from '@hooks/index';
+import { useSelectedGroup, useToast } from '@hooks/index';
 import { URL } from 'src/api/URL';
-import { MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
-import { MeetButtonWrapper } from './style';
+import { TOAST_MESSAGE } from 'src/utils/message';
+import { capture } from 'src/utils/capture';
+import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
+import { DarkRedButton, GreenButton, YellowButton, MeetButtonWrapper } from './style';
 
 function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) {
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { fireToast } = useToast();
 
   const onMeetingStopClick = () => {
     dispatch(
@@ -24,14 +27,30 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
     history.replace(URL.groupPage(selectedGroup.id));
   };
 
+  const onMeetingCaptureClick = async () => {
+    try {
+      await capture();
+      fireToast({ message: TOAST_MESSAGE.SUCCESS.CAPTURE, type: 'success' });
+    } catch (error) {
+      if (typeof error === 'string') fireToast({ message: error, type: 'warning' });
+      else {
+        fireToast({ message: TOAST_MESSAGE.ERROR.CAPTURE.COMMON, type: 'warning' });
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <MeetButtonWrapper>
-      <button onClick={onScreenShareClick}>
+      <GreenButton onClick={onScreenShareClick}>
         <ScreenShareStartIcon />
-      </button>
-      <button onClick={onMeetingStopClick}>
+      </GreenButton>
+      <YellowButton onClick={onMeetingCaptureClick}>
+        <CaptureIcon />
+      </YellowButton>
+      <DarkRedButton onClick={onMeetingStopClick}>
         <MeetingStopIcon />
-      </button>
+      </DarkRedButton>
     </MeetButtonWrapper>
   );
 }
