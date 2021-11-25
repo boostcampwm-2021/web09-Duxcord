@@ -16,7 +16,7 @@ const validateUserName = (userName: string): boolean => {
 };
 
 const validatePassword = (password: string): boolean => {
-  const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
+  const passwordRegex = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
   return passwordRegex.test(password);
 };
 

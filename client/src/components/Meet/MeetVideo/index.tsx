@@ -168,6 +168,7 @@ function MeetVideo() {
       myScreenStreamRef.current = myScreen;
     } catch (e) {
       console.error(e);
+      setScreenShare(false);
     }
   };
 
@@ -311,7 +312,7 @@ function MeetVideo() {
       myStreamRef.current?.getTracks().forEach((track) => track.stop());
       myScreenStreamRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [id]);
+  }, [id, userdata]);
 
   useEffect(() => {
     if (myStreamRef.current)
@@ -398,7 +399,7 @@ function MeetVideo() {
           />
         ))}
       </Videos>
-      <MeetButton onScreenShareClick={onScreenShareClick} />
+      <MeetButton screenShare={screenShare} onScreenShareClick={onScreenShareClick} />
     </VideoSection>
   );
 }

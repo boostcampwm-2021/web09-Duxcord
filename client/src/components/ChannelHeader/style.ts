@@ -5,18 +5,18 @@ const ChannelHeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 11.5px;
+  padding: 10.5px;
   border-bottom: 1px solid ${Colors.Gray4};
   & div {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
   }
 `;
 
 const ChannelHeaderLeft = styled.div`
   & svg {
-    margin-right: 10px;
+    margin-right: 3px;
   }
   & p {
     font-size: 16px;

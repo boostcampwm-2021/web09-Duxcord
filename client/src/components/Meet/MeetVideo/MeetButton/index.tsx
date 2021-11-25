@@ -7,10 +7,21 @@ import { useSelectedGroup, useToast } from '@hooks/index';
 import { URL } from '@utils/constraints/URL';
 import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
 import { capture } from '@utils/capture';
-import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
+import {
+  CaptureIcon,
+  MeetingStopIcon,
+  ScreenShareStartIcon,
+  ScreenShareStopIcon,
+} from '@components/common/Icons';
 import { DarkRedButton, GreenButton, YellowButton, MeetButtonWrapper } from './style';
 
-function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) {
+function MeetButton({
+  onScreenShareClick,
+  screenShare,
+}: {
+  onScreenShareClick: () => void;
+  screenShare: boolean;
+}) {
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -43,7 +54,7 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
   return (
     <MeetButtonWrapper>
       <GreenButton onClick={onScreenShareClick}>
-        <ScreenShareStartIcon />
+        {screenShare ? <ScreenShareStopIcon /> : <ScreenShareStartIcon />}
       </GreenButton>
       <YellowButton onClick={onMeetingCaptureClick}>
         <CaptureIcon />
