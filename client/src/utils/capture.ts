@@ -85,7 +85,7 @@ const capture = async () => {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = URL.createObjectURL(blob);
-        a.download = `Duxcord화면캡처-${TODAY_DATE}`;
+        a.download = `Duxcord화면캡처-${TODAY_DATE}.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
