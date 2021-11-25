@@ -414,7 +414,7 @@ function MeetVideo() {
       {selectedVideo && <FocusedVideo selectedVideo={selectedVideo} onClick={deselectVideo} />}
       <Videos ref={videoWrapperRef} videoCount={videoCount || 0} focused={selectedVideo !== null}>
         <VideoWrapper>
-          <Video autoPlay playsInline muted ref={myVideoRef} />
+          <Video autoPlay playsInline muted ref={myVideoRef} className="user-video" />
           <ThumbnailWrapper>
             {cam || (
               <Thumbnail src={userdata?.thumbnail || '/images/default_profile.png'} alt="profile" />

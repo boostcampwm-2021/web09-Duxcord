@@ -15,7 +15,7 @@ const isWideImage = (imageBitmap: ImageBitmap) =>
 
 const capture = async () => {
   const videos = document.querySelectorAll(
-    'video',
+    'video.user-video',
   ) as unknown as Array<HTMLVideoElementWithCaputreStream>;
   const canvas = document.createElement('canvas');
 

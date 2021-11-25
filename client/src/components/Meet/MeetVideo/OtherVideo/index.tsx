@@ -71,7 +71,7 @@ function OtherVideo({
           isScreen: false,
         })}
       >
-        <Video muted={muted} autoPlay playsInline ref={camRef} />
+        <Video muted={muted} autoPlay playsInline ref={camRef} className="user-video" />
         <ThumbnailWrapper>
           {cam || (
             <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>
