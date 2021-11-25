@@ -10,10 +10,10 @@ import { ModalController } from '@customTypes/modal';
 import { Group } from '@customTypes/group';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
-import { URL } from 'src/api/URL';
-import { deleteGroup } from 'src/api/deleteGroup';
-import { TOAST_MESSAGE } from 'src/utils/message';
-import { socket } from 'src/utils/socket';
+import { URL } from '@api/URL';
+import { deleteGroup } from '@api/deleteGroup';
+import { TOAST_MESSAGE } from '@utils/message';
+import { socket } from '@utils/socket';
 import Modal from '..';
 import { AlertWrapper } from './style';
 

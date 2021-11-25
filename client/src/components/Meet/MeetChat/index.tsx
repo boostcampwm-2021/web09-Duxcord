@@ -2,7 +2,7 @@ import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from '
 
 import { useSelectedChannel, useUserdata } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import { socket } from 'src/utils/socket';
+import { socket } from '@utils/socket';
 import { ChatCloseIcon, ChatOpenIcon } from '@components/common/Icons';
 import {
   Chat,

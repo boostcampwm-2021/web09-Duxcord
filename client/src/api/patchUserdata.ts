@@ -1,4 +1,4 @@
-import { patchFetchOptions } from 'src/utils/fetchOptions';
+import { patchFetchOptions } from '@utils/fetchOptions';
 import { API_URL } from './API_URL';
 
 export const patchUserdata = ({

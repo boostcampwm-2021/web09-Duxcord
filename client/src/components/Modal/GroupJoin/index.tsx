@@ -6,9 +6,9 @@ import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
-import { TOAST_MESSAGE } from 'src/utils/message';
-import { postJoinGroup } from 'src/api/postJoinGroup';
-import { URL } from 'src/api/URL';
+import { TOAST_MESSAGE } from '@utils/message';
+import { postJoinGroup } from '@api/postJoinGroup';
+import { URL } from '@api/URL';
 import Modal from '..';
 import { Input } from './style';
 

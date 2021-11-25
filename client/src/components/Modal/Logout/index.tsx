@@ -3,9 +3,9 @@ import { useHistory } from 'react-router';
 
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from 'src/utils/message';
-import { postLogout } from 'src/api/postLogout';
-import { URL } from 'src/api/URL';
+import { TOAST_MESSAGE } from '@utils/message';
+import { postLogout } from '@api/postLogout';
+import { URL } from '@api/URL';
 import Modal from '..';
 import { MiddlePart } from './style';
 import { useToast } from '@hooks/useToast';

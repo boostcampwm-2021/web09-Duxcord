@@ -1,4 +1,4 @@
-import { deleteFetchOptions } from '../utils/fetchOptions';
+import { deleteFetchOptions } from '@utils/fetchOptions';
 import { API_URL } from './API_URL';
 
 export const deleteChannel = ({

@@ -8,9 +8,9 @@ import {
   validatePassword,
   validateForm,
   isSendPossible,
-} from 'src/utils/checkResponse';
-import { SIGN_UP_ERROR_MESSAGE } from 'src/utils/message';
-import { trySignUp } from 'src/utils/api';
+} from '@utils/checkResponse';
+import { SIGN_UP_ERROR_MESSAGE } from '@utils/message';
+import { trySignUp } from '@utils/api';
 import {
   SignUpWrapper,
   Title,

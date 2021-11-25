@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
-import { getURLParams } from 'src/utils/getURLParams';
+import { getURLParams } from '@utils/getURLParams';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
 import Meet from '@components/Meet';
