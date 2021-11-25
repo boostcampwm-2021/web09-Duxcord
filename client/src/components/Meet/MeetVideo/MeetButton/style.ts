@@ -19,12 +19,16 @@ const MeetButton = styled.button`
   cursor: pointer;
 `;
 
-const GrayButton = styled(MeetButton)`
-  background-color: ${Colors.Gray1};
+const GreenButton = styled(MeetButton)`
+  background-color: ${Colors.Green2};
 `;
 
 const DarkRedButton = styled(MeetButton)`
   background-color: ${Colors.DarkRed};
 `;
 
-export { MeetButtonWrapper, GrayButton, DarkRedButton };
+const YellowButton = styled(MeetButton)`
+  background-color: ${Colors.Yellow};
+`;
+
+export { MeetButtonWrapper, GreenButton, DarkRedButton, YellowButton };

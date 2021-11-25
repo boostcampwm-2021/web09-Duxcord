@@ -8,7 +8,7 @@ import { URL } from 'src/api/URL';
 import { TOAST_MESSAGE } from 'src/utils/message';
 import { capture } from 'src/utils/capture';
 import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
-import { DarkRedButton, GrayButton, MeetButtonWrapper } from './style';
+import { DarkRedButton, GreenButton, YellowButton, MeetButtonWrapper } from './style';
 
 function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) {
   const selectedGroup = useSelectedGroup();
@@ -42,12 +42,12 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
 
   return (
     <MeetButtonWrapper>
-      <GrayButton onClick={onScreenShareClick}>
+      <GreenButton onClick={onScreenShareClick}>
         <ScreenShareStartIcon />
-      </GrayButton>
-      <GrayButton onClick={onMeetingCaptureClick}>
+      </GreenButton>
+      <YellowButton onClick={onMeetingCaptureClick}>
         <CaptureIcon />
-      </GrayButton>
+      </YellowButton>
       <DarkRedButton onClick={onMeetingStopClick}>
         <MeetingStopIcon />
       </DarkRedButton>
