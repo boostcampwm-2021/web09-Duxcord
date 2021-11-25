@@ -2,7 +2,6 @@ import { io } from 'socket.io-client';
 import ChannelEvent from '@customTypes/socket/ChannelEvent';
 
 export const socket = io('/');
-socket.connect();
 
 const joinChannel = ({ channelType, id }: { channelType: 'chatting' | 'meeting'; id: number }) =>
   socket.emit(ChannelEvent.joinChannel, channelType + id);
