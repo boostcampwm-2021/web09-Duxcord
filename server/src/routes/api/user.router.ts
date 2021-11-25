@@ -10,4 +10,5 @@ userRouter.get('/:id/profile', accessControl({ signIn: true }), userController.g
 userRouter.post('/signup', accessControl({ signIn: false }), userController.signUp);
 userRouter.post('/signin', accessControl({ signIn: false }), userController.signIn);
 userRouter.post('/signout', accessControl(), userController.signOut);
+userRouter.post('/presignedurl', accessControl({ signIn: true }), userController.getPresignedUrl);
 userRouter.patch('/profile', accessControl({ signIn: true }), userController.updateUserData);

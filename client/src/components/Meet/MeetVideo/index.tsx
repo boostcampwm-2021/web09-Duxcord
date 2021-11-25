@@ -6,6 +6,8 @@ import {
   useSelectVideo,
   useUserdata,
   useUserDevice,
+  useSoundEffect,
+  SoundEffect,
 } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
 import Socket, { socket } from 'src/utils/socket';
@@ -97,6 +99,7 @@ function MeetVideo() {
   const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { selectVideo, deselectVideo, selectedVideo, setSelectedVideo } = useSelectVideo();
   const streamIDMetaData = useRef<{ [socketID: string]: StreamIDMetaData }>({});
+  const playSoundEffect = useSoundEffect();
 
   const getMyStream = async () => {
     let myStream;
@@ -154,6 +157,11 @@ function MeetVideo() {
         if (!mem) {
           mem = { ...member, pc };
           members.push(mem);
+          try {
+            playSoundEffect(SoundEffect.JoinMeeting);
+          } catch (e) {
+            console.error(e);
+          }
         }
 
         const newStream = e.streams[0];
@@ -307,6 +315,11 @@ function MeetVideo() {
         selectedVideo?.socketID === memberID ? null : selectedVideo,
       );
       setMeetingMembers((members) => members.filter((member) => member.socketID !== memberID));
+      try {
+        playSoundEffect(SoundEffect.LeaveMeeting);
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     socket.emit(MeetEvent.joinMeeting, id, code, {
@@ -385,6 +398,14 @@ function MeetVideo() {
       socket.off(MeetEvent.setMuted);
       socket.off(MeetEvent.setToggleCam);
       socket.off(MeetEvent.setSpeaker);
+    };
+  }, []);
+
+  useEffect(() => {
+    playSoundEffect(SoundEffect.JoinMeeting);
+
+    return () => {
+      playSoundEffect(SoundEffect.LeaveMeeting);
     };
   }, []);
 
