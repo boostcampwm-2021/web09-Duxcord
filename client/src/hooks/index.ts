@@ -10,5 +10,4 @@ export * from './useSelectedUser';
 export * from './useOtherUserdata';
 export * from './useToast';
 export * from './useSelectVideo';
-export * from './useSoundEffect';
 export * from './useSocket';
