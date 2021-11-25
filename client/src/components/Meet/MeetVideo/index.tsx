@@ -311,7 +311,7 @@ function MeetVideo() {
       myStreamRef.current?.getTracks().forEach((track) => track.stop());
       myScreenStreamRef.current?.getTracks().forEach((track) => track.stop());
     };
-  }, [id]);
+  }, [id, userdata]);
 
   useEffect(() => {
     if (myStreamRef.current)
