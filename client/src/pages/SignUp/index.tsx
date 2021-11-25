@@ -9,7 +9,7 @@ import {
   validateForm,
   isSendPossible,
 } from 'src/utils/checkResponse';
-import { SIGN_UP_ERROR_MESSAGE } from 'src/utils/message';
+import { SIGN_UP_ERROR_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import { trySignUp } from 'src/utils/api';
 import {
   SignUpWrapper,

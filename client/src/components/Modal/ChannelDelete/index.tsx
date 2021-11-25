@@ -8,10 +8,10 @@ import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from 'src/utils/message';
+import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import { socket } from 'src/utils/socket';
 import { deleteChannel } from 'src/api/deleteChannel';
-import { URL } from 'src/api/URL';
+import { URL } from 'src/utils/constraints/URL';
 import Modal from '..';
 import { AlertWrapper } from './style';
 
@@ -59,7 +59,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
           );
           dispatch(setSelectedChat(null));
           controller.hide();
-          history.replace(URL.groupPage(selectedGroup.id));
+          history.replace(URL.GROUP(selectedGroup.id));
           fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_DELETE, type: 'success' });
           break;
         case 400:

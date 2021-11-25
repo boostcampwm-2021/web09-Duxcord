@@ -8,7 +8,7 @@ import Colors from '@styles/Colors';
 import { patchUserdata } from 'src/api/patchUserdata';
 import { uploadFileWithPresignedUrl } from 'src/utils/uploadFile';
 import getPresignedUrl from 'src/utils/getPresignedUrl';
-import { TOAST_MESSAGE } from 'src/utils/message';
+import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import Modal from '..';
 import { UserImageWrapper, UserGridWrapper, UserName, UserBio, InputImage } from './style';
 

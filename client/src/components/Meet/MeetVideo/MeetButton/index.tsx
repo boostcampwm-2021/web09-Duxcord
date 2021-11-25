@@ -4,8 +4,8 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
-import { URL } from 'src/api/URL';
-import { TOAST_MESSAGE } from 'src/utils/message';
+import { URL } from 'src/utils/constraints/URL';
+import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import { capture } from 'src/utils/capture';
 import { CaptureIcon, MeetingStopIcon, ScreenShareStartIcon } from '@components/common/Icons';
 import { DarkRedButton, GreenButton, YellowButton, MeetButtonWrapper } from './style';
@@ -24,7 +24,7 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
         name: '',
       }),
     );
-    history.replace(URL.groupPage(selectedGroup.id));
+    history.replace(URL.GROUP(selectedGroup.id));
   };
 
   const onMeetingCaptureClick = async () => {

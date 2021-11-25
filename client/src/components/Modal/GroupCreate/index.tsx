@@ -6,11 +6,11 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { useGroups, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
-import { URL } from 'src/api/URL';
+import { URL } from 'src/utils/constraints/URL';
 import { postCreateGroup } from 'src/api/postCreateGroup';
 import { uploadFileWithPresignedUrl } from 'src/utils/uploadFile';
 import getPresignedUrl from 'src/utils/getPresignedUrl';
-import { TOAST_MESSAGE } from 'src/utils/message';
+import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import Modal from '..';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
 import { InputForm, InputImage, InputText } from './style';
@@ -45,7 +45,7 @@ function GroupCreateModal({
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.groupPage(group.id));
+        history.replace(URL.GROUP(group.id));
         fireToast({ message: '그룹 생성에 성공하셨습니다', type: 'success' });
         break;
       case 400:

@@ -14,8 +14,8 @@ import {
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import GroupEvent from '@customTypes/socket/GroupEvent';
-import { API_URL } from 'src/api/API_URL';
-import { URL } from 'src/api/URL';
+import { API_URL } from 'src/utils/constraints/API_URL';
+import { URL } from 'src/utils/constraints/URL';
 import { socket } from 'src/utils/socket';
 import GroupCreateModal from '@components/Modal/GroupCreate';
 import GroupAddModal from '@components/Modal/GroupAdd';
@@ -55,7 +55,7 @@ function GroupNav() {
   };
 
   const selectGroup = (group: Group) => () => {
-    history.replace(URL.groupPage(group.id));
+    history.replace(URL.GROUP(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
     socket.emit(GroupEvent.groupID, group.code);
@@ -81,7 +81,7 @@ function GroupNav() {
           }),
         );
         dispatch(setSelectedChat(null));
-        history.replace(URL.groupPage());
+        history.replace(URL.GROUP());
       }
     });
 
@@ -91,7 +91,7 @@ function GroupNav() {
 
     socket.on(GroupEvent.userEnter, (user, code) => {
       if (code === selectedGroup?.code) dispatch(addUserConnection(user));
-      mutate(API_URL.group.getGroupMembers(selectedGroup?.id));
+      mutate(API_URL.GROUP.GET_MEMBERS(selectedGroup?.id));
     });
 
     socket.on(GroupEvent.channelDelete, ({ code, id, type }) => {
@@ -116,7 +116,7 @@ function GroupNav() {
             }),
           );
           dispatch(setSelectedChat(null));
-          history.replace(URL.groupPage(selectedGroup.id));
+          history.replace(URL.GROUP(selectedGroup.id));
         }
     });
 

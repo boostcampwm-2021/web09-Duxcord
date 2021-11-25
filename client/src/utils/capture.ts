@@ -1,5 +1,5 @@
 import { getBrowser } from './browserChecker';
-import { TOAST_MESSAGE } from './message';
+import { TOAST_MESSAGE } from './constraints/MESSAGE';
 
 interface HTMLVideoElementWithCaptureStream extends HTMLVideoElement {
   captureStream(): MediaStream;

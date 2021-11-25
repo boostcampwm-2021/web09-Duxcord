@@ -7,7 +7,7 @@ import { useSelectedChannel } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
 import ChannelEvent from '@customTypes/socket/ChannelEvent';
 import ThreadType from '@customTypes/socket/ThreadEvent';
-import { API_URL } from 'src/api/API_URL';
+import { API_URL } from 'src/utils/constraints/API_URL';
 import { postCreateThread } from 'src/api/postCreateThread';
 import { getFetcher } from 'src/utils/fetcher';
 import { socket } from 'src/utils/socket';
@@ -27,7 +27,7 @@ import {
 } from './style';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
-  const { mutate, data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
+  const { mutate, data } = useSWR(API_URL.THREAD.GET_DATA(selectedChat.id), getFetcher);
   const dispatch = useDispatch();
   const { name } = useSelectedChannel();
   const {

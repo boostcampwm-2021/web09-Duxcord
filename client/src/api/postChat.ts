@@ -1,5 +1,5 @@
 import { postFetchOptions } from '../utils/fetchOptions';
-import { API_URL } from './API_URL';
+import { API_URL } from '../utils/constraints/API_URL';
 
 export const postChat = ({
   channelID,
@@ -9,4 +9,4 @@ export const postChat = ({
   channelID: number;
   content: string | null;
   files: string[] | null;
-}) => fetch(API_URL.channel.postChat(channelID), postFetchOptions({ content, files }));
+}) => fetch(API_URL.CHANNEL.POST_CHAT(channelID), postFetchOptions({ content, files }));

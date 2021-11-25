@@ -10,9 +10,9 @@ import { ModalController } from '@customTypes/modal';
 import { Group } from '@customTypes/group';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
-import { URL } from 'src/api/URL';
+import { URL } from 'src/utils/constraints/URL';
 import { deleteGroup } from 'src/api/deleteGroup';
-import { TOAST_MESSAGE } from 'src/utils/message';
+import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import { socket } from 'src/utils/socket';
 import Modal from '..';
 import { AlertWrapper } from './style';
@@ -44,7 +44,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
           );
           dispatch(setSelectedChat(null));
           hide();
-          history.replace(URL.groupPage());
+          history.replace(URL.GROUP());
           fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_DELETE, type: 'success' });
           break;
         case 400:

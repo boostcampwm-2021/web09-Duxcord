@@ -6,9 +6,9 @@ import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import Colors from '@styles/Colors';
 import { ModalController } from '@customTypes/modal';
-import { TOAST_MESSAGE } from 'src/utils/message';
+import { TOAST_MESSAGE } from 'src/utils/constraints/MESSAGE';
 import { postJoinGroup } from 'src/api/postJoinGroup';
-import { URL } from 'src/api/URL';
+import { URL } from 'src/utils/constraints/URL';
 import Modal from '..';
 import { Input } from './style';
 
@@ -35,7 +35,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.groupPage(group.id));
+        history.replace(URL.GROUP(group.id));
         fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_INVITATION, type: 'success' });
         break;
       case 400:

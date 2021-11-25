@@ -6,7 +6,7 @@ import LikeEvent from '@customTypes/socket/LikeEvent';
 import ThreadEvent from '@customTypes/socket/ThreadEvent';
 import ChatEvent from '@customTypes/socket/ChatEvent';
 import { ChatData } from '@customTypes/chats';
-import { API_URL } from 'src/api/API_URL';
+import { API_URL } from 'src/utils/constraints/API_URL';
 import Socket, { socket } from 'src/utils/socket';
 import { getFetcher } from 'src/utils/fetcher';
 import ChatInput from './ChatInput';
@@ -29,7 +29,7 @@ function Chat() {
     mutate,
     setSize,
     isValidating,
-  } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
+  } = useSWRInfinite(API_URL.CHANNEL.GET_BY_PAGE(id), getFetcher);
   const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);

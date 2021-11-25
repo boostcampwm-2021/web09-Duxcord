@@ -1,5 +1,5 @@
 import { postFetchOptions } from 'src/utils/fetchOptions';
-import { API_URL } from './API_URL';
+import { API_URL } from '../utils/constraints/API_URL';
 
 export const postCreateChannel = ({
   groupID,
@@ -10,4 +10,4 @@ export const postCreateChannel = ({
   channelType: 'chatting' | 'meeting';
   channelName: string;
 }) =>
-  fetch(API_URL.group.postCreateChannel(groupID), postFetchOptions({ channelType, channelName }));
+  fetch(API_URL.GROUP.POST_CREATE_CHANNEL(groupID), postFetchOptions({ channelType, channelName }));
