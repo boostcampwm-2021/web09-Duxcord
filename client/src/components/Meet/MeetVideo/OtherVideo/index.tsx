@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 
 import { CameraOnIcon, MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { IMeetingUser, SelectedVideo } from '..';
+
 import {
   VideoWrapper,
   Video,
@@ -10,6 +10,7 @@ import {
   ThumbnailWrapper,
   SelectVideoIndicator,
 } from '../style';
+import { MeetingMember, SelectedVideo } from '@customTypes/meet';
 
 function OtherVideo({
   member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
@@ -17,7 +18,7 @@ function OtherVideo({
   selectVideo,
   selectedVideo,
 }: {
-  member: IMeetingUser;
+  member: MeetingMember;
   muted: boolean;
   selectVideo: (videoInfo: SelectedVideo) => () => void;
   selectedVideo: SelectedVideo | null;
@@ -71,7 +72,13 @@ function OtherVideo({
           isScreen: false,
         })}
       >
-        <Video muted={muted} autoPlay playsInline ref={camRef} />
+        <Video
+          muted={muted}
+          autoPlay
+          playsInline
+          ref={camRef}
+          className={videoInfo.cam ? 'user-video' : ''}
+        />
         <ThumbnailWrapper>
           {cam || (
             <Thumbnail src={thumbnail || '/images/default_profile.png'} alt="profile"></Thumbnail>

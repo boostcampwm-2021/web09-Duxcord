@@ -13,6 +13,8 @@ import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
 import { Group } from '@customTypes/group';
 
+const NEED_CHANNEL_SELECT = '채널을 선택해주세요!';
+
 function Main() {
   const { groups, isValidating } = useGroups();
   const { groupID, channelType, channelID } = getURLParams();
@@ -53,7 +55,7 @@ function Main() {
             <Meet />
           )
         ) : (
-          <Empty />
+          <Empty message={NEED_CHANNEL_SELECT} />
         )}
       </MainWrapper>
     </Layout>
