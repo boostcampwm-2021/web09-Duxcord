@@ -33,7 +33,10 @@ function MeetButton({ onScreenShareClick }: { onScreenShareClick: () => void }) 
       fireToast({ message: TOAST_MESSAGE.SUCCESS.CAPTURE, type: 'success' });
     } catch (error) {
       if (typeof error === 'string') fireToast({ message: error, type: 'warning' });
-      else fireToast({ message: TOAST_MESSAGE.ERROR.CAPTURE.COMMON, type: 'warning' });
+      else {
+        fireToast({ message: TOAST_MESSAGE.ERROR.CAPTURE.COMMON, type: 'warning' });
+        console.log(error);
+      }
     }
   };
 

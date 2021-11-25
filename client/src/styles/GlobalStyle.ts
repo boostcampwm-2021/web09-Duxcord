@@ -21,7 +21,7 @@ const GlobalStyle = createGlobalStyle`
     width: 100vw;
     min-width: 1100px;
     height: 100vh;
-    background-color: ${Colors.White}
+    background-color: ${Colors.White};
     -ms-overflow-style: none; /* IE and Edge */
     scrollbar-width: none; /* Firefox */
     &::-webkit-scrollbar {

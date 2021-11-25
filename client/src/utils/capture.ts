@@ -11,6 +11,7 @@ const CAPTURE = {
   CROP_WIDTH: 350,
   CROP_HEIGHT: 280,
   IMAGE_SIZE: 60,
+  FONT_SIZE: 20,
 };
 
 const isWideImage = (imageBitmap: ImageBitmap) =>
@@ -30,14 +31,18 @@ const capture = async () => {
   canvas.height = (CAPTURE.CROP_HEIGHT + CAPTURE.PADDING) * videos.length + CAPTURE.PADDING_BOTTOM;
   const context = canvas.getContext('2d');
 
-  let index = 0;
-  for (const video of videos) {
+  const imageLoad = async (video: HTMLVideoElementWithCaputreStream) => {
     const videoStream = video.captureStream().getTracks()[1];
-    if (!videoStream) continue;
+    if (!videoStream) return;
     const imageCapture = new ImageCapture(videoStream);
     const imageBitmap = await imageCapture.grabFrame();
-    const { width: bitmapWidth, height: bitmapHeight } = imageBitmap;
+
+    return imageBitmap;
+  };
+
+  const drawImageOnCanvas = (imageBitmap: ImageBitmap, index: number) => {
     const isWide = isWideImage(imageBitmap);
+    const { width: bitmapWidth, height: bitmapHeight } = imageBitmap;
     context?.drawImage(
       imageBitmap,
       isWide ? (bitmapWidth - bitmapHeight * (CAPTURE.CROP_WIDTH / CAPTURE.CROP_HEIGHT)) / 2 : 0,
@@ -49,19 +54,33 @@ const capture = async () => {
       CAPTURE.CROP_WIDTH,
       CAPTURE.CROP_HEIGHT,
     );
-    index++;
-  }
+  };
+
+  (await Promise.all([...videos].map((video) => imageLoad(video)))).forEach(
+    (imageBitmap, index) => {
+      if (!imageBitmap) return;
+      drawImageOnCanvas(imageBitmap, index);
+    },
+  );
 
   const logoImage = new Image();
   logoImage.src = '/images/duxcord_logo.png';
-  console.log(logoImage);
   logoImage.onload = () => {
-    context?.drawImage(
+    if (!context) return;
+    const TODAY_DATE = new Date().toLocaleDateString();
+    context.drawImage(
       logoImage,
       canvas.width - CAPTURE.IMAGE_SIZE - CAPTURE.PADDING,
       canvas.height - CAPTURE.IMAGE_SIZE - CAPTURE.PADDING,
       CAPTURE.IMAGE_SIZE,
       CAPTURE.IMAGE_SIZE,
+    );
+    context.fillStyle = 'rgba(255,255,255)';
+    context.font = `${CAPTURE.FONT_SIZE}pt 'Pretendard Variable'`;
+    context.fillText(
+      TODAY_DATE,
+      CAPTURE.PADDING,
+      canvas.height - CAPTURE.PADDING - CAPTURE.FONT_SIZE,
     );
 
     canvas.toBlob(
@@ -69,7 +88,7 @@ const capture = async () => {
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = URL.createObjectURL(blob);
-        a.download = `화면캡처${new Date()}`;
+        a.download = `Duxcord화면캡처-${TODAY_DATE}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
