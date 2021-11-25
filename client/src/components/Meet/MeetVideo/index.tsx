@@ -398,7 +398,7 @@ function MeetVideo() {
           />
         ))}
       </Videos>
-      <MeetButton onScreenShareClick={onScreenShareClick} />
+      <MeetButton screenShare={screenShare} onScreenShareClick={onScreenShareClick} />
     </VideoSection>
   );
 }
