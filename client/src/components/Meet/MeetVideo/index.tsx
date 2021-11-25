@@ -8,15 +8,15 @@ import {
   useUserDevice,
 } from '@hooks/index';
 import MeetEvent from '@customTypes/socket/MeetEvent';
-import Socket, { socket } from 'src/utils/socket';
-import { highlightMyVolume } from 'src/utils/audio';
+import Socket, { socket } from '@utils/socket';
+import { highlightMyVolume } from '@utils/audio';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
 import { Videos, VideoSection } from './style';
 import FocusedVideo from './FocusedVideo';
 import MyVideo from './MyVideo';
 import { MeetingMember, StreamIDMetaData } from '@customTypes/meet';
-import { playSoundEffect, SoundEffect } from 'src/utils/playSoundEffect';
+import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 

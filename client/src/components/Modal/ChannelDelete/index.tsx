@@ -8,10 +8,10 @@ import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
 import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from 'src/utils/message';
-import { socket } from 'src/utils/socket';
-import { deleteChannel } from 'src/api/deleteChannel';
-import { URL } from 'src/api/URL';
+import { TOAST_MESSAGE } from '@utils/message';
+import { socket } from '@utils/socket';
+import { deleteChannel } from '@api/deleteChannel';
+import { URL } from '@api/URL';
 import Modal from '..';
 import { AlertWrapper } from './style';
 

@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loadItem, saveItem } from 'src/utils/storage';
+import { loadItem, saveItem } from '@utils/storage';
 
 const DEFAULT_INITSTATE: { mic: boolean; speaker: boolean; cam: boolean } = {
   mic: true,

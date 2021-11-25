@@ -1,4 +1,4 @@
-import { postFetchOptions } from '../utils/fetchOptions';
+import { postFetchOptions } from '@utils/fetchOptions';
 import { API_URL } from './API_URL';
 
 export const postJoinGroup = ({ groupCode }: { groupCode: string }) =>

@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useGroupConnection, useSelectedGroup, useUserdata } from '@hooks/index';
 import GroupEvent from '@customTypes/socket/GroupEvent';
-import { API_URL } from 'src/api/API_URL';
-import { getFetcher } from 'src/utils/fetcher';
-import { socket } from 'src/utils/socket';
+import { API_URL } from '@api/API_URL';
+import { getFetcher } from '@utils/fetcher';
+import { socket } from '@utils/socket';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
 
 function UserConnection() {
