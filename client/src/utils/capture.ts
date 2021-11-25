@@ -57,10 +57,7 @@ const capture = async () => {
   };
 
   (await Promise.all([...videos].map((video) => imageLoad(video)))).forEach(
-    (imageBitmap, index) => {
-      if (!imageBitmap) return;
-      drawImageOnCanvas(imageBitmap, index);
-    },
+    (imageBitmap, index) => imageBitmap && drawImageOnCanvas(imageBitmap, index),
   );
 
   const logoImage = new Image();
