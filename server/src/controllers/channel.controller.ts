@@ -10,12 +10,7 @@ import {
 import { Chat } from '../db/entities';
 import { File } from '../db/entities';
 import { broadcast } from '../utils';
-
-export const createChatMSG = {
-  userNotFound: '존재하지 않는 사용자 입니다.',
-  emptyChat: '채팅을 입력해 주세요.',
-  success: '메시지 전송 성공!',
-};
+import { createChatMSG } from '../messages';
 
 const getChat = async (req: Request, res: Response, next: NextFunction) => {
   try {

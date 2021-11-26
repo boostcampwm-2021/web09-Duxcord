@@ -9,20 +9,7 @@ import {
 
 import { Thread } from '../db/entities';
 import { broadcast } from '../utils';
-
-export const createChatMSG = {
-  userNotFound: '존재하지 않는 사용자 입니다.',
-  chatNotFound: '존재하지 않는 텍스트 입니다.',
-  emptyChat: '채팅을 입력해 주세요.',
-  success: '스레드 전송 성공!',
-};
-
-const handleReactionMSG = {
-  userNotFound: '존재하지 않는 사용자 입니다.',
-  chatNotFound: '존재하지 않는 텍스트 입니다.',
-  deleteReactionSuccess: '좋아요 지우기 성공!',
-  addReactionSuccess: '좋아요 만들기 성공!',
-};
+import { handleReactionMSG, createChatMSG } from '../messages';
 
 const handleReaction = async (req: Request, res: Response, next: NextFunction) => {
   try {
