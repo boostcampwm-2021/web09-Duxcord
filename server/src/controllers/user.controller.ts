@@ -11,36 +11,11 @@ declare module 'express-session' {
 }
 
 const saltRounds = 10;
-const nullCheck = (data) => {
-  const trimedData = data.trim();
-  return trimedData !== undefined && trimedData !== null && trimedData !== '';
-};
-const loginIDRegex = /^[a-z][a-z0-9]{5,14}$/;
-const loginIDValidation = (loginID) => loginIDRegex.test(loginID);
-const usernameRegex = /^[^\s]{1,15}$/;
-const usernameValidation = (username) => usernameRegex.test(username);
-const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
-const passwordValidation = (password) => passwordRegex.test(password);
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
   const { loginID, username, password } = req.body;
 
   try {
-    if (![loginID, username, password].every((data) => nullCheck(data)))
-      return res.status(400).send(signUpMSG.nullInput);
-
-    const isValidLoginID = loginIDValidation(loginID);
-    if (!isValidLoginID) return res.status(400).send(signUpMSG.inValidLoginID);
-
-    const isValidUsername = usernameValidation(username);
-    if (!isValidUsername) return res.status(400).send(signUpMSG.inValidUsername);
-
-    const isValidPassword = passwordValidation(password);
-    if (!isValidPassword) return res.status(400).send(signUpMSG.inValidPassword);
-
-    const isUsedID = await userRepository.findOne({ where: { loginID: loginID } });
-    if (isUsedID) return res.status(400).send(signUpMSG.usedID);
-
     const newUser = new User();
     newUser.loginID = loginID;
     newUser.username = username;
