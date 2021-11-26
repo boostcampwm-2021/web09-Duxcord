@@ -12,17 +12,21 @@ import {
 } from '../style';
 import { MeetingMember, SelectedVideo } from '@customTypes/meet';
 
-function OtherVideo({
-  member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
-  muted,
-  selectVideo,
-  selectedVideo,
-}: {
+interface OtherVideoProps {
   member: MeetingMember;
   muted: boolean;
   selectVideo: (videoInfo: SelectedVideo) => () => void;
   selectedVideo: SelectedVideo | null;
-}) {
+  pc: RTCPeerConnection;
+}
+
+function OtherVideo({
+  member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen },
+  muted,
+  selectVideo,
+  selectedVideo,
+  pc,
+}: OtherVideoProps) {
   const camRef = useRef<HTMLVideoElement>(null);
   const screenRef = useRef<HTMLVideoElement>(null);
   const videoInfo = {

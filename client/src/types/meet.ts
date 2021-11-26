@@ -8,7 +8,6 @@ export interface MeetingMember {
   speaker: boolean;
   stream?: MediaStream;
   screen?: MediaStream;
-  pc?: RTCPeerConnection;
 }
 
 export interface SelectedVideo {

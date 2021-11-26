@@ -208,7 +208,7 @@ function MeetVideo() {
         try {
           const pc = createPeerConnection(member.socketID);
           if (!pc) return;
-          setMeetingMembers((members) => [...members, { ...member, pc }]);
+          setMeetingMembers((members) => [...members, { ...member }]);
           pcs.current = { ...pcs.current, [member.socketID]: pc };
           const offer = await pc.createOffer();
           await pc.setLocalDescription(new RTCSessionDescription(offer));
@@ -237,7 +237,7 @@ function MeetVideo() {
             return members;
           else {
             playSoundEffect(SoundEffect.JoinMeeting);
-            return [...members, { ...member, socketID: senderID, pc }];
+            return [...members, { ...member, socketID: senderID }];
           }
         });
         streamIDMetaData.current[senderID] = streamID;
@@ -389,15 +389,19 @@ function MeetVideo() {
           speaker={speaker}
           screenShare={screenShare}
         />
-        {meetingMembers.map((member) => (
-          <OtherVideo
-            key={member.socketID}
-            member={member}
-            muted={!speaker}
-            selectVideo={selectVideo}
-            selectedVideo={selectedVideo}
-          />
-        ))}
+        {meetingMembers.map((member) => {
+          const pc = pcs.current[member.socketID];
+          return (
+            <OtherVideo
+              key={member.socketID}
+              member={member}
+              muted={!speaker}
+              selectVideo={selectVideo}
+              selectedVideo={selectedVideo}
+              pc={pc}
+            />
+          );
+        })}
       </Videos>
       <MeetButton screenShare={screenShare} onScreenShareClick={onScreenShareClick} />
     </VideoSection>
