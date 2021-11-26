@@ -60,3 +60,39 @@ export const signInValidator = async (req, res, next) => {
 
   next();
 };
+
+class UpdateUserData {
+  constructor({ username, thumbnail, bio }) {
+    this.username = username;
+    this.thumbnail = thumbnail;
+    this.bio = bio;
+  }
+
+  @IsNotEmpty({ message: updateUserDataMSG.needUsername })
+  @Matches(usernameRegex, { message: signUpMSG.invalidUsername })
+  username: string;
+
+  @IsDefined({ message: updateUserDataMSG.needThumbnail })
+  @IsUrl({ message: updateUserDataMSG.invalidThumbnial })
+  thumbnail: string | null;
+
+  @IsDefined()
+  bio: string | null;
+}
+
+export const updateUserValidator = async (req: Request, res: Response, next: NextFunction) => {
+  const { userID } = req.session;
+  const userdata = req.body;
+
+  try {
+    const newUserData = new UpdateUserData(userdata);
+    const errors = await validate(newUserData, VALIDATE_OPTIONS);
+    if (errors.length) return res.status(400).json(errors);
+    const user = await userRepository.findOne(userID);
+    if (!user) return res.status(400).send(updateUserDataMSG.userNotFound);
+
+    next();
+  } catch (e) {
+    next(e);
+  }
+};

@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import userController from '../../controllers/user.controller';
 import { accessControl } from '../../utils';
-import { signUpValidator } from '../../utils/validators';
+import { signInValidator, signUpValidator, updateUserValidator } from '../../utils/validators';
 
 export const userRouter = Router();
 
@@ -21,3 +21,9 @@ userRouter.post(
   userController.signIn,
 );
 userRouter.post('/signout', accessControl({ signIn: true }), userController.signOut);
+userRouter.patch(
+  '/profile',
+  accessControl({ signIn: true }),
+  updateUserValidator,
+  userController.updateUserData,
+);

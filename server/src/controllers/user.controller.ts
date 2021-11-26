@@ -83,17 +83,9 @@ const getOtherUserData = async (req: Request, res: Response, next: NextFunction)
 };
 
 const updateUserData = async (req: Request, res: Response, next: NextFunction) => {
+  const { userID } = req.session;
+  const { username, thumbnail, bio } = req.body;
   try {
-    const { userID } = req.session;
-    const { username, thumbnail, bio } = req.body;
-
-    const isValidUsername = usernameValidation(username);
-    if (!isValidUsername) return res.status(400).send(signUpMSG.inValidUsername);
-
-    if (username === undefined) return res.status(400).send(updateUserDataMSG.needUsername);
-    if (thumbnail === undefined) return res.status(400).send(updateUserDataMSG.needThumbnail);
-    if (bio === undefined) return res.status(400).send(updateUserDataMSG.needBio);
-
     const userdata = await userRepository.save({
       id: userID,
       username,
