@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
-import { API_URL } from '@utils/constraints/API_URL';
-import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
+import { API_URL } from '@utils/constants/API_URL';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';

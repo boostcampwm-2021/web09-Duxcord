@@ -7,13 +7,13 @@ import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
-import { URL } from '@utils/constraints/URL';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
+import { URL } from '@utils/constants/URL';
 import { socket } from '@utils/socket';
 import { deleteChannel } from '@api/deleteChannel';
 import Modal from '..';
 import { AlertWrapper } from './style';
-import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 
 export default function ChannelDeleteModal({ controller }: { controller: ModalController }) {
   const selectedGroup = useSelectedGroup();

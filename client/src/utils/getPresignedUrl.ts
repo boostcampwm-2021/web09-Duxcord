@@ -1,5 +1,5 @@
 import { postFetchOptions } from '@utils/fetchOptions';
-import { API_URL } from '@utils/constraints/API_URL';
+import { API_URL } from '@utils/constants/API_URL';
 
 const getPresignedUrl = async (uploadName: string) => {
   try {

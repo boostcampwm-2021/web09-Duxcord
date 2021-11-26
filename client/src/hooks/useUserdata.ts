@@ -1,5 +1,5 @@
 import useSWR from 'swr';
-import { API_URL } from '@utils/constraints/API_URL';
+import { API_URL } from '@utils/constants/API_URL';
 import { getFetcher } from '@utils/fetcher';
 
 export const useUserdata = () => {

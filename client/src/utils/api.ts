@@ -1,4 +1,4 @@
-import { API_URL } from '@utils/constraints/API_URL';
+import { API_URL } from '@utils/constants/API_URL';
 import { postFetchOptions } from '@utils/fetchOptions';
 
 const tryLogin = async (loginID: string, password: string) => {

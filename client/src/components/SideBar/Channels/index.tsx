@@ -10,7 +10,7 @@ import ChannelCreateModal from '@components/Modal/ChannelCreate';
 import ChannelDeleteModal from '@components/Modal/ChannelDelete';
 import { ChannelAddIcon, ChannelOpenIcon } from '@components/common/Icons';
 import { ChannelWrapper, ChannelType } from './style';
-import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 
 interface Props {
   channelType: 'chatting' | 'meeting';

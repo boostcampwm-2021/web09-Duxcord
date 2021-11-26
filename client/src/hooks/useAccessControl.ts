@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { URL } from '@utils/constraints/URL';
+import { URL } from '@utils/constants/URL';
 import { useUserdata } from './useUserdata';
 
 export const useAccessControl = ({

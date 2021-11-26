@@ -11,7 +11,7 @@ import { MeetingMember, StreamIDMetaData } from '@customTypes/meet';
 import Socket, { socket } from '@utils/socket';
 import { highlightMyVolume } from '@utils/audio';
 import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
-import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
 import FocusedVideo from './FocusedVideo';

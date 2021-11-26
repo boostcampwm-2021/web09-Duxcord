@@ -1,5 +1,5 @@
 import { deleteFetchOptions } from '@utils/fetchOptions';
-import { API_URL } from '@utils/constraints/API_URL';
+import { API_URL } from '@utils/constants/API_URL';
 
 export const deleteChannel = ({
   groupID,
