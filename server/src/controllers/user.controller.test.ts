@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import { appInit } from '..';
 import { userRepository } from '../loaders/orm.loader';
-import { signInMSG } from './user.controller';
+import { signInMSG } from '../messages';
 
 let app;
 
