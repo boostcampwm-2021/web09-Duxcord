@@ -5,7 +5,7 @@ import { setUserDevice } from '@redux/userDevice/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useSelectedChannel, useUserdata, useUserDevice, useSelectedUser } from '@hooks/index';
 import { socket } from '@utils/socket';
-import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import UserInformationModal from '@components/Modal/UserInformation';
 import UserEditModal from '@components/Modal/UserEdit';
 import {

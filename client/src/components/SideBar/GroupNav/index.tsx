@@ -13,10 +13,10 @@ import {
 } from '@redux/groupConnection/slice';
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
-import { API_URL } from '@utils/constraints/API_URL';
-import { URL } from '@utils/constraints/URL';
+import { API_URL } from '@utils/constants/API_URL';
+import { URL } from '@utils/constants/URL';
 import { socket } from '@utils/socket';
-import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import GroupCreateModal from '@components/Modal/GroupCreate';
 import GroupAddModal from '@components/Modal/GroupAdd';
 import GroupJoinModal from '@components/Modal/GroupJoin';

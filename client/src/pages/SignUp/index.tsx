@@ -8,7 +8,7 @@ import {
   validateForm,
   isSendPossible,
 } from '@utils/checkResponse';
-import { SIGN_UP_ERROR_MESSAGE } from '@utils/constraints/MESSAGE';
+import { SIGN_UP_ERROR_MESSAGE } from '@utils/constants/MESSAGE';
 import { trySignUp } from '@utils/api';
 import Background from '@components/common/Background';
 import {

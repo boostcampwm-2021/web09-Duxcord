@@ -4,8 +4,8 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
-import { URL } from '@utils/constraints/URL';
-import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
+import { URL } from '@utils/constants/URL';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { capture } from '@utils/capture';
 import {
   CaptureIcon,

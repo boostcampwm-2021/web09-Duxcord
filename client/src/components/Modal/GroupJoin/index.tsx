@@ -4,8 +4,8 @@ import { useHistory } from 'react-router';
 
 import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
-import { URL } from '@utils/constraints/URL';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
+import { URL } from '@utils/constants/URL';
 import { postJoinGroup } from '@api/postJoinGroup';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
