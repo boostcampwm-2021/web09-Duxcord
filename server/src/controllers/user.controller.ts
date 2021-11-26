@@ -31,12 +31,8 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
   const { userID } = req.body;
 
-  try {
-    req.session.userID = userID;
-    return res.status(200).send(signInMSG.success);
-  } catch (error) {
-    next(error);
-  }
+  req.session.userID = userID;
+  return res.status(200).send(signInMSG.success);
 };
 
 const signOut = (req: Request, res: Response, next: NextFunction) => {
