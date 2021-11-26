@@ -1,5 +1,5 @@
 import { patchFetchOptions } from '@utils/fetchOptions';
-import { API_URL } from './API_URL';
+import { API_URL } from '@utils/constraints/API_URL';
 
 export const patchUserdata = ({
   username,
@@ -9,4 +9,4 @@ export const patchUserdata = ({
   username: string;
   thumbnail: string | null;
   bio: string;
-}) => fetch(API_URL.user.editProfile, patchFetchOptions({ username, thumbnail, bio }));
+}) => fetch(API_URL.USER.POST_EDIT_PROFILE, patchFetchOptions({ username, thumbnail, bio }));

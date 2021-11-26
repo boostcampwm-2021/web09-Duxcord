@@ -4,8 +4,8 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
-import { URL } from '@api/URL';
-import { TOAST_MESSAGE } from '@utils/message';
+import { URL } from '@utils/constraints/URL';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
 import { capture } from '@utils/capture';
 import {
   CaptureIcon,
@@ -35,7 +35,7 @@ function MeetButton({
         name: '',
       }),
     );
-    history.replace(URL.groupPage(selectedGroup.id));
+    history.replace(URL.GROUP(selectedGroup.id));
   };
 
   const onMeetingCaptureClick = async () => {

@@ -6,7 +6,7 @@ import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
 import { postLikeChat } from '@api/postLikeChat';
-import { STATUS_CODES } from '@api/STATUS_CODES';
+import { STATUS_CODES } from '@utils/constraints/STATUS_CODES';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';

@@ -4,11 +4,11 @@ import { useHistory } from 'react-router';
 
 import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import Colors from '@styles/Colors';
-import { ModalController } from '@customTypes/modal';
-import { TOAST_MESSAGE } from '@utils/message';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
+import { URL } from '@utils/constraints/URL';
 import { postJoinGroup } from '@api/postJoinGroup';
-import { URL } from '@api/URL';
+import { ModalController } from '@customTypes/modal';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { Input } from './style';
 
@@ -35,7 +35,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
         mutate([...groups, group], false);
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.groupPage(group.id));
+        history.replace(URL.GROUP(group.id));
         fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_INVITATION, type: 'success' });
         break;
       case 400:

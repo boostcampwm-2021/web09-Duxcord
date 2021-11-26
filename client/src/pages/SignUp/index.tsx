@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import Background from '@components/common/Background';
 import { Redirect, Link } from 'react-router-dom';
 
 import {
@@ -9,8 +8,9 @@ import {
   validateForm,
   isSendPossible,
 } from '@utils/checkResponse';
-import { SIGN_UP_ERROR_MESSAGE } from '@utils/message';
+import { SIGN_UP_ERROR_MESSAGE } from '@utils/constraints/MESSAGE';
 import { trySignUp } from '@utils/api';
+import Background from '@components/common/Background';
 import {
   SignUpWrapper,
   Title,

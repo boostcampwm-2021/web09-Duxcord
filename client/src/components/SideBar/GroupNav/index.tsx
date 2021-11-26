@@ -13,10 +13,10 @@ import {
 } from '@redux/groupConnection/slice';
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
-import GroupEvent from '@customTypes/socket/GroupEvent';
-import { API_URL } from '@api/API_URL';
-import { URL } from '@api/URL';
+import { API_URL } from '@utils/constraints/API_URL';
+import { URL } from '@utils/constraints/URL';
 import { socket } from '@utils/socket';
+import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
 import GroupCreateModal from '@components/Modal/GroupCreate';
 import GroupAddModal from '@components/Modal/GroupAdd';
 import GroupJoinModal from '@components/Modal/GroupJoin';
@@ -55,18 +55,18 @@ function GroupNav() {
   };
 
   const selectGroup = (group: Group) => () => {
-    history.replace(URL.groupPage(group.id));
+    history.replace(URL.GROUP(group.id));
     dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
     dispatch(setSelectedGroup(group));
-    socket.emit(GroupEvent.groupID, group.code);
+    socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
   };
 
   useEffect(() => {
-    socket.on(GroupEvent.groupUserConnection, (connectionList) => {
+    socket.on(SOCKET.GROUP_EVENT.USER_CONNECTION, (connectionList) => {
       dispatch(setGroupConnection(connectionList));
     });
 
-    socket.on(GroupEvent.groupDelete, (code) => {
+    socket.on(SOCKET.GROUP_EVENT.DELETE_GROUP, (code) => {
       mutateGroups(
         groups.filter((group: Group) => group.id !== selectedGroup.id),
         false,
@@ -81,20 +81,20 @@ function GroupNav() {
           }),
         );
         dispatch(setSelectedChat(null));
-        history.replace(URL.groupPage());
+        history.replace(URL.GROUP());
       }
     });
 
-    socket.on(GroupEvent.userExit, (user, code) => {
+    socket.on(SOCKET.GROUP_EVENT.USER_EXIT, (user, code) => {
       dispatch(removeUserConnection(user));
     });
 
-    socket.on(GroupEvent.userEnter, (user, code) => {
+    socket.on(SOCKET.GROUP_EVENT.USER_ENTER, (user, code) => {
       if (code === selectedGroup?.code) dispatch(addUserConnection(user));
-      mutate(API_URL.group.getGroupMembers(selectedGroup?.id));
+      mutate(API_URL.GROUP.GET_MEMBERS(selectedGroup?.id));
     });
 
-    socket.on(GroupEvent.channelDelete, ({ code, id, type }) => {
+    socket.on(SOCKET.GROUP_EVENT.DELETE_CHANNEL, ({ code, id, type }) => {
       mutateGroups(
         groups.map((group: any) => {
           if (group.id !== selectedGroup.id) return group;
@@ -116,16 +116,16 @@ function GroupNav() {
             }),
           );
           dispatch(setSelectedChat(null));
-          history.replace(URL.groupPage(selectedGroup.id));
+          history.replace(URL.GROUP(selectedGroup.id));
         }
     });
 
     return () => {
-      socket.off(GroupEvent.groupUserConnection);
-      socket.off(GroupEvent.groupDelete);
-      socket.off(GroupEvent.userEnter);
-      socket.off(GroupEvent.userExit);
-      socket.off(GroupEvent.channelDelete);
+      socket.off(SOCKET.GROUP_EVENT.USER_CONNECTION);
+      socket.off(SOCKET.GROUP_EVENT.DELETE_CHANNEL);
+      socket.off(SOCKET.GROUP_EVENT.DELETE_GROUP);
+      socket.off(SOCKET.GROUP_EVENT.USER_ENTER);
+      socket.off(SOCKET.GROUP_EVENT.USER_EXIT);
     };
   }, [dispatch, selectedGroup?.code, selectedGroup?.id]);
 

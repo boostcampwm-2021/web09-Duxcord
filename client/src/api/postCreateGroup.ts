@@ -1,5 +1,5 @@
 import { postFetchOptions } from '@utils/fetchOptions';
-import { API_URL } from './API_URL';
+import { API_URL } from '@utils/constraints/API_URL';
 
 export const postCreateGroup = ({
   groupName,
@@ -7,4 +7,4 @@ export const postCreateGroup = ({
 }: {
   groupName: string;
   groupThumbnail: string | null;
-}) => fetch(API_URL.group.postCreateGroup, postFetchOptions({ groupName, groupThumbnail }));
+}) => fetch(API_URL.GROUP.POST_CREATE_GROUP, postFetchOptions({ groupName, groupThumbnail }));

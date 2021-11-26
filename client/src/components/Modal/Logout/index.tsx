@@ -1,21 +1,21 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 
+import { useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/message';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
 import { postLogout } from '@api/postLogout';
-import { URL } from '@api/URL';
+import { URL } from '@utils/constraints/URL';
 import Modal from '..';
 import { MiddlePart } from './style';
-import { useToast } from '@hooks/useToast';
 
 function LogoutModal({ controller: { hide, show } }: { controller: ModalController }) {
   const history = useHistory();
   const { fireToast } = useToast();
   const logOut = async () => {
     const isSuccess = await postLogout();
-    if (isSuccess) history.replace(URL.loginPage);
+    if (isSuccess) history.replace(URL.LOGIN);
     fireToast({ message: TOAST_MESSAGE.SUCCESS.LOGOUT, type: 'success' });
     window.location.reload();
   };

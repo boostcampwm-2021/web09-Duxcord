@@ -6,14 +6,14 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
+import { URL } from '@utils/constraints/URL';
+import { deleteGroup } from '@api/deleteGroup';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
+import { socket } from '@utils/socket';
+import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
 import { ModalController } from '@customTypes/modal';
 import { Group } from '@customTypes/group';
-import GroupEvent from '@customTypes/socket/GroupEvent';
 import Colors from '@styles/Colors';
-import { URL } from '@api/URL';
-import { deleteGroup } from '@api/deleteGroup';
-import { TOAST_MESSAGE } from '@utils/message';
-import { socket } from '@utils/socket';
 import Modal from '..';
 import { AlertWrapper } from './style';
 
@@ -29,7 +29,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
       const response = await deleteGroup({ groupID: selectedGroup.id });
       switch (response.status) {
         case 200:
-          socket.emit(GroupEvent.groupDelete, selectedGroup.code);
+          socket.emit(SOCKET.GROUP_EVENT.DELETE_GROUP, selectedGroup.code);
           mutateGroups(
             groups.filter((group: Group) => group.id !== selectedGroup.id),
             false,
@@ -44,7 +44,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
           );
           dispatch(setSelectedChat(null));
           hide();
-          history.replace(URL.groupPage());
+          history.replace(URL.GROUP());
           fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_DELETE, type: 'success' });
           break;
         case 400:

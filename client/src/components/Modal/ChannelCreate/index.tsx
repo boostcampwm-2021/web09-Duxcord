@@ -7,12 +7,12 @@ import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import { Group } from '@customTypes/group';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/message';
+import { TOAST_MESSAGE } from '@utils/constraints/MESSAGE';
+import { URL } from '@utils/constraints/URL';
 import { postCreateChannel } from '@api/postCreateChannel';
-import { URL } from '@api/URL';
-import Modal from '..';
-import ChannelTypeItem from './ChannelTypeItem';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
+import ChannelTypeItem from './ChannelTypeItem';
+import Modal from '..';
 import { Label, Wrapper, Input } from './style';
 
 export default function ChannelCreateModal({
@@ -52,7 +52,7 @@ export default function ChannelCreateModal({
       }, false);
       controller.hide();
       if (channelType === 'chatting') {
-        history.replace(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
+        history.replace(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id));
         dispatch(
           setSelectedChannel({
             type: channelType,

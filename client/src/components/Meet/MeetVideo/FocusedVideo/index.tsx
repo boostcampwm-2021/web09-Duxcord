@@ -1,10 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 
+import { SelectedVideo } from '@customTypes/meet';
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-
 import { ThumbnailWrapper, Thumbnail } from '../style';
 import { UserInfo, Video, VideoWrapper, DeviceStatus } from './style';
-import { SelectedVideo } from '@customTypes/meet';
 
 function FocusedVideo({
   selectedVideo: { loginID, username, stream, thumbnail, mic, cam, speaker, isScreen },

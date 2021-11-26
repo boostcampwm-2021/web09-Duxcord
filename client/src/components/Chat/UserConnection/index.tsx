@@ -4,17 +4,17 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useGroupConnection, useSelectedGroup, useUserdata } from '@hooks/index';
-import GroupEvent from '@customTypes/socket/GroupEvent';
-import { API_URL } from '@api/API_URL';
+import { API_URL } from '@utils/constraints/API_URL';
 import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';
+import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
 
 function UserConnection() {
   const selectedGroup = useSelectedGroup();
   const groupConnection = useGroupConnection();
   const { userdata } = useUserdata();
-  const { data = [] } = useSWR(API_URL.group.getGroupMembers(selectedGroup?.id), getFetcher);
+  const { data = [] } = useSWR(API_URL.GROUP.GET_MEMBERS(selectedGroup?.id), getFetcher);
 
   const dispatch = useDispatch();
 
@@ -27,7 +27,7 @@ function UserConnection() {
   };
 
   useEffect(() => {
-    socket.emit(GroupEvent.groupID, selectedGroup?.code, userdata);
+    socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, selectedGroup?.code, userdata);
   }, [selectedGroup?.code, userdata]);
 
   return (

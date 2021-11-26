@@ -7,16 +7,16 @@ import {
   useUserdata,
   useUserDevice,
 } from '@hooks/index';
-import MeetEvent from '@customTypes/socket/MeetEvent';
+import { MeetingMember, StreamIDMetaData } from '@customTypes/meet';
 import Socket, { socket } from '@utils/socket';
 import { highlightMyVolume } from '@utils/audio';
+import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
+import { SOCKET } from '@utils/constraints/SOCKET_EVENT';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';
-import { Videos, VideoSection } from './style';
 import FocusedVideo from './FocusedVideo';
 import MyVideo from './MyVideo';
-import { MeetingMember, StreamIDMetaData } from '@customTypes/meet';
-import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
+import { Videos, VideoSection } from './style';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 
@@ -88,7 +88,7 @@ function MeetVideo() {
     pc.onicecandidate = ({ candidate }) => {
       if (!candidate) return;
 
-      socket.emit(MeetEvent.candidate, {
+      socket.emit(SOCKET.MEET_EVENT.CANDIDATE, {
         candidate: candidate,
         receiverID: socketID,
       });
@@ -98,7 +98,7 @@ function MeetVideo() {
       try {
         const offer = await pc.createOffer();
         await pc.setLocalDescription(new RTCSessionDescription(offer));
-        socket.emit(MeetEvent.offer, {
+        socket.emit(SOCKET.MEET_EVENT.OFFER, {
           offer,
           receiverID: socketID,
           streamID: {
@@ -201,8 +201,8 @@ function MeetVideo() {
     if (id === null || userdata === undefined) return;
     const { loginID, username, thumbnail } = userdata;
 
-    Socket.joinChannel({ channelType: MeetEvent.meeting, id });
-    socket.on(MeetEvent.allMeetingMembers, async (members) => {
+    Socket.joinChannel({ channelType: 'meeting', id });
+    socket.on(SOCKET.MEET_EVENT.ALL_MEETING_MEMBERS, async (members) => {
       await getMyStream();
       members.forEach(async (member: MeetingMember) => {
         try {
@@ -213,7 +213,7 @@ function MeetVideo() {
           const offer = await pc.createOffer();
           await pc.setLocalDescription(new RTCSessionDescription(offer));
 
-          socket.emit(MeetEvent.offer, {
+          socket.emit(SOCKET.MEET_EVENT.OFFER, {
             offer,
             receiverID: member.socketID,
             member: { loginID, username, thumbnail, mic, cam, speaker },
@@ -223,12 +223,12 @@ function MeetVideo() {
             },
           });
         } catch (e) {
-          console.error(MeetEvent.allMeetingMembers, e);
+          console.error(SOCKET.MEET_EVENT.ALL_MEETING_MEMBERS, e);
         }
       });
     });
 
-    socket.on(MeetEvent.offer, async ({ offer, member, streamID, senderID }) => {
+    socket.on(SOCKET.MEET_EVENT.OFFER, async ({ offer, member, streamID, senderID }) => {
       try {
         const pc = createPeerConnection(senderID);
         if (!pc) return;
@@ -245,7 +245,7 @@ function MeetVideo() {
         pc.setRemoteDescription(new RTCSessionDescription(offer));
         const answer = await pc.createAnswer();
         pc.setLocalDescription(new RTCSessionDescription(answer));
-        socket.emit(MeetEvent.answer, {
+        socket.emit(SOCKET.MEET_EVENT.ANSWER, {
           answer,
           receiverID: senderID,
           streamID: {
@@ -258,7 +258,7 @@ function MeetVideo() {
       }
     });
 
-    socket.on(MeetEvent.answer, async ({ answer, senderID, streamID }) => {
+    socket.on(SOCKET.MEET_EVENT.ANSWER, async ({ answer, senderID, streamID }) => {
       try {
         const pc = pcs.current[senderID];
         if (!pc) return;
@@ -269,7 +269,7 @@ function MeetVideo() {
       }
     });
 
-    socket.on(MeetEvent.candidate, async ({ candidate, senderID }) => {
+    socket.on(SOCKET.MEET_EVENT.CANDIDATE, async ({ candidate, senderID }) => {
       try {
         const pc = pcs.current[senderID];
         if (!pc) return;
@@ -279,7 +279,7 @@ function MeetVideo() {
       }
     });
 
-    socket.on(MeetEvent.leaveMember, (memberID) => {
+    socket.on(SOCKET.MEET_EVENT.LEAVE_MEMBER, (memberID) => {
       if (!pcs.current[memberID]) return;
       pcs.current[memberID].close();
       delete pcs.current[memberID];
@@ -290,7 +290,7 @@ function MeetVideo() {
       playSoundEffect(SoundEffect.LeaveMeeting);
     });
 
-    socket.emit(MeetEvent.joinMeeting, id, code, {
+    socket.emit(SOCKET.MEET_EVENT.JOIN_MEETING, id, code, {
       loginID,
       username,
       thumbnail,
@@ -300,13 +300,13 @@ function MeetVideo() {
     });
 
     return () => {
-      Socket.leaveChannel({ channelType: MeetEvent.meeting, id });
-      socket.off(MeetEvent.allMeetingMembers);
-      socket.off(MeetEvent.offer);
-      socket.off(MeetEvent.answer);
-      socket.off(MeetEvent.candidate);
-      socket.off(MeetEvent.leaveMember);
-      socket.emit(MeetEvent.leaveMeeting, code);
+      Socket.leaveChannel({ channelType: 'meeting', id });
+      socket.off(SOCKET.MEET_EVENT.ALL_MEETING_MEMBERS);
+      socket.off(SOCKET.MEET_EVENT.OFFER);
+      socket.off(SOCKET.MEET_EVENT.ANSWER);
+      socket.off(SOCKET.MEET_EVENT.CANDIDATE);
+      socket.off(SOCKET.MEET_EVENT.LEAVE_MEMBER);
+      socket.emit(SOCKET.MEET_EVENT.LEAVE_MEETING, code);
 
       Object.values(pcs.current).forEach((pc) => pc.close());
       myStreamRef.current?.getTracks().forEach((track) => track.stop());
@@ -320,7 +320,7 @@ function MeetVideo() {
   }, [mic, cam]);
 
   useEffect(() => {
-    socket.on(MeetEvent.setMuted, (micStatus, socketID) => {
+    socket.on(SOCKET.MEET_EVENT.SET_MUTED, (micStatus, socketID) => {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
@@ -334,7 +334,7 @@ function MeetVideo() {
       });
     });
 
-    socket.on(MeetEvent.setToggleCam, (camStatus, socketID) => {
+    socket.on(SOCKET.MEET_EVENT.SET_TOGGLE_CAM, (camStatus, socketID) => {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
@@ -348,7 +348,7 @@ function MeetVideo() {
       });
     });
 
-    socket.on(MeetEvent.setSpeaker, (speakerStatus, socketID) => {
+    socket.on(SOCKET.MEET_EVENT.SET_SPEAKER, (speakerStatus, socketID) => {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
@@ -363,9 +363,9 @@ function MeetVideo() {
     });
 
     return () => {
-      socket.off(MeetEvent.setMuted);
-      socket.off(MeetEvent.setToggleCam);
-      socket.off(MeetEvent.setSpeaker);
+      socket.off(SOCKET.MEET_EVENT.SET_MUTED);
+      socket.off(SOCKET.MEET_EVENT.SET_TOGGLE_CAM);
+      socket.off(SOCKET.MEET_EVENT.SET_SPEAKER);
     };
   }, []);
 
