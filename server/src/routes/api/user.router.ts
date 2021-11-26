@@ -14,3 +14,10 @@ userRouter.post(
   signUpValidator,
   userController.signUp,
 );
+userRouter.post(
+  '/signin',
+  accessControl({ signIn: false }),
+  signInValidator,
+  userController.signIn,
+);
+userRouter.post('/signout', accessControl({ signIn: true }), userController.signOut);

@@ -1,4 +1,4 @@
-import { compare, hash } from 'bcryptjs';
+import { hash } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { groupMemberRepository, userRepository } from '../loaders/orm.loader';
 import { User } from '../db/entities';
@@ -29,16 +29,10 @@ const signUp = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const signIn = async (req: Request, res: Response, next: NextFunction) => {
-  const { loginID, password } = req.body;
+  const { userID } = req.body;
 
   try {
-    const user = await userRepository.findOne({ where: { loginID: loginID } });
-    if (!user) return res.status(400).send(signInMSG.userNotFound);
-
-    const isValidPassword = await compare(password, user.password);
-    if (!isValidPassword) return res.status(400).send(signInMSG.wrongPassword);
-
-    req.session.userID = user.id;
+    req.session.userID = userID;
     return res.status(200).send(signInMSG.success);
   } catch (error) {
     next(error);

@@ -46,3 +46,17 @@ export const signUpValidator = async (req, res, next) => {
     next(e);
   }
 };
+
+export const signInValidator = async (req, res, next) => {
+  const { loginID, password } = req.body;
+
+  const user = await userRepository.findOne({ where: { loginID: loginID } });
+  if (!user) return res.status(400).send(signInMSG.userNotFound);
+
+  const isValidPassword = await compare(password, user.password);
+  if (!isValidPassword) return res.status(400).send(signInMSG.wrongPassword);
+
+  req.body.userID = user.id;
+
+  next();
+};
