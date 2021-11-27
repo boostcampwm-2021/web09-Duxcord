@@ -14,6 +14,7 @@ import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
 import Modal from '..';
 import { InputForm, InputImage, InputText } from './style';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 
 function GroupCreateModal({
   controller: { hide, show, previous },
@@ -43,6 +44,7 @@ function GroupCreateModal({
       case 200:
         const group = await response.json();
         mutate([...groups, group], false);
+        dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));
         finishModal();
         history.replace(URL.GROUP(group.id));
