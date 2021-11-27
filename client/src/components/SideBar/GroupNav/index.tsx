@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { mutate } from 'swr';
 
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import {
@@ -56,7 +56,7 @@ function GroupNav() {
 
   const selectGroup = (group: Group) => () => {
     history.replace(URL.GROUP(group.id));
-    dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
+    dispatch(resetSelectedChannel());
     dispatch(setSelectedGroup(group));
     socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
   };
@@ -73,13 +73,7 @@ function GroupNav() {
       );
       if (code === selectedGroup?.code) {
         dispatch(setSelectedGroup(null));
-        dispatch(
-          setSelectedChannel({
-            type: '',
-            id: null,
-            name: '',
-          }),
-        );
+        dispatch(resetSelectedChannel());
         dispatch(setSelectedChat(null));
         history.replace(URL.GROUP());
       }
@@ -108,13 +102,7 @@ function GroupNav() {
       );
       if (code === selectedGroup?.code)
         if (id === selectedChannel.id && type === selectedChannel.type) {
-          dispatch(
-            setSelectedChannel({
-              type: '',
-              id: null,
-              name: '',
-            }),
-          );
+          dispatch(resetSelectedChannel());
           dispatch(setSelectedChat(null));
           history.replace(URL.GROUP(selectedGroup.id));
         }

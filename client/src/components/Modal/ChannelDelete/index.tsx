@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
@@ -50,13 +50,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
             }),
             false,
           );
-          dispatch(
-            setSelectedChannel({
-              type: '',
-              id: null,
-              name: '',
-            }),
-          );
+          dispatch(resetSelectedChannel());
           dispatch(setSelectedChat(null));
           controller.hide();
           history.replace(URL.GROUP(selectedGroup.id));
