@@ -23,8 +23,8 @@ export const expressLoader = (app) => {
 
   app.use('/api', apiRouter);
 
-  app.use((error, _req, res) => {
-    console.error(error);
-    res.status(500).send(error.message);
+  app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send(err.message);
   });
 };
