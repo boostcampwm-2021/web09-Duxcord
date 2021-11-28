@@ -3,6 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { groupMemberRepository, userRepository } from '../loaders/orm.loader';
 import { User } from '../db/entities';
 import { signUpMSG, signInMSG, signOutMSG, getUserGroupsMSG } from '../messages';
+import { getPresignUrl } from '../utils/S3';
 
 const saltRounds = 10;
 
@@ -89,6 +90,16 @@ const updateUserData = async (req: Request, res: Response, next: NextFunction) =
   }
 };
 
+const getPresignedUrl = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const uploadName = req.body.uploadName;
+    const url = await getPresignUrl(uploadName);
+    return res.status(200).json({ url });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   signUp,
   signIn,
@@ -97,4 +108,5 @@ export default {
   getUserGroups,
   getOtherUserData,
   updateUserData,
+  getPresignedUrl,
 };

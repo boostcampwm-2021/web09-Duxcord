@@ -1,8 +1,8 @@
 import React, { FormEvent, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useSelectedChannel, useUserdata } from '@hooks/index';
-import MeetEvent from '@customTypes/socket/MeetEvent';
-import { socket } from 'src/utils/socket';
+import { socket } from '@utils/socket';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import { ChatCloseIcon, ChatOpenIcon } from '@components/common/Icons';
 import {
   Chat,
@@ -42,7 +42,7 @@ function MeetChat() {
     if (!chatInputRef.current || !userdata) return;
     const message = chatInputRef.current.value;
     if (message.trim() === '') return;
-    socket.emit(MeetEvent.meetChat, {
+    socket.emit(SOCKET.MEET_EVENT.MEET_CHAT, {
       channelID,
       chat: { ...userdata, message, createdAt: new Date().toLocaleTimeString('ko-KR') },
     });
@@ -69,7 +69,7 @@ function MeetChat() {
   }, [chats]);
 
   useEffect(() => {
-    socket.on(MeetEvent.meetChat, (chat: IChat) => {
+    socket.on(SOCKET.MEET_EVENT.MEET_CHAT, (chat: IChat) => {
       setChats((chats) => [...chats, chat]);
       if (!chatListRef.current) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
@@ -77,7 +77,7 @@ function MeetChat() {
     });
 
     return () => {
-      socket.off(MeetEvent.meetChat);
+      socket.off(SOCKET.MEET_EVENT.MEET_CHAT);
     };
   }, []);
 

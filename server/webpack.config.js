@@ -29,6 +29,11 @@ module.exports = {
       DB_PASSWORD: process.env.DB_PASSWORD,
       SESSION_COOKIE_SECRET: process.env.SESSION_COOKIE_SECRET,
       NODE_ENV: NODE_ENV,
+      S3_ACCESS_KEY: process.env.S3_ACCESS_KEY,
+      S3_SECRET_KEY: process.env.S3_SECRET_KEY,
+      S3_ENDPOINT: process.env.S3_ENDPOINT,
+      S3_REGION: process.env.S3_REGION,
+      S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
     }),
   ],
   optimization: {

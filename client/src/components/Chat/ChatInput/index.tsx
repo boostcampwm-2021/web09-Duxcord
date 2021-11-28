@@ -1,13 +1,16 @@
 import React, { FormEvent, useRef, useState } from 'react';
 
-import { useSelectedChannel } from '@hooks/index';
-import { postChat } from 'src/api/postChat';
-import { uploadFileToStorage } from 'src/utils/uploadFile';
+import { useSelectedChannel, useToast } from '@hooks/index';
+import { postChat } from '@api/postChat';
+import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
+import getPresignedUrl from '@utils/getPresignedUrl';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
+  const { fireToast } = useToast();
   const chatInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmitChat = async (e: FormEvent) => {
@@ -29,12 +32,16 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
       if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadedFile = await uploadFileToStorage(file);
+      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
+      const presignedUrl = await getPresignedUrl(uploadName);
+      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
       if (uploadedFile && fileInputRef && fileInputRef.current) {
-        setFileURL([...fileURL, uploadedFile]);
+        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
+        setFileURL([...fileURL, uploadedURL]);
+        fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
       }
     } catch (error) {
-      console.log(error);
+      fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     }
   };
 
@@ -50,7 +57,7 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
           <div>
             {fileURL.map((url) => (
               <div key={url}>
-                <img src={url} />
+                <img src={url} alt="chatting images" />
               </div>
             ))}
           </div>

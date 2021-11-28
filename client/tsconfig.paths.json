@@ -8,7 +8,9 @@
       "@redux/*": ["src/redux/*"],
       "@styles/*": ["src/styles/*"],
       "@customTypes/*": ["src/types/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@api/*": ["src/api/*"],
+      "@utils/*": ["src/utils/*"]
     }
   }
 }

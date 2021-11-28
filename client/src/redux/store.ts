@@ -4,6 +4,7 @@ import selectedChannelReducer from './selectedChannel/slice';
 import selectedChatReducer from './selectedChat/slice';
 import selectedGroupReducer from './selectedGroup/slice';
 import selectedUserReducer from './selectedUser/slice';
+import toastReducer from './toast/slice';
 import userDeviceReducer from './userDevice/slice';
 
 const store = configureStore({
@@ -14,6 +15,7 @@ const store = configureStore({
     selectedUser: selectedUserReducer,
     userDevice: userDeviceReducer,
     groupConnection: groupConnectionReducer,
+    toast: toastReducer,
   },
 });
 

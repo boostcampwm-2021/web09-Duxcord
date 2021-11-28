@@ -1,10 +1,10 @@
-import React, { useLayoutEffect } from 'react';
+import React, { Suspense, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
-import { getURLParams } from 'src/utils/getURLParams';
+import { getURLParams } from '@utils/getURLParams';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
 import Meet from '@components/Meet';
@@ -12,9 +12,12 @@ import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
 import { Group } from '@customTypes/group';
+import Loading from '@pages/Loading';
 
-function Main() {
-  const { groups, isValidating } = useGroups();
+const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
+
+function MainLayout() {
+  const { groups, isValidating } = useGroups({ suspense: true });
   const { groupID, channelType, channelID } = getURLParams();
   const selectedGroup = useSelectedGroup();
   const selectedChannel = useSelectedChannel();
@@ -53,10 +56,18 @@ function Main() {
             <Meet />
           )
         ) : (
-          <Empty />
+          <Empty message={CHANNEL_SELECT_NEEDED} />
         )}
       </MainWrapper>
     </Layout>
+  );
+}
+
+function Main() {
+  return (
+    <Suspense fallback={Loading}>
+      <MainLayout />
+    </Suspense>
   );
 }
 

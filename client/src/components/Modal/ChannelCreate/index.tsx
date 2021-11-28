@@ -3,16 +3,17 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { useSelectedGroup, useGroups } from '@hooks/index';
+import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
-import Colors from '@styles/Colors';
-import { postCreateChannel } from 'src/api/postCreateChannel';
-import { URL } from 'src/api/URL';
-import Modal from '..';
-import ChannelTypeItem from './ChannelTypeItem';
-import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
-import { Label, Wrapper, Input, ErrorMessage } from './style';
 import { Group } from '@customTypes/group';
+import Colors from '@styles/Colors';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
+import { URL } from '@utils/constants/URL';
+import { postCreateChannel } from '@api/postCreateChannel';
+import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
+import ChannelTypeItem from './ChannelTypeItem';
+import Modal from '..';
+import { Label, Wrapper, Input } from './style';
 
 export default function ChannelCreateModal({
   initialChannelType,
@@ -23,11 +24,12 @@ export default function ChannelCreateModal({
 }) {
   const [channelType, setChannelType] = useState(initialChannelType);
   const [channelName, setChannelName] = useState('');
-  const [errorMessage, setErrorMessage] = useState(false);
   const selectedGroup = useSelectedGroup();
   const history = useHistory();
   const dispatch = useDispatch();
   const { mutate: mutateGroups } = useGroups();
+
+  const { fireToast } = useToast();
 
   const createChannel = async () => {
     const response = await postCreateChannel({
@@ -50,7 +52,7 @@ export default function ChannelCreateModal({
       }, false);
       controller.hide();
       if (channelType === 'chatting') {
-        history.replace(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
+        history.replace(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id));
         dispatch(
           setSelectedChannel({
             type: channelType,
@@ -59,8 +61,9 @@ export default function ChannelCreateModal({
           }),
         );
       }
+      fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_CREATE, type: 'success' });
     } catch (e) {
-      setErrorMessage(true);
+      fireToast({ message: TOAST_MESSAGE.ERROR.CHANNEL_CREATE, type: 'warning' });
     }
   };
   const ChannelCreateForm = (
@@ -88,7 +91,6 @@ export default function ChannelCreateModal({
           setChannelName(e.target.value);
         }}
       />
-      {errorMessage && <ErrorMessage>채널 생성에 실패했습니다. 다시 시도해주세요.</ErrorMessage>}
     </Wrapper>
   );
   return (

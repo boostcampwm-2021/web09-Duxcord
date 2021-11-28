@@ -1,5 +1,5 @@
-import { deleteFetchOptions } from '../utils/fetchOptions';
-import { API_URL } from './API_URL';
+import { deleteFetchOptions } from '@utils/fetchOptions';
+import { API_URL } from '@utils/constants/API_URL';
 
 export const deleteChannel = ({
   groupID,
@@ -9,4 +9,4 @@ export const deleteChannel = ({
   groupID: number;
   channelType: 'chatting' | 'meeting';
   channelID?: number | null;
-}) => fetch(API_URL.group.deleteChannel(groupID, channelType, channelID), deleteFetchOptions());
+}) => fetch(API_URL.GROUP.DELETE_CHANNEL(groupID, channelType, channelID), deleteFetchOptions());

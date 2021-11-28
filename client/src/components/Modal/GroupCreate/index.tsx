@@ -3,15 +3,18 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { useGroups } from '@hooks/index';
+import { useGroups, useToast } from '@hooks/index';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
-import { URL } from 'src/api/URL';
-import { postCreateGroup } from 'src/api/postCreateGroup';
-import { uploadFileToStorage } from 'src/utils/uploadFile';
-import Modal from '..';
+import { URL } from '@utils/constants/URL';
+import { postCreateGroup } from '@api/postCreateGroup';
+import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
+import getPresignedUrl from '@utils/getPresignedUrl';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
-import { ErrorDiv, InputForm, InputImage, InputText } from './style';
+import Modal from '..';
+import { InputForm, InputImage, InputText } from './style';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 
 function GroupCreateModal({
   controller: { hide, show, previous },
@@ -29,8 +32,8 @@ function GroupCreateModal({
     setGroupName('');
     hide();
   };
+  const { fireToast } = useToast();
 
-  const [postError, setPostError] = useState<string | null>(null);
   const createGroup = async () => {
     if (groupName === '') return;
     const response = await postCreateGroup({
@@ -39,24 +42,24 @@ function GroupCreateModal({
     });
     switch (response.status) {
       case 200:
-        setPostError(null);
         const group = await response.json();
         mutate([...groups, group], false);
+        dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.groupPage(group.id));
+        history.replace(URL.GROUP(group.id));
+        fireToast({ message: '그룹 생성에 성공하셨습니다', type: 'success' });
         break;
       case 400:
         const responseText = await response.text();
-        setPostError(responseText);
+        fireToast({ message: responseText, type: 'warning' });
         break;
       default:
-        setPostError('그룹 생성에 실패했습니다. 다시 시도해주세요.');
+        fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_CREATE, type: 'warning' });
     }
   };
 
   const [fileURL, setFileURL] = useState<string | null>(null);
-  const [fileError, setFileError] = useState(false);
 
   const inputImage = useRef<HTMLDivElement>(null);
   const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -65,14 +68,17 @@ function GroupCreateModal({
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
       if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadedFile = await uploadFileToStorage(file);
+      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
+      const presignedUrl = await getPresignedUrl(uploadName);
+      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
       if (uploadedFile && inputImage && inputImage.current) {
-        inputImage.current.style.backgroundImage = `url('${uploadedFile}')`;
-        setFileURL(uploadedFile);
-        setFileError(false);
-      } else setFileError(true);
+        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
+        inputImage.current.style.backgroundImage = `url('${uploadedURL}')`;
+        setFileURL(uploadedURL);
+        fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
+      } else fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     } catch (error) {
-      setFileError(true);
+      fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });
     }
   };
   const InputFormComponent = (
@@ -87,9 +93,6 @@ function GroupCreateModal({
         />
         {!fileURL && <GroupThumbnailUploadIcon />}
       </InputImage>
-      {fileError && (
-        <ErrorDiv>사진을 성공적으로 업로드하지 못했습니다. 다시 시도해주세요.</ErrorDiv>
-      )}
       <InputText
         type="text"
         id="group_name"
@@ -97,7 +100,6 @@ function GroupCreateModal({
         onChange={(e) => updateGroupName(e.target.value)}
         placeholder="그룹 이름을 입력해주세요"
       />
-      {postError && <ErrorDiv>{postError}</ErrorDiv>}
     </InputForm>
   );
 

@@ -2,20 +2,23 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { useGroups } from '@hooks/index';
+import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import Colors from '@styles/Colors';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
+import { URL } from '@utils/constants/URL';
+import { postJoinGroup } from '@api/postJoinGroup';
 import { ModalController } from '@customTypes/modal';
-import { postJoinGroup } from 'src/api/postJoinGroup';
-import { URL } from 'src/api/URL';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { Input } from './style';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 
 function GroupJoinModal({ controller: { hide, show, previous } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
   const history = useHistory();
+  const { fireToast } = useToast();
   const updateGroupCode = (newGroupCode: string) => {
     setGroupCode(newGroupCode);
   };
@@ -31,16 +34,18 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
       case 200:
         const group = await response.json();
         mutate([...groups, group], false);
+        dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.groupPage(group.id));
+        history.replace(URL.GROUP(group.id));
+        fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_INVITATION, type: 'success' });
         break;
       case 400:
         const responseText = await response.text();
-        console.log(responseText);
+        fireToast({ message: responseText, type: 'warning' });
         break;
       default:
-        console.log('백엔드가 포기한 요청..');
+        fireToast({ message: TOAST_MESSAGE.ERROR.GROUP_INVITATION, type: 'warning' });
     }
   };
 

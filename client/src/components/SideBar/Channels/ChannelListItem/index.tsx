@@ -4,9 +4,10 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useSelectedChannel, useUserdata } from '@hooks/index';
-import { URL } from 'src/api/URL';
+import { URL } from '@utils/constants/URL';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '@components/common/Icons';
 import { ListItem } from './style';
+import ChannelMeetingCount from './ChannelMeetingCount';
 
 interface Props {
   showChannelDeleteModal: () => void;
@@ -15,6 +16,8 @@ interface Props {
   id: number;
   name: string;
 }
+
+const MAX_MEETING_USER_COUNT = 5;
 
 function ChannelListItem({
   showChannelDeleteModal,
@@ -31,8 +34,8 @@ function ChannelListItem({
   const isLeader = selectedGroup?.leader?.loginID === userdata?.loginID;
 
   const joinChannel = () => {
-    if (meetingUserCount >= 5 && channelType === 'meeting') return;
-    history.replace(URL.channelPage(selectedGroup?.id, channelType, id));
+    if (meetingUserCount >= MAX_MEETING_USER_COUNT && channelType === 'meeting') return;
+    history.replace(URL.CHANNEL(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 
@@ -40,6 +43,7 @@ function ChannelListItem({
     <ListItem
       onClick={joinChannel}
       selected={id === selectedChannelID && channelType === selectedChannelType}
+      isLeader={isLeader}
     >
       <div>
         {channelType === 'meeting' ? (
@@ -49,6 +53,9 @@ function ChannelListItem({
         ) : null}
         <p>{name}</p>
       </div>
+      {channelType === 'meeting' && !!meetingUserCount && (
+        <ChannelMeetingCount meetingUserCount={meetingUserCount} />
+      )}
       {isLeader && (
         <GroupDeleteIcon
           onClick={(e) => {

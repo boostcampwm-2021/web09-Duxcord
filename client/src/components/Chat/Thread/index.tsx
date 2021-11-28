@@ -5,12 +5,10 @@ import useSWR from 'swr';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
-import ChannelEvent from '@customTypes/socket/ChannelEvent';
-import ThreadType from '@customTypes/socket/ThreadEvent';
-import { API_URL } from 'src/api/API_URL';
-import { postCreateThread } from 'src/api/postCreateThread';
-import { getFetcher } from 'src/utils/fetcher';
-import { socket } from 'src/utils/socket';
+import { API_URL } from '@utils/constants/API_URL';
+import { postCreateThread } from '@api/postCreateThread';
+import { getFetcher } from '@utils/fetcher';
+import { socket } from '@utils/socket';
 import ThreadItem from '../ThreadItem';
 import { ThreadCloseIcon } from '../../common/Icons';
 import {
@@ -25,9 +23,10 @@ import {
   ChatLengthWrapper,
   ChatLength,
 } from './style';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
-  const { mutate, data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
+  const { mutate, data } = useSWR(API_URL.THREAD.GET_DATA(selectedChat.id), getFetcher);
   const dispatch = useDispatch();
   const { name } = useSelectedChannel();
   const {
@@ -57,16 +56,16 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   );
 
   useEffect(() => {
-    socket.emit(ChannelEvent.joinChannel, ThreadType.thread + selectedChat.id);
+    socket.emit(SOCKET.CHANNEL_EVENT.JOIN_CHANNEL, SOCKET.CHAT_EVENT.THREAD + selectedChat.id);
     return () => {
-      socket.emit(ChannelEvent.leaveChannel, ThreadType.thread + selectedChat.id);
+      socket.emit(SOCKET.CHANNEL_EVENT.LEAVE_CHANNEL, SOCKET.CHAT_EVENT.THREAD + selectedChat.id);
     };
   }, [selectedChat.id]);
 
   useEffect(() => {
-    socket.on(ThreadType.threadUpdate, onThread);
+    socket.on(SOCKET.CHAT_EVENT.THREAD_UPDATE, onThread);
     return () => {
-      socket.off(ThreadType.threadUpdate);
+      socket.off(SOCKET.CHAT_EVENT.THREAD_UPDATE);
     };
   }, [onThread]);
 
@@ -100,7 +99,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
               {files &&
                 files.map((file) => (
                   <div key={file.src}>
-                    <img src={file.src} />
+                    <img src={file.src} alt="thread files" />
                   </div>
                 ))}
             </FileWrapper>

@@ -2,20 +2,18 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { useSelectedChannel, useSelectedChat } from '@hooks/index';
-import LikeEvent from '@customTypes/socket/LikeEvent';
-import ThreadEvent from '@customTypes/socket/ThreadEvent';
-import ChatEvent from '@customTypes/socket/ChatEvent';
 import { ChatData } from '@customTypes/chats';
-import { API_URL } from 'src/api/API_URL';
-import Socket, { socket } from 'src/utils/socket';
-import { getFetcher } from 'src/utils/fetcher';
+import Socket, { socket } from '@utils/socket';
+import { getFetcher } from '@utils/fetcher';
+import { makeChatSection } from '@utils/makeChatSection';
+import { getChatsHeight } from '@utils/getChatsHeight';
+import { API_URL } from '@utils/constants/API_URL';
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import ChatInput from './ChatInput';
 import ChatItem from './ChatItem';
 import UserConnection from './UserConnection';
 import Thread from './Thread';
 import { ChatContainer, Chats, ChatPart, ChatInputWrapper, StickyWrapper, Section } from './style';
-import { makeChatSection } from 'src/utils/makeChatSection';
-import { getChatsHeight } from 'src/utils/getChatsHeight';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
@@ -29,31 +27,32 @@ function Chat() {
     mutate,
     setSize,
     isValidating,
-  } = useSWRInfinite(API_URL.channel.getKey(id), getFetcher);
+  } = useSWRInfinite(API_URL.CHANNEL.GET_BY_PAGE(id), getFetcher);
   const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (id === null) return;
-    Socket.joinChannel({ channelType: ChatEvent.chatting, id });
+    Socket.joinChannel({ channelType: 'chatting', id });
 
     return () => {
-      Socket.leaveChannel({ channelType: ChatEvent.chatting, id });
+      Socket.leaveChannel({ channelType: 'chatting', id });
     };
   }, [id]);
 
   const onScroll = useCallback(() => {
+    if (isValidating) return;
     if (chatListRef?.current?.scrollTop === 0 && !isReachingEnd) {
       setSize((size) => size + 1);
     }
-  }, [isReachingEnd, setSize]);
+  }, [isReachingEnd, setSize, isValidating]);
 
   useEffect(() => {
+    if (chatListRef?.current?.scrollTop && chatListRef?.current?.scrollTop > 0) return;
     (async () => {
       if (chats) {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
-        console.log('height', height);
         chatListRef.current?.scrollTo({ top: height });
         if (isInitialized) {
           chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
@@ -126,13 +125,13 @@ function Chat() {
   );
 
   useEffect(() => {
-    socket.on(ChatEvent.chat, onChat);
-    socket.on(LikeEvent.like, onLike);
-    socket.on(ThreadEvent.thread, onThread);
+    socket.on(SOCKET.CHAT_EVENT.CHAT, onChat);
+    socket.on(SOCKET.CHAT_EVENT.LIKE, onLike);
+    socket.on(SOCKET.CHAT_EVENT.THREAD, onThread);
     return () => {
-      socket.off(ChatEvent.chat);
-      socket.off(LikeEvent.like);
-      socket.off(ThreadEvent.thread);
+      socket.off(SOCKET.CHAT_EVENT.CHAT);
+      socket.off(SOCKET.CHAT_EVENT.LIKE);
+      socket.off(SOCKET.CHAT_EVENT.THREAD);
     };
   }, [onChat, onLike, onThread]);
 

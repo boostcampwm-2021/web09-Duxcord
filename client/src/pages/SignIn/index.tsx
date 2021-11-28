@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { STATUS_CODES } from 'src/api/STATUS_CODES';
-import { URL } from 'src/api/URL';
-import { SIGN_IN_ERROR_MESSAGE } from 'src/utils/message';
-import { checkLogin } from 'src/utils/checkResponse';
-import { tryLogin } from 'src/utils/api';
+import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
+import { URL } from '@utils/constants/URL';
+import { SIGN_IN_ERROR_MESSAGE } from '@utils/constants/MESSAGE';
+import { checkLogin } from '@utils/checkResponse';
+import { tryLogin } from '@utils/api';
 import Background from '@components/common/Background';
 import {
   SignInWrapper,
@@ -48,7 +48,7 @@ function SignIn() {
 
     try {
       const loginResponse = await tryLogin(ID, password);
-      if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.groupPage());
+      if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.GROUP());
       setResponseState({ ...responseState, ...loginResponse });
     } catch (error) {
       console.log(error);

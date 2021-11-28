@@ -66,6 +66,7 @@ interface IGroupWrapper {
 
 interface IGroup {
   thumbnail: string | null;
+  isSelected: boolean;
 }
 
 const GroupWrapper = styled.div<IGroupWrapper>`
@@ -106,6 +107,14 @@ const GroupItem = styled.div<IGroup>`
         background-position-y: center;
       `
       : `background-color: ${Colors.White};`}
+  ${(props) =>
+    props.isSelected &&
+    (props.thumbnail
+      ? `border-radius: 30%;`
+      : `border-radius: 30%; background-color: ${Colors.Blue};`)}
+      & p {
+    ${(props) => props.isSelected && !props.thumbnail && `color: ${Colors.White};`}
+  }
   &:hover {
     cursor: pointer;
     animation: ${(props) => (props.thumbnail ? radiusChange : colorChange)} 0.1s linear both;

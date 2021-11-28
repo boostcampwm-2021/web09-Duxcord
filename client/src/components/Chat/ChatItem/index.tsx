@@ -5,8 +5,8 @@ import { setSelectedChat } from '@redux/selectedChat/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
-import { postLikeChat } from 'src/api/postLikeChat';
-import { STATUS_CODES } from 'src/api/STATUS_CODES';
+import { postLikeChat } from '@api/postLikeChat';
+import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
@@ -77,7 +77,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
           {files &&
             files.map((file) => (
               <div key={file.src}>
-                <img src={file.src} />
+                <img src={file.src} alt="chat file" />
               </div>
             ))}
         </FileWrapper>

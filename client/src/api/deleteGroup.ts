@@ -1,5 +1,5 @@
-import { deleteFetchOptions } from '../utils/fetchOptions';
-import { API_URL } from './API_URL';
+import { deleteFetchOptions } from '@utils/fetchOptions';
+import { API_URL } from '@utils/constants/API_URL';
 
 export const deleteGroup = ({ groupID }: { groupID: number }) =>
-  fetch(API_URL.group.deleteGroup(groupID), deleteFetchOptions());
+  fetch(API_URL.GROUP.DELETE_GROUP(groupID), deleteFetchOptions());
