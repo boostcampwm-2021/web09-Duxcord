@@ -1,7 +1,7 @@
-import { IsDefined, IsNotEmpty, IsUrl, validate } from 'class-validator';
-import { VALIDATE_OPTIONS } from '.';
+import { IsNotEmpty, validate } from 'class-validator';
 import { userRepository } from '../../loaders/orm.loader';
 import { GROUP_MSG } from '../../messages';
+import { VALIDATE_OPTIONS } from './utils';
 
 class CreateGroupData {
   constructor({ groupName, thumbnail }) {

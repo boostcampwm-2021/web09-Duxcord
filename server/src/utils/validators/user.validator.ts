@@ -1,13 +1,9 @@
 import { compare } from 'bcryptjs';
-import { IsDefined, IsNotEmpty, IsUrl, Matches, validate } from 'class-validator';
+import { IsDefined, IsNotEmpty, Matches, validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 import { userRepository } from '../../loaders/orm.loader';
 import { signInMSG, signUpMSG, updateUserDataMSG } from '../../messages';
-
-const loginIDRegex = /^[a-z][a-z0-9]{5,14}$/;
-const usernameRegex = /^[^\s]{1,15}$/;
-const passwordRegex = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/;
-const VALIDATE_OPTIONS = { validationError: { target: false, value: false } };
+import { REGEXP, VALIDATE_OPTIONS } from './utils';
 
 class SignUpData {
   constructor({ loginID, username, password }) {
@@ -17,19 +13,19 @@ class SignUpData {
   }
 
   @IsNotEmpty({ message: signUpMSG.nullInput })
-  @Matches(loginIDRegex, { message: signUpMSG.invalidLoginID })
+  @Matches(REGEXP.LOGIN_ID, { message: signUpMSG.invalidLoginID })
   loginID: string;
 
   @IsNotEmpty({ message: signUpMSG.nullInput })
-  @Matches(usernameRegex, { message: signUpMSG.invalidPassword })
+  @Matches(REGEXP.USERNAME, { message: signUpMSG.invalidPassword })
   username: string;
 
   @IsNotEmpty({ message: signUpMSG.nullInput })
-  @Matches(passwordRegex, { message: signUpMSG.invalidPassword })
+  @Matches(REGEXP.PASSWORD, { message: signUpMSG.invalidPassword })
   password: string;
 }
 
-export const signUpValidator = async (req, res, next) => {
+export const signUpValidator = async (req: Request, res: Response, next: NextFunction) => {
   const { loginID, username, password } = req.body;
 
   try {
@@ -69,11 +65,10 @@ class UpdateUserData {
   }
 
   @IsNotEmpty({ message: updateUserDataMSG.needUsername })
-  @Matches(usernameRegex, { message: signUpMSG.invalidUsername })
+  @Matches(REGEXP.USERNAME, { message: signUpMSG.invalidUsername })
   username: string;
 
   @IsDefined({ message: updateUserDataMSG.needThumbnail })
-  @IsUrl({ message: updateUserDataMSG.invalidThumbnial })
   thumbnail: string | null;
 
   @IsDefined()
