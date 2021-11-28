@@ -11,19 +11,13 @@ import { ChattingChannel, MeetingChannel, Workgroup } from '../db/entities';
 import { ChannelType } from '../types/ChannelType';
 import { GROUP_MSG } from '../messages';
 
-const nullCheck = (data) => data !== undefined && data !== null && data !== '';
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
 
 const DEFAULT_CHANNEL_NAME = 'general';
 
 const createGroup = async (req: Request, res: Response, next: NextFunction) => {
-  const { groupName, groupThumbnail } = req.body;
+  const { groupName, groupThumbnail, leader } = req.body;
   try {
-    if (!nullCheck(groupName)) return res.status(400).send(GROUP_MSG.NEED_GROUP_NAME);
-    const leaderID = req.session.userID;
-    const leader = await userRepository.findOne({ where: { id: leaderID } });
-    if (!leader) return res.status(400).send(GROUP_MSG.USER_NOT_FOUND);
-
     const newGroup = new Workgroup();
     newGroup.name = groupName;
     newGroup.leader = leader;
