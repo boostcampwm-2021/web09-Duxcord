@@ -19,10 +19,10 @@ const DEFAULT_CHANNEL_NAME = 'general';
 const createGroup = async (req: Request, res: Response, next: NextFunction) => {
   const { groupName, groupThumbnail } = req.body;
   try {
-    if (!nullCheck(groupName)) return res.status(400).send(GROUP_MSG.needGroupName);
+    if (!nullCheck(groupName)) return res.status(400).send(GROUP_MSG.NEED_GROUP_NAME);
     const leaderID = req.session.userID;
     const leader = await userRepository.findOne({ where: { id: leaderID } });
-    if (!leader) return res.status(400).send(GROUP_MSG.userNotFound);
+    if (!leader) return res.status(400).send(GROUP_MSG.USER_NOT_FOUND);
 
     const newGroup = new Workgroup();
     newGroup.name = groupName;
@@ -69,7 +69,7 @@ const getGroupMembers = async (req: Request, res: Response, next: NextFunction) 
   const { id } = req.params;
   try {
     const group = await groupRepository.findOne({ where: { id: id } });
-    if (!group) return res.status(400).send(GROUP_MSG.groupNotFound);
+    if (!group) return res.status(400).send(GROUP_MSG.GROUP_NOT_FOUND);
 
     const members = await groupMemberRepository.findUsersByGroupID(group.id);
 
@@ -85,11 +85,11 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
 
   try {
     if (!channelName || !channelName.trim())
-      return res.status(400).send(GROUP_MSG.channelNameEmpty);
+      return res.status(400).send(GROUP_MSG.CHANNEL_NAME_EMPTY);
     const group = await groupRepository.findOne({ where: { id: id } });
-    if (!group) return res.status(400).send(GROUP_MSG.groupNotFound);
+    if (!group) return res.status(400).send(GROUP_MSG.GROUP_NOT_FOUND);
     if (!Object.values(ChannelType).includes(channelType))
-      return res.status(400).send(GROUP_MSG.wrongChannelType);
+      return res.status(400).send(GROUP_MSG.WRONG_CHANNEL_TYPE);
 
     const newChannel =
       channelType === ChannelType.chatting ? new ChattingChannel() : new MeetingChannel();
@@ -116,7 +116,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
       where: { code: groupCode },
       relations: ['meetingChannels', 'chattingChannels'],
     });
-    if (!group) return res.status(400).send(GROUP_MSG.groupNotFound);
+    if (!group) return res.status(400).send(GROUP_MSG.GROUP_NOT_FOUND);
 
     const relation = await groupMemberRepository
       .createQueryBuilder('group_member')
@@ -126,7 +126,7 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
       })
       .getOne();
 
-    if (relation) return res.status(400).send(GROUP_MSG.alreadyJoined);
+    if (relation) return res.status(400).send(GROUP_MSG.ALREADY_JOINED);
 
     const now = new Date();
     await groupMemberRepository.insert({ group: group, user: user, lastAccessTime: now });
@@ -144,11 +144,12 @@ const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const group = await groupRepository.findByIDWithLeaderID(id);
 
-    if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
-    if (group.leader.id !== userID) return res.status(400).send('그룹 삭제 권한이 없습니다.');
+    if (!group) return res.status(400).send(GROUP_MSG.INVALID_GROUP_ID);
+    if (group.leader.id !== userID)
+      return res.status(400).send(GROUP_MSG.DONT_HAVE_AUTHORITY_TO_DELETE);
 
     await groupRepository.remove(group);
-    res.status(200).json('그룹이 삭제되었습니다.');
+    res.status(200).json(GROUP_MSG.GROUP_DELETION_SUCCESS);
   } catch (error) {
     next(error);
   }
@@ -161,31 +162,32 @@ const deleteChannel = async (req: Request, res: Response, next: NextFunction) =>
   try {
     const group = await groupRepository.findByIDWithLeaderID(groupID);
 
-    if (!group) return res.status(400).send('존재하지 않는 그룹 아이디입니다.');
-    if (group.leader.id !== userID) return res.status(400).send('채널 삭제 권한이 없습니다.');
+    if (!group) return res.status(400).send(GROUP_MSG.INVALID_GROUP_ID);
+    if (group.leader.id !== userID)
+      return res.status(400).send(GROUP_MSG.DONT_HAVE_AUTHORITY_TO_DELETE);
     if (!['meeting', 'chatting'].includes(channelType))
-      return res.status(400).send(GROUP_MSG.wrongChannelType);
+      return res.status(400).send(GROUP_MSG.WRONG_CHANNEL_TYPE);
 
     if (channelType === 'meeting') {
       const channel = await meetingChannelRepository.findOne({
         where: { id: channelID },
         relations: ['group'],
       });
-      if (!channel) return res.status(400).send('존재하지 않는 채널 아이디입니다.');
+      if (!channel) return res.status(400).send(GROUP_MSG.INVALID_CHANNEL_ID);
       if (channel.group.id.toString() !== groupID)
-        return res.status(400).send('해당 그룹에는 해당 채널이 존재하지 않습니다.');
+        return res.status(400).send(GROUP_MSG.CANT_FOUND_CHANNEL_IN_GROUP);
       await meetingChannelRepository.remove(channel);
     } else {
       const channel = await chattingChannelRepository.findOne({
         where: { id: channelID },
         relations: ['group'],
       });
-      if (!channel) return res.status(400).send('존재하지 않는 채널 아이디입니다.');
+      if (!channel) return res.status(400).send(GROUP_MSG.INVALID_CHANNEL_ID);
       if (channel.group.id.toString() !== groupID)
-        return res.status(400).send('해당 그룹에는 해당 채널이 존재하지 않습니다.');
+        return res.status(400).send(GROUP_MSG.CANT_FOUND_CHANNEL_IN_GROUP);
       await chattingChannelRepository.remove(channel);
     }
-    res.status(200).json('채널이 삭제되었습니다.');
+    res.status(200).json();
   } catch (error) {
     next(error);
   }
