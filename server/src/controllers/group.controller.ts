@@ -5,7 +5,6 @@ import {
   groupRepository,
   meetingChannelRepository,
   chattingChannelRepository,
-  userRepository,
 } from '../loaders/orm.loader';
 import { ChattingChannel, MeetingChannel, Workgroup } from '../db/entities';
 import { ChannelType } from '../types/ChannelType';
@@ -60,11 +59,8 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const getGroupMembers = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
+  const { group } = req.body;
   try {
-    const group = await groupRepository.findOne({ where: { id: id } });
-    if (!group) return res.status(400).send(GROUP_MSG.GROUP_NOT_FOUND);
-
     const members = await groupMemberRepository.findUsersByGroupID(group.id);
 
     res.status(200).json(members);
@@ -74,17 +70,9 @@ const getGroupMembers = async (req: Request, res: Response, next: NextFunction) 
 };
 
 const createChannel = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const { channelType, channelName } = req.body;
+  const { channelType, channelName, group } = req.body;
 
   try {
-    if (!channelName || !channelName.trim())
-      return res.status(400).send(GROUP_MSG.CHANNEL_NAME_EMPTY);
-    const group = await groupRepository.findOne({ where: { id: id } });
-    if (!group) return res.status(400).send(GROUP_MSG.GROUP_NOT_FOUND);
-    if (!Object.values(ChannelType).includes(channelType))
-      return res.status(400).send(GROUP_MSG.WRONG_CHANNEL_TYPE);
-
     const newChannel =
       channelType === ChannelType.chatting ? new ChattingChannel() : new MeetingChannel();
     newChannel.name = channelName;
@@ -101,30 +89,11 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
 };
 
 const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
-  const { groupCode } = req.body;
+  const { group, user } = req.body;
 
   try {
-    const { userID } = req.session;
-    const user = await userRepository.findOne({ where: { id: userID } });
-    const group = await groupRepository.findOne({
-      where: { code: groupCode },
-      relations: ['meetingChannels', 'chattingChannels'],
-    });
-    if (!group) return res.status(400).send(GROUP_MSG.GROUP_NOT_FOUND);
-
-    const relation = await groupMemberRepository
-      .createQueryBuilder('group_member')
-      .where('group_member.groupId = :groupID && group_member.userId = :userID', {
-        groupID: group.id,
-        userID: userID,
-      })
-      .getOne();
-
-    if (relation) return res.status(400).send(GROUP_MSG.ALREADY_JOINED);
-
     const now = new Date();
     await groupMemberRepository.insert({ group: group, user: user, lastAccessTime: now });
-
     res.status(200).json(group);
   } catch (error) {
     next(error);
@@ -132,16 +101,9 @@ const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
-  const { id } = req.params;
-  const { userID } = req.session;
+  const { group } = req.body;
 
   try {
-    const group = await groupRepository.findByIDWithLeaderID(id);
-
-    if (!group) return res.status(400).send(GROUP_MSG.INVALID_GROUP_ID);
-    if (group.leader.id !== userID)
-      return res.status(400).send(GROUP_MSG.DONT_HAVE_AUTHORITY_TO_DELETE);
-
     await groupRepository.remove(group);
     res.status(200).json(GROUP_MSG.GROUP_DELETION_SUCCESS);
   } catch (error) {
@@ -150,38 +112,13 @@ const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const deleteChannel = async (req: Request, res: Response, next: NextFunction) => {
-  const { groupID, channelID, channelType } = req.params;
-  const { userID } = req.session;
+  const { channelType } = req.params;
+  const { channel } = req.body;
 
   try {
-    const group = await groupRepository.findByIDWithLeaderID(groupID);
-
-    if (!group) return res.status(400).send(GROUP_MSG.INVALID_GROUP_ID);
-    if (group.leader.id !== userID)
-      return res.status(400).send(GROUP_MSG.DONT_HAVE_AUTHORITY_TO_DELETE);
-    if (!['meeting', 'chatting'].includes(channelType))
-      return res.status(400).send(GROUP_MSG.WRONG_CHANNEL_TYPE);
-
-    if (channelType === 'meeting') {
-      const channel = await meetingChannelRepository.findOne({
-        where: { id: channelID },
-        relations: ['group'],
-      });
-      if (!channel) return res.status(400).send(GROUP_MSG.INVALID_CHANNEL_ID);
-      if (channel.group.id.toString() !== groupID)
-        return res.status(400).send(GROUP_MSG.CANT_FOUND_CHANNEL_IN_GROUP);
-      await meetingChannelRepository.remove(channel);
-    } else {
-      const channel = await chattingChannelRepository.findOne({
-        where: { id: channelID },
-        relations: ['group'],
-      });
-      if (!channel) return res.status(400).send(GROUP_MSG.INVALID_CHANNEL_ID);
-      if (channel.group.id.toString() !== groupID)
-        return res.status(400).send(GROUP_MSG.CANT_FOUND_CHANNEL_IN_GROUP);
-      await chattingChannelRepository.remove(channel);
-    }
-    res.status(200).json();
+    if (channelType === ChannelType.chatting) await chattingChannelRepository.remove(channel);
+    else await meetingChannelRepository.remove(channel);
+    res.status(200).json(GROUP_MSG.CHANNEL_DELETION_SUCCESS);
   } catch (error) {
     next(error);
   }
