@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import {
-  userRepository,
-  chatRepository,
-  threadRepository,
-  reactionRepository,
-} from '../loaders/orm.loader';
+import { chatRepository, threadRepository, reactionRepository } from '../loaders/orm.loader';
 
 import { Thread } from '../db/entities';
 import { broadcast } from '../utils';
