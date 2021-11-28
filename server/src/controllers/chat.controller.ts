@@ -12,18 +12,8 @@ import { broadcast } from '../utils';
 import { handleReactionMSG, createChatMSG } from '../messages';
 
 const handleReaction = async (req: Request, res: Response, next: NextFunction) => {
+  const { user, chat } = req.body;
   try {
-    const { chatID } = req.params;
-    const { userID } = req.session;
-
-    const user = await userRepository.findOne({ where: { id: userID } });
-    const chat = await chatRepository.findOne({
-      where: { id: chatID },
-      relations: ['chattingChannel'],
-    });
-    if (!user) return res.status(400).send(handleReactionMSG.userNotFound);
-    if (!chat) return res.status(400).send(handleReactionMSG.chatNotFound);
-
     const reaction = await reactionRepository.findOne({ where: { user: user, chat: chat } });
 
     let message;
@@ -54,19 +44,7 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
 
 const createThread = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { content } = req.body;
-    const { chatID } = req.params;
-    const { userID } = req.session;
-    const user = await userRepository.findOne({ where: { id: userID } });
-    const chat = await chatRepository.findOne({
-      where: { id: chatID },
-      relations: ['chattingChannel'],
-    });
-
-    if (!user) return res.status(400).send(createChatMSG.userNotFound);
-    if (!chat) return res.status(400).send(createChatMSG.chatNotFound);
-    if (!content || !content.trim()) return res.status(400).send(createChatMSG.emptyChat);
-
+    const { chat, user, content } = req.body;
     const newThread = new Thread();
     newThread.content = content;
     newThread.user = user;
@@ -108,9 +86,6 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
 const getThread = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { chatID } = req.params;
-    const chat = await chatRepository.findOne({ where: { id: chatID } });
-    if (!chat) return res.status(400).send(createChatMSG.chatNotFound);
-
     const threads = await threadRepository.findThreadsByChatID(chatID);
 
     return res.status(200).send(threads);
