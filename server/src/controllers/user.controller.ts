@@ -4,12 +4,6 @@ import { groupMemberRepository, userRepository } from '../loaders/orm.loader';
 import { User } from '../db/entities';
 import { signUpMSG, signInMSG, signOutMSG, getUserGroupsMSG } from '../messages';
 
-declare module 'express-session' {
-  interface SessionData {
-    userID: number;
-  }
-}
-
 const saltRounds = 10;
 
 const signUp = async (req: Request, res: Response, next: NextFunction) => {
