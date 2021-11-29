@@ -4,7 +4,7 @@ import { FileItemWrapper } from './style';
 interface Props {
   src: string;
   alt: string;
-  itemType: string;
+  itemType: 'chat' | 'chatInput' | 'thread';
 }
 
 function FileItem({ src, alt, itemType }: Props) {
