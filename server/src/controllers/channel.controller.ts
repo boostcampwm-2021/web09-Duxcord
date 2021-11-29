@@ -1,11 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
-import {
-  chattingChannelRepository,
-  userRepository,
-  chatRepository,
-  fileRepository,
-} from '../loaders/orm.loader';
+import { chatRepository, fileRepository } from '../loaders/orm.loader';
 
 import { Chat } from '../db/entities';
 import { File } from '../db/entities';
