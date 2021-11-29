@@ -52,14 +52,9 @@ const ChatInputWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     overflow: scroll;
+    scrollbar-width: none;
     &::-webkit-scrollbar {
       display: none;
-    }
-    scrollbar-width: none;
-    & img {
-      width: 120px;
-      height: 120px;
-      margin-right: 10px;
     }
   }
 `;
