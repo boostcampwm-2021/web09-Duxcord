@@ -7,7 +7,7 @@ const DEFAULT_INITSTATE: { mic: boolean; speaker: boolean; cam: boolean } = {
   cam: true,
 };
 
-const getInitState = () => {
+export const getInitState = () => {
   const initState = loadItem('userDevice') ?? DEFAULT_INITSTATE;
 
   return initState;
