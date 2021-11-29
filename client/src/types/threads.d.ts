@@ -10,5 +10,3 @@ interface User {
   thumbnail: null | string;
   username: string;
 }
-
-export { ThreadData, User };

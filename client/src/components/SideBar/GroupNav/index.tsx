@@ -12,7 +12,6 @@ import {
   setGroupConnection,
 } from '@redux/groupConnection/slice';
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import { API_URL } from '@utils/constants/API_URL';
 import { URL } from '@utils/constants/URL';
 import { socket } from '@utils/socket';
@@ -29,7 +28,6 @@ import {
   GroupListDivider,
   AddGroupButton,
 } from './style';
-import { Group } from '@customTypes/group';
 
 function GroupNav() {
   const { groups, mutate: mutateGroups } = useGroups();
@@ -54,7 +52,7 @@ function GroupNav() {
     show: () => setSelectedModal('ADD'),
   };
 
-  const selectGroup = (group: Group) => () => {
+  const selectGroup = (group: GroupData) => () => {
     history.replace(URL.GROUP(group.id));
     dispatch(resetSelectedChannel());
     dispatch(setSelectedGroup(group));
@@ -68,7 +66,7 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_GROUP, (code) => {
       mutateGroups(
-        groups.filter((group: Group) => group.id !== selectedGroup.id),
+        groups.filter((group: GroupData) => group.id !== selectedGroup.id),
         false,
       );
       if (code === selectedGroup?.code) {
@@ -90,11 +88,13 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_CHANNEL, ({ code, id, type }) => {
       mutateGroups(
-        groups.map((group: any) => {
+        groups.map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           else {
             const tempGroup = group;
-            tempGroup[`${type}Channels`].filter((channel: any) => channel.id !== id);
+            if (type === 'chatting')
+              tempGroup.chattingChannels.filter((channel: ChannelData) => channel.id !== id);
+            else tempGroup.meetingChannels.filter((channel: ChannelData) => channel.id !== id);
             return tempGroup;
           }
         }),
@@ -120,7 +120,7 @@ function GroupNav() {
   return (
     <GroupListWrapper>
       <GroupList>
-        {groups?.map((group: Group) => (
+        {groups?.map((group: GroupData) => (
           <GroupWrapper name={group.name}>
             <GroupItem
               key={group.id}

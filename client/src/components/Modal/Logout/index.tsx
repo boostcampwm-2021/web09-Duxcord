@@ -2,7 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import { useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { postLogout } from '@api/postLogout';

@@ -18,7 +18,7 @@ function UserConnection() {
 
   const dispatch = useDispatch();
 
-  const onUserSelected = (user: any, isOnline: boolean) => {
+  const onUserSelected = (user: UserData, isOnline: boolean) => {
     if (user.loginID === userdata.loginID) {
       dispatch(setSelectedUser({ ...userdata, isOnline, isEditable: true }));
     } else {
@@ -33,7 +33,7 @@ function UserConnection() {
   return (
     <UserConnectionWrapper>
       <Text>Online</Text>
-      {groupConnection.map((oneUser: any, i: number) => (
+      {groupConnection.map((oneUser: UserData, i: number) => (
         <UserTile key={i} onClick={() => onUserSelected(oneUser, true)}>
           <div>
             <UserImage
@@ -46,13 +46,15 @@ function UserConnection() {
         </UserTile>
       ))}
       {data.filter(
-        ({ user }: any) => !groupConnection.map((v: any) => v.loginID).includes(user.loginID),
+        ({ user }: { user: UserData }) =>
+          !groupConnection.map((v: UserData) => v.loginID).includes(user.loginID),
       ).length !== 0 && <Text>Offline</Text>}
       {data
         .filter(
-          ({ user }: any) => !groupConnection.map((v: any) => v.loginID).includes(user.loginID),
+          ({ user }: { user: UserData }) =>
+            !groupConnection.map((v: UserData) => v.loginID).includes(user.loginID),
         )
-        .map((offLineUser: any, i: number) => (
+        .map((offLineUser: { user: UserData }, i: number) => (
           <UserTile key={i} onClick={() => onUserSelected(offLineUser.user, false)}>
             <div>
               <UserImage

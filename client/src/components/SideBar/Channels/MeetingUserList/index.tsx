@@ -2,14 +2,14 @@ import React from 'react';
 import { MeetingUserListWrapper, MeetingUserProfileWrapper, MeetingUserProfile } from './style';
 
 interface Props {
-  meetingUser: any;
+  meetingUser: Array<MeetingUserData>;
 }
 
 function MeetingUserList({ meetingUser }: Props) {
   return (
     <>
       {meetingUser &&
-        meetingUser.map((user: any) => {
+        meetingUser.map((user: MeetingUserData) => {
           return (
             <MeetingUserListWrapper key={user.socketID}>
               <MeetingUserProfileWrapper>

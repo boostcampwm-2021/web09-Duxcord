@@ -17,5 +17,3 @@ interface ModalButton {
   onClickHandler: function;
   color: string;
 }
-
-export { ModalData, ModalButton, ModalController };

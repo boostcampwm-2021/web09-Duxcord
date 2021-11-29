@@ -4,7 +4,6 @@ import useSWR from 'swr';
 
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
-import { ChatData } from '@customTypes/chats';
 import { API_URL } from '@utils/constants/API_URL';
 import { postCreateThread } from '@api/postCreateThread';
 import { getFetcher } from '@utils/fetcher';
@@ -39,9 +38,9 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
   const onThread = useCallback(
-    (info: any) => {
+    (info: { id: number; createdAt: string; content: string; threadWriter: UserData }) => {
       mutate(
-        (threads: any) => [
+        (threads: Array<ThreadData>) => [
           ...threads,
           {
             id: info.id,

@@ -11,7 +11,6 @@ import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
-import { Group } from '@customTypes/group';
 import Loading from '@pages/Loading';
 
 const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
@@ -27,7 +26,7 @@ function MainLayout() {
     if (isValidating) return;
     if (selectedGroup !== null || groupID === null) return;
 
-    const group = groups?.find((group: Group) => group.id.toString() === groupID) ?? null;
+    const group = groups?.find((group: GroupData) => group.id.toString() === groupID) ?? null;
 
     if (group === null) return;
 
@@ -37,7 +36,7 @@ function MainLayout() {
 
     const { id, name } = group?.[
       channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'
-    ].find((channel: any) => channel.id.toString() === channelID);
+    ].find((channel: ChannelData) => channel.id.toString() === channelID);
 
     if (!id || !name) return;
 
