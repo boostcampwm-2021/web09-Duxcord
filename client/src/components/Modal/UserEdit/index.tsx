@@ -95,9 +95,8 @@ export default function UserEditModal({ controller }: { controller: ModalControl
         onChange={(e) => {
           setNewBio(e.target.value);
         }}
-      >
-        {newBio}
-      </UserBio>
+        defaultValue={userdata.bio}
+      />
     </>
   );
 
