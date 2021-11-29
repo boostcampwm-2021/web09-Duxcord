@@ -137,14 +137,6 @@ const FileWrapper = styled.div`
     background: ${Colors.Gray2};
     border-radius: 10px;
   }
-  & div {
-    margin-top: 10px;
-  }
-  & img {
-    max-width: 200px;
-    height: 120px;
-    object-fit: cover;
-  }
 `;
 
 export {

@@ -48,8 +48,8 @@ function SignIn() {
 
     try {
       const loginResponse = await tryLogin(ID, password);
-      if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.GROUP());
       setResponseState({ ...responseState, ...loginResponse });
+      if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.GROUP());
     } catch (error) {
       console.log(error);
     }

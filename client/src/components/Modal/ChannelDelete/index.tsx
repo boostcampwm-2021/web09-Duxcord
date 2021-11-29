@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
@@ -51,7 +51,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
             false,
           );
           dispatch(resetSelectedChannel());
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedChat());
           controller.hide();
           history.replace(URL.GROUP(selectedGroup.id));
           fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_DELETE, type: 'success' });

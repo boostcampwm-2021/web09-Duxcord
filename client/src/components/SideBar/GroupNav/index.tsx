@@ -4,8 +4,8 @@ import { useHistory } from 'react-router';
 import { mutate } from 'swr';
 
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedGroup, setSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import {
   addUserConnection,
   removeUserConnection,
@@ -72,9 +72,9 @@ function GroupNav() {
         false,
       );
       if (code === selectedGroup?.code) {
-        dispatch(setSelectedGroup(null));
+        dispatch(resetSelectedGroup());
         dispatch(resetSelectedChannel());
-        dispatch(setSelectedChat(null));
+        dispatch(resetSelectedChat());
         history.replace(URL.GROUP());
       }
     });
@@ -103,7 +103,7 @@ function GroupNav() {
       if (code === selectedGroup?.code)
         if (id === selectedChannel.id && type === selectedChannel.type) {
           dispatch(resetSelectedChannel());
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedChat());
           history.replace(URL.GROUP(selectedGroup.id));
         }
     });
@@ -121,9 +121,8 @@ function GroupNav() {
     <GroupListWrapper>
       <GroupList>
         {groups?.map((group: Group) => (
-          <GroupWrapper name={group.name}>
+          <GroupWrapper name={group.name} key={group.id}>
             <GroupItem
-              key={group.id}
               onClick={selectGroup(group)}
               thumbnail={group.thumbnail}
               isSelected={group.id === selectedGroup?.id}

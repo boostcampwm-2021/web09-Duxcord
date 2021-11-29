@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express';
 import { groupMemberRepository, userRepository } from '../loaders/orm.loader';
 import { User } from '../db/entities';
 import { signUpMSG, signInMSG, signOutMSG, getUserGroupsMSG } from '../messages';
-import { getPresignUrl } from '../utils/S3';
+import { getPresignUrl } from '../utils';
 
 const saltRounds = 10;
 

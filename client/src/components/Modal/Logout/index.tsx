@@ -17,7 +17,6 @@ function LogoutModal({ controller: { hide, show } }: { controller: ModalControll
     const isSuccess = await postLogout();
     if (isSuccess) history.replace(URL.LOGIN);
     fireToast({ message: TOAST_MESSAGE.SUCCESS.LOGOUT, type: 'success' });
-    window.location.reload();
   };
 
   const middleContent = <MiddlePart>정말로 로그아웃 하시겠습니까?</MiddlePart>;
