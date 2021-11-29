@@ -24,6 +24,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
   const history = useHistory();
 
   const deleteCurrentChannel = async () => {
+    if (!selectedChannel.id) return;
     try {
       const response = await deleteChannel({
         groupID: selectedGroup.id,
