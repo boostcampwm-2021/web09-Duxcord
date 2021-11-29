@@ -38,7 +38,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
   const onThread = useCallback(
-    (info: { id: number; createdAt: string; content: string; threadWriter: UserData }) => {
+    (info: ChatData) => {
       mutate(
         (threads: Array<ThreadData>) => [
           ...threads,
