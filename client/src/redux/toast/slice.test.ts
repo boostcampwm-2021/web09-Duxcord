@@ -17,5 +17,27 @@ describe('toast slice', () => {
       );
       expect(state.length).toBe(1);
     });
+
+    it('popToast', () => {
+      const initialState: Array<ToastData> = [
+        {
+          message: 'message',
+          type: 'success',
+          duration: 5,
+          id: '1',
+        },
+      ];
+
+      const state: any = reducer(
+        initialState,
+        popToast({
+          message: 'message',
+          type: 'success',
+          duration: 5,
+          id: '1',
+        }),
+      );
+      expect(state.length).toBe(0);
+    });
   });
 });
