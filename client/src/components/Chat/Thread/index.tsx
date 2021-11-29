@@ -105,9 +105,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           </div>
         </OriginalChatWrapper>
         <ChatLengthWrapper>
-          <ChatLength>
-            <p>{data?.length}</p>개의 댓글
-          </ChatLength>
+          <ChatLength>{data?.length}개의 댓글</ChatLength>
         </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
           {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
