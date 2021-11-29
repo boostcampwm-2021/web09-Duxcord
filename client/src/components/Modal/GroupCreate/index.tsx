@@ -4,7 +4,6 @@ import { useHistory } from 'react-router';
 
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { useGroups, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { URL } from '@utils/constants/URL';
 import { postCreateGroup } from '@api/postCreateGroup';

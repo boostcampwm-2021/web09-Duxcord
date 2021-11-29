@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { useSelectedGroup } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import { socket } from '@utils/socket';
 import { getURLParams } from '@utils/getURLParams';
 import ChannelListItem from './ChannelListItem';
@@ -16,15 +15,15 @@ interface Props {
   channelType: 'chatting' | 'meeting';
 }
 
-interface IMeetingUser {
-  [key: number]: object[];
+interface MeetingUsers {
+  [key: number]: MeetingUserData[];
 }
 
 function Channels({ channelType }: Props) {
   const selectedGroup = useSelectedGroup();
   const channels =
     selectedGroup?.[channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'];
-  const [meetingUser, setMeetingUser] = useState<IMeetingUser>({});
+  const [meetingUser, setMeetingUser] = useState<MeetingUsers>({});
   const [channelToCreate, setChannelToCreate] = useState<'chatting' | 'meeting' | null>(null);
   const [showChannelCreateModal, setShowChannelCreateModal] = useState(false);
   const channelCreateModalController: ModalController = {
@@ -91,7 +90,7 @@ function Channels({ channelType }: Props) {
             />
           </ChannelType>
           <ul>
-            {channels?.map((channel: any) => {
+            {channels?.map((channel: ChannelData) => {
               return (
                 <div key={channel.id}>
                   <ChannelListItem

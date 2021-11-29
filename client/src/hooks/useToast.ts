@@ -1,4 +1,3 @@
-import { ToastData } from '@customTypes/toast';
 import { RootState } from '@redux/store';
 import { addToast, popToast } from '@redux/toast/slice';
 import { useDispatch, useSelector } from 'react-redux';

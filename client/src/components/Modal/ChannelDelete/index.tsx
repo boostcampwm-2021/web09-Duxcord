@@ -5,7 +5,6 @@ import { useHistory } from 'react-router';
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { resetSelectedChat } from '@redux/selectedChat/slice';
-import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { URL } from '@utils/constants/URL';
@@ -38,13 +37,17 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
             type: selectedChannel.type,
           });
           mutateGroups(
-            groups.map((group: any) => {
+            groups.map((group: GroupData) => {
               if (group.id !== selectedGroup.id) return group;
               else {
                 const tempGroup = group;
-                tempGroup[`${selectedChannel.type}Channels`].filter(
-                  (channel: any) => channel.id !== selectedChannel.id,
-                );
+                selectedChannel.type === 'meeting'
+                  ? tempGroup.meetingChannels.filter(
+                      (channel: ChannelData) => channel.id !== selectedChannel.id,
+                    )
+                  : tempGroup.chattingChannels.filter(
+                      (channel: ChannelData) => channel.id !== selectedChannel.id,
+                    );
                 return tempGroup;
               }
             }),

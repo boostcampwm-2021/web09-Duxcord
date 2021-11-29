@@ -11,8 +11,6 @@ import { deleteGroup } from '@api/deleteGroup';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { socket } from '@utils/socket';
 import { SOCKET } from '@utils/constants/SOCKET_EVENT';
-import { ModalController } from '@customTypes/modal';
-import { Group } from '@customTypes/group';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { AlertWrapper } from './style';
@@ -31,7 +29,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
         case 200:
           socket.emit(SOCKET.GROUP_EVENT.DELETE_GROUP, selectedGroup.code);
           mutateGroups(
-            groups.filter((group: Group) => group.id !== selectedGroup.id),
+            groups.filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
           dispatch(resetSelectedGroup());

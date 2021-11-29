@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { useSelectedChannel, useSelectedChat } from '@hooks/index';
-import { ChatData } from '@customTypes/chats';
 import Socket, { socket } from '@utils/socket';
 import { getFetcher } from '@utils/fetcher';
 import { makeChatSection } from '@utils/makeChatSection';
@@ -92,12 +91,12 @@ function Chat() {
   );
 
   const onLike = useCallback(
-    (info: any) => {
+    (info: { chatID: number; reactionsCount: number }) => {
       mutate((chats) => {
         if (!chats) return chats;
         return chats
           .flat()
-          .map((chat: any) =>
+          .map((chat: ChatData) =>
             chat.id === info.chatID ? { ...chat, reactionsCount: info.reactionsCount } : chat,
           );
       }, false);
@@ -106,7 +105,12 @@ function Chat() {
   );
 
   const onThread = useCallback(
-    (info: any) => {
+    (info: {
+      chatID: number;
+      threadsCount: number;
+      threadWriter: UserData;
+      threadLastTime: string;
+    }) => {
       mutate((chats) => {
         if (!chats) return chats;
         return chats.flat().map((chat: ChatData) =>
