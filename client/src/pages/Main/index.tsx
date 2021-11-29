@@ -17,14 +17,13 @@ import Loading from '@pages/Loading';
 const NEED_CHANNEL_SELECT = '채널을 선택해주세요!';
 
 function MainLayout() {
-  const { groups, isValidating } = useGroups({ suspense: true });
+  const { groups } = useGroups({ suspense: true });
   const { groupID, channelType, channelID } = getURLParams();
   const selectedGroup = useSelectedGroup();
   const selectedChannel = useSelectedChannel();
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    if (isValidating) return;
     if (selectedGroup !== null || groupID === null) return;
 
     const group = groups?.find((group: Group) => group.id.toString() === groupID) ?? null;
@@ -42,7 +41,7 @@ function MainLayout() {
     if (!id || !name) return;
 
     dispatch(setSelectedChannel({ id, name, type: channelType }));
-  }, [isValidating]);
+  }, []);
 
   return (
     <Layout>
