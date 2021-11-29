@@ -1,8 +1,8 @@
-import reducer, { setSelectedGroup } from './slice';
+import reducer, { resetSelectedGroup, setSelectedGroup } from './slice';
 
-describe('selectedChat slice', () => {
+describe('selectedGroup slice', () => {
   describe('reducer', () => {
-    it('setSelectedChat', () => {
+    it('setSelectedGroup', () => {
       const initialState: any | null = null;
       const state: any = reducer(
         initialState,
@@ -11,6 +11,14 @@ describe('selectedChat slice', () => {
         }),
       );
       expect(state.groupCode).toBe('SLa209xk');
+    });
+
+    it('resetSelectedGroup', () => {
+      const state = {
+        groupCode: 'SLa209xk',
+      };
+      const nextState: any = reducer(state, resetSelectedGroup());
+      expect(nextState).toBeNull();
     });
   });
 });
