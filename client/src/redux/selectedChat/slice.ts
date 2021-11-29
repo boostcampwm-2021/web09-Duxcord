@@ -7,9 +7,10 @@ const { reducer: selectedChatReducer, actions } = createSlice({
   initialState: initState,
   reducers: {
     setSelectedChat: (state, { payload: chat }) => chat,
+    resetSelectedChat: (state) => initState,
   },
 });
 
-export const { setSelectedChat } = actions;
+export const { setSelectedChat, resetSelectedChat } = actions;
 
 export default selectedChatReducer;

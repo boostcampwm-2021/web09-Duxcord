@@ -2,7 +2,7 @@ import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'reac
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
 import { ChatData } from '@customTypes/chats';
 import { API_URL } from '@utils/constants/API_URL';
@@ -85,7 +85,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>Thread</div>
             <div>#{name}</div>
           </div>
-          <ThreadCloseIcon onClick={() => dispatch(setSelectedChat(0))} />
+          <ThreadCloseIcon onClick={() => dispatch(resetSelectedChat())} />
         </ThreadHeaderWrapper>
         <OriginalChatWrapper>
           <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
