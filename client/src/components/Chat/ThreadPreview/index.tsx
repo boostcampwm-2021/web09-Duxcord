@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { User } from '@customTypes/chats';
 import { ThreadPreviewWrapper } from './style';
 
 function ThreadPreview({

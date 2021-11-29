@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useSelectedUser, useOtherUserData } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { UserDot, UserImageWrapper, UserImage, UserGridWrapper, UserName, UserBio } from './style';

@@ -3,6 +3,7 @@ interface UserData {
   username: string;
   thumbnail?: string;
   bio?: string;
+  id?: number;
 }
 
 interface MeetingUserData extends UserData {

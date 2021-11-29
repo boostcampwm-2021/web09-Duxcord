@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useUserdata, useSelectedGroup } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import { GroupDeleteIcon, GroupInviteIcon } from '@components/common/Icons';
 import GroupInviteModal from '@components/Modal/GroupInvite';
 import GroupDeleteModal from '@components/Modal/GroupDelete';

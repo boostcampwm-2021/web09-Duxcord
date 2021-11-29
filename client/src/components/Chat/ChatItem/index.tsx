@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata } from '@hooks/index';
-import { ChatData } from '@customTypes/chats';
 import { postLikeChat } from '@api/postLikeChat';
 import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 import ThreadPreview from '../ThreadPreview';

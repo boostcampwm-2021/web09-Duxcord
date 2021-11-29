@@ -109,7 +109,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           </ChatLength>
         </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
-          {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
+          {data && data.map((v: ThreadData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>
       </ThreadWrapper>
       <InputWrapper onSubmit={createThread}>
