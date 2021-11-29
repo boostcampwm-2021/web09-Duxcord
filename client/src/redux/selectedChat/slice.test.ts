@@ -1,4 +1,4 @@
-import reducer, { setSelectedChat } from './slice';
+import reducer, { setSelectedChat, resetSelectedChat } from './slice';
 
 describe('selectedChat slice', () => {
   describe('reducer', () => {
@@ -11,6 +11,14 @@ describe('selectedChat slice', () => {
         }),
       );
       expect(state.chatID).toBe(1);
+    });
+
+    it('resetSelectedChat', () => {
+      const state: any = {
+        chatID: 1,
+      };
+      const nextState: any = reducer(state, resetSelectedChat());
+      expect(nextState).toBeNull();
     });
   });
 });
