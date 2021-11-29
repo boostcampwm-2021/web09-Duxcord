@@ -2,7 +2,7 @@ import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'reac
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
 import { API_URL } from '@utils/constants/API_URL';
 import { postCreateThread } from '@api/postCreateThread';
@@ -85,7 +85,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>Thread</div>
             <div>#{name}</div>
           </div>
-          <ThreadCloseIcon onClick={() => dispatch(setSelectedChat(0))} />
+          <ThreadCloseIcon onClick={() => dispatch(resetSelectedChat())} />
         </ThreadHeaderWrapper>
         <OriginalChatWrapper>
           <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
@@ -104,9 +104,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
           </div>
         </OriginalChatWrapper>
         <ChatLengthWrapper>
-          <ChatLength>
-            <p>{data?.length}</p>개의 댓글
-          </ChatLength>
+          <ChatLength>{data?.length}개의 댓글</ChatLength>
         </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
           {data && data.map((v: ThreadData) => <ThreadItem key={v.id} threadData={v} />)}

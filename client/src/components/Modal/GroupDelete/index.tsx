@@ -2,9 +2,9 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedGroup } from '@redux/selectedGroup/slice';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import { URL } from '@utils/constants/URL';
 import { deleteGroup } from '@api/deleteGroup';
@@ -32,9 +32,9 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
             groups.filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
-          dispatch(setSelectedGroup(null));
+          dispatch(resetSelectedGroup());
           dispatch(resetSelectedChannel());
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedChat());
           hide();
           history.replace(URL.GROUP());
           fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_DELETE, type: 'success' });
