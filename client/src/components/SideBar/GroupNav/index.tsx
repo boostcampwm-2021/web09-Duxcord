@@ -121,9 +121,8 @@ function GroupNav() {
     <GroupListWrapper>
       <GroupList>
         {groups?.map((group: Group) => (
-          <GroupWrapper name={group.name}>
+          <GroupWrapper name={group.name} key={group.id}>
             <GroupItem
-              key={group.id}
               onClick={selectGroup(group)}
               thumbnail={group.thumbnail}
               isSelected={group.id === selectedGroup?.id}
