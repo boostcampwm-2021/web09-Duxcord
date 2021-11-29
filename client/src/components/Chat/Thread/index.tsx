@@ -10,6 +10,7 @@ import { postCreateThread } from '@api/postCreateThread';
 import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';
 import ThreadItem from '../ThreadItem';
+import FileItem from '../FileItem';
 import { ThreadCloseIcon } from '../../common/Icons';
 import {
   Input,
@@ -97,10 +98,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>{content}</div>
             <FileWrapper>
               {files &&
-                files.map((file) => (
-                  <div key={file.src}>
-                    <img src={file.src} alt="thread files" />
-                  </div>
+                files.map(({ src }) => (
+                  <FileItem key={src} src={src} alt="thread file" itemType="thread" />
                 ))}
             </FileWrapper>
           </div>

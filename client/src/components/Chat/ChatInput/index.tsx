@@ -7,6 +7,7 @@ import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 import getPresignedUrl from '@utils/getPresignedUrl';
+import FileItem from '../FileItem';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
@@ -55,10 +56,8 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
         <input ref={chatInputRef} placeholder="Message to channel" />
         {fileURL.length !== 0 && (
           <div>
-            {fileURL.map((url) => (
-              <div key={url}>
-                <img src={url} alt="chatting images" />
-              </div>
+            {fileURL.map((src) => (
+              <FileItem key={src} src={src} alt="chat input file" itemType="chatInput" />
             ))}
           </div>
         )}

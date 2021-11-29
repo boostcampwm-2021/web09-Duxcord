@@ -23,15 +23,6 @@ const UserImage = styled.img`
 const FileWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  & div {
-    margin-top: 10px;
-  }
-  & img {
-    max-width: 300px;
-    height: 120px;
-    margin-right: 10px;
-    object-fit: cover;
-  }
 `;
 
 const ChatHeader = styled.div`
