@@ -13,7 +13,7 @@ import ChatInput from './ChatInput';
 import ChatItem from './ChatItem';
 import UserConnection from './UserConnection';
 import Thread from './Thread';
-import { ChatContainer, Chats, ChatPart, ChatInputWrapper, StickyWrapper, Section } from './style';
+import { ChatWrapper, Chats, Wrapper, ChatInputWrapper, StickyWrapper, Section } from './style';
 
 const PAGE_SIZE = 20;
 const THRESHOLD = 300;
@@ -136,8 +136,8 @@ function Chat() {
   }, [onChat, onLike, onThread]);
 
   return (
-    <ChatPart>
-      <ChatContainer isSelectedChat={!!selectedChat}>
+    <Wrapper>
+      <ChatWrapper isSelectedChat={!!selectedChat}>
         <Chats ref={chatListRef}>
           {Object.entries(makeChatSection(chats)).map(([day, dayChats]) => (
             <Section key={day}>
@@ -153,9 +153,9 @@ function Chat() {
         <ChatInputWrapper>
           <ChatInput scrollToBottom={scrollToBottom} />
         </ChatInputWrapper>
-      </ChatContainer>
+      </ChatWrapper>
       {selectedChat ? <Thread selectedChat={selectedChat} /> : <UserConnection />}
-    </ChatPart>
+    </Wrapper>
   );
 }
 

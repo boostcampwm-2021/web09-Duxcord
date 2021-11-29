@@ -25,17 +25,17 @@ const StickyWrapper = styled.div`
     border: 1.5px solid ${Colors.Gray2};
   }
 `;
-const ChatPart = styled.div`
+const Wrapper = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between;
 `;
 
-interface IChatContainer {
+interface IChatWrapper {
   isSelectedChat: boolean;
 }
 
-const ChatContainer = styled.div<IChatContainer>`
+const ChatWrapper = styled.div<IChatWrapper>`
   ${(props) => (props.isSelectedChat ? `width: 70%;` : `width: calc(100% - 300px);`)}
   height: calc(100vh - 50px);
   display: flex;
@@ -66,4 +66,4 @@ const ChatInputWrapper = styled.div`
   width: 100%;
 `;
 
-export { ChatContainer, Chats, ChatPart, ChatInputWrapper, StickyWrapper, Section };
+export { ChatWrapper, Chats, Wrapper, ChatInputWrapper, StickyWrapper, Section };
