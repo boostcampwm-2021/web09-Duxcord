@@ -12,11 +12,10 @@ import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
 import { Group } from '@customTypes/group';
-import Loading from '@pages/Loading';
 
 const NEED_CHANNEL_SELECT = '채널을 선택해주세요!';
 
-function MainLayout() {
+function Main() {
   const { groups } = useGroups({ suspense: true });
   const { groupID, channelType, channelID } = getURLParams();
   const selectedGroup = useSelectedGroup();
@@ -50,7 +49,7 @@ function MainLayout() {
         <ChannelHeader />
         {selectedChannel.type ? (
           selectedChannel.type === 'chatting' ? (
-            <Suspense fallback={() => <Empty message={'로딩 중!'} />}>
+            <Suspense fallback={<Empty message={'로딩 중!'} />}>
               <Chat />
             </Suspense>
           ) : (
@@ -61,14 +60,6 @@ function MainLayout() {
         )}
       </MainWrapper>
     </Layout>
-  );
-}
-
-function Main() {
-  return (
-    <Suspense fallback={Loading}>
-      <MainLayout />
-    </Suspense>
   );
 }
 
