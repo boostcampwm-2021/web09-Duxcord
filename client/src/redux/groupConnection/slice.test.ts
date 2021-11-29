@@ -10,12 +10,19 @@ describe('groupConnection slice', () => {
       );
       expect(state.length).toBe(3);
     });
-  });
-  describe('reducer', () => {
+
     it('removeUserConnection', () => {
       const initialState: any | null = [{ loginID: 'a' }, { loginID: 'b' }, { loginID: 'c' }];
       const state = reducer(initialState, removeUserConnection({ loginID: 'b' }));
       expect(state.length).toBe(2);
+    });
+
+    it('addUserConnection', () => {
+      const initialState: any | null = [{ loginID: 'a' }];
+      const state = reducer(initialState, addUserConnection({ loginID: 'b' }));
+      expect(state.length).toBe(2);
+      const nextState = reducer(state, addUserConnection({ loginID: 'a' }));
+      expect(nextState.length).toBe(2);
     });
   });
 });
