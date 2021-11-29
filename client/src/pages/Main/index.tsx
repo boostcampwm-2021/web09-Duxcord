@@ -50,7 +50,9 @@ function MainLayout() {
         <ChannelHeader />
         {selectedChannel.type ? (
           selectedChannel.type === 'chatting' ? (
-            <Chat />
+            <Suspense fallback={() => <Empty message={'로딩 중!'} />}>
+              <Chat />
+            </Suspense>
           ) : (
             <Meet />
           )

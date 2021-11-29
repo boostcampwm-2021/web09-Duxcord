@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import useSWRInfinite from 'swr/infinite';
 
 import { useSelectedChannel, useSelectedChat } from '@hooks/index';
@@ -20,14 +20,13 @@ const THRESHOLD = 300;
 
 function Chat() {
   const { id } = useSelectedChannel();
-  const [isInitialized, setIsInitialized] = useState(true);
   const selectedChat = useSelectedChat();
   const {
     data: chats,
     mutate,
     setSize,
     isValidating,
-  } = useSWRInfinite(API_URL.CHANNEL.GET_BY_PAGE(id), getFetcher);
+  } = useSWRInfinite(API_URL.CHANNEL.GET_BY_PAGE(id), getFetcher, { suspense: true });
   const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
@@ -54,11 +53,7 @@ function Chat() {
       if (chats) {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
         chatListRef.current?.scrollTo({ top: height });
-        if (isInitialized) {
-          chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight });
-          setIsInitialized(false);
         }
-      }
     })();
   }, [isValidating, isInitialized]);
 
@@ -69,14 +64,16 @@ function Chat() {
     return () => chatListEl?.removeEventListener('scroll', onScroll);
   }, [onScroll]);
 
-  const scrollToBottom = () => {
-    if (chatListRef.current === null) return;
-    chatListRef.current.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
+  const scrollToBottom = (smooth: boolean = true) => {
+    chatListRef.current?.scrollTo({
+      top: chatListRef.current?.scrollHeight,
+      behavior: smooth ? 'smooth' : 'auto',
+    });
   };
 
   useEffect(() => {
-    chatListRef.current?.scrollTo({ top: chatListRef.current?.scrollHeight, behavior: 'smooth' });
-  }, [isEmpty]);
+    scrollToBottom(false);
+  }, []);
 
   const onChat = useCallback(
     async (chat: ChatData) => {
