@@ -18,5 +18,15 @@ describe('selectedChannel slice', () => {
       );
       expect(state.name).toBe('typeScript강의하는 곳');
     });
+
+    it('resetSelectedChannel', () => {
+      const state = {
+        type: 'meetingChannel',
+        id: null,
+        name: 'typeScript강의하는 곳',
+      };
+      const initialState = reducer(state, resetSelectedChannel());
+      expect(initialState.type).toBe('');
+    });
   });
 });
