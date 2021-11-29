@@ -8,5 +8,5 @@ export const deleteChannel = ({
 }: {
   groupID: number;
   channelType: 'chatting' | 'meeting';
-  channelID?: number | null;
+  channelID: number;
 }) => fetch(API_URL.GROUP.DELETE_CHANNEL(groupID, channelType, channelID), deleteFetchOptions());
