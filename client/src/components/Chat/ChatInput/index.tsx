@@ -1,8 +1,8 @@
 import React, { FormEvent, useRef, useState } from 'react';
 
 import { useSelectedChannel, useToast } from '@hooks/index';
-import { postChat, getPresignedUrl } from '@api/index';
-import { uploadFileWithPresignedUrl } from '@utils/index';
+import { postChat } from '@api/index';
+import { uploadFile } from '@utils/index';
 import { TOAST_MESSAGE, STATUS_CODES } from '@constants/index';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
@@ -32,22 +32,22 @@ function ChatInput({ onInput }: { onInput: () => void }) {
   const [fileURL, setFileURL] = useState<string[]>([]);
 
   const fileInputRef = useRef<HTMLDivElement>(null);
-  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const target = e.target as HTMLInputElement;
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
-      if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
-      const presignedUrl = await getPresignedUrl(uploadName);
-      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
-      if (uploadedFile && fileInputRef && fileInputRef.current) {
-        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
-        setFileURL([...fileURL, uploadedURL]);
+      const uploadedFileURL = await uploadFile(file);
+      if (uploadedFileURL && fileInputRef && fileInputRef.current) {
+        setFileURL([...fileURL, uploadedFileURL]);
         fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
       }
     } catch (error) {
-      fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
+      if (typeof error === 'string') fireToast({ message: error, type: 'warning' });
+      else {
+        fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
+        console.log(error);
+      }
     }
   };
 
@@ -55,7 +55,12 @@ function ChatInput({ onInput }: { onInput: () => void }) {
     <Wrapper onSubmit={onSubmitChat}>
       <FileInputWrapper ref={fileInputRef}>
         <FileSelectIcon />
-        <input type="file" id="chat_upload" onChange={uploadFile} accept="image/jpeg, image/png" />
+        <input
+          type="file"
+          id="chat_upload"
+          onChange={onUploadFile}
+          accept="image/jpeg, image/png"
+        />
       </FileInputWrapper>
       <ChatInputWrapper>
         <input ref={chatInputRef} placeholder="Message to channel" type="text" maxLength={255} />
