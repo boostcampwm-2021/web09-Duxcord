@@ -26,7 +26,7 @@ function Chat() {
     mutate,
     setSize,
     isValidating,
-  } = useSWRInfinite(API_URL.CHANNEL.GET_BY_PAGE(id), getFetcher);
+  } = useSWRInfinite(id ? API_URL.CHANNEL.GET_BY_PAGE(id) : null, getFetcher);
   const isEmpty = !chats?.length;
   const isReachingEnd = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
   const chatListRef = useRef<HTMLDivElement>(null);
