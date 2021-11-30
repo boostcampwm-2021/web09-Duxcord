@@ -11,7 +11,7 @@ describe('channel.controller', () => {
     const res =
       result === 'resolve'
         ? ({
-            status: jest.fn(() => res),
+            status: jest.fn((code) => res),
             json: jest.fn((value) => value),
             send: jest.fn((value) => value),
           } as unknown)
@@ -89,7 +89,10 @@ describe('channel.controller', () => {
       return req as Request;
     };
 
-    beforeEach(() => jest.clearAllMocks());
+    beforeEach(() => {
+      jest.clearAllMocks();
+      userRepository.findOne = jest.fn().mockResolvedValue('user');
+    });
 
     context('정상적으로 값이 입력됐을 때', () => {
       it('chat을 생성한다', async () => {
@@ -121,8 +124,6 @@ describe('channel.controller', () => {
 
     context('content가 없을 때', () => {
       it('emptyChat 메시지를 반환한다', async () => {
-        userRepository.findOne = jest.fn().mockResolvedValue('user');
-
         const req = mockRequest(true, '');
         const res = mockResponse('resolve');
         const next = jest.fn();
