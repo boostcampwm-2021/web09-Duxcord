@@ -13,4 +13,11 @@ describe('functionalProgramming', () => {
     const promiseCount = endArray.filter((v: Promise<any>) => v instanceof Promise).length;
     expect(promiseCount).toBe(3);
   });
+
+  it('mapAsync', () => {
+    const startArray = [Promise.resolve(1), Promise.resolve(2), Promise.resolve(3)];
+    const f = (resolvedValue: number) => Promise.resolve(resolvedValue);
+    const endPoint = mapAsync(f, startArray);
+    expect(endPoint instanceof Promise).toBeTruthy();
+  });
 });
