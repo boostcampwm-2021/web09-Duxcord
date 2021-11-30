@@ -10,8 +10,6 @@ import getPresignedUrl from '@utils/getPresignedUrl';
 import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 import FileItem from '../FileItem';
 
-const POST_CHAT_FAIL = '메시지 전송에 실패했습니다.';
-
 function ChatInput({ onInput }: { onInput: () => void }) {
   const { id } = useSelectedChannel();
   const { fireToast } = useToast();
@@ -20,16 +18,16 @@ function ChatInput({ onInput }: { onInput: () => void }) {
   const onSubmitChat = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      if (chatInputRef.current === null && !fileURL.length) return;
+      if (chatInputRef.current === null) return;
       const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
       if ((content === '' && !fileURL.length) || id === null) return;
       const response = await postChat({ channelID: id, content: content, files: fileURL });
-      if (response.status !== STATUS_CODES.OK) throw Error(POST_CHAT_FAIL);
-      if (chatInputRef.current) chatInputRef.current.value = '';
+      if (response.status !== STATUS_CODES.OK) throw Error(TOAST_MESSAGE.ERROR.POST_CHAT_FAIL);
+      chatInputRef.current.value = '';
       setFileURL([]);
       onInput();
     } catch (e: any) {
-      fireToast({ message: POST_CHAT_FAIL, type: 'warning' });
+      fireToast({ message: TOAST_MESSAGE.ERROR.POST_CHAT_FAIL, type: 'warning' });
       console.error(e.message);
     }
   };
