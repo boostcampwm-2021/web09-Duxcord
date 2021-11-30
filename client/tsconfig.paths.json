@@ -9,7 +9,7 @@
       "@styles/*": ["src/styles/*"],
       "@customTypes/*": ["src/types/*"],
       "@assets/*": ["src/assets/*"],
-      "@api/*": ["src/api/*"],
+      "@api/*": ["src/utils/api/*"],
       "@utils/*": ["src/utils/*"]
     }
   }
