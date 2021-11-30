@@ -1,9 +1,10 @@
 import React, { Suspense, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import useSWRImmutable from 'swr/immutable';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
+import { getGroupsFetcher, useSelectedChannel, useSelectedGroup } from '@hooks/index';
 import { getURLParams } from '@utils/getURLParams';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
@@ -11,37 +12,39 @@ import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
-import Loading from '@pages/Loading';
+import { API_URL } from '@utils/constants/API_URL';
 
 const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
 
-function MainLayout() {
-  const { groups, isValidating } = useGroups({ suspense: true });
+function Main() {
+  const { data: groups } = useSWRImmutable(API_URL.USER.GET_GROUPS, getGroupsFetcher, {
+    suspense: true,
+  });
   const { groupID, channelType, channelID } = getURLParams();
   const selectedGroup = useSelectedGroup();
   const selectedChannel = useSelectedChannel();
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
-    if (isValidating) return;
     if (selectedGroup !== null || groupID === null) return;
 
-    const group = groups?.find((group: GroupData) => group.id.toString() === groupID) ?? null;
+    const group = groups?.find((group: GroupData) => group.id === +groupID);
 
-    if (group === null) return;
+    if (!group) return;
 
     dispatch(setSelectedGroup(group));
 
     if (selectedChannel.id !== null || channelID === null) return;
 
-    const { id, name } = group?.[
+    const channel = group?.[
       channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'
-    ].find((channel: ChannelData) => channel.id.toString() === channelID);
+    ].find((channel: any) => channel.id === +channelID);
 
-    if (!id || !name) return;
+    if (!channel) return;
+    const { id, name } = channel;
 
     dispatch(setSelectedChannel({ id, name, type: channelType }));
-  }, [isValidating]);
+  }, []);
 
   return (
     <Layout>
@@ -49,24 +52,14 @@ function MainLayout() {
       <MainWrapper>
         <ChannelHeader />
         {selectedChannel.type ? (
-          selectedChannel.type === 'chatting' ? (
-            <Chat />
-          ) : (
-            <Meet />
-          )
+          <Suspense fallback={<Empty message="로딩중" />}>
+            {selectedChannel.type === 'chatting' ? <Chat /> : <Meet />}
+          </Suspense>
         ) : (
           <Empty message={CHANNEL_SELECT_NEEDED} />
         )}
       </MainWrapper>
     </Layout>
-  );
-}
-
-function Main() {
-  return (
-    <Suspense fallback={Loading}>
-      <MainLayout />
-    </Suspense>
   );
 }
 
