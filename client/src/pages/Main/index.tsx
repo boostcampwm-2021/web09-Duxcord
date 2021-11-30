@@ -53,13 +53,9 @@ function Main() {
       <MainWrapper>
         <ChannelHeader />
         {selectedChannel.type ? (
-          selectedChannel.type === 'chatting' ? (
-            <Suspense fallback={<Empty message={'로딩 중!'} />}>
-              <Chat />
-            </Suspense>
-          ) : (
-            <Meet />
-          )
+          <Suspense fallback={<Empty message="로딩중" />}>
+            {selectedChannel.type === 'chatting' ? <Chat /> : <Meet />}
+          </Suspense>
         ) : (
           <Empty message={NEED_CHANNEL_SELECT} />
         )}
