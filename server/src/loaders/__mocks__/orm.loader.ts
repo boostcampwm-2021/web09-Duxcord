@@ -1,7 +1,7 @@
 export const chatRepository = {
   findChatsByPages: jest.fn(),
   save: jest.fn().mockResolvedValue('save'),
-  findOne: jest.fn().mockResolvedValue('chat'),
+  findOne: jest.fn(),
 };
 
 export const userRepository = {
@@ -14,4 +14,15 @@ export const chattingChannelRepository = {
 
 export const fileRepository = {
   save: jest.fn().mockResolvedValue('file'),
+};
+
+export const reactionRepository = {
+  findOne: jest.fn(),
+  insert: jest.fn().mockResolvedValue('reactionInsert'),
+  remove: jest.fn().mockResolvedValue('reactionRemove'),
+};
+
+export const threadRepository = {
+  save: jest.fn().mockResolvedValue('save'),
+  findThreadsByChatID: jest.fn(),
 };
