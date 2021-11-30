@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Colors from '../../styles/Colors';
+import Colors from '@styles/Colors';
 
 const ChannelListWrapper = styled.div`
   width: 272px;

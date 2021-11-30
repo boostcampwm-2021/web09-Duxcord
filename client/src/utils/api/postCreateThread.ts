@@ -1,4 +1,4 @@
-import { postFetchOptions } from '@utils/fetchOptions';
+import { postFetchOptions } from '@api/fetchOptions';
 import { API_URL } from '@utils/constants/API_URL';
 
 export const postCreateThread = ({ chatID, content }: { chatID: number; content: string }) =>

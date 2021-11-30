@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { setUserDevice } from '@redux/userDevice/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useSelectedChannel, useUserdata, useUserDevice, useSelectedUser } from '@hooks/index';
-import { socket } from '@utils/socket';
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
+import { socket } from '@utils/index';
+import { SOCKET } from '@constants/index';
 import UserInformationModal from '@components/Modal/UserInformation';
 import UserEditModal from '@components/Modal/UserEdit';
 import {

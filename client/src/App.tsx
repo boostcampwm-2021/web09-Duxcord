@@ -1,15 +1,15 @@
 import React, { Suspense } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { useSocket } from '@hooks/index';
 import SignIn from '@pages/SignIn';
 import SignUp from '@pages/SignUp';
 import Main from '@pages/Main';
+import Loading from '@pages/Loading';
+import NotFound from '@pages/NotFound';
 import GlobalStyle from '@styles/GlobalStyle';
 import RestrictedRoute from '@components/common/RestrictedRoute';
 import Toast from '@components/common/Toast';
-import { useSocket } from '@hooks/index';
-import Loading from '@pages/Loading';
-import NotFound from '@pages/NotFound';
 
 function App() {
   const isLoading = useSocket();
