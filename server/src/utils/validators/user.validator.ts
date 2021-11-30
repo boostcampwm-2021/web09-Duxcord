@@ -3,6 +3,7 @@ import { IsDefined, IsNotEmpty, Matches, validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 import { userRepository } from '../../loaders/orm.loader';
 import { signInMSG, signUpMSG, updateUserDataMSG } from '../../messages';
+import { CatchError, CustomError } from '../CatchError';
 import { REGEXP, VALIDATE_OPTIONS } from './utils';
 
 class SignUpData {
@@ -25,38 +26,6 @@ class SignUpData {
   password: string;
 }
 
-export const signUpValidator = async (req: Request, res: Response, next: NextFunction) => {
-  const { loginID, username, password } = req.body;
-
-  try {
-    const signUpData = new SignUpData({ loginID, username, password });
-    const errors = await validate(signUpData, VALIDATE_OPTIONS);
-
-    if (errors.length) return res.status(400).json(errors);
-
-    const isUsedID = await userRepository.findOne({ where: { loginID: loginID } });
-    if (isUsedID) return res.status(400).send(signUpMSG.usedID);
-
-    next();
-  } catch (e) {
-    next(e);
-  }
-};
-
-export const signInValidator = async (req, res, next) => {
-  const { loginID, password } = req.body;
-
-  const user = await userRepository.findOne({ where: { loginID: loginID } });
-  if (!user) return res.status(400).send(signInMSG.userNotFound);
-
-  const isValidPassword = await compare(password, user.password);
-  if (!isValidPassword) return res.status(400).send(signInMSG.wrongPassword);
-
-  req.body.userID = user.id;
-
-  next();
-};
-
 class UpdateUserData {
   constructor({ username, thumbnail, bio }) {
     this.username = username;
@@ -75,19 +44,50 @@ class UpdateUserData {
   bio: string | null;
 }
 
-export const updateUserValidator = async (req: Request, res: Response, next: NextFunction) => {
-  const { userID } = req.session;
-  const userdata = req.body;
+class UserValidator {
+  @CatchError
+  async signUpValidator(req: Request, res: Response, next: NextFunction) {
+    const { loginID, username, password } = req.body;
 
-  try {
-    const newUserData = new UpdateUserData(userdata);
-    const errors = await validate(newUserData, VALIDATE_OPTIONS);
-    if (errors.length) return res.status(400).json(errors);
-    const user = await userRepository.findOne(userID);
-    if (!user) return res.status(400).send(updateUserDataMSG.userNotFound);
+    const signUpData = new SignUpData({ loginID, username, password });
+    const errors = await validate(signUpData, VALIDATE_OPTIONS);
+
+    if (errors.length) throw new CustomError({ message: errors, status: 400 });
+
+    const isUsedID = await userRepository.findOne({ where: { loginID: loginID } });
+    if (isUsedID) throw new CustomError({ message: signUpMSG.usedID, status: 400 });
 
     next();
-  } catch (e) {
-    next(e);
   }
-};
+
+  @CatchError
+  async signInValidator(req, res, next) {
+    const { loginID, password } = req.body;
+
+    const user = await userRepository.findOne({ where: { loginID: loginID } });
+    if (!user) throw new CustomError({ message: signInMSG.userNotFound, status: 400 });
+
+    const isValidPassword = await compare(password, user.password);
+    if (!isValidPassword) throw new CustomError({ message: signInMSG.wrongPassword, status: 400 });
+
+    req.body.userID = user.id;
+
+    next();
+  }
+
+  @CatchError
+  async updateUserValidator(req: Request, res: Response, next: NextFunction) {
+    const { userID } = req.session;
+    const userdata = req.body;
+
+    const newUserData = new UpdateUserData(userdata);
+    const errors = await validate(newUserData, VALIDATE_OPTIONS);
+    if (errors.length) throw new CustomError({ message: errors, status: 400 });
+    const user = await userRepository.findOne(userID);
+    if (!user) throw new CustomError({ message: updateUserDataMSG.userNotFound, status: 400 });
+
+    next();
+  }
+}
+
+export const userValidator = new UserValidator();
