@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
-import { TOAST_MESSAGE, URL } from '@utils/constants/index';
+import { TOAST_MESSAGE, URL } from '@constants/index';
 import { postJoinGroup } from '@api/index';
 import Colors from '@styles/Colors';
 import Modal from '..';

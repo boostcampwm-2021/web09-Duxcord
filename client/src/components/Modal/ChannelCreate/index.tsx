@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE, URL } from '@utils/constants/index';
+import { TOAST_MESSAGE, URL } from '@constants/index';
 import { postCreateChannel } from '@api/index';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
 import ChannelTypeItem from './ChannelTypeItem';

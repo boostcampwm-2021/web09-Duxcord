@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { SIGN_IN_ERROR_MESSAGE, URL, STATUS_CODES } from '@utils/constants/index';
+import { SIGN_IN_ERROR_MESSAGE, URL, STATUS_CODES } from '@constants/index';
 import { checkLogin } from '@utils/index';
 import { postSignIn } from '@api/index';
 import Background from '@components/common/Background';

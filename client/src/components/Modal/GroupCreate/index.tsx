@@ -7,7 +7,7 @@ import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { useGroups, useToast } from '@hooks/index';
 import { postCreateGroup, getPresignedUrl } from '@api/index';
 import { uploadFileWithPresignedUrl } from '@utils/index';
-import { TOAST_MESSAGE, URL } from '@utils/constants/index';
+import { TOAST_MESSAGE, URL } from '@constants/index';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
 import Colors from '@styles/Colors';
 import Modal from '..';

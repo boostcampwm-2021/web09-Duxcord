@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useSelectedGroup } from '@hooks/index';
 import { socket, getURLParams } from '@utils/index';
-import { SOCKET } from '@utils/constants/index';
+import { SOCKET } from '@constants/index';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import ChannelCreateModal from '@components/Modal/ChannelCreate';

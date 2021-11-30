@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { resetSelectedChat } from '@redux/selectedChat/slice';
-import { TOAST_MESSAGE, URL, SOCKET } from '@utils/constants/index';
+import { TOAST_MESSAGE, URL, SOCKET } from '@constants/index';
 import { socket } from '@utils/index';
 import { deleteChannel } from '@api/deleteChannel';
 import Colors from '@styles/Colors';

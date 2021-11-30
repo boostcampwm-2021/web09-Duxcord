@@ -3,7 +3,7 @@ import React, { FormEvent, useRef, useState } from 'react';
 import { useSelectedChannel, useToast } from '@hooks/index';
 import { postChat, getPresignedUrl } from '@api/index';
 import { uploadFileWithPresignedUrl } from '@utils/index';
-import { TOAST_MESSAGE, STATUS_CODES } from '@utils/constants/index';
+import { TOAST_MESSAGE, STATUS_CODES } from '@constants/index';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 import FileItem from '../FileItem';

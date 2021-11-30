@@ -12,7 +12,7 @@ import {
   setGroupConnection,
 } from '@redux/groupConnection/slice';
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
-import { API_URL, URL, SOCKET } from '@utils/constants/index';
+import { API_URL, URL, SOCKET } from '@constants/index';
 import { socket } from '@utils/index';
 import GroupCreateModal from '@components/Modal/GroupCreate';
 import GroupAddModal from '@components/Modal/GroupAdd';

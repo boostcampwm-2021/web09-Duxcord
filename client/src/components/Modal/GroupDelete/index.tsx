@@ -6,7 +6,7 @@ import { resetSelectedGroup } from '@redux/selectedGroup/slice';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
-import { TOAST_MESSAGE, URL, SOCKET } from '@utils/constants/index';
+import { TOAST_MESSAGE, URL, SOCKET } from '@constants/index';
 import { socket } from '@utils/socket';
 import { deleteGroup } from '@api/index';
 import Colors from '@styles/Colors';

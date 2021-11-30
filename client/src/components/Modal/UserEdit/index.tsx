@@ -5,7 +5,7 @@ import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata, useSelectedUser, useToast } from '@hooks/index';
 import { patchUserdata, getPresignedUrl } from '@api/index';
 import { uploadFileWithPresignedUrl } from '@utils/index';
-import { TOAST_MESSAGE } from '@utils/constants/index';
+import { TOAST_MESSAGE } from '@constants/index';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { UserImageWrapper, UserGridWrapper, UserName, UserBio, InputImage } from './style';

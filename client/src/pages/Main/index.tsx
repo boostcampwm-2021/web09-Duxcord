@@ -6,7 +6,7 @@ import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { getGroupsFetcher, useSelectedChannel, useSelectedGroup } from '@hooks/index';
 import { getURLParams } from '@utils/index';
-import { API_URL } from '@utils/constants/index';
+import { API_URL } from '@constants/index';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
 import Meet from '@components/Meet';
