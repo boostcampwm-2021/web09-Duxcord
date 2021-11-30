@@ -5,7 +5,7 @@ import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 import { URL } from '@utils/constants/URL';
 import { SIGN_IN_ERROR_MESSAGE } from '@utils/constants/MESSAGE';
 import { checkLogin } from '@utils/checkResponse';
-import { tryLogin } from '@utils/api';
+import { postSignIn } from '@api/postSignIn';
 import Background from '@components/common/Background';
 import {
   SignInWrapper,
@@ -41,13 +41,13 @@ function SignIn() {
     });
   };
 
-  const logIn = async () => {
+  const signIn = async () => {
     if (ID === '') return setResponseState({ ...responseState, responseText: ID_EMPTY_ERROR });
     if (password === '')
       return setResponseState({ ...responseState, responseText: PASSWORD_EMPTY_ERROR });
 
     try {
-      const loginResponse = await tryLogin(ID, password);
+      const loginResponse = await postSignIn(ID, password);
       setResponseState({ ...responseState, ...loginResponse });
       if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.GROUP());
     } catch (error) {
@@ -83,7 +83,7 @@ function SignIn() {
               <p>가입하기</p>
             </Link>
           </SignUpPart>
-          <LoginButton onClick={logIn}>
+          <LoginButton onClick={signIn}>
             <p>로그인</p>
           </LoginButton>
         </InputPartWrapper>
