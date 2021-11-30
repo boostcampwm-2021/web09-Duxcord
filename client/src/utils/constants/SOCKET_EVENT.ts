@@ -35,11 +35,6 @@ export const SOCKET = {
     MEETING_USER_LIST: 'MeetingUserList',
     SOMEONE_IN: 'someoneIn',
     SOMEONE_OUT: 'someoneOut',
-    MUTE: 'mute',
-    SET_MUTED: 'setMuted',
-    TOGGLE_CAM: 'toggleCam',
-    SET_TOGGLE_CAM: 'setToggleCam',
-    SPEAKER: 'speaker',
-    SET_SPEAKER: 'setSpeaker',
+    SET_DEVICE_STATE: 'setDeviceState',
   },
 };

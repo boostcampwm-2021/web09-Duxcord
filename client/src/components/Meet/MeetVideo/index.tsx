@@ -216,7 +216,7 @@ function MeetVideo() {
           socket.emit(SOCKET.MEET_EVENT.OFFER, {
             offer,
             receiverID: member.socketID,
-            member: { loginID, username, thumbnail, mic, cam, speaker },
+            member: { loginID, username, thumbnail, deviceState: { mic, cam, speaker } },
             streamID: {
               camera: myStreamRef.current?.id,
               screen: myScreenStreamRef.current?.id,
@@ -294,9 +294,7 @@ function MeetVideo() {
       loginID,
       username,
       thumbnail,
-      mic,
-      cam,
-      speaker,
+      deviceState: { mic, cam, speaker },
     });
 
     return () => {
@@ -320,52 +318,23 @@ function MeetVideo() {
   }, [mic, cam]);
 
   useEffect(() => {
-    socket.on(SOCKET.MEET_EVENT.SET_MUTED, (micStatus, socketID) => {
+    socket.on(SOCKET.MEET_EVENT.SET_DEVICE_STATE, (deviceState, socketID) => {
       setMeetingMembers((members) => {
         const member = members.find((member) => member.socketID === socketID);
         if (!member) return members;
-        setSelectedVideo((selectedVideo) => {
-          if (selectedVideo?.socketID === member.socketID)
-            return { ...selectedVideo, mic: micStatus };
-          else return selectedVideo;
-        });
-        member.mic = micStatus;
-        return [...members];
-      });
-    });
+        setSelectedVideo((selectedVideo) =>
+          selectedVideo?.socketID === member.socketID
+            ? { ...selectedVideo, ...deviceState }
+            : selectedVideo,
+        );
+        member.deviceState = deviceState;
 
-    socket.on(SOCKET.MEET_EVENT.SET_TOGGLE_CAM, (camStatus, socketID) => {
-      setMeetingMembers((members) => {
-        const member = members.find((member) => member.socketID === socketID);
-        if (!member) return members;
-        setSelectedVideo((selectedVideo) => {
-          if (selectedVideo?.socketID === member.socketID)
-            return { ...selectedVideo, cam: camStatus };
-          else return selectedVideo;
-        });
-        member.cam = camStatus;
-        return [...members];
-      });
-    });
-
-    socket.on(SOCKET.MEET_EVENT.SET_SPEAKER, (speakerStatus, socketID) => {
-      setMeetingMembers((members) => {
-        const member = members.find((member) => member.socketID === socketID);
-        if (!member) return members;
-        setSelectedVideo((selectedVideo) => {
-          if (selectedVideo?.socketID === member.socketID)
-            return { ...selectedVideo, speaker: speakerStatus };
-          else return selectedVideo;
-        });
-        member.speaker = speakerStatus;
         return [...members];
       });
     });
 
     return () => {
-      socket.off(SOCKET.MEET_EVENT.SET_MUTED);
-      socket.off(SOCKET.MEET_EVENT.SET_TOGGLE_CAM);
-      socket.off(SOCKET.MEET_EVENT.SET_SPEAKER);
+      socket.off(SOCKET.MEET_EVENT.SET_DEVICE_STATE);
     };
   }, []);
 

@@ -3,9 +3,11 @@ export interface MeetingMember {
   loginID: string;
   username: string;
   thumbnail: string | null;
-  mic: boolean;
-  cam: boolean;
-  speaker: boolean;
+  deviceState: {
+    mic: boolean;
+    cam: boolean;
+    speaker: boolean;
+  };
   stream?: MediaStream;
   screen?: MediaStream;
   pc?: RTCPeerConnection;
