@@ -11,7 +11,7 @@ import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 
 const POST_CHAT_FAIL = '메시지 전송에 실패했습니다.';
 
-function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
+function ChatInput({ onInput }: { onInput: () => void }) {
   const { id } = useSelectedChannel();
   const { fireToast } = useToast();
   const chatInputRef = useRef<HTMLInputElement>(null);
@@ -26,7 +26,7 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
       if (response.status !== STATUS_CODES.OK) throw Error(POST_CHAT_FAIL);
       if (chatInputRef.current) chatInputRef.current.value = '';
       setFileURL([]);
-      scrollToBottom();
+      onInput();
     } catch (e: any) {
       fireToast({ message: POST_CHAT_FAIL, type: 'warning' });
       console.error(e.message);
