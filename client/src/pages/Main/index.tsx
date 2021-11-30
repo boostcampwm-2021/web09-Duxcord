@@ -11,7 +11,7 @@ import Chat from '@components/Chat';
 import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
-import { Layout, MainWrapper } from './style';
+import { Layout, MainWrapper, EmptyWrapper } from './style';
 import { API_URL } from '@utils/constants/API_URL';
 
 const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
@@ -56,7 +56,9 @@ function Main() {
             {selectedChannel.type === 'chatting' ? <Chat /> : <Meet />}
           </Suspense>
         ) : (
-          <Empty message={CHANNEL_SELECT_NEEDED} />
+          <EmptyWrapper>
+            <Empty message={CHANNEL_SELECT_NEEDED} />
+          </EmptyWrapper>
         )}
       </MainWrapper>
     </Layout>

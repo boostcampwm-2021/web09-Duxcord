@@ -9,10 +9,8 @@ interface EmptyProps {
 function Empty({ message = '' }: EmptyProps) {
   return (
     <EmptyWrapper>
-      <div>
-        <img src="/images/default_profile.png" alt="select channel" />
-        <p>{message}</p>
-      </div>
+      <img src="/images/default_profile.png" alt="select channel" />
+      <p>{message}</p>
     </EmptyWrapper>
   );
 }
