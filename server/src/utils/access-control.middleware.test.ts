@@ -1,5 +1,5 @@
 import { accessControl } from './access-control.middleware';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 
 describe('accessControl', () => {
   const mockRequest = (value: boolean): Request => {
