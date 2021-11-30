@@ -52,13 +52,7 @@ function Main() {
       <MainWrapper>
         <ChannelHeader />
         {selectedChannel.type ? (
-          <Suspense
-            fallback={
-              <EmptyWrapper>
-                <Empty message={CHANNEL_SELECT_NEEDED} />
-              </EmptyWrapper>
-            }
-          >
+          <Suspense fallback={<Empty message="로딩중" />}>
             {selectedChannel.type === 'chatting' ? <Chat /> : <Meet />}
           </Suspense>
         ) : (
