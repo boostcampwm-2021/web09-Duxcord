@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import SignIn from '@pages/SignIn';
 import SignUp from '@pages/SignUp';
@@ -22,7 +22,16 @@ function App() {
       <Switch>
         <RestrictedRoute signIn={false} redirectPath="/main" exact path="/" component={SignIn} />
         <RestrictedRoute signIn={false} redirectPath="/" path="/signup" component={SignUp} />
-        <RestrictedRoute signIn={true} redirectPath="/" path="/main" component={Main} />
+        <RestrictedRoute
+          signIn={true}
+          redirectPath="/"
+          path="/main"
+          component={() => (
+            <Suspense fallback={<Loading />}>
+              <Main />
+            </Suspense>
+          )}
+        />
       </Switch>
     </div>
   );
