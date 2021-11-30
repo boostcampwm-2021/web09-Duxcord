@@ -5,8 +5,8 @@ import { useHistory } from 'react-router';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { useGroups, useToast } from '@hooks/index';
-import { postCreateGroup, getPresignedUrl } from '@api/index';
-import { uploadFileWithPresignedUrl } from '@utils/index';
+import { postCreateGroup } from '@api/index';
+import { uploadFile } from '@utils/index';
 import { TOAST_MESSAGE, URL } from '@constants/index';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
 import Colors from '@styles/Colors';
@@ -59,23 +59,23 @@ function GroupCreateModal({
   const [fileURL, setFileURL] = useState<string | null>(null);
 
   const inputImage = useRef<HTMLDivElement>(null);
-  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const target = e.target as HTMLInputElement;
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
-      if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
-      const presignedUrl = await getPresignedUrl(uploadName);
-      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
-      if (uploadedFile && inputImage && inputImage.current) {
-        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
-        inputImage.current.style.backgroundImage = `url('${uploadedURL}')`;
-        setFileURL(uploadedURL);
+      const uploadedFileURL = await uploadFile(file);
+      if (uploadedFileURL && inputImage && inputImage.current) {
+        inputImage.current.style.backgroundImage = `url('${uploadedFileURL}')`;
+        setFileURL(uploadedFileURL);
         fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
       } else fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     } catch (error) {
-      fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });
+      if (typeof error === 'string') fireToast({ message: error, type: 'warning' });
+      else {
+        fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
+        console.log(error);
+      }
     }
   };
   const InputFormComponent = (
@@ -84,7 +84,7 @@ function GroupCreateModal({
         <input
           type="file"
           id="group_thumbnail"
-          onChange={uploadFile}
+          onChange={onUploadFile}
           style={{ width: 100, height: 100, opacity: 0 }}
           accept="image/jpeg, image/png"
         />
