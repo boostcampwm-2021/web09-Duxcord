@@ -5,14 +5,12 @@ import { useHistory } from 'react-router';
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { resetSelectedChat } from '@redux/selectedChat/slice';
-import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
-import { URL } from '@utils/constants/URL';
-import { socket } from '@utils/socket';
+import { TOAST_MESSAGE, URL, SOCKET } from '@utils/constants/index';
+import { socket } from '@utils/index';
 import { deleteChannel } from '@api/deleteChannel';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { AlertWrapper } from './style';
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 
 export default function ChannelDeleteModal({ controller }: { controller: ModalController }) {
   const selectedGroup = useSelectedGroup();

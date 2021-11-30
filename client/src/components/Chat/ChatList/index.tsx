@@ -1,5 +1,5 @@
 import React, { RefObject, useEffect } from 'react';
-import { makeChatSection } from '@utils/makeChatSection';
+import { makeChatSection } from '@utils/index';
 import ChatItem from '../ChatItem';
 import { Chats, Section, StickyWrapper } from '../style';
 

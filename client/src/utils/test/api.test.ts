@@ -1,5 +1,4 @@
-import { postSignIn } from '@api/postSignIn';
-import { postSignUp } from '@api/postSignUp';
+import { postSignIn, postSignUp } from '@api/index';
 
 describe('api', () => {
   const mockFetch = (data: string) => {

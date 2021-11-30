@@ -3,17 +3,15 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { useGroups, useToast } from '@hooks/index';
-import Colors from '@styles/Colors';
-import { URL } from '@utils/constants/URL';
-import { postCreateGroup } from '@api/postCreateGroup';
-import getPresignedUrl from '@api/getPresignedUrl';
-import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
-import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
+import { postCreateGroup, getPresignedUrl } from '@api/index';
+import { uploadFileWithPresignedUrl } from '@utils/index';
+import { TOAST_MESSAGE, URL } from '@utils/constants/index';
 import { GroupThumbnailUploadIcon } from '@components/common/Icons';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { InputForm, InputImage, InputText } from './style';
-import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 
 function GroupCreateModal({
   controller: { hide, show, previous },

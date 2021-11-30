@@ -7,9 +7,9 @@ import {
   validatePassword,
   validateForm,
   isSendPossible,
-} from '@utils/checkResponse';
-import { SIGN_UP_ERROR_MESSAGE } from '@utils/constants/MESSAGE';
-import { postSignUp } from '@api/postSignUp';
+} from '@utils/index';
+import { SIGN_UP_ERROR_MESSAGE } from '@utils/constants/index';
+import { postSignUp } from '@api/index';
 import Background from '@components/common/Background';
 import {
   SignUpWrapper,

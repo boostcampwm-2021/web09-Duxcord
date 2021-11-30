@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 
-import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
-import { URL } from '@utils/constants/URL';
-import { SIGN_IN_ERROR_MESSAGE } from '@utils/constants/MESSAGE';
-import { checkLogin } from '@utils/checkResponse';
-import { postSignIn } from '@api/postSignIn';
+import { SIGN_IN_ERROR_MESSAGE, URL, STATUS_CODES } from '@utils/constants/index';
+import { checkLogin } from '@utils/index';
+import { postSignIn } from '@api/index';
 import Background from '@components/common/Background';
 import {
   SignInWrapper,

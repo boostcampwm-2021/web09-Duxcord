@@ -2,10 +2,9 @@ import React from 'react';
 import { useHistory } from 'react-router';
 
 import { useToast } from '@hooks/index';
+import { TOAST_MESSAGE, URL } from '@utils/constants/index';
+import { postLogout } from '@api/index';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
-import { postLogout } from '@api/postSignOut';
-import { URL } from '@utils/constants/URL';
 import Modal from '..';
 import { MiddlePart } from './style';
 
