@@ -1,4 +1,4 @@
-import { IsNotEmpty, validate } from 'class-validator';
+import { IsNotEmpty, Matches, validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 import {
   chattingChannelRepository,
@@ -9,7 +9,7 @@ import {
 } from '../../loaders/orm.loader';
 import { GROUP_MSG } from '../../messages';
 import { ChannelType } from '../../types/ChannelType';
-import { VALIDATE_OPTIONS } from './utils';
+import { REGEXP, VALIDATE_OPTIONS } from './utils';
 
 class CreateGroupData {
   constructor({ groupName, thumbnail }) {
@@ -54,22 +54,23 @@ export const groupIDValidator = async (req: Request, res: Response, next: NextFu
 
 class CreateChannelData {
   constructor({ channelName, channelType }) {
-    this.channelName = channelName.trim();
+    this.channelName = channelName?.trim();
     this.channelType = channelType;
   }
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: GROUP_MSG.NEED_CHANNEL_NAME })
   channelName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: GROUP_MSG.NEED_CHANNEL_TYPE })
+  @Matches(REGEXP.CHANNEL_TYPE, { message: GROUP_MSG.WRONG_CHANNEL_TYPE })
   channelType: ChannelType;
 }
 
 export const createChannelValidator = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const createChannelData = new CreateChannelData(req.body);
-    const errors = validate(createChannelData, VALIDATE_OPTIONS);
-    if ((await errors).length) return res.status(400).json(errors);
+    const errors = await validate(createChannelData, VALIDATE_OPTIONS);
+    if (errors.length) return res.status(400).json(errors);
 
     next();
   } catch (e) {

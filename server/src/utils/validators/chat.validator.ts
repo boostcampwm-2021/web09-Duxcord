@@ -39,6 +39,7 @@ export const createThreadValidator = async (req: Request, res: Response, next: N
     if (!content || !content.trim()) return res.status(400).send(createChatMSG.emptyChat);
 
     req.body.user = user;
+    req.body.chat = chat;
     next();
   } catch (e) {
     next(e);

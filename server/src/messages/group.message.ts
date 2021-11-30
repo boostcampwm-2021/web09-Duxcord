@@ -11,4 +11,6 @@ export const GROUP_MSG = {
   DONT_HAVE_AUTHORITY_TO_DELETE: '삭제 권한이 없습니다.',
   GROUP_DELETION_SUCCESS: '그룹이 삭제되었습니다.',
   CHANNEL_DELETION_SUCCESS: '채널이 삭제되었습니다.',
+  NEED_CHANNEL_NAME: '채널명이 누락되었습니다.',
+  NEED_CHANNEL_TYPE: '채널 유형이 누락되었습니다.',
 };

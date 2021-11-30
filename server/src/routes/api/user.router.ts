@@ -27,6 +27,4 @@ userRouter.patch(
   updateUserValidator,
   userController.updateUserData,
 );
-userRouter.post('/signout', accessControl(), userController.signOut);
 userRouter.post('/presignedurl', accessControl({ signIn: true }), userController.getPresignedUrl);
-userRouter.patch('/profile', accessControl({ signIn: true }), userController.updateUserData);
