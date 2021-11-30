@@ -7,6 +7,9 @@ import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 import getPresignedUrl from '@utils/getPresignedUrl';
+import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
+
+const POST_CHAT_FAIL = '메시지 전송에 실패했습니다.';
 
 function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
   const { id } = useSelectedChannel();
@@ -15,13 +18,19 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
 
   const onSubmitChat = async (e: FormEvent) => {
     e.preventDefault();
-    if (chatInputRef.current === null && !fileURL.length) return;
-    const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
-    if ((content === '' && !fileURL.length) || id === null) return;
-    postChat({ channelID: id, content: content, files: fileURL });
-    if (chatInputRef.current) chatInputRef.current.value = '';
-    setFileURL([]);
-    scrollToBottom();
+    try {
+      if (chatInputRef.current === null && !fileURL.length) return;
+      const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
+      if ((content === '' && !fileURL.length) || id === null) return;
+      const response = await postChat({ channelID: id, content: content, files: fileURL });
+      if (response.status !== STATUS_CODES.OK) throw Error(POST_CHAT_FAIL);
+      if (chatInputRef.current) chatInputRef.current.value = '';
+      setFileURL([]);
+      scrollToBottom();
+    } catch (e: any) {
+      fireToast({ message: POST_CHAT_FAIL, type: 'warning' });
+      console.error(e.message);
+    }
   };
   const [fileURL, setFileURL] = useState<string[]>([]);
 
@@ -52,7 +61,7 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
         <input type="file" id="chat_upload" onChange={uploadFile} accept="image/jpeg, image/png" />
       </FileInputWrapper>
       <ChatInputWrapper>
-        <input ref={chatInputRef} placeholder="Message to channel" />
+        <input ref={chatInputRef} placeholder="Message to channel" type="text" maxLength={255} />
         {fileURL.length !== 0 && (
           <div>
             {fileURL.map((url) => (
