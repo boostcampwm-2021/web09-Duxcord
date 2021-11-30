@@ -1,4 +1,4 @@
-import { getFetcher } from '@utils/fetcher';
+import { getFetcher } from '@api/fetcher';
 
 describe('fetcher', () => {
   const mockFetch = (data: string) => {

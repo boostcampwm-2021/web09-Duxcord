@@ -1,4 +1,4 @@
-import { deleteFetchOptions, patchFetchOptions, postFetchOptions } from '@utils/fetchOptions';
+import { deleteFetchOptions, patchFetchOptions, postFetchOptions } from '@api/fetchOptions';
 
 describe('fetchOptions', () => {
   it('postFetchOptions', () => {

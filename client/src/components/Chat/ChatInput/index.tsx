@@ -2,11 +2,11 @@ import React, { FormEvent, useRef, useState } from 'react';
 
 import { useSelectedChannel, useToast } from '@hooks/index';
 import { postChat } from '@api/postChat';
+import getPresignedUrl from '@api/getPresignedUrl';
 import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
-import getPresignedUrl from '@utils/getPresignedUrl';
 import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 import FileItem from '../FileItem';
 

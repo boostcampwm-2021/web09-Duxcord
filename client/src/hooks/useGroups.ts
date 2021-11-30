@@ -4,7 +4,7 @@ import useSWR from 'swr';
 import { API_URL } from '@utils/constants/API_URL';
 import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { getFetcher } from '@utils/fetcher';
+import { getFetcher } from '@api/fetcher';
 import { socket } from '@utils/socket';
 import { useSelectedGroup } from './useSelectedGroup';
 import { PublicConfiguration } from 'swr/dist/types';

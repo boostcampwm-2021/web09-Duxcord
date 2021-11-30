@@ -6,7 +6,7 @@ import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
 import { API_URL } from '@utils/constants/API_URL';
 import { postCreateThread } from '@api/postCreateThread';
-import { getFetcher } from '@utils/fetcher';
+import { getFetcher } from '@api/fetcher';
 import { socket } from '@utils/socket';
 import ThreadItem from '../ThreadItem';
 import FileItem from '../FileItem';

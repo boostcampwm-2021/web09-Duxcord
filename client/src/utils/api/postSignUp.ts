@@ -1,5 +1,5 @@
 import { API_URL } from '@utils/constants/API_URL';
-import { postFetchOptions } from '@utils/fetchOptions';
+import { postFetchOptions } from '@api/fetchOptions';
 
 export const postSignUp = async (loginID: string, username: string, password: string) => {
   const response = await fetch(
