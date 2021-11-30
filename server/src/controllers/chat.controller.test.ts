@@ -247,7 +247,7 @@ describe('chat.controller', () => {
         const req = mockRequest(true);
         const res = mockResponse('resolve');
         const next = jest.fn();
-        const thread = await threadRepository.findThreadsByChatID('id');
+        const thread = await threadRepository.findThreadsByChatID('1');
 
         await chatController.getThread(req, res, next);
 
