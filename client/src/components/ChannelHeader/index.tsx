@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { useSelectedChannel } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import LogoutModal from '@components/Modal/Logout';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
 import { ChannelHeaderWrapper, ChannelHeaderLeft, ChannelHeaderRight } from './style';

@@ -7,9 +7,10 @@ const { reducer: selectedGroupReducer, actions } = createSlice({
   initialState: initState,
   reducers: {
     setSelectedGroup: (state, { payload: group }) => ({ ...group }),
+    resetSelectedGroup: (state) => initState,
   },
 });
 
-export const { setSelectedGroup } = actions;
+export const { setSelectedGroup, resetSelectedGroup } = actions;
 
 export default selectedGroupReducer;

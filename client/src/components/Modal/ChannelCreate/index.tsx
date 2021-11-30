@@ -4,8 +4,6 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
-import { Group } from '@customTypes/group';
 import Colors from '@styles/Colors';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { URL } from '@utils/constants/URL';
@@ -39,8 +37,8 @@ export default function ChannelCreateModal({
     });
     try {
       const createdChannel = await response.json();
-      mutateGroups((groups: Group[]) => {
-        return groups.map((group: Group) => {
+      mutateGroups((groups: GroupData[]) => {
+        return groups.map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           const tempGroup = group;
           tempGroup[`${channelType}Channels`] = [

@@ -3,16 +3,15 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { mutate } from 'swr';
 
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedGroup, setSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import {
   addUserConnection,
   removeUserConnection,
   setGroupConnection,
 } from '@redux/groupConnection/slice';
 import { useGroups, useSelectedGroup, useSelectedChannel } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import { API_URL } from '@utils/constants/API_URL';
 import { URL } from '@utils/constants/URL';
 import { socket } from '@utils/socket';
@@ -29,7 +28,6 @@ import {
   GroupListDivider,
   AddGroupButton,
 } from './style';
-import { Group } from '@customTypes/group';
 
 function GroupNav() {
   const { groups, mutate: mutateGroups } = useGroups();
@@ -54,9 +52,9 @@ function GroupNav() {
     show: () => setSelectedModal('ADD'),
   };
 
-  const selectGroup = (group: Group) => () => {
+  const selectGroup = (group: GroupData) => () => {
     history.replace(URL.GROUP(group.id));
-    dispatch(setSelectedChannel({ type: '', id: null, name: '' }));
+    dispatch(resetSelectedChannel());
     dispatch(setSelectedGroup(group));
     socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
   };
@@ -68,19 +66,13 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_GROUP, (code) => {
       mutateGroups(
-        groups.filter((group: Group) => group.id !== selectedGroup.id),
+        groups.filter((group: GroupData) => group.id !== selectedGroup.id),
         false,
       );
       if (code === selectedGroup?.code) {
-        dispatch(setSelectedGroup(null));
-        dispatch(
-          setSelectedChannel({
-            type: '',
-            id: null,
-            name: '',
-          }),
-        );
-        dispatch(setSelectedChat(null));
+        dispatch(resetSelectedGroup());
+        dispatch(resetSelectedChannel());
+        dispatch(resetSelectedChat());
         history.replace(URL.GROUP());
       }
     });
@@ -96,11 +88,13 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_CHANNEL, ({ code, id, type }) => {
       mutateGroups(
-        groups.map((group: any) => {
+        groups.map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           else {
             const tempGroup = group;
-            tempGroup[`${type}Channels`].filter((channel: any) => channel.id !== id);
+            if (type === 'chatting')
+              tempGroup.chattingChannels.filter((channel: ChannelData) => channel.id !== id);
+            else tempGroup.meetingChannels.filter((channel: ChannelData) => channel.id !== id);
             return tempGroup;
           }
         }),
@@ -108,14 +102,8 @@ function GroupNav() {
       );
       if (code === selectedGroup?.code)
         if (id === selectedChannel.id && type === selectedChannel.type) {
-          dispatch(
-            setSelectedChannel({
-              type: '',
-              id: null,
-              name: '',
-            }),
-          );
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedChannel());
+          dispatch(resetSelectedChat());
           history.replace(URL.GROUP(selectedGroup.id));
         }
     });
@@ -132,10 +120,9 @@ function GroupNav() {
   return (
     <GroupListWrapper>
       <GroupList>
-        {groups?.map((group: Group) => (
-          <GroupWrapper name={group.name}>
+        {groups?.map((group: GroupData) => (
+          <GroupWrapper name={group.name} key={group.id}>
             <GroupItem
-              key={group.id}
               onClick={selectGroup(group)}
               thumbnail={group.thumbnail}
               isSelected={group.id === selectedGroup?.id}

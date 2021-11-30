@@ -2,14 +2,14 @@ import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'reac
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
-import { ChatData } from '@customTypes/chats';
 import { API_URL } from '@utils/constants/API_URL';
 import { postCreateThread } from '@api/postCreateThread';
 import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';
 import ThreadItem from '../ThreadItem';
+import FileItem from '../FileItem';
 import { ThreadCloseIcon } from '../../common/Icons';
 import {
   Input,
@@ -38,9 +38,9 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
   const onThread = useCallback(
-    (info: any) => {
+    (info: ChatData) => {
       mutate(
-        (threads: any) => [
+        (threads: Array<ThreadData>) => [
           ...threads,
           {
             id: info.id,
@@ -85,7 +85,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>Thread</div>
             <div>#{name}</div>
           </div>
-          <ThreadCloseIcon onClick={() => dispatch(setSelectedChat(0))} />
+          <ThreadCloseIcon onClick={() => dispatch(resetSelectedChat())} />
         </ThreadHeaderWrapper>
         <OriginalChatWrapper>
           <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
@@ -97,21 +97,17 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>{content}</div>
             <FileWrapper>
               {files &&
-                files.map((file) => (
-                  <div key={file.src}>
-                    <img src={file.src} alt="thread files" />
-                  </div>
+                files.map(({ src }) => (
+                  <FileItem key={src} src={src} alt="thread file" itemType="thread" />
                 ))}
             </FileWrapper>
           </div>
         </OriginalChatWrapper>
         <ChatLengthWrapper>
-          <ChatLength>
-            <p>{data?.length}</p>개의 댓글
-          </ChatLength>
+          <ChatLength>{data?.length}개의 댓글</ChatLength>
         </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
-          {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
+          {data && data.map((v: ThreadData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>
       </ThreadWrapper>
       <InputWrapper onSubmit={createThread}>

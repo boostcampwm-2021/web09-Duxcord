@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata, useSelectedUser, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
 import { patchUserdata } from '@api/patchUserdata';
 import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
 import getPresignedUrl from '@utils/getPresignedUrl';
@@ -95,9 +94,8 @@ export default function UserEditModal({ controller }: { controller: ModalControl
         onChange={(e) => {
           setNewBio(e.target.value);
         }}
-      >
-        {newBio}
-      </UserBio>
+        defaultValue={userdata.bio}
+      />
     </>
   );
 

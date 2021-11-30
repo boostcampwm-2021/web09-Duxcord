@@ -8,18 +8,10 @@ interface ChatData {
   threadsCount: number;
   threadWriter: null | User;
   threadLastTime: null | Date;
-  user: User;
-  files: Files[];
+  user: UserData;
+  files: FileData[];
 }
 
-interface Files {
+interface FileData {
   src: string;
 }
-
-interface User {
-  id: number;
-  thumbnail: null | string;
-  username: string;
-}
-
-export { ChatData, User };

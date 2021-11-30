@@ -2,17 +2,15 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import { URL } from '@utils/constants/URL';
 import { deleteGroup } from '@api/deleteGroup';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { socket } from '@utils/socket';
 import { SOCKET } from '@utils/constants/SOCKET_EVENT';
-import { ModalController } from '@customTypes/modal';
-import { Group } from '@customTypes/group';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { AlertWrapper } from './style';
@@ -31,18 +29,12 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
         case 200:
           socket.emit(SOCKET.GROUP_EVENT.DELETE_GROUP, selectedGroup.code);
           mutateGroups(
-            groups.filter((group: Group) => group.id !== selectedGroup.id),
+            groups.filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
-          dispatch(setSelectedGroup(null));
-          dispatch(
-            setSelectedChannel({
-              type: '',
-              id: null,
-              name: '',
-            }),
-          );
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedGroup());
+          dispatch(resetSelectedChannel());
+          dispatch(resetSelectedChat());
           hide();
           history.replace(URL.GROUP());
           fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_DELETE, type: 'success' });

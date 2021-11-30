@@ -10,10 +10,10 @@ const { reducer: groupConnectionReducer, actions } = createSlice({
       return [...group];
     },
     removeUserConnection: (state, { payload: connection }) => [
-      ...state.filter((v: any) => v.loginID !== connection.loginID),
+      ...state.filter((v: UserData) => v.loginID !== connection.loginID),
     ],
     addUserConnection: (state, { payload: connection }) => {
-      if (state.some((v: any) => v.loginID === connection.loginID)) {
+      if (state.some((v: UserData) => v.loginID === connection.loginID)) {
         return state;
       } else {
         return [...state, connection];

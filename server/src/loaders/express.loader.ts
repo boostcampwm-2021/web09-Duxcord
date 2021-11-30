@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
 import { TypeormStore } from 'typeorm-store';
@@ -23,8 +23,8 @@ export const expressLoader = (app) => {
 
   app.use('/api', apiRouter);
 
-  app.use((error, _req, res) => {
-    console.error(error);
-    res.status(500).send(error.message);
+  app.use((err, req: Request, res: Response, next: NextFunction) => {
+    console.error(err);
+    res.status(500).send(err.message);
   });
 };

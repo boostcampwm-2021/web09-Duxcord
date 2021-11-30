@@ -8,6 +8,7 @@ import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 import getPresignedUrl from '@utils/getPresignedUrl';
 import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
+import FileItem from '../FileItem';
 
 const POST_CHAT_FAIL = '메시지 전송에 실패했습니다.';
 
@@ -64,10 +65,8 @@ function ChatInput({ onInput }: { onInput: () => void }) {
         <input ref={chatInputRef} placeholder="Message to channel" type="text" maxLength={255} />
         {fileURL.length !== 0 && (
           <div>
-            {fileURL.map((url) => (
-              <div key={url}>
-                <img src={url} alt="chatting images" />
-              </div>
+            {fileURL.map((src) => (
+              <FileItem key={src} src={src} alt="chat input file" itemType="chatInput" />
             ))}
           </div>
         )}

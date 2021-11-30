@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { ModalController } from '@customTypes/modal';
 import Modal from '..';
 import { Transporter } from './style';
 

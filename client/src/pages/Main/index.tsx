@@ -15,7 +15,7 @@ import { Layout, MainWrapper } from './style';
 import { Group } from '@customTypes/group';
 import { API_URL } from '@utils/constants/API_URL';
 
-const NEED_CHANNEL_SELECT = '채널을 선택해주세요!';
+const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
 
 function Main() {
   const { data: groups } = useSWRImmutable(API_URL.USER.GET_GROUPS, getGroupsFetcher, {
@@ -57,7 +57,7 @@ function Main() {
             {selectedChannel.type === 'chatting' ? <Chat /> : <Meet />}
           </Suspense>
         ) : (
-          <Empty message={NEED_CHANNEL_SELECT} />
+          <Empty message={CHANNEL_SELECT_NEEDED} />
         )}
       </MainWrapper>
     </Layout>

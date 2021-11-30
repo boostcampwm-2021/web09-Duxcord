@@ -4,12 +4,12 @@ import { useDispatch } from 'react-redux';
 import { setSelectedChat } from '@redux/selectedChat/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata } from '@hooks/index';
-import { ChatData } from '@customTypes/chats';
 import { postLikeChat } from '@api/postLikeChat';
 import { STATUS_CODES } from '@utils/constants/STATUS_CODES';
 import ThreadPreview from '../ThreadPreview';
 import AddChatReaction from '../AddChatReaction';
 import ChatReaction from '../ChatReaction';
+import FileItem from '../FileItem';
 import { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {
@@ -75,10 +75,8 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
         <ChatContent>{content}</ChatContent>
         <FileWrapper>
           {files &&
-            files.map((file) => (
-              <div key={file.src}>
-                <img src={file.src} alt="chat file" />
-              </div>
+            files.map(({ src }) => (
+              <FileItem key={src} src={src} alt="chat file" itemType="chat" />
             ))}
         </FileWrapper>
         <div>

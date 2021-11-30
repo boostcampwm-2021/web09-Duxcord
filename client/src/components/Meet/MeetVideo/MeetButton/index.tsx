@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
 import { URL } from '@utils/constants/URL';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
@@ -28,13 +28,7 @@ function MeetButton({
   const { fireToast } = useToast();
 
   const onMeetingStopClick = () => {
-    dispatch(
-      setSelectedChannel({
-        type: '',
-        id: null,
-        name: '',
-      }),
-    );
+    dispatch(resetSelectedChannel());
     history.replace(URL.GROUP(selectedGroup.id));
   };
 

@@ -11,9 +11,10 @@ const { reducer: selectedChannelReducer, actions } = createSlice({
   initialState: initState,
   reducers: {
     setSelectedChannel: (state, { payload: { type, id, name } }) => ({ type, id, name }),
+    resetSelectedChannel: (state) => ({ ...initState }),
   },
 });
 
-export const { setSelectedChannel } = actions;
+export const { setSelectedChannel, resetSelectedChannel } = actions;
 
 export default selectedChannelReducer;

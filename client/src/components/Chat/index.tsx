@@ -1,12 +1,11 @@
 import React, { useCallback, useRef } from 'react';
 
 import { useChatInfinite, useChatSocket, useScroll, useSelectedChat } from '@hooks/index';
-
 import ChatInput from './ChatInput';
 import UserConnection from './UserConnection';
 import Thread from './Thread';
-import { ChatContainer, ChatPart, ChatInputWrapper } from './style';
 import ChatList from './ChatList';
+import { ChatWrapper, Wrapper, ChatInputWrapper } from './style';
 
 function Chat() {
   const chatListRef = useRef<HTMLDivElement>(null);
@@ -19,8 +18,8 @@ function Chat() {
   const onInput = useCallback(() => scrollToBottom({ smooth: true }), [scrollToBottom]);
 
   return (
-    <ChatPart>
-      <ChatContainer isSelectedChat={!!selectedChat}>
+    <Wrapper>
+      <ChatWrapper isSelectedChat={!!selectedChat}>
         <ChatList
           chats={chats}
           chatListRef={chatListRef}
@@ -30,9 +29,9 @@ function Chat() {
         <ChatInputWrapper>
           <ChatInput onInput={onInput} />
         </ChatInputWrapper>
-      </ChatContainer>
+      </ChatWrapper>
       {selectedChat ? <Thread selectedChat={selectedChat} /> : <UserConnection />}
-    </ChatPart>
+    </Wrapper>
   );
 }
 

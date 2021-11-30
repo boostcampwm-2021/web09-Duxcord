@@ -7,10 +7,10 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { URL } from '@utils/constants/URL';
 import { postJoinGroup } from '@api/postJoinGroup';
-import { ModalController } from '@customTypes/modal';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { Input } from './style';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 
 function GroupJoinModal({ controller: { hide, show, previous } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
@@ -33,6 +33,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
       case 200:
         const group = await response.json();
         mutate([...groups, group], false);
+        dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));
         finishModal();
         history.replace(URL.GROUP(group.id));

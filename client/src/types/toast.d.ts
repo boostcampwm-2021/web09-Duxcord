@@ -4,5 +4,3 @@ interface ToastData {
   duration?: number;
   id?: string;
 }
-
-export { ToastData };

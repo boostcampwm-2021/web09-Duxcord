@@ -7,7 +7,6 @@ import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { getFetcher } from '@utils/fetcher';
 import { socket } from '@utils/socket';
 import { useSelectedGroup } from './useSelectedGroup';
-import { Group } from '@customTypes/group';
 import { PublicConfiguration } from 'swr/dist/types';
 
 export const getGroupsFetcher = async (url: string) => {
@@ -15,7 +14,7 @@ export const getGroupsFetcher = async (url: string) => {
     const response = await fetch(url, { credentials: 'include' });
     const responseData = await response.json();
 
-    return responseData?.map((el: any) => el.group);
+    return responseData?.map((el: { group: GroupData }) => el.group);
   } catch (error) {
     console.error(error);
   }
@@ -35,7 +34,7 @@ export const useGroups = (options?: Partial<PublicConfiguration>) => {
     if (selectedGroup === null) return;
 
     const updatedSelectedGroup =
-      groups?.find((group: Group) => group.id === selectedGroup.id) ?? null;
+      groups?.find((group: GroupData) => group.id === selectedGroup.id) ?? null;
 
     dispatch(setSelectedGroup(updatedSelectedGroup));
   }, [groups, dispatch]);
