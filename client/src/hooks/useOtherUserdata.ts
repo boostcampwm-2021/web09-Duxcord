@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 
 import { API_URL } from '@utils/constants/API_URL';
-import { getFetcher } from '@utils/fetcher';
+import { getFetcher } from '@api/fetcher';
 
 export const useOtherUserData = (userID: number | null) => {
   const { data: otherUserData, ...rest } = useSWR(

@@ -1,28 +1,33 @@
 import React, { FormEvent, useRef, useState } from 'react';
 
 import { useSelectedChannel, useToast } from '@hooks/index';
-import { postChat } from '@api/postChat';
-import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
-import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
+import { postChat, getPresignedUrl } from '@api/index';
+import { uploadFileWithPresignedUrl } from '@utils/index';
+import { TOAST_MESSAGE, STATUS_CODES } from '@constants/index';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
-import getPresignedUrl from '@utils/getPresignedUrl';
 import FileItem from '../FileItem';
 
-function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
+function ChatInput({ onInput }: { onInput: () => void }) {
   const { id } = useSelectedChannel();
   const { fireToast } = useToast();
   const chatInputRef = useRef<HTMLInputElement>(null);
 
   const onSubmitChat = async (e: FormEvent) => {
     e.preventDefault();
-    if (chatInputRef.current === null && !fileURL.length) return;
-    const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
-    if ((content === '' && !fileURL.length) || id === null) return;
-    postChat({ channelID: id, content: content, files: fileURL });
-    if (chatInputRef.current) chatInputRef.current.value = '';
-    setFileURL([]);
-    scrollToBottom();
+    try {
+      if (chatInputRef.current === null) return;
+      const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
+      if ((content === '' && !fileURL.length) || id === null) return;
+      const response = await postChat({ channelID: id, content: content, files: fileURL });
+      if (response.status !== STATUS_CODES.OK) throw Error(TOAST_MESSAGE.ERROR.POST_CHAT_FAIL);
+      chatInputRef.current.value = '';
+      setFileURL([]);
+      onInput();
+    } catch (e: any) {
+      fireToast({ message: TOAST_MESSAGE.ERROR.POST_CHAT_FAIL, type: 'warning' });
+      console.error(e.message);
+    }
   };
   const [fileURL, setFileURL] = useState<string[]>([]);
 
@@ -53,7 +58,7 @@ function ChatInput({ scrollToBottom }: { scrollToBottom: () => void }) {
         <input type="file" id="chat_upload" onChange={uploadFile} accept="image/jpeg, image/png" />
       </FileInputWrapper>
       <ChatInputWrapper>
-        <input ref={chatInputRef} placeholder="Message to channel" />
+        <input ref={chatInputRef} placeholder="Message to channel" type="text" maxLength={255} />
         {fileURL.length !== 0 && (
           <div>
             {fileURL.map((src) => (

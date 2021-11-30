@@ -46,7 +46,7 @@ const applyDeviceStatus = ({
 };
 
 function MeetVideo() {
-  const { userdata } = useUserdata();
+  const { userdata } = useUserdata({ suspense: true });
   const { id } = useSelectedChannel();
   const { mic, cam, speaker } = useUserDevice();
   const { code } = useSelectedGroup();

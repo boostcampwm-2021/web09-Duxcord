@@ -7,9 +7,9 @@ import {
   validatePassword,
   validateForm,
   isSendPossible,
-} from '@utils/checkResponse';
-import { SIGN_UP_ERROR_MESSAGE } from '@utils/constants/MESSAGE';
-import { trySignUp } from '@utils/api';
+} from '@utils/index';
+import { SIGN_UP_ERROR_MESSAGE } from '@constants/index';
+import { postSignUp } from '@api/index';
 import Background from '@components/common/Background';
 import {
   SignUpWrapper,
@@ -82,7 +82,7 @@ function SignUp() {
     if (!ID || !userName || !password)
       return setResponseState({ ...responseState, formResponseText: EMPTY_INPUT_ERROR });
     if (!isSendPossible(IDresponseText, userNameResponseText, passwordResponseText)) return;
-    const { status, responseText } = await trySignUp(ID, userName, password);
+    const { status, responseText } = await postSignUp(ID, userName, password);
     setResponseState({ ...responseState, status, IDresponseText: responseText });
   };
 

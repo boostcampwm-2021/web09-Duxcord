@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { LikeIcon, ThreadOpenIcon } from '../../common/Icons';
+import { LikeIcon, ThreadOpenIcon } from '@components/common/Icons';
 import { Wrapper } from './style';
 
 function AddChatReaction({

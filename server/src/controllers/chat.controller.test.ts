@@ -1,4 +1,5 @@
-import chatController, { createChatMSG, handleReactionMSG } from './chat.controller';
+import chatController from './chat.controller';
+import { handleReactionMSG, createChatMSG } from '../messages';
 import { Request, Response } from 'express';
 
 jest.mock('../loaders/orm.loader');

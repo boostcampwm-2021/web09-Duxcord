@@ -1,5 +1,6 @@
-import groupController, { MSG } from './group.controller';
+import groupController from './group.controller';
 import { Request, Response } from 'express';
+import { GROUP_MSG } from '../messages';
 
 jest.mock('../loaders/orm.loader');
 
@@ -74,7 +75,7 @@ describe('group.controller', () => {
         await groupController.createGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.needGroupName);
+        expect(res.send).toBeCalledWith(GROUP_MSG.NEED_GROUP_NAME);
       });
     });
 
@@ -89,7 +90,7 @@ describe('group.controller', () => {
         await groupController.createGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.userNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.USER_NOT_FOUND);
       });
     });
 
@@ -148,7 +149,7 @@ describe('group.controller', () => {
         await groupController.getGroupMembers(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.groupNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.GROUP_NOT_FOUND);
       });
     });
 
@@ -209,7 +210,7 @@ describe('group.controller', () => {
         await groupController.createChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.channelNameEmpty);
+        expect(res.send).toBeCalledWith(GROUP_MSG.CHANNEL_NAME_EMPTY);
       });
     });
 
@@ -224,7 +225,7 @@ describe('group.controller', () => {
         await groupController.createChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.groupNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.GROUP_NOT_FOUND);
       });
     });
 
@@ -237,7 +238,7 @@ describe('group.controller', () => {
         await groupController.createChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.wrongChannelType);
+        expect(res.send).toBeCalledWith(GROUP_MSG.WRONG_CHANNEL_TYPE);
       });
     });
 
@@ -300,7 +301,7 @@ describe('group.controller', () => {
         await groupController.joinGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.groupNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.GROUP_NOT_FOUND);
       });
     });
 
@@ -314,7 +315,7 @@ describe('group.controller', () => {
         await groupController.joinGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.alreadyJoined);
+        expect(res.send).toBeCalledWith(GROUP_MSG.ALREADY_JOINED);
       });
     });
 
@@ -354,7 +355,7 @@ describe('group.controller', () => {
     });
 
     context('정상적으로 값을 입력했을 때', () => {
-      it('deleteGroup 메시지를 반환한다', async () => {
+      it('channelDeletionSuccess 메시지를 반환한다', async () => {
         const req = mockRequest(true);
         const res = mockResponse('resolve');
         const next = jest.fn();
@@ -362,12 +363,12 @@ describe('group.controller', () => {
         await groupController.deleteGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(200);
-        expect(res.json).toBeCalledWith(MSG.deleteGroup);
+        expect(res.json).toBeCalledWith(GROUP_MSG.CHANNEL_DELETION_SUCCESS);
       });
     });
 
     context('group이 없을 때', () => {
-      it('groupIDNotFound 메시지를 반환한다', async () => {
+      it('invalidGroupId 메시지를 반환한다', async () => {
         groupRepository.findByIDWithLeaderID = jest.fn().mockResolvedValue(undefined);
         const req = mockRequest(true);
         const res = mockResponse('resolve');
@@ -376,12 +377,12 @@ describe('group.controller', () => {
         await groupController.deleteGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.groupIDNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.INVALID_GROUP_ID);
       });
     });
 
     context('group의 leader가 아닐 때', () => {
-      it('noGroupDeleteAuthorization 메시지를 반환한다', async () => {
+      it('dontHaveAuthorityToDelete 메시지를 반환한다', async () => {
         groupRepository.findByIDWithLeaderID = jest
           .fn()
           .mockResolvedValue({ id: 1, leader: { id: 2 } });
@@ -392,7 +393,7 @@ describe('group.controller', () => {
         await groupController.deleteGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.noGroupDeleteAuthorization);
+        expect(res.send).toBeCalledWith(GROUP_MSG.DONT_HAVE_AUTHORITY_TO_DELETE);
       });
     });
 
@@ -436,7 +437,7 @@ describe('group.controller', () => {
     });
 
     context('정상적으로 값이 입력됐을 때', () => {
-      it('deleteChannel 메시지가 반환된다', async () => {
+      it('channelDeletionSuccess 메시지가 반환된다', async () => {
         const req = mockRequest(true, '1', 'chatting');
         const res = mockResponse('resolve');
         const next = jest.fn();
@@ -444,12 +445,12 @@ describe('group.controller', () => {
         await groupController.deleteChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(200);
-        expect(res.json).toBeCalledWith(MSG.deleteChannel);
+        expect(res.json).toBeCalledWith(GROUP_MSG.CHANNEL_DELETION_SUCCESS);
       });
     });
 
     context('group이 없을 때', () => {
-      it('groupIDNotFound 메시지를 반환한다', async () => {
+      it('invalidGroupId 메시지를 반환한다', async () => {
         groupRepository.findByIDWithLeaderID = jest.fn().mockResolvedValue(undefined);
         const req = mockRequest(true, '1', 'chatting');
         const res = mockResponse('resolve');
@@ -458,12 +459,12 @@ describe('group.controller', () => {
         await groupController.deleteChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.groupIDNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.INVALID_GROUP_ID);
       });
     });
 
     context('group의 leader가 아닐 때', () => {
-      it('noChannelDeleteAuthorization 메시지를 반환한다', async () => {
+      it('dontHaveAuthorityToDelete 메시지를 반환한다', async () => {
         groupRepository.findByIDWithLeaderID = jest
           .fn()
           .mockResolvedValue({ id: 1, leader: { id: 2 } });
@@ -474,7 +475,7 @@ describe('group.controller', () => {
         await groupController.deleteChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.noChannelDeleteAuthorization);
+        expect(res.send).toBeCalledWith(GROUP_MSG.DONT_HAVE_AUTHORITY_TO_DELETE);
       });
     });
 
@@ -487,12 +488,12 @@ describe('group.controller', () => {
         await groupController.deleteChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.wrongChannelType);
+        expect(res.send).toBeCalledWith(GROUP_MSG.WRONG_CHANNEL_TYPE);
       });
     });
 
     context('channel이 없을 때', () => {
-      it('channelIDNotFound 메시지가 반환된다', async () => {
+      it('invalidChannelId 메시지가 반환된다', async () => {
         chattingChannelRepository.findOne = jest.fn().mockResolvedValue(undefined);
 
         const req = mockRequest(true, '1', 'chatting');
@@ -502,12 +503,12 @@ describe('group.controller', () => {
         await groupController.deleteChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.channelIDNotFound);
+        expect(res.send).toBeCalledWith(GROUP_MSG.INVALID_CHANNEL_ID);
       });
     });
 
     context('channel이 group에 존재하지 않을 때', () => {
-      it('noChannelInGroup 메시지가 반환된다', async () => {
+      it('cantFoundChannelInGroup 메시지가 반환된다', async () => {
         chattingChannelRepository.findOne = jest.fn().mockResolvedValue({ group: { id: 2 } });
 
         const req = mockRequest(true, '1', 'chatting');
@@ -517,7 +518,7 @@ describe('group.controller', () => {
         await groupController.deleteChannel(req, res, next);
 
         expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(MSG.noChannelInGroup);
+        expect(res.send).toBeCalledWith(GROUP_MSG.CANT_FOUND_CHANNEL_IN_GROUP);
       });
     });
 

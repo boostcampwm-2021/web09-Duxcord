@@ -1,6 +1,6 @@
 import { io } from 'socket.io-client';
 
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
+import { SOCKET } from '@constants/index';
 
 export const socket = io('/');
 

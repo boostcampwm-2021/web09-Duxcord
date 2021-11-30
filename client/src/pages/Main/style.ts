@@ -12,4 +12,11 @@ const MainWrapper = styled.div`
   height: 100vh;
 `;
 
-export { Layout, MainWrapper };
+const EmptyWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+export { Layout, MainWrapper, EmptyWrapper };
