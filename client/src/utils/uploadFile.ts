@@ -1,8 +1,8 @@
 import { getPresignedUrl } from '@api/index';
-import { FILE_UPLOAD_MESSAGE, TOAST_MESSAGE } from '@constants/MESSAGE';
+import { TOAST_MESSAGE } from '@constants/MESSAGE';
 
 const uploadFile = async (file: File) => {
-  if (!isJpegOrPng(file)) throw FILE_UPLOAD_MESSAGE.INVALID_TYPE;
+  if (!isJpegOrPng(file)) throw TOAST_MESSAGE.ERROR.INVALID_TYPE;
   const uploadName = getUploadName(file.name);
   const presignedURL = await getPresignedUrl(uploadName);
   const response = await fetchFile(presignedURL.url, file);

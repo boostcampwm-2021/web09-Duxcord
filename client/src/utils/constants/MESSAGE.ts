@@ -16,14 +16,11 @@ const SIGN_IN_ERROR_MESSAGE: MESSAGES = {
   PASSWORD_EMPTY_ERROR: '비밀번호를 입력해주세요.',
 };
 
-const FILE_UPLOAD_MESSAGE: MESSAGES = {
-  INVALID_TYPE: '유효한 파일 형식이 아닙니다.',
-};
-
 const TOAST_MESSAGE = {
   ERROR: {
     COMMON: '요청이 실패했습니다.',
     FILE_UPLOAD: '파일 업로드에 실패했습니다.',
+    INVALID_TYPE: '유효하지 않은 파일 형식입니다.',
     GROUP_CREATE: '그룹 생성에 실패했습니다.',
     GROUP_DELETE: '그룹 삭제에 실패했습니다.',
     GROUP_CODE_COPY: '그룹 코드 복사에 실패했습니다.',
@@ -54,4 +51,4 @@ const TOAST_MESSAGE = {
   },
 };
 
-export { SIGN_UP_ERROR_MESSAGE, SIGN_IN_ERROR_MESSAGE, TOAST_MESSAGE, FILE_UPLOAD_MESSAGE };
+export { SIGN_UP_ERROR_MESSAGE, SIGN_IN_ERROR_MESSAGE, TOAST_MESSAGE };
