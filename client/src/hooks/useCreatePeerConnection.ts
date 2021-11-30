@@ -1,6 +1,7 @@
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
-import { socket } from '@utils/socket';
 import { useCallback } from 'react';
+
+import { SOCKET } from '@constants/index';
+import { socket } from '@utils/index';
 
 const ICE_SERVER_URL = 'stun:stun.l.google.com:19302';
 

@@ -1,5 +1,6 @@
-import { applyDeviceStatus } from '@utils/stream';
 import { useEffect } from 'react';
+
+import { applyDeviceStatus } from '@utils/index';
 import { useUserDevice } from '.';
 
 export const useControlMyStream = (

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react';
 
-import { useMeeting, useSelectVideo, useUserDevice } from '@hooks/index';
+import { useMeeting, useUserDevice } from '@hooks/index';
 import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
 import OtherVideo from './OtherVideo';
 import MeetButton from './MeetButton';

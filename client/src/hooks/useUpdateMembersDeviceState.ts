@@ -1,6 +1,7 @@
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
-import { socket } from '@utils/socket';
 import { useEffect } from 'react';
+
+import { SOCKET } from '@constants/index';
+import { socket } from '@utils/index';
 
 export const useUpdateMembersDeviceState = (
   setMeetingMembers: React.Dispatch<React.SetStateAction<MeetingMember[]>>,

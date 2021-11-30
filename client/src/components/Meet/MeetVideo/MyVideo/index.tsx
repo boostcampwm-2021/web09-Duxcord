@@ -1,7 +1,7 @@
 import React, { RefObject } from 'react';
 
 import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-import { useUserdata } from '@hooks/useUserdata';
+import { useUserdata } from '@hooks/index';
 import { VideoWrapper, Video, ThumbnailWrapper, Thumbnail, DeviceStatus } from '../style';
 
 interface MyVideoProps {

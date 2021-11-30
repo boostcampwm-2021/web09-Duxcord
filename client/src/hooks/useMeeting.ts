@@ -1,9 +1,16 @@
-import { highlightMyVolume } from '@utils/audio';
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
-import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
-import Socket, { socket } from '@utils/socket';
-import { getMyStream, applyDeviceStatus } from '@utils/stream';
 import { useState, useRef, useEffect } from 'react';
+
+import { SOCKET } from '@utils/constants/SOCKET_EVENT';
+import {
+  Socket,
+  socket,
+  highlightMyVolume,
+  playSoundEffect,
+  SoundEffect,
+  getMyStream,
+  applyDeviceStatus,
+} from '@utils/index';
+
 import {
   useUserdata,
   useSelectedChannel,
