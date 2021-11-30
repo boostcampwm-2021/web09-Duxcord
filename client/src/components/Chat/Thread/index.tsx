@@ -4,13 +4,12 @@ import useSWR from 'swr';
 
 import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
-import { API_URL } from '@utils/constants/API_URL';
-import { postCreateThread } from '@api/postCreateThread';
-import { getFetcher } from '@utils/fetcher';
-import { socket } from '@utils/socket';
+import { API_URL, SOCKET } from '@constants/index';
+import { postCreateThread, getFetcher } from '@api/index';
+import { socket } from '@utils/index';
 import ThreadItem from '../ThreadItem';
 import FileItem from '../FileItem';
-import { ThreadCloseIcon } from '../../common/Icons';
+import { ThreadCloseIcon } from '@components/common/Icons';
 import {
   Input,
   InputWrapper,
@@ -23,7 +22,6 @@ import {
   ChatLengthWrapper,
   ChatLength,
 } from './style';
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const { mutate, data } = useSWR(API_URL.THREAD.GET_DATA(selectedChat.id), getFetcher);

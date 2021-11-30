@@ -5,14 +5,14 @@ import useSWRImmutable from 'swr/immutable';
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { getGroupsFetcher, useSelectedChannel, useSelectedGroup } from '@hooks/index';
-import { getURLParams } from '@utils/getURLParams';
+import { getURLParams } from '@utils/index';
+import { API_URL } from '@constants/index';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
 import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper, EmptyWrapper } from './style';
-import { API_URL } from '@utils/constants/API_URL';
 
 const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
 

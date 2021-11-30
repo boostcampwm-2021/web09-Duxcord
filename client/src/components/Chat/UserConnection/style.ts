@@ -1,5 +1,5 @@
 import styled, { keyframes } from 'styled-components';
-import Colors from '../../../styles/Colors';
+import Colors from '@styles/Colors';
 
 const colorChange = keyframes`
   from { background-color: ${Colors.White}; }

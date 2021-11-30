@@ -4,13 +4,12 @@ import { useHistory } from 'react-router';
 
 import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
-import { URL } from '@utils/constants/URL';
-import { postJoinGroup } from '@api/postJoinGroup';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
+import { TOAST_MESSAGE, URL } from '@constants/index';
+import { postJoinGroup } from '@api/index';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { Input } from './style';
-import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 
 function GroupJoinModal({ controller: { hide, show, previous } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');

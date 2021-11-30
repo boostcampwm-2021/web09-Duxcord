@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Colors from '../../../styles/Colors';
+import Colors from '@styles/Colors';
 
 const Wrapper = styled.div`
   background-color: ${Colors.White};
