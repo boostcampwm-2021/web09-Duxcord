@@ -1,5 +1,4 @@
 import reducer, { addToast, popToast } from './slice';
-import { ToastData } from '@customTypes/toast';
 
 describe('toast slice', () => {
   describe('reducer', () => {
