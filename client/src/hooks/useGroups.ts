@@ -10,7 +10,7 @@ import { useSelectedGroup } from './useSelectedGroup';
 import { Group } from '@customTypes/group';
 import { PublicConfiguration } from 'swr/dist/types';
 
-const getGroupsFetcher = async (url: string) => {
+export const getGroupsFetcher = async (url: string) => {
   try {
     const response = await fetch(url, { credentials: 'include' });
     const responseData = await response.json();

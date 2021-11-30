@@ -1,9 +1,10 @@
 import React, { Suspense, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import useSWRImmutable from 'swr/immutable';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { useGroups, useSelectedChannel, useSelectedGroup } from '@hooks/index';
+import { getGroupsFetcher, useSelectedChannel, useSelectedGroup } from '@hooks/index';
 import { getURLParams } from '@utils/getURLParams';
 import ChannelHeader from '@components/ChannelHeader';
 import Chat from '@components/Chat';
@@ -12,11 +13,14 @@ import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
 import { Group } from '@customTypes/group';
+import { API_URL } from '@utils/constants/API_URL';
 
 const NEED_CHANNEL_SELECT = '채널을 선택해주세요!';
 
 function Main() {
-  const { groups } = useGroups({ suspense: true });
+  const { data: groups } = useSWRImmutable(API_URL.USER.GET_GROUPS, getGroupsFetcher, {
+    suspense: true,
+  });
   const { groupID, channelType, channelID } = getURLParams();
   const selectedGroup = useSelectedGroup();
   const selectedChannel = useSelectedChannel();
@@ -25,19 +29,20 @@ function Main() {
   useLayoutEffect(() => {
     if (selectedGroup !== null || groupID === null) return;
 
-    const group = groups?.find((group: Group) => group.id.toString() === groupID) ?? null;
+    const group = groups?.find((group: Group) => group.id === +groupID);
 
-    if (group === null) return;
+    if (!group) return;
 
     dispatch(setSelectedGroup(group));
 
     if (selectedChannel.id !== null || channelID === null) return;
 
-    const { id, name } = group?.[
+    const channel = group?.[
       channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'
-    ].find((channel: any) => channel.id.toString() === channelID);
+    ].find((channel: any) => channel.id === +channelID);
 
-    if (!id || !name) return;
+    if (!channel) return;
+    const { id, name } = channel;
 
     dispatch(setSelectedChannel({ id, name, type: channelType }));
   }, []);
