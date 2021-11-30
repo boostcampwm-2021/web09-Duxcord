@@ -1,6 +1,5 @@
 import React, { useRef, useEffect } from 'react';
 
-import { MeetingMember, SelectedVideo } from '@customTypes/meet';
 import { CameraOnIcon, MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import {
   VideoWrapper,

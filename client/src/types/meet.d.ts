@@ -1,4 +1,4 @@
-export interface MeetingMember {
+interface MeetingMember {
   socketID: string;
   loginID: string;
   username: string;
@@ -13,7 +13,7 @@ export interface MeetingMember {
   pc?: RTCPeerConnection;
 }
 
-export interface SelectedVideo {
+interface SelectedVideo {
   socketID: string;
   loginID: string;
   username: string;
@@ -25,7 +25,7 @@ export interface SelectedVideo {
   isScreen: boolean;
 }
 
-export interface StreamIDMetaData {
+interface StreamIDMetaData {
   camera: string;
   screen: string;
 }

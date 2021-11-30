@@ -1,6 +1,6 @@
-import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import React, { RefObject } from 'react';
 
+import { MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
 import { useUserdata } from '@hooks/useUserdata';
 import { VideoWrapper, Video, ThumbnailWrapper, Thumbnail, DeviceStatus } from '../style';
 
