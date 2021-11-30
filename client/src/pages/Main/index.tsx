@@ -12,7 +12,6 @@ import Meet from '@components/Meet';
 import SideBar from '@components/SideBar';
 import Empty from '@components/common/Empty';
 import { Layout, MainWrapper } from './style';
-import { Group } from '@customTypes/group';
 import { API_URL } from '@utils/constants/API_URL';
 
 const CHANNEL_SELECT_NEEDED = '채널을 선택해주세요!';
@@ -29,7 +28,7 @@ function Main() {
   useLayoutEffect(() => {
     if (selectedGroup !== null || groupID === null) return;
 
-    const group = groups?.find((group: Group) => group.id === +groupID);
+    const group = groups?.find((group: GroupData) => group.id === +groupID);
 
     if (!group) return;
 

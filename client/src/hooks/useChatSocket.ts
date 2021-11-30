@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { ChatData } from '@customTypes/chats';
 import { SOCKET } from '@utils/constants/SOCKET_EVENT';
 import Socket, { socket } from '@utils/socket';
 import { useScroll, useSelectedChannel, useChats } from '.';
