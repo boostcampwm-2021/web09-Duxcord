@@ -1,5 +1,5 @@
 import chatController from './chat.controller';
-import { handleReactionMSG, createChatMSG } from '../messages';
+import { HANDLE_REACTION_MSG, CREATE_CHAT_MSG } from '../messages';
 import { Request, Response } from 'express';
 
 jest.mock('../loaders/orm.loader');
@@ -13,50 +13,25 @@ import {
 } from '../loaders/orm.loader';
 
 describe('chat.controller', () => {
-  const mockResponse = (result: string): Response => {
-    const res =
-      result === 'resolve'
-        ? ({
-            status: jest.fn((code) => res),
-            json: jest.fn((value) => value),
-            send: jest.fn((value) => value),
-          } as unknown)
-        : ({
-            status: jest.fn((code) => res),
-            json: jest.fn(() => {
-              throw Error;
-            }),
-            send: jest.fn(() => {
-              throw Error;
-            }),
-          } as unknown);
+  const mockResponse = (): Response => {
+    const res = {
+      status: jest.fn((code) => res),
+      json: jest.fn((value) => value),
+      send: jest.fn((value) => value),
+    } as unknown;
     return res as Response;
   };
 
   beforeEach(() => {
     jest.clearAllMocks();
-
-    userRepository.findOne = jest.fn().mockResolvedValue('user');
-
-    chatRepository.findOne = jest.fn().mockResolvedValue({
-      id: 1,
-      reactionsCount: 0,
-      chattingChannel: { id: 1 },
-      threadsCount: 0,
-      threadWriter: 'user',
-      threadLastTime: 0,
-    });
   });
 
   describe('handleReaction', () => {
-    const mockRequest = (value: boolean): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 'banana',
-        },
-        params: {
-          chatID: 1,
+        body: {
+          user: 'banana',
+          chat: { id: 1, reactionsCount: 0, chattingChannel: { id: 1 } },
         },
       } as unknown;
       return req as Request;
@@ -66,18 +41,14 @@ describe('chat.controller', () => {
       it('reaction을 생성하고 status 201 code를 반환한다', async () => {
         reactionRepository.findOne = jest.fn().mockResolvedValue(undefined);
 
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
-        const chat = await chatRepository.findOne();
 
         await chatController.handleReaction(req, res, next);
 
         expect(res.status).toBeCalledWith(201);
-        expect(res.json).toBeCalledWith({
-          chat,
-          message: handleReactionMSG.addReactionSuccess,
-        });
+        expect(res.json).toBeCalled();
       });
     });
 
@@ -85,34 +56,25 @@ describe('chat.controller', () => {
       it('reaction을 삭제하고 status 204 code를 반환한다', async () => {
         reactionRepository.findOne = jest.fn().mockResolvedValue('reaction');
 
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
-        const chat = await chatRepository.findOne();
 
         await chatController.handleReaction(req, res, next);
 
         expect(res.status).toBeCalledWith(204);
-        expect(res.json).toBeCalledWith({
-          chat,
-          message: handleReactionMSG.deleteReactionSuccess,
-        });
+        expect(res.json).toBeCalled();
       });
     });
   });
 
   describe('createThread', () => {
-    const mockRequest = (value: boolean, content: string): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 'banana',
-        },
-        params: {
-          chatID: 1,
-        },
         body: {
-          content,
+          chat: { id: 1, chattingChannel: { id: 1 } },
+          content: 'test',
+          user: 'banana',
         },
       } as unknown;
       return req as Request;
@@ -120,21 +82,21 @@ describe('chat.controller', () => {
 
     context('thread를 작성하면', () => {
       it('thread를 생성한다', async () => {
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
 
         await chatController.createThread(req, res, next);
 
         expect(res.status).toBeCalledWith(200);
-        expect(res.send).toBeCalledWith(createChatMSG.success);
+        expect(res.send).toBeCalledWith(CREATE_CHAT_MSG.SUCCESS);
       });
     });
   });
+
   describe('getThread', () => {
-    const mockRequest = (value: boolean): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
         params: {
           chatID: 1,
         },
@@ -148,8 +110,8 @@ describe('chat.controller', () => {
 
     context('정상적인 값이 입력되면', () => {
       it('thread를 반환한다', async () => {
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
         const thread = await threadRepository.findThreadsByChatID('1');
 
