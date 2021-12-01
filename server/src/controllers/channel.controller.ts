@@ -5,7 +5,7 @@ import { chatRepository, fileRepository } from '../loaders/orm.loader';
 import { Chat } from '../db/entities';
 import { File } from '../db/entities';
 import { broadcast } from '../utils';
-import { createChatMSG } from '../messages';
+import { CREATE_CHAT_MSG } from '../messages';
 import { CatchError } from '../utils/CatchError';
 
 class ChannelController {
@@ -60,7 +60,7 @@ class ChannelController {
       channelID: `${chattingChannel.id}`,
     });
 
-    return res.status(200).send(createChatMSG.success);
+    return res.status(200).send(CREATE_CHAT_MSG.SUCCESS);
   }
 }
 

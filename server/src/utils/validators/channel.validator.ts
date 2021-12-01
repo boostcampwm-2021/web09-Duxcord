@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { userRepository, chattingChannelRepository } from '../../loaders/orm.loader';
-import { createChatMSG } from '../../messages';
+import { CREATE_CHAT_MSG } from '../../messages';
 import { CatchError, CustomError } from '../CatchError';
 
 class ChannelValidator {
@@ -14,11 +14,11 @@ class ChannelValidator {
       where: { id: chattingChannelID },
     });
 
-    if (!user) throw new CustomError({ message: createChatMSG.userNotFound, status: 400 });
+    if (!user) throw new CustomError({ message: CREATE_CHAT_MSG.USER_NOT_FOUND, status: 400 });
     if (!content.trim() && !files.length)
-      throw new CustomError({ message: createChatMSG.emptyChat, status: 400 });
+      throw new CustomError({ message: CREATE_CHAT_MSG.EMPTY_CHAT, status: 400 });
     if (!chattingChannel)
-      throw new CustomError({ message: createChatMSG.channelNotFound, status: 400 });
+      throw new CustomError({ message: CREATE_CHAT_MSG.CHANNEL_NOT_FOUND, status: 400 });
 
     req.body.user = user;
     req.body.chattingChannel = chattingChannel;

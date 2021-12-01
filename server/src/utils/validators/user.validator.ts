@@ -2,7 +2,7 @@ import { compare } from 'bcryptjs';
 import { IsDefined, IsNotEmpty, Matches, validate } from 'class-validator';
 import { NextFunction, Request, Response } from 'express';
 import { userRepository } from '../../loaders/orm.loader';
-import { signInMSG, signUpMSG, updateUserDataMSG } from '../../messages';
+import { SIGN_IN_MSG, SIGN_UP_MSG, UPDATE_USER_DATA_MSG } from '../../messages';
 import { CatchError, CustomError } from '../CatchError';
 import { REGEXP, VALIDATE_OPTIONS } from './utils';
 
@@ -13,16 +13,16 @@ class SignUpData {
     this.password = password;
   }
 
-  @IsNotEmpty({ message: signUpMSG.nullInput })
-  @Matches(REGEXP.LOGIN_ID, { message: signUpMSG.invalidLoginID })
+  @IsNotEmpty({ message: SIGN_UP_MSG.NULL_INPUT })
+  @Matches(REGEXP.LOGIN_ID, { message: SIGN_UP_MSG.INVALID_LOGIN_ID })
   loginID: string;
 
-  @IsNotEmpty({ message: signUpMSG.nullInput })
-  @Matches(REGEXP.USERNAME, { message: signUpMSG.invalidPassword })
+  @IsNotEmpty({ message: SIGN_UP_MSG.NULL_INPUT })
+  @Matches(REGEXP.USERNAME, { message: SIGN_UP_MSG.INVALID_USERNAME })
   username: string;
 
-  @IsNotEmpty({ message: signUpMSG.nullInput })
-  @Matches(REGEXP.PASSWORD, { message: signUpMSG.invalidPassword })
+  @IsNotEmpty({ message: SIGN_UP_MSG.NULL_INPUT })
+  @Matches(REGEXP.PASSWORD, { message: SIGN_UP_MSG.INVALID_PASSWORD })
   password: string;
 }
 
@@ -33,11 +33,11 @@ class UpdateUserData {
     this.bio = bio;
   }
 
-  @IsNotEmpty({ message: updateUserDataMSG.needUsername })
-  @Matches(REGEXP.USERNAME, { message: signUpMSG.invalidUsername })
+  @IsNotEmpty({ message: UPDATE_USER_DATA_MSG.NEED_USER_NAME })
+  @Matches(REGEXP.USERNAME, { message: SIGN_UP_MSG.INVALID_USERNAME })
   username: string;
 
-  @IsDefined({ message: updateUserDataMSG.needThumbnail })
+  @IsDefined({ message: UPDATE_USER_DATA_MSG.NEED_THUMB_NAIL })
   thumbnail: string | null;
 
   @IsDefined()
@@ -55,7 +55,7 @@ class UserValidator {
     if (errors.length) throw new CustomError({ message: errors, status: 400 });
 
     const isUsedID = await userRepository.findOne({ where: { loginID: loginID } });
-    if (isUsedID) throw new CustomError({ message: signUpMSG.usedID, status: 400 });
+    if (isUsedID) throw new CustomError({ message: SIGN_UP_MSG.USED_ID, status: 400 });
 
     next();
   }
@@ -65,10 +65,11 @@ class UserValidator {
     const { loginID, password } = req.body;
 
     const user = await userRepository.findOne({ where: { loginID: loginID } });
-    if (!user) throw new CustomError({ message: signInMSG.userNotFound, status: 400 });
+    if (!user) throw new CustomError({ message: SIGN_IN_MSG.USER_NOT_FOUND, status: 400 });
 
     const isValidPassword = await compare(password, user.password);
-    if (!isValidPassword) throw new CustomError({ message: signInMSG.wrongPassword, status: 400 });
+    if (!isValidPassword)
+      throw new CustomError({ message: SIGN_IN_MSG.WRONG_PASSWORD, status: 400 });
 
     req.body.userID = user.id;
 
@@ -84,7 +85,7 @@ class UserValidator {
     const errors = await validate(newUserData, VALIDATE_OPTIONS);
     if (errors.length) throw new CustomError({ message: errors, status: 400 });
     const user = await userRepository.findOne(userID);
-    if (!user) throw new CustomError({ message: updateUserDataMSG.userNotFound, status: 400 });
+    if (!user) throw new CustomError({ message: UPDATE_USER_DATA_MSG.USER_NOT_FOUND, status: 400 });
 
     next();
   }

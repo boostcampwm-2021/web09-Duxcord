@@ -4,7 +4,7 @@ import { chatRepository, threadRepository, reactionRepository } from '../loaders
 
 import { Thread } from '../db/entities';
 import { broadcast } from '../utils';
-import { handleReactionMSG, createChatMSG } from '../messages';
+import { HANDLE_REACTION_MSG, CREATE_CHAT_MSG } from '../messages';
 import { CatchError } from '../utils/CatchError';
 
 class ChatController {
@@ -18,12 +18,12 @@ class ChatController {
     if (!reaction) {
       await reactionRepository.insert({ user: user, chat: chat });
       chat.reactionsCount += 1;
-      message = handleReactionMSG.addReactionSuccess;
+      message = HANDLE_REACTION_MSG.ADD_REACTION_SUCCESS;
       res.status(201);
     } else {
       await reactionRepository.remove(reaction);
       chat.reactionsCount -= 1;
-      message = handleReactionMSG.deleteReactionSuccess;
+      message = HANDLE_REACTION_MSG.DELETE_REACTION_SUCCESS;
       res.status(204);
     }
     await chatRepository.save(chat);
@@ -72,7 +72,7 @@ class ChatController {
       chatID: chat.id,
     });
 
-    return res.status(200).send(createChatMSG.success);
+    return res.status(200).send(CREATE_CHAT_MSG.SUCCESS);
   }
 
   @CatchError

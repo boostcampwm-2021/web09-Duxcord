@@ -2,7 +2,7 @@ import { hash } from 'bcryptjs';
 import { NextFunction, Request, Response } from 'express';
 import { groupMemberRepository, userRepository } from '../loaders/orm.loader';
 import { User } from '../db/entities';
-import { signUpMSG, signInMSG, signOutMSG, getUserGroupsMSG } from '../messages';
+import { SIGN_UP_MSG, SIGN_IN_MSG, SIGN_OUT_MSG, GET_USER_GROUP_MSG } from '../messages';
 import { getPresignUrl } from '../utils';
 import { CatchError } from '../utils/CatchError';
 
@@ -19,7 +19,7 @@ class UserController {
     newUser.password = await hash(password, saltRounds);
     await userRepository.save(newUser);
 
-    return res.status(200).send(signUpMSG.success);
+    return res.status(200).send(SIGN_UP_MSG.SUCCESS);
   }
 
   @CatchError
@@ -27,13 +27,13 @@ class UserController {
     const { userID } = req.body;
 
     req.session.userID = userID;
-    return res.status(200).send(signInMSG.success);
+    return res.status(200).send(SIGN_IN_MSG.SUCCESS);
   }
 
   signOut(req: Request, res: Response, next: NextFunction) {
     return req.session.destroy((error) => {
       if (error) return next(error);
-      return res.status(200).send(signOutMSG.success);
+      return res.status(200).send(SIGN_OUT_MSG.SUCCESS);
     });
   }
 
@@ -49,7 +49,7 @@ class UserController {
   async getUserGroups(req: Request, res: Response, next: NextFunction) {
     const { userID } = req.session;
     const userdata = await userRepository.findByID(userID);
-    if (!userdata) return res.status(400).send(getUserGroupsMSG.userNotFound);
+    if (!userdata) return res.status(400).send(GET_USER_GROUP_MSG.USER_NOT_FOUND);
 
     const groups = await groupMemberRepository.findGroupsByUserID(userID);
 
