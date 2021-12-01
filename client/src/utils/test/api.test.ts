@@ -1,4 +1,4 @@
-import { postSignIn, postSignUp } from '@api/index';
+import { postSignIn, postSignUp, deleteChannel } from '@api/index';
 
 describe('api', () => {
   const mockFetch = (data: string) => {
@@ -24,5 +24,12 @@ describe('api', () => {
     const { status, responseText } = await postSignUp('tlsgyrms123', 'shinhyogeun', '1234');
     expect(status).toBe(200);
     expect(responseText).toBe('성공적으로 회원가입이 되었습니다.');
+  });
+
+  it('deleteChannel', async () => {
+    mockFetch('성공적으로 채널이 지워졌습니다.');
+    const { text } = await deleteChannel({ groupID: 1, channelType: 'meeting', channelID: 1 });
+    const responseText = await text();
+    expect(responseText).toBe('성공적으로 채널이 지워졌습니다.');
   });
 });
