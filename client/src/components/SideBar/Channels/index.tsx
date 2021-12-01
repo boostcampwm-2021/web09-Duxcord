@@ -69,7 +69,7 @@ function Channels({ channelType }: Props) {
       (channel: { id: number }) => channel.id,
     );
 
-    socket.emit(SOCKET.MEET_EVENT.MEETING_CHANNEL_LIST, selectedGroup.code, meetingChannelList);
+    socket.emit(SOCKET.MEET_EVENT.MEETING_CHANNEL_LIST, meetingChannelList);
   }, [selectedGroup]);
 
   return (

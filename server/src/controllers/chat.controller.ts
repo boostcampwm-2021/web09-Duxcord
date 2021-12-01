@@ -4,23 +4,26 @@ import { chatRepository, threadRepository, reactionRepository } from '../loaders
 
 import { Thread } from '../db/entities';
 import { broadcast } from '../utils';
-import { handleReactionMSG, createChatMSG } from '../messages';
+import { HANDLE_REACTION_MSG, CREATE_CHAT_MSG } from '../messages';
+import { CatchError } from '../utils/CatchError';
 
-const handleReaction = async (req: Request, res: Response, next: NextFunction) => {
-  const { user, chat } = req.body;
-  try {
+class ChatController {
+  @CatchError
+  async handleReaction(req: Request, res: Response, next: NextFunction) {
+    const { user, chat } = req.body;
+
     const reaction = await reactionRepository.findOne({ where: { user: user, chat: chat } });
 
     let message;
     if (!reaction) {
       await reactionRepository.insert({ user: user, chat: chat });
       chat.reactionsCount += 1;
-      message = handleReactionMSG.addReactionSuccess;
+      message = HANDLE_REACTION_MSG.ADD_REACTION_SUCCESS;
       res.status(201);
     } else {
       await reactionRepository.remove(reaction);
       chat.reactionsCount -= 1;
-      message = handleReactionMSG.deleteReactionSuccess;
+      message = HANDLE_REACTION_MSG.DELETE_REACTION_SUCCESS;
       res.status(204);
     }
     await chatRepository.save(chat);
@@ -32,13 +35,10 @@ const handleReaction = async (req: Request, res: Response, next: NextFunction) =
       channelID: chat.chattingChannel.id,
     });
     return res.json({ chat, message });
-  } catch (error) {
-    next(error);
   }
-};
 
-const createThread = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  @CatchError
+  async createThread(req: Request, res: Response, next: NextFunction) {
     const { chat, user, content } = req.body;
     const newThread = new Thread();
     newThread.content = content;
@@ -72,21 +72,16 @@ const createThread = async (req: Request, res: Response, next: NextFunction) => 
       chatID: chat.id,
     });
 
-    return res.status(200).send(createChatMSG.success);
-  } catch (error) {
-    next(error);
+    return res.status(200).send(CREATE_CHAT_MSG.SUCCESS);
   }
-};
 
-const getThread = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  @CatchError
+  async getThread(req: Request, res: Response, next: NextFunction) {
     const { chatID } = req.params;
     const threads = await threadRepository.findThreadsByChatID(chatID);
 
     return res.status(200).send(threads);
-  } catch (error) {
-    next(error);
   }
-};
+}
 
-export default { createThread, handleReaction, getThread };
+export default new ChatController();

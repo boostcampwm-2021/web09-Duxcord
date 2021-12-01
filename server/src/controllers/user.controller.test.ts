@@ -2,7 +2,7 @@ import request from 'supertest';
 
 import { appInit } from '..';
 import { userRepository } from '../loaders/orm.loader';
-import { signInMSG } from '../messages';
+import { SIGN_IN_MSG } from '../messages';
 
 let app;
 
@@ -54,7 +54,7 @@ describe('POST /user/signin', () => {
         .expect(200)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.text).toBe(signInMSG.success);
+          expect(res.text).toBe(SIGN_IN_MSG.SUCCESS);
           done();
         });
     });
@@ -67,7 +67,7 @@ describe('POST /user/signin', () => {
         .expect(400)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.text).toBe(signInMSG.wrongPassword);
+          expect(res.text).toBe(SIGN_IN_MSG.WRONG_PASSWORD);
           done();
         });
     });
@@ -78,7 +78,7 @@ describe('POST /user/signin', () => {
         .expect(400)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.text).toBe(signInMSG.userNotFound);
+          expect(res.text).toBe(SIGN_IN_MSG.USER_NOT_FOUND);
           done();
         });
     });

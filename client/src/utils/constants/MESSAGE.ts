@@ -20,6 +20,7 @@ const TOAST_MESSAGE = {
   ERROR: {
     COMMON: '요청이 실패했습니다.',
     FILE_UPLOAD: '파일 업로드에 실패했습니다.',
+    INVALID_TYPE: '유효하지 않은 파일 형식입니다.',
     GROUP_CREATE: '그룹 생성에 실패했습니다.',
     GROUP_DELETE: '그룹 삭제에 실패했습니다.',
     GROUP_CODE_COPY: '그룹 코드 복사에 실패했습니다.',

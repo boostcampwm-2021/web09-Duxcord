@@ -1,51 +1,44 @@
 import { Router } from 'express';
 import groupController from '../../controllers/group.controller';
 import { accessControl } from '../../utils';
-import {
-  createChannelValidator,
-  createGroupValidator,
-  deleteChannelValidator,
-  deleteGroupValidator,
-  groupIDValidator,
-  joinGroupValidator,
-} from '../../utils/validators';
+import { groupValidator } from '../../utils/validators';
 
 export const groupRouter = Router();
 
 groupRouter.post(
   '/create',
   accessControl({ signIn: true }),
-  createGroupValidator,
+  groupValidator.createGroupValidator,
   groupController.createGroup,
 );
 groupRouter.get(
   '/:id/members',
   accessControl({ signIn: true }),
-  groupIDValidator,
+  groupValidator.groupIDValidator,
   groupController.getGroupMembers,
 );
 groupRouter.post(
   '/:id/channel/create',
   accessControl({ signIn: true }),
-  groupIDValidator,
-  createChannelValidator,
+  groupValidator.groupIDValidator,
+  groupValidator.createChannelValidator,
   groupController.createChannel,
 );
 groupRouter.post(
   '/join',
   accessControl({ signIn: true }),
-  joinGroupValidator,
+  groupValidator.joinGroupValidator,
   groupController.joinGroup,
 );
 groupRouter.delete(
   '/:id',
   accessControl({ signIn: true }),
-  deleteGroupValidator,
+  groupValidator.deleteGroupValidator,
   groupController.deleteGroup,
 );
 groupRouter.delete(
   '/:groupID/:channelType/:channelID',
   accessControl({ signIn: true }),
-  deleteChannelValidator,
+  groupValidator.deleteChannelValidator,
   groupController.deleteChannel,
 );
