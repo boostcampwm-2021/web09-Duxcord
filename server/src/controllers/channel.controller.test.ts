@@ -5,8 +5,6 @@ import { Request, Response } from 'express';
 jest.mock('../loaders/orm.loader');
 jest.mock('../utils');
 
-import { chatRepository, userRepository } from '../loaders/orm.loader';
-
 describe('channel.controller', () => {
   const mockResponse = (): Response => {
     const res = {
