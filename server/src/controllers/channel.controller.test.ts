@@ -1,5 +1,5 @@
 import channelController from './channel.controller';
-import { createChatMSG } from '../messages';
+import { CREATE_CHAT_MSG } from '../messages';
 import { Request, Response } from 'express';
 
 jest.mock('../loaders/orm.loader');
@@ -8,25 +8,16 @@ jest.mock('../utils');
 import { chatRepository, userRepository } from '../loaders/orm.loader';
 
 describe('channel.controller', () => {
-  const mockResponse = (result: string): Response => {
-    const res =
-      result === 'resolve'
-        ? ({
-            status: jest.fn((code) => res),
-            json: jest.fn((value) => value),
-            send: jest.fn((value) => value),
-          } as unknown)
-        : ({
-            status: jest.fn((code) => res),
-            json: jest.fn(() => {
-              throw Error;
-            }),
-            send: jest.fn(() => {
-              throw Error;
-            }),
-          } as unknown);
+  const mockResponse = (): Response => {
+    const res = {
+      status: jest.fn((code) => res),
+      json: jest.fn((value) => value),
+      send: jest.fn((value) => value),
+    } as unknown;
     return res as Response;
   };
+
+  beforeEach(() => jest.clearAllMocks());
 
   describe('getChat', () => {
     const mockRequest = (): Request => {
@@ -42,14 +33,10 @@ describe('channel.controller', () => {
       return req as Request;
     };
 
-    beforeEach(() => jest.clearAllMocks());
-
     context('정상적으로 값이 입력됐을 때', () => {
       it('chat을 반환한다', async () => {
-        chatRepository.findChatsByPages = jest.fn().mockResolvedValue('chat');
-
         const req = mockRequest();
-        const res = mockResponse('resolve');
+        const res = mockResponse();
         const next = jest.fn();
 
         await channelController.getChat(req, res, next);
@@ -58,53 +45,31 @@ describe('channel.controller', () => {
         expect(res.json).toBeCalled();
       });
     });
-
-    context('error가 발생했을 때', () => {
-      it('next가 실행된다', async () => {
-        const req = mockRequest();
-        const res = mockResponse('reject');
-        const next = jest.fn();
-
-        await channelController.getChat(req, res, next);
-
-        expect(next).toBeCalled();
-      });
-    });
   });
 
   describe('createChat', () => {
-    const mockRequest = (value: boolean, content: string): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 'banana',
-        },
-        params: {
-          chattingChannelID: 1,
-        },
         body: {
-          content,
+          content: 'test',
           files: [],
+          user: { id: 1, thumbnail: null, username: 'banana' },
+          chattingChannel: { id: 1 },
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-      userRepository.findOne = jest.fn().mockResolvedValue('user');
-    });
-
     context('정상적으로 값이 입력됐을 때', () => {
       it('chat을 생성한다', async () => {
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
 
         await channelController.createChat(req, res, next);
 
         expect(res.status).toBeCalledWith(200);
-        expect(res.send).toBeCalledWith(createChatMSG.success);
+        expect(res.send).toBeCalledWith(CREATE_CHAT_MSG.SUCCESS);
       });
     });
   });
