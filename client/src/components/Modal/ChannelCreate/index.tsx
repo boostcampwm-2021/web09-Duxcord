@@ -29,11 +29,15 @@ export default function ChannelCreateModal({
   const { fireToast } = useToast();
 
   const createChannel = async () => {
+    if (channelName.trim() === '')
+      return fireToast({ message: TOAST_MESSAGE.ERROR.NEED_CHANNEL_NAME, type: 'warning' });
     const response = await postCreateChannel({
       groupID: selectedGroup.id,
       channelType,
       channelName,
     });
+    if (response.status !== 200)
+      return fireToast({ message: TOAST_MESSAGE.ERROR.CHANNEL_CREATE, type: 'warning' });
     try {
       const createdChannel = await response.json();
       mutateGroups((groups: GroupData[]) => {
