@@ -19,10 +19,10 @@ function ChatInput({ onInput }: { onInput: () => void }) {
       if (chatInputRef.current === null) return;
       const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
       if ((content === '' && !fileURL.length) || id === null) return;
-      const response = await postChat({ channelID: id, content: content, files: fileURL });
-      if (response.status !== STATUS_CODES.OK) throw Error(TOAST_MESSAGE.ERROR.POST_CHAT_FAIL);
       chatInputRef.current.value = '';
       setFileURL([]);
+      const response = await postChat({ channelID: id, content: content, files: fileURL });
+      if (response.status !== STATUS_CODES.OK) throw Error(TOAST_MESSAGE.ERROR.POST_CHAT_FAIL);
       onInput();
     } catch (e: any) {
       fireToast({ message: TOAST_MESSAGE.ERROR.POST_CHAT_FAIL, type: 'warning' });

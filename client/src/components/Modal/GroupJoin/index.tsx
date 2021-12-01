@@ -10,6 +10,7 @@ import { postJoinGroup } from '@api/index';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { Input } from './style';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 
 function GroupJoinModal({ controller: { hide, show, previous } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
@@ -33,6 +34,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
         const group = await response.json();
         mutate([...groups, group], false);
         dispatch(resetSelectedChannel());
+        dispatch(resetSelectedChat());
         dispatch(setSelectedGroup(group));
         finishModal();
         history.replace(URL.GROUP(group.id));

@@ -35,6 +35,7 @@ const TOAST_MESSAGE = {
       NOT_SUPPORTED_BROWSER: '캡쳐 기능을 지원하지 않는 브라우저입니다.',
     },
     POST_CHAT_FAIL: '메시지 전송에 실패했습니다.',
+    NEED_CHANNEL_NAME: '채널 이름이 필요합니다.',
   },
   SUCCESS: {
     COMMON: '요청이 성공했습니다.',
