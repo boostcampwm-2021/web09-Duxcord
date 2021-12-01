@@ -12,6 +12,7 @@ import { GroupThumbnailUploadIcon } from '@components/common/Icons';
 import Colors from '@styles/Colors';
 import Modal from '..';
 import { InputForm, InputImage, InputText } from './style';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 
 function GroupCreateModal({
   controller: { hide, show, previous },
@@ -41,6 +42,7 @@ function GroupCreateModal({
       case 200:
         const group = await response.json();
         mutate([...groups, group], false);
+        dispatch(resetSelectedChat());
         dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));
         finishModal();

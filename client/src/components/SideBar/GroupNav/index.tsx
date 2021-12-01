@@ -53,6 +53,7 @@ function GroupNav() {
   const selectGroup = (group: GroupData) => () => {
     history.replace(URL.GROUP(group.id));
     dispatch(resetSelectedChannel());
+    dispatch(resetSelectedChat());
     dispatch(setSelectedGroup(group));
     socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
   };
