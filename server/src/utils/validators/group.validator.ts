@@ -12,7 +12,7 @@ import { ChannelType } from '../../types/ChannelType';
 import { CatchError, CustomError } from '../CatchError';
 import { REGEXP, VALIDATE_OPTIONS } from './utils';
 
-class CreateGroupData {
+export class CreateGroupData {
   constructor({ groupName, thumbnail }) {
     this.groupName = groupName;
     this.thumbnail = thumbnail;
@@ -24,7 +24,7 @@ class CreateGroupData {
   thumbnail: string | null;
 }
 
-class CreateChannelData {
+export class CreateChannelData {
   constructor({ channelName, channelType }) {
     this.channelName = channelName?.trim();
     this.channelType = channelType;
@@ -51,6 +51,7 @@ class GroupValidator {
     req.body.leader = leader;
     next();
   }
+
   @CatchError
   async groupIDValidator(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
@@ -81,13 +82,7 @@ class GroupValidator {
 
     const { userID } = req.session;
     const user = await userRepository.findOne({ where: { id: userID } });
-    const relation = await groupMemberRepository
-      .createQueryBuilder('group_member')
-      .where('group_member.groupId = :groupID && group_member.userId = :userID', {
-        groupID: group.id,
-        userID: userID,
-      })
-      .getOne();
+    const relation = await groupMemberRepository.checkUserInGroup(group.id, userID);
     if (relation) throw new CustomError({ message: GROUP_MSG.ALREADY_JOINED, status: 400 });
 
     req.body.group = group;

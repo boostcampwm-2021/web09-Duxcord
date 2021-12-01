@@ -43,6 +43,7 @@ class ChatValidator {
     next();
   }
 
+  @CatchError
   async getThreadValidator(req: Request, res: Response, next: NextFunction) {
     const { chatID } = req.params;
     const chat = await chatRepository.findOne({ where: { id: chatID } });
