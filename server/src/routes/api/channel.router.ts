@@ -1,14 +1,14 @@
 import { Router } from 'express';
 import channelController from '../../controllers/channel.controller';
 import { accessControl } from '../../utils';
-import { createChatValidator } from '../../utils/validators';
+import { channelValidator } from '../../utils/validators';
 
 export const channelRouter = Router();
 
 channelRouter.post(
   '/:chattingChannelID/create',
   accessControl({ signIn: true }),
-  createChatValidator,
+  channelValidator.createChatValidator,
   channelController.createChat,
 );
 channelRouter.get(

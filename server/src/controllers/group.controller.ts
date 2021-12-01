@@ -9,14 +9,16 @@ import {
 import { ChattingChannel, MeetingChannel, Workgroup } from '../db/entities';
 import { ChannelType } from '../types/ChannelType';
 import { GROUP_MSG } from '../messages';
+import { CatchError } from '../utils/CatchError';
 
 const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toString('base64');
 
 const DEFAULT_CHANNEL_NAME = 'general';
 
-const createGroup = async (req: Request, res: Response, next: NextFunction) => {
-  const { groupName, groupThumbnail, leader } = req.body;
-  try {
+class GroupController {
+  async createGroup(req: Request, res: Response, next: NextFunction) {
+    const { groupName, groupThumbnail, leader } = req.body;
+
     const newGroup = new Workgroup();
     newGroup.name = groupName;
     newGroup.leader = leader;
@@ -53,26 +55,21 @@ const createGroup = async (req: Request, res: Response, next: NextFunction) => {
     };
 
     return res.status(200).json(responseGroup);
-  } catch (error) {
-    next(error);
   }
-};
 
-const getGroupMembers = async (req: Request, res: Response, next: NextFunction) => {
-  const { group } = req.body;
-  try {
+  @CatchError
+  async getGroupMembers(req: Request, res: Response, next: NextFunction) {
+    const { group } = req.body;
+
     const members = await groupMemberRepository.findUsersByGroupID(group.id);
 
     res.status(200).json(members);
-  } catch (error) {
-    next(error);
   }
-};
 
-const createChannel = async (req: Request, res: Response, next: NextFunction) => {
-  const { channelType, channelName, group } = req.body;
+  @CatchError
+  async createChannel(req: Request, res: Response, next: NextFunction) {
+    const { channelType, channelName, group } = req.body;
 
-  try {
     const newChannel =
       channelType === ChannelType.chatting ? new ChattingChannel() : new MeetingChannel();
     newChannel.name = channelName;
@@ -83,52 +80,34 @@ const createChannel = async (req: Request, res: Response, next: NextFunction) =>
       : await meetingChannelRepository.save(newChannel);
 
     return res.status(200).json(newChannel);
-  } catch (error) {
-    next(error);
   }
-};
 
-const joinGroup = async (req: Request, res: Response, next: NextFunction) => {
-  const { group, user } = req.body;
+  @CatchError
+  async joinGroup(req: Request, res: Response, next: NextFunction) {
+    const { group, user } = req.body;
 
-  try {
     const now = new Date();
     await groupMemberRepository.insert({ group: group, user: user, lastAccessTime: now });
     res.status(200).json(group);
-  } catch (error) {
-    next(error);
   }
-};
 
-const deleteGroup = async (req: Request, res: Response, next: NextFunction) => {
-  const { group } = req.body;
+  @CatchError
+  async deleteGroup(req: Request, res: Response, next: NextFunction) {
+    const { group } = req.body;
 
-  try {
     await groupRepository.remove(group);
     res.status(200).json(GROUP_MSG.GROUP_DELETION_SUCCESS);
-  } catch (error) {
-    next(error);
   }
-};
 
-const deleteChannel = async (req: Request, res: Response, next: NextFunction) => {
-  const { channelType } = req.params;
-  const { channel } = req.body;
+  @CatchError
+  async deleteChannel(req: Request, res: Response, next: NextFunction) {
+    const { channelType } = req.params;
+    const { channel } = req.body;
 
-  try {
     if (channelType === ChannelType.chatting) await chattingChannelRepository.remove(channel);
     else await meetingChannelRepository.remove(channel);
     res.status(200).json(GROUP_MSG.CHANNEL_DELETION_SUCCESS);
-  } catch (error) {
-    next(error);
   }
-};
+}
 
-export default {
-  createGroup,
-  getGroupMembers,
-  createChannel,
-  joinGroup,
-  deleteGroup,
-  deleteChannel,
-};
+export default new GroupController();
