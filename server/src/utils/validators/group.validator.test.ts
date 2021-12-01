@@ -1,4 +1,4 @@
-import { IsNotEmpty, Matches, validate } from 'class-validator';
+import { validate } from 'class-validator';
 
 import { Request, Response } from 'express';
 
@@ -11,10 +11,8 @@ import {
   userRepository,
 } from '../../loaders/orm.loader';
 import { GROUP_MSG } from '../../messages';
+import { VALIDATE_OPTIONS } from './utils';
 import { CreateGroupData, CreateChannelData, groupValidator } from './index';
-import { ChannelType } from '../../types/ChannelType';
-import { CatchError, CustomError } from '../CatchError';
-import { REGEXP, VALIDATE_OPTIONS } from './utils';
 
 describe('group.validator', () => {
   const mockResponse = (): Response => {
