@@ -107,45 +107,5 @@ describe('channel.controller', () => {
         expect(res.send).toBeCalledWith(createChatMSG.success);
       });
     });
-
-    context('user가 없을 때', () => {
-      it('userNotFound 메시지를 반환한다', async () => {
-        userRepository.findOne = jest.fn().mockResolvedValue(undefined);
-
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await channelController.createChat(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.userNotFound);
-      });
-    });
-
-    context('content가 없을 때', () => {
-      it('emptyChat 메시지를 반환한다', async () => {
-        const req = mockRequest(true, '');
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await channelController.createChat(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.emptyChat);
-      });
-    });
-
-    context('error가 발생했을 때', () => {
-      it('next가 실행된다', async () => {
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('reject');
-        const next = jest.fn();
-
-        await channelController.createChat(req, res, next);
-
-        expect(next).toBeCalled();
-      });
-    });
   });
 });

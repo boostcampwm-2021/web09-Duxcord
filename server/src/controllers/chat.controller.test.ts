@@ -99,48 +99,6 @@ describe('chat.controller', () => {
         });
       });
     });
-
-    context('user가 없을 때', () => {
-      it('userNotFound 메시지를 반환한다', async () => {
-        userRepository.findOne = jest.fn().mockResolvedValue(undefined);
-
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await chatController.handleReaction(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(handleReactionMSG.userNotFound);
-      });
-    });
-
-    context('chat이 없을 때', () => {
-      it('chatNotFound 메시지를 반환한다', async () => {
-        chatRepository.findOne = jest.fn().mockResolvedValue(undefined);
-
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await chatController.handleReaction(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(handleReactionMSG.chatNotFound);
-      });
-    });
-
-    context('error가 발생했을 때', () => {
-      it('next가 실행된다', async () => {
-        const req = mockRequest(true);
-        const res = mockResponse('reject');
-        const next = jest.fn();
-
-        await chatController.handleReaction(req, res, next);
-
-        expect(next).toBeCalled();
-      });
-    });
   });
 
   describe('createThread', () => {
@@ -172,61 +130,6 @@ describe('chat.controller', () => {
         expect(res.send).toBeCalledWith(createChatMSG.success);
       });
     });
-
-    context('user가 없을 때', () => {
-      it('userNotFound 메시지를 반환한다', async () => {
-        userRepository.findOne = jest.fn().mockResolvedValue(undefined);
-
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await chatController.createThread(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.userNotFound);
-      });
-    });
-
-    context('chat이 없을 때', () => {
-      it('chatNotFound 메시지를 반환한다', async () => {
-        chatRepository.findOne = jest.fn().mockResolvedValue(undefined);
-
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await chatController.createThread(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.chatNotFound);
-      });
-    });
-
-    context('content가 없을 때', () => {
-      it('emptyChat 메시지를 반환한다', async () => {
-        const req = mockRequest(true, '');
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await chatController.createThread(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.emptyChat);
-      });
-    });
-
-    context('error가 발생했을 때', () => {
-      it('next가 실행된다', async () => {
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('reject');
-        const next = jest.fn();
-
-        await chatController.createThread(req, res, next);
-
-        expect(next).toBeCalled();
-      });
-    });
   });
   describe('getThread', () => {
     const mockRequest = (value: boolean): Request => {
@@ -254,33 +157,6 @@ describe('chat.controller', () => {
 
         expect(res.status).toBeCalledWith(200);
         expect(res.send).toBeCalledWith(thread);
-      });
-    });
-
-    context('chat이 없을 때', () => {
-      it('chatNotFound 메시지를 반환한다', async () => {
-        chatRepository.findOne = jest.fn().mockResolvedValue(undefined);
-
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
-        const next = jest.fn();
-
-        await chatController.getThread(req, res, next);
-
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.chatNotFound);
-      });
-    });
-
-    context('error가 발생했을 때', () => {
-      it('next가 실행된다', async () => {
-        const req = mockRequest(true);
-        const res = mockResponse('reject');
-        const next = jest.fn();
-
-        await chatController.getThread(req, res, next);
-
-        expect(next).toBeCalled();
       });
     });
   });
