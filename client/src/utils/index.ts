@@ -10,3 +10,4 @@ export * from './capture';
 export * from './getChatsHeight';
 export * from './playSoundEffect';
 export * from './uploadFile';
+export * from './stream';

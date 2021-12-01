@@ -10,6 +10,4 @@ const joinChannel = ({ channelType, id }: { channelType: 'chatting' | 'meeting';
 const leaveChannel = ({ channelType, id }: { channelType: 'chatting' | 'meeting'; id: number }) =>
   socket.emit(SOCKET.CHANNEL_EVENT.LEAVE_CHANNEL, channelType + id);
 
-const Socket = { socket, joinChannel, leaveChannel };
-
-export default Socket;
+export const Socket = { socket, joinChannel, leaveChannel };

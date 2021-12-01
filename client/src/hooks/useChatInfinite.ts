@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback } from 'react';
 import { useScroll, useSelectedChannel, useChats } from '.';
-import { getChatsHeight } from '@utils/getChatsHeight';
+import { getChatsHeight } from '@utils/index';
 
 const PAGE_SIZE = 20;
 const OBSERVER_ROOT_MARGIN = '300px 0px 0px 0px';
