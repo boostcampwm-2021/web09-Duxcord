@@ -15,7 +15,6 @@ const makeChatSection = (chats: ChatData[] | undefined) => {
 };
 
 const getDay = (targetDay: string) => {
-  console.log(targetDay);
   const date = new Date(targetDay);
   const month = ('0' + (1 + date.getMonth())).slice(-2);
   const day = ('0' + date.getDate()).slice(-2);
