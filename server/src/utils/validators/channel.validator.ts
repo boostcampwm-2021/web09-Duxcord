@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 import { userRepository, chattingChannelRepository } from '../../loaders/orm.loader';
 import { createChatMSG } from '../../messages';
+import { CatchError, CustomError } from '../CatchError';
 
-export const createChatValidator = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+class ChannelValidator {
+  @CatchError
+  async createChatValidator(req: Request, res: Response, next: NextFunction) {
     const { content, files } = req.body;
     const { chattingChannelID } = req.params;
     const { userID } = req.session;
@@ -12,14 +14,18 @@ export const createChatValidator = async (req: Request, res: Response, next: Nex
       where: { id: chattingChannelID },
     });
 
-    if (!user) return res.status(400).send(createChatMSG.userNotFound);
-    if (!content.trim() && !files.length) return res.status(400).send(createChatMSG.emptyChat);
-    if (!chattingChannel) return res.status(400).send(createChatMSG.channelNotFound);
+    if (!user) throw new CustomError({ message: createChatMSG.userNotFound, status: 400 });
+    if (!content.trim() && !files.length)
+      throw new CustomError({ message: createChatMSG.emptyChat, status: 400 });
+    if (!chattingChannel)
+      throw new CustomError({ message: createChatMSG.channelNotFound, status: 400 });
 
     req.body.user = user;
     req.body.chattingChannel = chattingChannel;
     next();
-  } catch (e) {
-    next(e);
   }
-};
+}
+
+const channelValidator = new ChannelValidator();
+
+export { channelValidator };

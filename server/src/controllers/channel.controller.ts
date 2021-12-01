@@ -6,22 +6,21 @@ import { Chat } from '../db/entities';
 import { File } from '../db/entities';
 import { broadcast } from '../utils';
 import { createChatMSG } from '../messages';
+import { CatchError } from '../utils/CatchError';
 
-const getChat = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+class ChannelController {
+  @CatchError
+  async getChat(req: Request, res: Response, next: NextFunction) {
     const { userID } = req.session;
     const { chattingChannelID } = req.params;
     const page = +req.query.page;
     const chats = await chatRepository.findChatsByPages(chattingChannelID, page, userID);
 
     return res.status(200).json(chats);
-  } catch (error) {
-    next(error);
   }
-};
 
-const createChat = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+  @CatchError
+  async createChat(req: Request, res: Response, next: NextFunction) {
     const { content, files, user, chattingChannel } = req.body;
 
     const newChat = new Chat();
@@ -62,9 +61,7 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     return res.status(200).send(createChatMSG.success);
-  } catch (error) {
-    next(error);
   }
-};
+}
 
-export default { getChat, createChat };
+export default new ChannelController();
