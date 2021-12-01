@@ -16,6 +16,7 @@ const encodeBase64 = (str: string): string => Buffer.from(str, 'binary').toStrin
 const DEFAULT_CHANNEL_NAME = 'general';
 
 class GroupController {
+  @CatchError
   async createGroup(req: Request, res: Response, next: NextFunction) {
     const { groupName, groupThumbnail, leader } = req.body;
 
