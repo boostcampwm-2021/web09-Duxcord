@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
-import { SOCKET } from '@utils/constants/SOCKET_EVENT';
-import Socket, { socket } from '@utils/socket';
+import { SOCKET } from '@constants/index';
+import { Socket, socket } from '@utils/index';
 import { useScroll, useSelectedChannel, useChats } from '.';
 
 const THRESHOLD = 300;

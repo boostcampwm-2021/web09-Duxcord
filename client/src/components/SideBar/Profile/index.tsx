@@ -38,10 +38,9 @@ function Profile() {
   };
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
-    if (target === 'mic') socket.emit(SOCKET.MEET_EVENT.MUTE, id, !device[target]);
-    if (target === 'speaker') socket.emit(SOCKET.MEET_EVENT.SPEAKER, id, !device[target]);
-    if (target === 'cam') socket.emit(SOCKET.MEET_EVENT.TOGGLE_CAM, id, !device[target]);
-    dispatch(setUserDevice({ ...device, [target]: !device[target] }));
+    const newDeviceState = { ...device, [target]: !device[target] };
+    socket.emit(SOCKET.MEET_EVENT.SET_DEVICE_STATE, id, newDeviceState);
+    dispatch(setUserDevice(newDeviceState));
   };
 
   const handleUserSelect = () => {

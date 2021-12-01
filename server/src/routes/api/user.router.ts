@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import userController from '../../controllers/user.controller';
 import { accessControl } from '../../utils';
-import { signInValidator, signUpValidator, updateUserValidator } from '../../utils/validators';
+import { userValidator } from '../../utils/validators';
 
 export const userRouter = Router();
 
@@ -11,20 +11,20 @@ userRouter.get('/:id/profile', accessControl({ signIn: true }), userController.g
 userRouter.post(
   '/signup',
   accessControl({ signIn: false }),
-  signUpValidator,
+  userValidator.signUpValidator,
   userController.signUp,
 );
 userRouter.post(
   '/signin',
   accessControl({ signIn: false }),
-  signInValidator,
+  userValidator.signInValidator,
   userController.signIn,
 );
 userRouter.post('/signout', accessControl({ signIn: true }), userController.signOut);
 userRouter.patch(
   '/profile',
   accessControl({ signIn: true }),
-  updateUserValidator,
+  userValidator.updateUserValidator,
   userController.updateUserData,
 );
 userRouter.post('/presignedurl', accessControl({ signIn: true }), userController.getPresignedUrl);
