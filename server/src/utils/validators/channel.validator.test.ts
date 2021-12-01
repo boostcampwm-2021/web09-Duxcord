@@ -1,34 +1,20 @@
 import { Request, Response } from 'express';
+
 jest.mock('../../loaders/orm.loader');
-import { userRepository } from '../../loaders/orm.loader';
-import { createChatMSG } from '../../messages';
-import { createChatValidator } from './index';
+
+import { chattingChannelRepository, userRepository } from '../../loaders/orm.loader';
+import { CREATE_CHAT_MSG } from '../../messages';
+import { channelValidator } from './index';
 
 describe('channel.validator', () => {
-  const mockResponse = (result: string): Response => {
-    const res =
-      result === 'resolve'
-        ? ({
-            status: jest.fn((code) => res),
-            json: jest.fn((value) => value),
-            send: jest.fn((value) => value),
-          } as unknown)
-        : ({
-            status: jest.fn((code) => res),
-            json: jest.fn(() => {
-              throw Error;
-            }),
-            send: jest.fn(() => {
-              throw Error;
-            }),
-          } as unknown);
+  const mockResponse = (): Response => {
+    const res = {} as unknown;
     return res as Response;
   };
 
   describe('createChatValidator', () => {
-    const mockRequest = (value: boolean, content: string): Request => {
+    const mockRequest = (content: string): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
         session: {
           userID: 'banana',
         },
@@ -46,45 +32,58 @@ describe('channel.validator', () => {
     beforeEach(() => {
       jest.clearAllMocks();
       userRepository.findOne = jest.fn().mockResolvedValue('user');
+      chattingChannelRepository.findOne = jest.fn().mockResolvedValue('chattingChannel');
     });
 
     context('user가 없을 때', () => {
       it('userNotFound 메시지를 반환한다', async () => {
         userRepository.findOne = jest.fn().mockResolvedValue(undefined);
 
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
+        const req = mockRequest('test');
+        const res = mockResponse();
         const next = jest.fn();
 
-        await createChatValidator(req, res, next);
+        await channelValidator.createChatValidator(req, res, next);
 
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.userNotFound);
+        expect(next).toBeCalledWith({ message: CREATE_CHAT_MSG.USER_NOT_FOUND, status: 400 });
       });
     });
 
-    context('content가 없을 때', () => {
+    context('content와 files가 없을 때', () => {
       it('emptyChat 메시지를 반환한다', async () => {
-        const req = mockRequest(true, '');
-        const res = mockResponse('resolve');
+        const req = mockRequest('');
+        const res = mockResponse();
         const next = jest.fn();
 
-        await createChatValidator(req, res, next);
+        await channelValidator.createChatValidator(req, res, next);
 
-        expect(res.status).toBeCalledWith(400);
-        expect(res.send).toBeCalledWith(createChatMSG.emptyChat);
+        expect(next).toBeCalledWith({ message: CREATE_CHAT_MSG.EMPTY_CHAT, status: 400 });
       });
     });
 
-    context('error가 발생했을 때', () => {
-      it('next가 실행된다', async () => {
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('reject');
+    context('chattingChannel이 없을 때', () => {
+      it('channelNotFound 메시지를 반환한다', async () => {
+        chattingChannelRepository.findOne = jest.fn().mockResolvedValue(undefined);
+
+        const req = mockRequest('test');
+        const res = mockResponse();
         const next = jest.fn();
 
-        await createChatValidator(req, res, next);
+        await channelValidator.createChatValidator(req, res, next);
 
-        expect(next).toBeCalled();
+        expect(next).toBeCalledWith({ message: CREATE_CHAT_MSG.CHANNEL_NOT_FOUND, status: 400 });
+      });
+    });
+
+    context('error가 발생하지 않았을 때', () => {
+      it('next가 실행된다', async () => {
+        const req = mockRequest('test');
+        const res = mockResponse();
+        const next = jest.fn();
+
+        await channelValidator.createChatValidator(req, res, next);
+
+        expect(next).toBeCalledWith();
       });
     });
   });
