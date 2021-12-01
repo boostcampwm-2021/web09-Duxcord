@@ -1,5 +1,5 @@
 export const chatRepository = {
-  findChatsByPages: jest.fn(),
+  findChatsByPages: jest.fn().mockResolvedValue('chat'),
   save: jest.fn().mockResolvedValue('save'),
   findOne: jest.fn(),
 };
@@ -30,7 +30,7 @@ export const threadRepository = {
 };
 
 export const groupRepository = {
-  findOne: jest.fn(),
+  findOne: jest.fn().mockResolvedValue({ id: 1 }),
   save: jest.fn().mockResolvedValue('save'),
   findByIDWithLeaderID: jest.fn(),
   remove: jest.fn().mockResolvedValue('remove'),
