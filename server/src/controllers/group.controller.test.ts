@@ -4,92 +4,67 @@ import { GROUP_MSG } from '../messages';
 
 jest.mock('../loaders/orm.loader');
 
-import {
-  groupMemberRepository,
-  groupRepository,
-  chattingChannelRepository,
-  userRepository,
-} from '../loaders/orm.loader';
+import { groupMemberRepository, groupRepository } from '../loaders/orm.loader';
 
 describe('group.controller', () => {
-  const mockResponse = (result: string): Response => {
-    const res =
-      result === 'resolve'
-        ? ({
-            status: jest.fn((code) => res),
-            json: jest.fn((value) => value),
-            send: jest.fn((value) => value),
-          } as unknown)
-        : ({
-            status: jest.fn((code) => res),
-            json: jest.fn(() => {
-              throw Error;
-            }),
-            send: jest.fn(() => {
-              throw Error;
-            }),
-          } as unknown);
+  const mockResponse = (): Response => {
+    const res = {
+      status: jest.fn((code) => res),
+      json: jest.fn((value) => value),
+    } as unknown;
     return res as Response;
   };
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('createGroup', () => {
-    const mockRequest = (value: boolean, groupName: string): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 1,
-        },
         body: {
-          groupName,
+          groupName: 'test',
           groupThumbnail: null,
+          leader: {
+            loginID: 1,
+          },
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-
-      userRepository.findOne = jest.fn().mockResolvedValue('user');
-    });
-
     context('정상적으로 값이 입력됐을 때', () => {
       it('group의 정보를 반환한다', async () => {
-        const req = mockRequest(true, 'test');
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
 
-        const result = await groupController.createGroup(req, res, next);
+        await groupController.createGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(200);
-        expect(res.json).toBeCalledWith(result);
+        expect(res.json).toBeCalled();
       });
     });
   });
 
   describe('getGroupMembers', () => {
-    const mockRequest = (value: boolean): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        params: {
-          id: 1,
+        body: {
+          group: { id: 1 },
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-
-      groupRepository.findOne = jest.fn().mockResolvedValue({ id: 1 });
-    });
-
     context('정상적으로 값이 입력됐을 때', () => {
       it('members를 반환한다', async () => {
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
+        groupRepository.findOne = jest.fn().mockResolvedValue({ id: 1 });
+
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
-        const member = await groupMemberRepository.findUsersByGroupID(1);
+        const member = await groupMemberRepository.findUsersByGroupID(req.body.group.id);
 
         await groupController.getGroupMembers(req, res, next);
 
@@ -100,30 +75,35 @@ describe('group.controller', () => {
   });
 
   describe('createChannel', () => {
-    const mockRequest = (value: boolean, channelType: string, channelName: string): Request => {
+    const mockRequest = (channelType: 'chatting' | 'meeting'): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        params: {
-          id: 1,
-        },
         body: {
           channelType,
-          channelName,
+          channelName: 'test',
+          group: { id: 1 },
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
+    context('정상적으로 값이 입력됐을 때 채널 타입이 chatting인 경우', () => {
+      it('newChannel의 정보를 반환한다', async () => {
+        const req = mockRequest('chatting');
+        const res = mockResponse();
+        const next = jest.fn();
+        const newChannel = { group: { id: 1 }, name: 'test' };
 
-      groupRepository.findOne = jest.fn().mockResolvedValue({ id: 1 });
+        await groupController.createChannel(req, res, next);
+
+        expect(res.status).toBeCalledWith(200);
+        expect(res.json).toBeCalledWith(newChannel);
+      });
     });
 
-    context('정상적으로 값이 입력됐을 때', () => {
+    context('정상적으로 값이 입력됐을 때 채널 타입이 meeting인 경우', () => {
       it('newChannel의 정보를 반환한다', async () => {
-        const req = mockRequest(true, 'chatting', 'test');
-        const res = mockResponse('resolve');
+        const req = mockRequest('meeting');
+        const res = mockResponse();
         const next = jest.fn();
         const newChannel = { group: { id: 1 }, name: 'test' };
 
@@ -136,30 +116,20 @@ describe('group.controller', () => {
   });
 
   describe('joinGroup', () => {
-    const mockRequest = (value: boolean): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 1,
-        },
         body: {
-          groupCode: '123456',
+          group: { id: 1 },
+          user: 'test',
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-
-      groupRepository.findOne = jest.fn().mockResolvedValue({ id: 1 });
-      groupMemberRepository.checkUserInGroup = jest.fn();
-    });
-
     context('정상적으로 값을 입력했을 때', () => {
       it('group의 정보를 반환한다', async () => {
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
         const group = await groupRepository.findOne();
 
@@ -172,71 +142,59 @@ describe('group.controller', () => {
   });
 
   describe('deleteGroup', () => {
-    const mockRequest = (value: boolean): Request => {
+    const mockRequest = (): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 1,
-        },
-        params: {
-          id: 1,
+        body: {
+          group: { id: 1 },
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
-
-      groupRepository.findByIDWithLeaderID = jest
-        .fn()
-        .mockResolvedValue({ id: 1, leader: { id: 1 } });
-    });
-
     context('정상적으로 값을 입력했을 때', () => {
-      it('channelDeletionSuccess 메시지를 반환한다', async () => {
-        const req = mockRequest(true);
-        const res = mockResponse('resolve');
+      it('groupDeletionSuccess 메시지를 반환한다', async () => {
+        const req = mockRequest();
+        const res = mockResponse();
         const next = jest.fn();
 
         await groupController.deleteGroup(req, res, next);
 
         expect(res.status).toBeCalledWith(200);
-        expect(res.json).toBeCalledWith(GROUP_MSG.CHANNEL_DELETION_SUCCESS);
+        expect(res.json).toBeCalledWith(GROUP_MSG.GROUP_DELETION_SUCCESS);
       });
     });
   });
 
   describe('deleteChannel', () => {
-    const mockRequest = (value: boolean, channelID: string, channelType: string): Request => {
+    const mockRequest = (channelType: 'chatting' | 'meeting'): Request => {
       const req = {
-        isAuthenticated: jest.fn(() => value),
-        session: {
-          userID: 1,
-        },
         params: {
-          groupID: '1',
-          channelID,
           channelType,
+        },
+        body: {
+          channel: { id: 1 },
         },
       } as unknown;
       return req as Request;
     };
 
-    beforeEach(() => {
-      jest.clearAllMocks();
+    context('정상적으로 값이 입력됐을 때 채널 타입이 chatting인 경우', () => {
+      it('channelDeletionSuccess 메시지가 반환된다', async () => {
+        const req = mockRequest('chatting');
+        const res = mockResponse();
+        const next = jest.fn();
 
-      groupRepository.findByIDWithLeaderID = jest
-        .fn()
-        .mockResolvedValue({ id: 1, leader: { id: 1 } });
+        await groupController.deleteChannel(req, res, next);
 
-      chattingChannelRepository.findOne = jest.fn().mockResolvedValue({ group: { id: 1 } });
+        expect(res.status).toBeCalledWith(200);
+        expect(res.json).toBeCalledWith(GROUP_MSG.CHANNEL_DELETION_SUCCESS);
+      });
     });
 
-    context('정상적으로 값이 입력됐을 때', () => {
+    context('정상적으로 값이 입력됐을 때 채널 타입이 meeting인 경우', () => {
       it('channelDeletionSuccess 메시지가 반환된다', async () => {
-        const req = mockRequest(true, '1', 'chatting');
-        const res = mockResponse('resolve');
+        const req = mockRequest('meeting');
+        const res = mockResponse();
         const next = jest.fn();
 
         await groupController.deleteChannel(req, res, next);
