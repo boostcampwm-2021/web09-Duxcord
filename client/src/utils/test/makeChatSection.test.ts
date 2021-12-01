@@ -8,5 +8,58 @@ describe('makeChatSection', () => {
     expect(result2).toBe('12월 22일 일요일');
   });
 
-  it('makeChatSection으로 통해서 날짜별로 그룹화 해준다.', () => {});
+  it('chat의 배열을 makeChatSection을 통해서 날짜별로 그룹화 해준다.', () => {
+    const chats: ChatData[] = [
+      {
+        id: 1,
+        createdAt: '2024-12-21T09:52:41.185Z',
+        updatedAt: '2024-12-21T09:52:41.185Z',
+        content: '1',
+        reactionsCount: 0,
+        reactions: [],
+        threadsCount: 0,
+        threadWriter: null,
+        threadLastTime: null,
+        user: {
+          loginID: 'shinhyogeun',
+          username: '신효근',
+        },
+        files: [],
+      },
+      {
+        id: 2,
+        createdAt: '2024-12-22T09:52:41.185Z',
+        updatedAt: '2024-12-22T09:52:41.185Z',
+        content: '2',
+        reactionsCount: 0,
+        reactions: [],
+        threadsCount: 0,
+        threadWriter: null,
+        threadLastTime: null,
+        user: {
+          loginID: 'shinhyogeun',
+          username: '신효근',
+        },
+        files: [],
+      },
+      {
+        id: 3,
+        createdAt: '2024-12-22T09:52:41.185Z',
+        updatedAt: '2024-12-22T09:52:41.185Z',
+        content: '3',
+        reactionsCount: 0,
+        reactions: [],
+        threadsCount: 0,
+        threadWriter: null,
+        threadLastTime: null,
+        user: {
+          loginID: 'shinhyogeun',
+          username: '신효근',
+        },
+        files: [],
+      },
+    ];
+    expect(makeChatSection(chats)['12월 22일 일요일'].length).toBe(2);
+    expect(makeChatSection(chats)['12월 21일 토요일'].length).toBe(1);
+  });
 });
