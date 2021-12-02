@@ -72,7 +72,7 @@ function SocketMeetController(socket: Socket) {
     );
     if (index === -1) return;
     const member = meetingMembers[meetingID.toString()][index];
-    meetingMembers[meetingID.toString()][index] = { ...member, ...deviceState };
+    meetingMembers[meetingID.toString()][index] = { ...member, deviceState };
     socket.broadcast
       .to(RoomPrefix.RTC + meetingID)
       .emit(MeetEvent.setDeviceState, deviceState, socket.id);
