@@ -6,21 +6,15 @@ import { apiRouter } from '../routes/api.router';
 import { CustomError } from '../utils/CatchError';
 import { sessionRepository } from './orm.loader';
 
-export const expressLoader = (app) => {
+export const expressLoader = (app, sessionMiddleware) => {
   app.set('port', process.env.PORT || 8000);
   if (process.env.NODE_ENV !== 'production') {
     app.use(morgan('dev'));
   }
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
-  app.use(
-    session({
-      secret: process.env.SESSION_COOKIE_SECRET,
-      store: new TypeormStore({ repository: sessionRepository }),
-      resave: false,
-      saveUninitialized: false,
-    }),
-  );
+
+  app.use(sessionMiddleware);
 
   app.use('/api', apiRouter);
 
