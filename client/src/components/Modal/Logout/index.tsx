@@ -13,8 +13,12 @@ function LogoutModal({ controller: { hide, show } }: { controller: ModalControll
   const { fireToast } = useToast();
   const logOut = async () => {
     const isSuccess = await postLogout();
-    if (isSuccess) history.replace(URL.LOGIN);
-    fireToast({ message: TOAST_MESSAGE.SUCCESS.LOGOUT, type: 'success' });
+    if (isSuccess) {
+      history.replace(URL.LOGIN);
+      window.location.reload();
+    } else {
+      fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });
+    }
   };
 
   const middleContent = <MiddlePart>정말로 로그아웃 하시겠습니까?</MiddlePart>;

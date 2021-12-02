@@ -15,7 +15,7 @@ const applyDeviceStatus = ({
   });
 };
 
-const getMyStream = async () => {
+const getMyStream = async ({ video, audio }: { video: boolean; audio: boolean }) => {
   let myStream;
   try {
     myStream = await navigator.mediaDevices.getUserMedia({
@@ -26,6 +26,8 @@ const getMyStream = async () => {
     const canvas = document.createElement('canvas');
     myStream = canvas.captureStream(0);
   }
+
+  applyDeviceStatus({ stream: myStream, video, audio });
 
   return myStream;
 };
