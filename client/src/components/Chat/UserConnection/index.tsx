@@ -4,21 +4,20 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useGroupConnection, useSelectedGroup, useUserdata } from '@hooks/index';
-import GroupEvent from '@customTypes/socket/GroupEvent';
-import { API_URL } from '@api/API_URL';
-import { getFetcher } from '@utils/fetcher';
-import { socket } from '@utils/socket';
+import { API_URL, SOCKET } from '@constants/index';
+import { getFetcher } from '@api/index';
+import { socket } from '@utils/index';
 import { UserConnectionWrapper, Text, UserImage, UserTile } from './style';
 
 function UserConnection() {
   const selectedGroup = useSelectedGroup();
   const groupConnection = useGroupConnection();
   const { userdata } = useUserdata();
-  const { data = [] } = useSWR(API_URL.group.getGroupMembers(selectedGroup?.id), getFetcher);
+  const { data = [] } = useSWR(API_URL.GROUP.GET_MEMBERS(selectedGroup?.id), getFetcher);
 
   const dispatch = useDispatch();
 
-  const onUserSelected = (user: any, isOnline: boolean) => {
+  const onUserSelected = (user: UserData, isOnline: boolean) => {
     if (user.loginID === userdata.loginID) {
       dispatch(setSelectedUser({ ...userdata, isOnline, isEditable: true }));
     } else {
@@ -27,13 +26,13 @@ function UserConnection() {
   };
 
   useEffect(() => {
-    socket.emit(GroupEvent.groupID, selectedGroup?.code, userdata);
+    socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, selectedGroup?.code, userdata);
   }, [selectedGroup?.code, userdata]);
 
   return (
     <UserConnectionWrapper>
       <Text>Online</Text>
-      {groupConnection.map((oneUser: any, i: number) => (
+      {groupConnection.map((oneUser: UserData, i: number) => (
         <UserTile key={i} onClick={() => onUserSelected(oneUser, true)}>
           <div>
             <UserImage
@@ -46,13 +45,15 @@ function UserConnection() {
         </UserTile>
       ))}
       {data.filter(
-        ({ user }: any) => !groupConnection.map((v: any) => v.loginID).includes(user.loginID),
+        ({ user }: { user: UserData }) =>
+          !groupConnection.map((v: UserData) => v.loginID).includes(user.loginID),
       ).length !== 0 && <Text>Offline</Text>}
       {data
         .filter(
-          ({ user }: any) => !groupConnection.map((v: any) => v.loginID).includes(user.loginID),
+          ({ user }: { user: UserData }) =>
+            !groupConnection.map((v: UserData) => v.loginID).includes(user.loginID),
         )
-        .map((offLineUser: any, i: number) => (
+        .map((offLineUser: { user: UserData }, i: number) => (
           <UserTile key={i} onClick={() => onUserSelected(offLineUser.user, false)}>
             <div>
               <UserImage

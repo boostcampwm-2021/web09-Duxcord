@@ -2,17 +2,14 @@ import React, { FormEvent, useCallback, useEffect, useRef, useState } from 'reac
 import { useDispatch } from 'react-redux';
 import useSWR from 'swr';
 
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
-import { ChatData } from '@customTypes/chats';
-import ChannelEvent from '@customTypes/socket/ChannelEvent';
-import ThreadType from '@customTypes/socket/ThreadEvent';
-import { API_URL } from '@api/API_URL';
-import { postCreateThread } from '@api/postCreateThread';
-import { getFetcher } from '@utils/fetcher';
-import { socket } from '@utils/socket';
+import { API_URL, SOCKET } from '@constants/index';
+import { postCreateThread, getFetcher } from '@api/index';
+import { socket } from '@utils/index';
 import ThreadItem from '../ThreadItem';
-import { ThreadCloseIcon } from '../../common/Icons';
+import FileItem from '../FileItem';
+import { ThreadCloseIcon } from '@components/common/Icons';
 import {
   Input,
   InputWrapper,
@@ -27,7 +24,7 @@ import {
 } from './style';
 
 function Thread({ selectedChat }: { selectedChat: ChatData }) {
-  const { mutate, data } = useSWR(API_URL.thread.getThread(selectedChat.id), getFetcher);
+  const { mutate, data } = useSWR(API_URL.THREAD.GET_DATA(selectedChat.id), getFetcher);
   const dispatch = useDispatch();
   const { name } = useSelectedChannel();
   const {
@@ -39,9 +36,9 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const threadChatListRef = useRef<HTMLDivElement>(null);
 
   const onThread = useCallback(
-    (info: any) => {
+    (info: ChatData) => {
       mutate(
-        (threads: any) => [
+        (threads: Array<ThreadData>) => [
           ...threads,
           {
             id: info.id,
@@ -57,16 +54,16 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   );
 
   useEffect(() => {
-    socket.emit(ChannelEvent.joinChannel, ThreadType.thread + selectedChat.id);
+    socket.emit(SOCKET.CHANNEL_EVENT.JOIN_CHANNEL, SOCKET.CHAT_EVENT.THREAD + selectedChat.id);
     return () => {
-      socket.emit(ChannelEvent.leaveChannel, ThreadType.thread + selectedChat.id);
+      socket.emit(SOCKET.CHANNEL_EVENT.LEAVE_CHANNEL, SOCKET.CHAT_EVENT.THREAD + selectedChat.id);
     };
   }, [selectedChat.id]);
 
   useEffect(() => {
-    socket.on(ThreadType.threadUpdate, onThread);
+    socket.on(SOCKET.CHAT_EVENT.THREAD_UPDATE, onThread);
     return () => {
-      socket.off(ThreadType.threadUpdate);
+      socket.off(SOCKET.CHAT_EVENT.THREAD_UPDATE);
     };
   }, [onThread]);
 
@@ -86,7 +83,7 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>Thread</div>
             <div>#{name}</div>
           </div>
-          <ThreadCloseIcon onClick={() => dispatch(setSelectedChat(0))} />
+          <ThreadCloseIcon onClick={() => dispatch(resetSelectedChat())} />
         </ThreadHeaderWrapper>
         <OriginalChatWrapper>
           <img src={thumbnail ? thumbnail : '/images/default_profile.png'} alt="thumbnail" />
@@ -98,21 +95,17 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
             <div>{content}</div>
             <FileWrapper>
               {files &&
-                files.map((file) => (
-                  <div key={file.src}>
-                    <img src={file.src} />
-                  </div>
+                files.map(({ src }) => (
+                  <FileItem key={src} src={src} alt="thread file" itemType="thread" />
                 ))}
             </FileWrapper>
           </div>
         </OriginalChatWrapper>
         <ChatLengthWrapper>
-          <ChatLength>
-            <p>{data?.length}</p>개의 댓글
-          </ChatLength>
+          <ChatLength>{data?.length}개의 댓글</ChatLength>
         </ChatLengthWrapper>
         <ThreadChatWrapper ref={threadChatListRef}>
-          {data && data.map((v: ChatData) => <ThreadItem key={v.id} threadData={v} />)}
+          {data && data.map((v: ThreadData) => <ThreadItem key={v.id} threadData={v} />)}
         </ThreadChatWrapper>
       </ThreadWrapper>
       <InputWrapper onSubmit={createThread}>

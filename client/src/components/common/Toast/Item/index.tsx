@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { ToastData } from '@customTypes/toast';
 import { InnerWrapper, Line, Wrapper } from './style';
 
 export default function ToastItem({ message, type, duration }: ToastData) {

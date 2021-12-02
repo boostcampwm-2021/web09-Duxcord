@@ -1,4 +1,3 @@
-import { ToastData } from '@customTypes/toast';
 import { createSlice } from '@reduxjs/toolkit';
 
 const initState = Array<ToastData>();

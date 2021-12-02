@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Colors from '../../../styles/Colors';
+import Colors from '@styles/Colors';
 
 const Wrapper = styled.div`
   background-color: ${Colors.White};
@@ -136,14 +136,6 @@ const FileWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background: ${Colors.Gray2};
     border-radius: 10px;
-  }
-  & div {
-    margin-top: 10px;
-  }
-  & img {
-    max-width: 200px;
-    height: 120px;
-    object-fit: cover;
   }
 `;
 

@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux';
 import { setUserDevice } from '@redux/userDevice/slice';
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useSelectedChannel, useUserdata, useUserDevice, useSelectedUser } from '@hooks/index';
-import MeetEvent from '@customTypes/socket/MeetEvent';
-import { socket } from '@utils/socket';
+import { socket } from '@utils/index';
+import { SOCKET } from '@constants/index';
 import UserInformationModal from '@components/Modal/UserInformation';
 import UserEditModal from '@components/Modal/UserEdit';
 import {
@@ -38,10 +38,9 @@ function Profile() {
   };
 
   const onToggleDevice = (target: 'mic' | 'speaker' | 'cam') => {
-    if (target === 'mic') socket.emit(MeetEvent.mute, id, !device[target]);
-    if (target === 'speaker') socket.emit(MeetEvent.speaker, id, !device[target]);
-    if (target === 'cam') socket.emit(MeetEvent.toggleCam, id, !device[target]);
-    dispatch(setUserDevice({ ...device, [target]: !device[target] }));
+    const newDeviceState = { ...device, [target]: !device[target] };
+    socket.emit(SOCKET.MEET_EVENT.SET_DEVICE_STATE, id, newDeviceState);
+    dispatch(setUserDevice(newDeviceState));
   };
 
   const handleUserSelect = () => {

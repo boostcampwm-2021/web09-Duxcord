@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
 import { CameraOnIcon, MicOffIcon, SpeakerOffIcon } from '@components/common/Icons';
-
 import {
   VideoWrapper,
   Video,
@@ -10,10 +9,18 @@ import {
   ThumbnailWrapper,
   SelectVideoIndicator,
 } from '../style';
-import { MeetingMember, SelectedVideo } from '@customTypes/meet';
 
 function OtherVideo({
-  member: { socketID, loginID, username, thumbnail, cam, speaker, mic, stream, screen, pc },
+  member: {
+    socketID,
+    loginID,
+    username,
+    thumbnail,
+    deviceState: { cam, speaker, mic },
+    stream,
+    screen,
+    pc,
+  },
   muted,
   selectVideo,
   selectedVideo,

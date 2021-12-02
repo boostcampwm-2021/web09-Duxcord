@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
-import { URL } from '@api/URL';
-import { TOAST_MESSAGE } from '@utils/message';
+import { URL } from '@utils/constants/URL';
+import { TOAST_MESSAGE } from '@utils/constants/MESSAGE';
 import { capture } from '@utils/capture';
 import {
   CaptureIcon,
@@ -28,14 +28,8 @@ function MeetButton({
   const { fireToast } = useToast();
 
   const onMeetingStopClick = () => {
-    dispatch(
-      setSelectedChannel({
-        type: '',
-        id: null,
-        name: '',
-      }),
-    );
-    history.replace(URL.groupPage(selectedGroup.id));
+    dispatch(resetSelectedChannel());
+    history.replace(URL.GROUP(selectedGroup.id));
   };
 
   const onMeetingCaptureClick = async () => {

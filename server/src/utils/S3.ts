@@ -19,7 +19,7 @@ const S3 = new AWS.S3({
   signatureVersion: 'v4',
 });
 
-const getPresignUrl = async (fileName) => {
+export const getPresignUrl = async (fileName) => {
   const params = {
     Bucket: bucketName,
     Key: fileName,
@@ -30,5 +30,3 @@ const getPresignUrl = async (fileName) => {
   const signedUrlPut = await S3.getSignedUrlPromise('putObject', params);
   return signedUrlPut;
 };
-
-export { getPresignUrl };

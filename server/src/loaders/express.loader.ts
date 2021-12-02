@@ -1,8 +1,9 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import session from 'express-session';
 import morgan from 'morgan';
 import { TypeormStore } from 'typeorm-store';
 import { apiRouter } from '../routes/api.router';
+import { CustomError } from '../utils/CatchError';
 import { sessionRepository } from './orm.loader';
 
 export const expressLoader = (app) => {
@@ -23,8 +24,8 @@ export const expressLoader = (app) => {
 
   app.use('/api', apiRouter);
 
-  app.use((error, _req, res) => {
-    console.error(error);
-    res.status(500).send(error.message);
+  app.use((error, req: Request, res: Response, next: NextFunction) => {
+    !(error instanceof CustomError) && console.error(error);
+    res.status(error.status || 500).send(error.message);
   });
 };

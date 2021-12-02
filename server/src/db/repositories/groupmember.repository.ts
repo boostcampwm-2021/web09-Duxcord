@@ -3,6 +3,15 @@ import { GroupMember } from '../entities';
 
 @EntityRepository(GroupMember)
 export class GroupMemberRepository extends Repository<GroupMember> {
+  checkUserInGroup(groupID: number, userID: number) {
+    return this.createQueryBuilder('group_member')
+      .where('group_member.groupId = :groupID && group_member.userId = :userID', {
+        groupID: groupID,
+        userID: userID,
+      })
+      .getOne();
+  }
+
   findGroupsByUserID(userID: number) {
     return this.createQueryBuilder('group_member')
       .where('group_member.userId = :id', { id: userID })

@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { useSelectedGroup, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
+import { TOAST_MESSAGE } from '@constants/index';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/message';
 import Modal from '..';
 import { CodeWrapper } from './style';
 

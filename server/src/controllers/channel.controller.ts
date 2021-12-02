@@ -1,48 +1,27 @@
 import { NextFunction, Request, Response } from 'express';
 
-import {
-  chattingChannelRepository,
-  userRepository,
-  chatRepository,
-  fileRepository,
-} from '../loaders/orm.loader';
+import { chatRepository, fileRepository } from '../loaders/orm.loader';
 
 import { Chat } from '../db/entities';
 import { File } from '../db/entities';
 import { broadcast } from '../utils';
+import { CREATE_CHAT_MSG } from '../messages';
+import { CatchError } from '../utils/CatchError';
 
-export const createChatMSG = {
-  userNotFound: '존재하지 않는 사용자 입니다.',
-  emptyChat: '채팅을 입력해 주세요.',
-  success: '메시지 전송 성공!',
-};
-
-const getChat = async (req: Request, res: Response, next: NextFunction) => {
-  try {
+class ChannelController {
+  @CatchError
+  async getChat(req: Request, res: Response, next: NextFunction) {
     const { userID } = req.session;
     const { chattingChannelID } = req.params;
-    const page = Number(req.query.page);
+    const page = +req.query.page;
     const chats = await chatRepository.findChatsByPages(chattingChannelID, page, userID);
 
     return res.status(200).json(chats);
-  } catch (error) {
-    next(error);
   }
-};
 
-const createChat = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { content } = req.body;
-    const { files } = req.body;
-    const { chattingChannelID } = req.params;
-    const { userID } = req.session;
-    const user = await userRepository.findOne({ where: { id: userID } });
-    const chattingChannel = await chattingChannelRepository.findOne({
-      where: { id: chattingChannelID },
-    });
-
-    if (!user) return res.status(400).send(createChatMSG.userNotFound);
-    if (!content.trim() && !files.length) return res.status(400).send(createChatMSG.emptyChat);
+  @CatchError
+  async createChat(req: Request, res: Response, next: NextFunction) {
+    const { content, files, user, chattingChannel } = req.body;
 
     const newChat = new Chat();
     newChat.content = content;
@@ -51,14 +30,10 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
 
     await chatRepository.save(newChat);
 
-    const chat = await chatRepository.findOne({
-      where: { id: newChat.id },
-    });
-
     files.forEach(async (file) => {
       const newFile = new File();
       newFile.src = file;
-      newFile.chat = chat;
+      newFile.chat = newChat;
 
       await fileRepository.save(newFile);
     });
@@ -82,13 +57,11 @@ const createChat = async (req: Request, res: Response, next: NextFunction) => {
         },
         files: sendFiles,
       },
-      channelID: chattingChannelID,
+      channelID: `${chattingChannel.id}`,
     });
 
-    return res.status(200).send(createChatMSG.success);
-  } catch (error) {
-    next(error);
+    return res.status(200).send(CREATE_CHAT_MSG.SUCCESS);
   }
-};
+}
 
-export default { getChat, createChat };
+export default new ChannelController();

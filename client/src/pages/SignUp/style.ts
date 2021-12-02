@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Colors from '../../styles/Colors';
+import Colors from '@styles/Colors';
 
 const SignUpWrapper = styled.div`
   width: 620.79px;

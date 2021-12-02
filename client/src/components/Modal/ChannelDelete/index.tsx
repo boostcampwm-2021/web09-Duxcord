@@ -3,15 +3,12 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
-import { ModalController } from '@customTypes/modal';
-import GroupEvent from '@customTypes/socket/GroupEvent';
-import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/message';
-import { socket } from '@utils/socket';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
+import { TOAST_MESSAGE, URL, SOCKET } from '@constants/index';
+import { socket } from '@utils/index';
 import { deleteChannel } from '@api/deleteChannel';
-import { URL } from '@api/URL';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { AlertWrapper } from './style';
 
@@ -24,6 +21,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
   const history = useHistory();
 
   const deleteCurrentChannel = async () => {
+    if (!selectedChannel.id) return;
     try {
       const response = await deleteChannel({
         groupID: selectedGroup.id,
@@ -32,34 +30,32 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
       });
       switch (response.status) {
         case 200:
-          socket.emit(GroupEvent.channelDelete, {
+          socket.emit(SOCKET.GROUP_EVENT.DELETE_CHANNEL, {
             code: selectedGroup.code,
             id: selectedChannel.id,
             type: selectedChannel.type,
           });
           mutateGroups(
-            groups.map((group: any) => {
+            groups.map((group: GroupData) => {
               if (group.id !== selectedGroup.id) return group;
               else {
                 const tempGroup = group;
-                tempGroup[`${selectedChannel.type}Channels`].filter(
-                  (channel: any) => channel.id !== selectedChannel.id,
-                );
+                selectedChannel.type === 'meeting'
+                  ? tempGroup.meetingChannels.filter(
+                      (channel: ChannelData) => channel.id !== selectedChannel.id,
+                    )
+                  : tempGroup.chattingChannels.filter(
+                      (channel: ChannelData) => channel.id !== selectedChannel.id,
+                    );
                 return tempGroup;
               }
             }),
             false,
           );
-          dispatch(
-            setSelectedChannel({
-              type: '',
-              id: null,
-              name: '',
-            }),
-          );
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedChannel());
+          dispatch(resetSelectedChat());
           controller.hide();
-          history.replace(URL.groupPage(selectedGroup.id));
+          history.replace(URL.GROUP(selectedGroup.id));
           fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_DELETE, type: 'success' });
           break;
         case 400:

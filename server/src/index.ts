@@ -6,6 +6,12 @@ dotenv.config();
 import { createServer } from 'http';
 import { rootLoader } from './loaders/root.loader';
 
+declare module 'express-session' {
+  interface SessionData {
+    userID: number;
+  }
+}
+
 export const appInit = async () => {
   const app = express();
   const httpServer = createServer(app);

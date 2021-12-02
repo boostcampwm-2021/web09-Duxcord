@@ -4,13 +4,13 @@ import { useHistory } from 'react-router';
 
 import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
+import { TOAST_MESSAGE, URL } from '@constants/index';
+import { postJoinGroup } from '@api/index';
 import Colors from '@styles/Colors';
-import { ModalController } from '@customTypes/modal';
-import { TOAST_MESSAGE } from '@utils/message';
-import { postJoinGroup } from '@api/postJoinGroup';
-import { URL } from '@api/URL';
 import Modal from '..';
 import { Input } from './style';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 
 function GroupJoinModal({ controller: { hide, show, previous } }: { controller: ModalController }) {
   const [groupCode, setGroupCode] = useState('');
@@ -33,9 +33,11 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
       case 200:
         const group = await response.json();
         mutate([...groups, group], false);
+        dispatch(resetSelectedChannel());
+        dispatch(resetSelectedChat());
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.groupPage(group.id));
+        history.replace(URL.GROUP(group.id));
         fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_INVITATION, type: 'success' });
         break;
       case 400:

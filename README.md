@@ -1,54 +1,69 @@
 # 🦆 Duxcord 🦆
 
 <div align="center">   
-    <img src="https://i.imgur.com/DCdfQJF.png" width="300px"/>
+    <img src="https://i.imgur.com/DCdfQJF.png" width="280px"/>
     <h3> 🦆 오리들은 한다 협업을 꽥!! 🦆</h3>
 </div>
     
 ## 🐤 팀원 소개
+
+``` 
+팀원 전원이 프론트엔드와 백엔드를 경계짓지 않고 개발하였습니다.
+부캠의 F4 === Full stack developer * 4
+```
 
 |J018|J032|J060|J116|
 |:---:|:---:|:---:|:---:|
 |<img src="https://github.com/Najeong-Kim.png" width="300"/>|<img src="https://github.com/SeojinSeojin.png" width="300"/>|<img src="https://github.com/superLipbalm.png" width="300"/>|<img src="https://github.com/shinhyogeun.png" width="300"/>|
 |[김나정](https://github.com/Najeong-Kim)|[김서진](https://github.com/SeojinSeojin)|[김찬희](https://github.com/superLipbalm)|[신효근](https://github.com/shinhyogeun)|
 
-****
 
 ## 🐤 프로젝트 소개
 
-> **DISCORD + SLACK + ZOOM**
+```
+덕스코드는 슬랙, 줌, 디스코드의 주요 기능들을 클론코딩한 프로젝트입니다.
 
-###
+실시간 통신을 바탕으로 복잡한 로직 및 상태관리에 도전하고 싶어서 다양한 기술적 도전들을 해왔습니다.
+저희 팀원들에게 많은 성장을 안겨준 멋진 프로젝트였습니다. 
 
-[Figma - 프로토타입, 기획서](https://www.figma.com/file/ZXDGBL14spjQN5Sg5oNKmk/F4---Dukscord-team-library?node-id=0%3A1)
+데모데이 날마다 많은 캠퍼분들의 주목을 받았던 그 덕스코드,
+지금 당장 확인해보세요!
+https://duxcord.kro.kr
+```
 
-[Backlog - 프로젝트 백로그](https://docs.google.com/spreadsheets/d/1ZE9i0EBaLrRuUyG1Lm7QnRl2xQV2y2bbJFFlxtXfe3s/edit#gid=0)
+<div align="center">
+<img src="https://user-images.githubusercontent.com/48249505/144185166-c326494f-e836-4538-a5c2-d5ae37ca3202.png" height="160" />
+</div>
 
-![](https://i.imgur.com/IpDCkOh.png)
+![image](https://user-images.githubusercontent.com/48249505/144191480-8b9c5f0f-0e2e-4a69-b15f-025fdcc67aa9.png)
 
-![](https://i.imgur.com/MQ3C8qi.jpg)
 
-****
 
-## 🐤 Why?
+### 📂 프로젝트 관련 문서
 
-- 협업 할 때 슬랙과 줌을 왔다갔다 하는게 번거롭다.
-    - 여러가지 기능이 한 곳에서 가능하면 좋겠다!😭
-    - 슬랙에도 디스코드 음성채널처럼 그냥 화상 회의실 채널이 있으면 안될까?
-    - 디코는 음성 채널에서 화상 지원함!
-- 슬랙의 대댓글 기능(스레드)이 디스코드에는 불편하게 구현되어 있음
-    - 스레드를 쓰려면 메시지에 대한 스레드 생성 버튼을 눌러야함
-    - 슬랙처럼 바로 쓸 수 있게 하고싶다.
-- 어느 줌 회의실에 현재 누가있는지 들어가보기 전에는 알수가 없음
-    - 디스코드는 음성대화채널 누가있는지 볼 수 있음
-- 디스코드는 줌과 달리 음성채널 마다 채팅이 지원되지는 않음
-    - 우리는 회의실 채널에도 줌처럼 간단한 텍스트 채팅 붙이자!
-- 줌을 사용하기 위해서는 프로그램을 설치해야 한다
-    - 웹 페이지에서도 동작할 수 있는 화상 회의 서비스를 만들자!
+```
+깃허브 외부에 있는 덕스코드 관련 문서들의 목록과 링크입니다!
 
-****
+깃허브 위키에도 많은 내용들이 적혀있으니 구경해주세요! 
+✅ https://github.com/boostcampwm-2021/web09-Duxcord/wiki
+```
 
-## 🐤 기술 스택
+[🎨 프로토타입, 기획서](https://www.figma.com/file/ZXDGBL14spjQN5Sg5oNKmk/F4---Dukscord-team-library?node-id=0%3A1)
+
+[✅ 프로젝트 백로그](https://docs.google.com/spreadsheets/d/1ZE9i0EBaLrRuUyG1Lm7QnRl2xQV2y2bbJFFlxtXfe3s/edit#gid=0)
+
+[📡 API 명세서](https://documenter.getpostman.com/view/14299488/UVJcncc2)
+
+[🗒 Notion 회의록](https://seojinseojin.notion.site/Boost-Camp-Final-Project-78fc4440fc2d45d99b5f47b9bac60fec)
+
+[🍀 데모데이 소개 자료](https://seojinseojin.notion.site/ecb9c3c8db3346cd97ad5d35fde624c0)
+
+    
+### 🐤 기술 스택
+
+```
+덕스코드 프로젝트에 사용된 기술스택 목록입니다.
+```
 
 <div align="center">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/><br>
@@ -59,11 +74,8 @@
   <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/express-000000?style=flat-square&logo=Express&logoColor=white"/>
   <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=MySQL&logoColor=white"/>
-    <img src="https://img.shields.io/badge/TypeORM-FF4716?style=flat-square&logo=%20Actions&logoColor=white"/><br>
+  <img src="https://img.shields.io/badge/TypeORM-FF4716?style=flat-square&logo=%20Actions&logoColor=white"/><br>
   <img src="https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=Jest&logoColor=white"/>
   <img src="https://img.shields.io/badge/React%20Testing%20Library-121212?style=flat-square&logo=Testing Library&logoColor=E33332"/>
   <img src="https://img.shields.io/badge/github action-2671E5?style=flat-square&logo=GitHub%20Actions&logoColor=white"/>
-
 </div>
-
-****

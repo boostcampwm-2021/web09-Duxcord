@@ -2,18 +2,14 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 
-import { setSelectedGroup } from '@redux/selectedGroup/slice';
-import { setSelectedChannel } from '@redux/selectedChannel/slice';
-import { setSelectedChat } from '@redux/selectedChat/slice';
+import { resetSelectedGroup } from '@redux/selectedGroup/slice';
+import { resetSelectedChannel } from '@redux/selectedChannel/slice';
+import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
-import { Group } from '@customTypes/group';
-import GroupEvent from '@customTypes/socket/GroupEvent';
-import Colors from '@styles/Colors';
-import { URL } from '@api/URL';
-import { deleteGroup } from '@api/deleteGroup';
-import { TOAST_MESSAGE } from '@utils/message';
+import { TOAST_MESSAGE, URL, SOCKET } from '@constants/index';
 import { socket } from '@utils/socket';
+import { deleteGroup } from '@api/index';
+import Colors from '@styles/Colors';
 import Modal from '..';
 import { AlertWrapper } from './style';
 
@@ -29,22 +25,16 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
       const response = await deleteGroup({ groupID: selectedGroup.id });
       switch (response.status) {
         case 200:
-          socket.emit(GroupEvent.groupDelete, selectedGroup.code);
+          socket.emit(SOCKET.GROUP_EVENT.DELETE_GROUP, selectedGroup.code);
           mutateGroups(
-            groups.filter((group: Group) => group.id !== selectedGroup.id),
+            groups.filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
-          dispatch(setSelectedGroup(null));
-          dispatch(
-            setSelectedChannel({
-              type: '',
-              id: null,
-              name: '',
-            }),
-          );
-          dispatch(setSelectedChat(null));
+          dispatch(resetSelectedGroup());
+          dispatch(resetSelectedChannel());
+          dispatch(resetSelectedChat());
           hide();
-          history.replace(URL.groupPage());
+          history.replace(URL.GROUP());
           fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_DELETE, type: 'success' });
           break;
         case 400:

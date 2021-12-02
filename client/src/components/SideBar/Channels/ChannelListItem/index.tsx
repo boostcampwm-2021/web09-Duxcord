@@ -4,7 +4,7 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useSelectedChannel, useUserdata } from '@hooks/index';
-import { URL } from '@api/URL';
+import { URL } from '@constants/index';
 import { ChannelChattingIcon, ChannelMeetingIcon, GroupDeleteIcon } from '@components/common/Icons';
 import { ListItem } from './style';
 import ChannelMeetingCount from './ChannelMeetingCount';
@@ -35,7 +35,7 @@ function ChannelListItem({
 
   const joinChannel = () => {
     if (meetingUserCount >= MAX_MEETING_USER_COUNT && channelType === 'meeting') return;
-    history.replace(URL.channelPage(selectedGroup?.id, channelType, id));
+    history.replace(URL.CHANNEL(selectedGroup?.id, channelType, id));
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 

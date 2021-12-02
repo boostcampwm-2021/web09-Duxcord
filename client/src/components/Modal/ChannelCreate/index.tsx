@@ -4,15 +4,12 @@ import { useHistory } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
-import { Group } from '@customTypes/group';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE } from '@utils/message';
-import { postCreateChannel } from '@api/postCreateChannel';
-import { URL } from '@api/URL';
-import Modal from '..';
-import ChannelTypeItem from './ChannelTypeItem';
+import { TOAST_MESSAGE, URL } from '@constants/index';
+import { postCreateChannel } from '@api/index';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
+import ChannelTypeItem from './ChannelTypeItem';
+import Modal from '..';
 import { Label, Wrapper, Input } from './style';
 
 export default function ChannelCreateModal({
@@ -32,15 +29,19 @@ export default function ChannelCreateModal({
   const { fireToast } = useToast();
 
   const createChannel = async () => {
+    if (channelName.trim() === '')
+      return fireToast({ message: TOAST_MESSAGE.ERROR.NEED_CHANNEL_NAME, type: 'warning' });
     const response = await postCreateChannel({
       groupID: selectedGroup.id,
       channelType,
       channelName,
     });
+    if (response.status !== 200)
+      return fireToast({ message: TOAST_MESSAGE.ERROR.CHANNEL_CREATE, type: 'warning' });
     try {
       const createdChannel = await response.json();
-      mutateGroups((groups: Group[]) => {
-        return groups.map((group: Group) => {
+      mutateGroups((groups: GroupData[]) => {
+        return groups.map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           const tempGroup = group;
           tempGroup[`${channelType}Channels`] = [
@@ -52,7 +53,7 @@ export default function ChannelCreateModal({
       }, false);
       controller.hide();
       if (channelType === 'chatting') {
-        history.replace(URL.channelPage(selectedGroup.id, channelType, createdChannel.id));
+        history.replace(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id));
         dispatch(
           setSelectedChannel({
             type: channelType,

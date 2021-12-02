@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 import { useSelectedGroup } from '@hooks/index';
-import MeetEvent from '@customTypes/socket/MeetEvent';
-import { ModalController } from '@customTypes/modal';
-import { socket } from '@utils/socket';
-import { getURLParams } from '@utils/getURLParams';
+import { socket, getURLParams } from '@utils/index';
+import { SOCKET } from '@constants/index';
 import ChannelListItem from './ChannelListItem';
 import MeetingUserList from './MeetingUserList';
 import ChannelCreateModal from '@components/Modal/ChannelCreate';
@@ -16,15 +14,15 @@ interface Props {
   channelType: 'chatting' | 'meeting';
 }
 
-interface IMeetingUser {
-  [key: number]: object[];
+interface MeetingUsers {
+  [key: number]: MeetingUserData[];
 }
 
 function Channels({ channelType }: Props) {
   const selectedGroup = useSelectedGroup();
   const channels =
     selectedGroup?.[channelType === 'chatting' ? 'chattingChannels' : 'meetingChannels'];
-  const [meetingUser, setMeetingUser] = useState<IMeetingUser>({});
+  const [meetingUser, setMeetingUser] = useState<MeetingUsers>({});
   const [channelToCreate, setChannelToCreate] = useState<'chatting' | 'meeting' | null>(null);
   const [showChannelCreateModal, setShowChannelCreateModal] = useState(false);
   const channelCreateModalController: ModalController = {
@@ -39,18 +37,18 @@ function Channels({ channelType }: Props) {
   const { groupID } = getURLParams();
 
   useEffect(() => {
-    socket.on(MeetEvent.MeetingUserList, (meetingUserList) => {
+    socket.on(SOCKET.MEET_EVENT.MEETING_USER_LIST, (meetingUserList) => {
       setMeetingUser({ ...meetingUserList });
     });
 
-    socket.on(MeetEvent.someoneIn, (targetMeetingUsers, targetMeetingID) => {
+    socket.on(SOCKET.MEET_EVENT.SOMEONE_IN, (targetMeetingUsers, targetMeetingID) => {
       setMeetingUser((prevState) => ({
         ...prevState,
         [targetMeetingID]: targetMeetingUsers,
       }));
     });
 
-    socket.on(MeetEvent.someoneOut, (targetMeetingUsers, targetMeetingID) => {
+    socket.on(SOCKET.MEET_EVENT.SOMEONE_OUT, (targetMeetingUsers, targetMeetingID) => {
       setMeetingUser((prevState) => ({
         ...prevState,
         [targetMeetingID]: targetMeetingUsers,
@@ -58,9 +56,9 @@ function Channels({ channelType }: Props) {
     });
 
     return () => {
-      socket.off(MeetEvent.MeetingUserList);
-      socket.off(MeetEvent.someoneIn);
-      socket.off(MeetEvent.someoneOut);
+      socket.off(SOCKET.MEET_EVENT.MEETING_USER_LIST);
+      socket.off(SOCKET.MEET_EVENT.SOMEONE_IN);
+      socket.off(SOCKET.MEET_EVENT.SOMEONE_OUT);
     };
   }, []);
 
@@ -71,7 +69,7 @@ function Channels({ channelType }: Props) {
       (channel: { id: number }) => channel.id,
     );
 
-    socket.emit(MeetEvent.MeetingChannelList, selectedGroup.code, meetingChannelList);
+    socket.emit(SOCKET.MEET_EVENT.MEETING_CHANNEL_LIST, meetingChannelList);
   }, [selectedGroup]);
 
   return (
@@ -91,7 +89,7 @@ function Channels({ channelType }: Props) {
             />
           </ChannelType>
           <ul>
-            {channels?.map((channel: any) => {
+            {channels?.map((channel: ChannelData) => {
               return (
                 <div key={channel.id}>
                   <ChannelListItem

@@ -1,5 +1,5 @@
-const makeChatSection = (chats: any[] | undefined) => {
-  const chatSection: { [key: string]: any } = {};
+const makeChatSection = (chats: ChatData[] | undefined) => {
+  const chatSection: { [key: string]: ChatData[] } = {};
   chats
     ?.flat()
     .reverse()
@@ -23,4 +23,4 @@ const getDay = (targetDay: string) => {
   return `${month}월 ${day}일 ${WEEKDAY[date.getDay()]}요일`;
 };
 
-export { makeChatSection };
+export { makeChatSection, getDay };

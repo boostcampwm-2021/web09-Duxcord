@@ -3,12 +3,10 @@ import { useDispatch } from 'react-redux';
 
 import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata, useSelectedUser, useToast } from '@hooks/index';
-import { ModalController } from '@customTypes/modal';
+import { patchUserdata } from '@api/index';
+import { uploadFile } from '@utils/index';
+import { TOAST_MESSAGE } from '@constants/index';
 import Colors from '@styles/Colors';
-import { patchUserdata } from '@api/patchUserdata';
-import { uploadFileWithPresignedUrl } from '@utils/uploadFile';
-import getPresignedUrl from '@utils/getPresignedUrl';
-import { TOAST_MESSAGE } from '@utils/message';
 import Modal from '..';
 import { UserImageWrapper, UserGridWrapper, UserName, UserBio, InputImage } from './style';
 
@@ -30,22 +28,22 @@ export default function UserEditModal({ controller }: { controller: ModalControl
     else inputImage.current.style.backgroundImage = `url('${thumbnail}')`;
   }, [thumbnail]);
 
-  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const target = e.target as HTMLInputElement;
       if (!target.files) return;
       const file: File = (target.files as FileList)[0];
-      if (!file.type.match('image/jpeg|image/png')) return;
-      const uploadName = `${new Date().toLocaleString()}-${file.name}`;
-      const presignedUrl = await getPresignedUrl(uploadName);
-      const uploadedFile = await uploadFileWithPresignedUrl(presignedUrl.url, file);
-      if (uploadedFile && inputImage && inputImage.current) {
-        const uploadedURL = 'https://kr.object.ncloudstorage.com/duxcord/' + uploadName;
-        setThumbnail(uploadedURL);
+      const uploadedFileURL = await uploadFile(file);
+      if (uploadedFileURL && inputImage && inputImage.current) {
+        setThumbnail(uploadedFileURL);
         fireToast({ message: TOAST_MESSAGE.SUCCESS.FILE_UPLOAD, type: 'success' });
       } else fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
     } catch (error) {
-      fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
+      if (typeof error === 'string') fireToast({ message: error, type: 'warning' });
+      else {
+        fireToast({ message: TOAST_MESSAGE.ERROR.FILE_UPLOAD, type: 'warning' });
+        console.log(error);
+      }
     }
   };
 
@@ -78,7 +76,7 @@ export default function UserEditModal({ controller }: { controller: ModalControl
               id="group_thumbnail"
               style={{ width: 100, height: 100, opacity: 0 }}
               accept="image/jpeg, image/png"
-              onChange={uploadFile}
+              onChange={onUploadFile}
             />
           </InputImage>
         </UserImageWrapper>
@@ -95,9 +93,8 @@ export default function UserEditModal({ controller }: { controller: ModalControl
         onChange={(e) => {
           setNewBio(e.target.value);
         }}
-      >
-        {newBio}
-      </UserBio>
+        defaultValue={userdata.bio}
+      />
     </>
   );
 
