@@ -7,32 +7,33 @@
     
 ## 🐤 팀원 소개
 
+``` 
+팀원 전원이 프론트엔드와 백엔드를 경계짓지 않고 개발하였습니다.
+부캠의 F4 === Full stack developer * 4
+```
+
 |J018|J032|J060|J116|
 |:---:|:---:|:---:|:---:|
 |<img src="https://github.com/Najeong-Kim.png" width="300"/>|<img src="https://github.com/SeojinSeojin.png" width="300"/>|<img src="https://github.com/superLipbalm.png" width="300"/>|<img src="https://github.com/shinhyogeun.png" width="300"/>|
 |[김나정](https://github.com/Najeong-Kim)|[김서진](https://github.com/SeojinSeojin)|[김찬희](https://github.com/superLipbalm)|[신효근](https://github.com/shinhyogeun)|
 
-``` 
-팀원 전원이 프론트엔드와 백엔드를 경계짓지 않고 개발하였습니다.
-F4 === Full stack developer * 4
-```
 
 ## 🐤 프로젝트 소개
-
-<div align="center">
-<img src="https://user-images.githubusercontent.com/48249505/144185166-c326494f-e836-4538-a5c2-d5ae37ca3202.png" height="180" />
-</div>
 
 ```
 덕스코드는 슬랙, 줌, 디스코드의 주요 기능들을 클론코딩한 프로젝트입니다.
 
-실시간 통신을 바탕으로 복잡한 로직 및 상태관리에 도전하고 싶어서 다양한 기술적 도전들을 하였습니다.
+실시간 통신을 바탕으로 복잡한 로직 및 상태관리에 도전하고 싶어서 다양한 기술적 도전들을 해왔습니다.
 저희 팀원들에게 많은 성장을 안겨준 멋진 프로젝트였습니다. 
 
-데모데이 날마다 많은 캠퍼분들의 주목을 받았던 그 프로젝트!!
+데모데이 날마다 많은 캠퍼분들의 주목을 받았던 그 덕스코드,
 지금 당장 확인해보세요!
 https://duxcord.kro.kr
 ```
+
+<div align="center">
+<img src="https://user-images.githubusercontent.com/48249505/144185166-c326494f-e836-4538-a5c2-d5ae37ca3202.png" height="160" />
+</div>
 
 ![image](https://user-images.githubusercontent.com/48249505/144191480-8b9c5f0f-0e2e-4a69-b15f-025fdcc67aa9.png)
 
@@ -43,12 +44,13 @@ https://duxcord.kro.kr
 ```
 깃허브 외부에 있는 덕스코드 관련 문서들의 목록과 링크입니다!
 
-깃허브 위키에도 많은 내용들이 적혀있으니 구경해보셔요~
+깃허브 위키에도 많은 내용들이 적혀있으니 구경해주세요! 
+✅ https://github.com/boostcampwm-2021/web09-Duxcord/wiki
 ```
 
-[🎨 Figma - 프로토타입, 기획서](https://www.figma.com/file/ZXDGBL14spjQN5Sg5oNKmk/F4---Dukscord-team-library?node-id=0%3A1)
+[🎨 프로토타입, 기획서](https://www.figma.com/file/ZXDGBL14spjQN5Sg5oNKmk/F4---Dukscord-team-library?node-id=0%3A1)
 
-[✅ Backlog - 프로젝트 백로그](https://docs.google.com/spreadsheets/d/1ZE9i0EBaLrRuUyG1Lm7QnRl2xQV2y2bbJFFlxtXfe3s/edit#gid=0)
+[✅ 프로젝트 백로그](https://docs.google.com/spreadsheets/d/1ZE9i0EBaLrRuUyG1Lm7QnRl2xQV2y2bbJFFlxtXfe3s/edit#gid=0)
 
 [📡 API 명세서](https://documenter.getpostman.com/view/14299488/UVJcncc2)
 
@@ -56,7 +58,12 @@ https://duxcord.kro.kr
 
 [🍀 데모데이 소개 자료](https://seojinseojin.notion.site/ecb9c3c8db3346cd97ad5d35fde624c0)
 
+    
 ### 🐤 기술 스택
+
+```
+덕스코드 프로젝트에 사용된 기술스택 목록입니다.
+```
 
 <div align="center">
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white"/><br>
