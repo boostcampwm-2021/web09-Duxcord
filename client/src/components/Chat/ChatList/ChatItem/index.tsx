@@ -6,10 +6,10 @@ import { setSelectedUser } from '@redux/selectedUser/slice';
 import { useUserdata } from '@hooks/index';
 import { postLikeChat } from '@api/index';
 import { STATUS_CODES } from '@constants/index';
-import ThreadPreview from '../ThreadPreview';
-import AddChatReaction from '../AddChatReaction';
-import ChatReaction from '../ChatReaction';
-import FileItem from '../FileItem';
+import ThreadPreview from './ThreadPreview';
+import AddChatReaction from './AddChatReaction';
+import ChatReaction from './ChatReaction';
+import FileItem from '../../FileItem';
 import { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent } from './style';
 
 function ChatItem({ chatData }: { chatData: ChatData }) {

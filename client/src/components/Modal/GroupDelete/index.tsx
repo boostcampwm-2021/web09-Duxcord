@@ -30,11 +30,11 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
             groups.filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
+          history.replace(URL.GROUP());
           dispatch(resetSelectedGroup());
           dispatch(resetSelectedChannel());
           dispatch(resetSelectedChat());
           hide();
-          history.replace(URL.GROUP());
           fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_DELETE, type: 'success' });
           break;
         case 400:
