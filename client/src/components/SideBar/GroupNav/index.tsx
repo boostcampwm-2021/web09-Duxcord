@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { mutate } from 'swr';
@@ -50,13 +50,17 @@ function GroupNav() {
     show: () => setSelectedModal('ADD'),
   };
 
-  const selectGroup = (group: GroupData) => () => {
-    history.replace(URL.GROUP(group.id));
-    dispatch(resetSelectedChannel());
-    dispatch(resetSelectedChat());
-    dispatch(setSelectedGroup(group));
-    socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
-  };
+  const selectGroup = useCallback(
+    (group: GroupData) => () => {
+      if (selectedGroup?.id === group.id) return;
+      history.replace(URL.GROUP(group.id));
+      dispatch(resetSelectedChannel());
+      dispatch(resetSelectedChat());
+      dispatch(setSelectedGroup(group));
+      socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
+    },
+    [dispatch, history, selectedGroup?.id],
+  );
 
   useEffect(() => {
     socket.on(SOCKET.GROUP_EVENT.USER_CONNECTION, (connectionList) => {
