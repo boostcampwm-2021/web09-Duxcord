@@ -54,7 +54,7 @@ export const useMeeting = () => {
 
     Socket.joinChannel({ channelType: 'meeting', id });
     socket.on(SOCKET.MEET_EVENT.ALL_MEETING_MEMBERS, async (members) => {
-      myStreamRef.current = await getMyStream();
+      myStreamRef.current = await getMyStream({ video: cam, audio: mic });
       if (myVideoRef.current) {
         myVideoRef.current.srcObject = myStreamRef.current;
         highlightMyVolume(myStreamRef.current, myVideoRef.current);
