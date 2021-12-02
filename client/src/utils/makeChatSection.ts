@@ -23,4 +23,4 @@ const getDay = (targetDay: string) => {
   return `${month}월 ${day}일 ${WEEKDAY[date.getDay()]}요일`;
 };
 
-export { makeChatSection };
+export { makeChatSection, getDay };
