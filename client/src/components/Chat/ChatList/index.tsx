@@ -1,7 +1,7 @@
 import React, { RefObject, useEffect } from 'react';
 import { makeChatSection } from '@utils/index';
-import ChatItem from '../ChatItem';
-import { Chats, Section, StickyWrapper } from '../style';
+import ChatItem from './ChatItem';
+import { Chats, Section, StickyWrapper } from './style';
 
 interface Props {
   chats: ChatData[] | undefined;
