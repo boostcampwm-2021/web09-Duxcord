@@ -1,3 +1,4 @@
+import { Socket } from 'socket.io';
 import {
   io,
   meetingMembers,
@@ -8,7 +9,7 @@ import ConnectionEvent from '../../types/socket/ConnectionEvent';
 import MeetEvent from '../../types/socket/MeetEvent';
 import RoomPrefix from '../../types/socket/RoomPrefix';
 
-function SocketMeetController(socket) {
+function SocketMeetController(socket: Socket) {
   const checkMeetingUserList = (meetingchannelList) => {
     const meetingUserList = {};
     Object.entries(meetingMembers).forEach(([channel, user]) => {
@@ -72,7 +73,9 @@ function SocketMeetController(socket) {
     if (index === -1) return;
     const member = meetingMembers[meetingID.toString()][index];
     meetingMembers[meetingID.toString()][index] = { ...member, ...deviceState };
-    io.to(RoomPrefix.RTC + meetingID).emit(MeetEvent.setDeviceState, deviceState, socket.id);
+    socket.broadcast
+      .to(RoomPrefix.RTC + meetingID)
+      .emit(MeetEvent.setDeviceState, deviceState, socket.id);
   };
 
   this.leaveMeeting = (groupCode) => {
