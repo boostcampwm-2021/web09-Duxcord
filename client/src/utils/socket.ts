@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 
 import { SOCKET } from '@constants/index';
 
-export const socket = io('/');
+export const socket = io();
 
 const joinChannel = ({ channelType, id }: { channelType: 'chatting' | 'meeting'; id: number }) =>
   socket.emit(SOCKET.CHANNEL_EVENT.JOIN_CHANNEL, channelType + id);

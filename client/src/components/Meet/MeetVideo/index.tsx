@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { useMeeting, useUserDevice } from '@hooks/index';
 import { playSoundEffect, SoundEffect } from '@utils/playSoundEffect';
@@ -10,10 +10,7 @@ import { Videos, VideoSection } from './style';
 
 function MeetVideo() {
   const videoWrapperRef = useRef<HTMLDivElement>(null);
-  const videoCount = useMemo(
-    () => videoWrapperRef.current && videoWrapperRef.current.childElementCount,
-    [],
-  );
+  const videoCount = videoWrapperRef.current && videoWrapperRef.current.childElementCount;
   const { mic, cam, speaker } = useUserDevice();
 
   const {
