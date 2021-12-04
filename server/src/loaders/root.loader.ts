@@ -3,6 +3,8 @@ import { TypeormStore } from 'typeorm-store';
 import { expressLoader } from './express.loader';
 import { ormLoader, sessionRepository } from './orm.loader';
 import { socketLoader } from './socket.loader';
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const rootLoader = async (app, httpServer) => {
   await ormLoader();
@@ -12,7 +14,6 @@ export const rootLoader = async (app, httpServer) => {
     resave: false,
     saveUninitialized: false,
   });
-
   socketLoader(httpServer, sessionMiddleware);
   expressLoader(app, sessionMiddleware);
 };
