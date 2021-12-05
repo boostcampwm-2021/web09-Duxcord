@@ -5,6 +5,7 @@ export const SOCKET = {
   },
   CHAT_EVENT: {
     CHAT: 'chat',
+    CHAT_FAIL: 'chatFail',
     LIKE: 'like',
     THREAD: 'thread',
     THREAD_UPDATE: 'threadUpdate',

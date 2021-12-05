@@ -5,7 +5,7 @@ import useSWR from 'swr';
 import { resetSelectedChat } from '@redux/selectedChat/slice';
 import { useSelectedChannel } from '@hooks/index';
 import { API_URL, SOCKET } from '@constants/index';
-import { postCreateThread, getFetcher } from '@api/index';
+import { getFetcher } from '@api/index';
 import { socket } from '@utils/index';
 import ThreadItem from '../ThreadItem';
 import FileItem from '../FileItem';
@@ -70,8 +70,8 @@ function Thread({ selectedChat }: { selectedChat: ChatData }) {
   const [threadInput, setThreadInput] = useState('');
   const createThread = (e: FormEvent) => {
     e.preventDefault();
-    if (selectedChat.id === null) return;
-    postCreateThread({ chatID: selectedChat.id, content: threadInput });
+    if (selectedChat.id === null || threadInput.trim() === '') return;
+    socket.emit(SOCKET.CHAT_EVENT.THREAD, { chatID: selectedChat.id, content: threadInput });
     setThreadInput('');
   };
 

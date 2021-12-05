@@ -1,9 +1,8 @@
-import React, { FormEvent, useRef, useState } from 'react';
+import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { useSelectedChannel, useToast } from '@hooks/index';
-import { postChat } from '@api/index';
-import { uploadFile } from '@utils/index';
-import { TOAST_MESSAGE, STATUS_CODES } from '@constants/index';
+import { socket, uploadFile } from '@utils/index';
+import { SOCKET, TOAST_MESSAGE } from '@constants/index';
 import { FileSelectIcon } from '@components/common/Icons';
 import { FileInputWrapper, ChatInputWrapper, Wrapper } from './style';
 import FileItem from '../FileItem';
@@ -15,19 +14,14 @@ function ChatInput({ onInput }: { onInput: () => void }) {
 
   const onSubmitChat = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      if (chatInputRef.current === null) return;
-      const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
-      if ((content === '' && !fileURL.length) || id === null) return;
-      chatInputRef.current.value = '';
-      setFileURL([]);
-      const response = await postChat({ channelID: id, content: content, files: fileURL });
-      if (response.status !== STATUS_CODES.OK) throw Error(TOAST_MESSAGE.ERROR.POST_CHAT_FAIL);
-      onInput();
-    } catch (e: any) {
-      fireToast({ message: TOAST_MESSAGE.ERROR.POST_CHAT_FAIL, type: 'warning' });
-      console.error(e.message);
-    }
+
+    if (chatInputRef.current === null) return;
+    const content = chatInputRef.current ? chatInputRef.current.value.trim() : '';
+    if ((content === '' && !fileURL.length) || id === null) return;
+    chatInputRef.current.value = '';
+    setFileURL([]);
+    socket.emit(SOCKET.CHAT_EVENT.CHAT, { content, files: fileURL, chattingChannelID: id });
+    onInput();
   };
   const [fileURL, setFileURL] = useState<string[]>([]);
 
@@ -50,6 +44,12 @@ function ChatInput({ onInput }: { onInput: () => void }) {
       }
     }
   };
+
+  useEffect(() => {
+    socket.on('chatFail', () => {
+      fireToast({ message: TOAST_MESSAGE.ERROR.POST_CHAT_FAIL, type: 'warning' });
+    });
+  });
 
   return (
     <Wrapper onSubmit={onSubmitChat}>
