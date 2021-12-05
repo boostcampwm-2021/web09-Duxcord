@@ -20,7 +20,6 @@ export const useChatInfinite = (chatListRef: React.RefObject<HTMLDivElement>) =>
 
   useEffect(() => {
     if (isValidating) return;
-    if (chatListRef?.current?.scrollTop && chatListRef?.current?.scrollTop > 0) return;
     (async () => {
       if (chats) {
         const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
