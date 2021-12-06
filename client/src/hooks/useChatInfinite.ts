@@ -10,7 +10,6 @@ export const useChatInfinite = (chatListRef: React.RefObject<HTMLDivElement>) =>
   const { id } = useSelectedChannel();
   const { chats, setSize, isValidating } = useChats(id, {
     suspense: true,
-    revalidateFirstPage: false,
   });
   const isValidatingRef = useRef(false);
   isValidatingRef.current = isValidating;
