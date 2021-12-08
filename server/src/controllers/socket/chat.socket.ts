@@ -14,7 +14,6 @@ import { CustomError } from '../../utils/CatchError';
 function SocketChatController(socket) {
   this.onChat = async ({ content, files, chattingChannelID }) => {
     try {
-      console.log(socket.request.session);
       const { userID } = socket.request.session;
       const user = await userRepository.findOne({ where: { id: userID } });
       const chattingChannel = await chattingChannelRepository.findOne({
