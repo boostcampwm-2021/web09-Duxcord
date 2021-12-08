@@ -9,7 +9,6 @@ import ConnectionEvent from '../types/socket/ConnectionEvent';
 import GroupEvent from '../types/socket/GroupEvent';
 import { InitEvent } from '../types/socket/InitEvent';
 import MeetEvent from '../types/socket/MeetEvent';
-import LikeEvent from '../types/socket/LikeEvent';
 import ThreadEvent from '../types/socket/ThreadEvent';
 
 export let io: Server;

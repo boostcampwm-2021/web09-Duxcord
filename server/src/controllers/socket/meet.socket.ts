@@ -47,10 +47,12 @@ function SocketMeetController(socket: Socket) {
     io.to(socket.id).emit(MeetEvent.allMeetingMembers, membersInMeeting);
   };
 
-  this.offer = ({ offer, receiverID, member, streamID }) => {
+  this.offer = ({ offer, receiverID, streamID }) => {
+    const meetingID = socketToMeeting[socket.id];
+    const memberData = meetingMembers[meetingID].find((member) => member.socketID === socket.id);
     io.to(receiverID).emit(MeetEvent.offer, {
       offer,
-      member,
+      memberData,
       streamID,
       senderID: socket.id,
     });
