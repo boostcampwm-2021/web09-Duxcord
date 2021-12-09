@@ -63,6 +63,7 @@ function SocketChatController(socket) {
         channelID: `${chattingChannel.id}`,
       });
     } catch (e) {
+      console.error(e.message);
       io.to(socket.id).emit('chatFail');
     }
   };
