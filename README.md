@@ -4,6 +4,12 @@
     <img src="https://i.imgur.com/DCdfQJF.png" width="280px"/>
     <h3> 🦆 오리들은 한다 협업을 꽥!! 🦆</h3>
 </div>
+
+## 🐤 배포 주소
+
+> 정식 버전 : [https://duxcord.kro.kr/](https://duxcord.kro.kr/)
+
+> 개발 버전(dev 브랜치) : [https://duxcord-dev.kro.kr/](https://duxcord-dev.kro.kr/)
     
 ## 🐤 팀원 소개
 
