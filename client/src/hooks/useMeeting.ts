@@ -68,25 +68,13 @@ export const useMeeting = () => {
           if (!pc) return;
           setMeetingMembers((members) => [...members, { ...member, pc }]);
           peerConnections.current = { ...peerConnections.current, [member.socketID]: pc };
-          const offer = await pc.createOffer();
-          await pc.setLocalDescription(offer);
-
-          socket.emit(SOCKET.MEET_EVENT.OFFER, {
-            offer,
-            receiverID: member.socketID,
-            member: { loginID, username, thumbnail, deviceState: { mic, cam, speaker } },
-            streamID: {
-              camera: myStreamRef.current?.id,
-              screen: myScreenStreamRef.current?.id,
-            },
-          });
         } catch (e) {
           console.error(SOCKET.MEET_EVENT.ALL_MEETING_MEMBERS, e);
         }
       });
     });
 
-    socket.on(SOCKET.MEET_EVENT.OFFER, async ({ offer, member, streamID, senderID }) => {
+    socket.on(SOCKET.MEET_EVENT.OFFER, async ({ offer, memberData, streamID, senderID }) => {
       try {
         const pc = createPeerConnection(senderID);
         if (!pc) return;
@@ -95,7 +83,7 @@ export const useMeeting = () => {
             return members;
           else {
             playSoundEffect(SoundEffect.JoinMeeting);
-            return [...members, { ...member, socketID: senderID, pc }];
+            return [...members, { ...memberData, socketID: senderID, pc }];
           }
         });
         streamIDMetaData.current[senderID] = streamID;
