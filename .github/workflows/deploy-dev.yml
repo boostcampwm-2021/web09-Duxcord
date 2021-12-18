@@ -69,8 +69,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT_DEV }}
-          source: "./client/build"
-          target: "/usr/share/nginx/html"
+          source: './client/build'
+          target: '/usr/share/nginx/html'
 
       - name: copy server file to deploy server
         uses: appleboy/scp-action@master
@@ -79,8 +79,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT_DEV }}
-          source: "./server/dist"
-          target: "duxcord"
+          source: './server/dist'
+          target: 'duxcord'
 
       - name: start app server
         uses: appleboy/ssh-action@master
@@ -93,4 +93,4 @@ jobs:
             chown root duxcord/server
             cd duxcord/server/dist
             pm2 start main.js
-            pm2 restart main.js
+            pm2 reload main.js
