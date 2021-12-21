@@ -10,6 +10,10 @@
 > 정식 버전 : [https://duxcord.kro.kr/](https://duxcord.kro.kr/)
 
 > 개발 버전(dev 브랜치) : [https://duxcord-dev.kro.kr/](https://duxcord-dev.kro.kr/)
+
+## 🐤 데모 영상
+
+> [https://youtu.be/OPiExP7wHHU](https://youtu.be/OPiExP7wHHU)
     
 ## 🐤 팀원 소개
 
