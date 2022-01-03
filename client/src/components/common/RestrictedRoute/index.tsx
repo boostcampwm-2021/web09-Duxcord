@@ -1,23 +1,28 @@
 import React from 'react';
 import { Route, RouteProps } from 'react-router-dom';
-
-import { useAccessControl } from '@hooks/index';
+import RestrictedComponent from './RestrictedComponent';
 
 interface Props extends RouteProps {
   signIn: boolean;
   redirectPath: string;
 }
 
-function RestrictedRoute({ component: Component, signIn, redirectPath, ...rest }: Props) {
-  if (!Component) return null;
+function RestrictedRoute({ component, signIn, redirectPath, ...rest }: Props) {
+  if (!component) return null;
 
-  const RestrictedComponent = (props: any) => {
-    useAccessControl({ signIn, redirectPath });
-
-    return <Component {...props} />;
-  };
-
-  return <Route {...rest} component={RestrictedComponent} />;
+  return (
+    <Route
+      {...rest}
+      render={(props) => (
+        <RestrictedComponent
+          component={component}
+          signIn={signIn}
+          redirectPath={redirectPath}
+          {...props}
+        />
+      )}
+    />
+  );
 }
 
-export default RestrictedRoute;
+export default React.memo(RestrictedRoute);
