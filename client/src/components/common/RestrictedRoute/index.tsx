@@ -13,13 +13,8 @@ function RestrictedRoute({ component, signIn, redirectPath, ...rest }: Props) {
   return (
     <Route
       {...rest}
-      render={(props) => (
-        <RestrictedComponent
-          component={component}
-          signIn={signIn}
-          redirectPath={redirectPath}
-          {...props}
-        />
+      component={() => (
+        <RestrictedComponent component={component} signIn={signIn} redirectPath={redirectPath} />
       )}
     />
   );
