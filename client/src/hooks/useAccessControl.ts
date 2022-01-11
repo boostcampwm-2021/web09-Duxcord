@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router';
-import { URL } from '@utils/constants/index';
-import { useUserdata } from './useUserdata';
+import { API_URL, STATUS_CODES, URL } from '@utils/constants/index';
 
 export const useAccessControl = ({
   signIn = true,
@@ -11,11 +10,21 @@ export const useAccessControl = ({
   redirectPath: string;
 }) => {
   const history = useHistory();
-  const { userdata, isValidating } = useUserdata();
+  const authCheck = useCallback(() => {
+    fetch(API_URL.USER.GET_USERDATA).then((res) => {
+      if (res.status === STATUS_CODES.OK) {
+        if (signIn === false) history.replace(redirectPath);
+      } else if (signIn === true) history.replace(redirectPath);
+    });
+  }, [history, redirectPath, signIn]);
 
   useEffect(() => {
-    if (isValidating) return;
-    const isAccessible = (signIn && userdata) || (!signIn && !userdata);
-    if (!isAccessible) history.replace(redirectPath);
-  }, [isValidating, userdata, history, signIn, redirectPath]);
+    window.addEventListener('focus', authCheck);
+
+    return () => {
+      window.removeEventListener('focus', authCheck);
+    };
+  }, [authCheck]);
+
+  useEffect(authCheck, [authCheck]);
 };
