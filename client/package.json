@@ -30,8 +30,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
+    "start": "vite",
+    "build": "tsc && vite build",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -58,6 +58,10 @@
     "@babel/preset-react": "^7.16.0",
     "@types/jest-plugin-context": "^2.9.4",
     "@types/react-router-dom": "^5.3.2",
+    "@vitejs/plugin-react": "^1.1.4",
+    "vite": "^2.7.10",
+    "vite-plugin-svgr": "^1.0.1",
+    "vite-tsconfig-paths": "^3.3.17",
     "craco-alias": "^3.0.1",
     "eslint-plugin-prettier": "^4.0.0",
     "given2": "^2.1.7",
