@@ -1,9 +1,9 @@
 const CracoAlias = require('craco-alias');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const smp = new SpeedMeasurePlugin();
 
 module.exports = {
-  babel: {
-    presets: [['@babel/preset-env'], ['@babel/preset-react']],
-  },
   plugins: [
     {
       plugin: CracoAlias,
@@ -13,4 +13,7 @@ module.exports = {
       },
     },
   ],
+  webpack: smp.wrap({
+    // plugins: [new BundleAnalyzerPlugin({ analyzerMode: 'server' })], // 번들 파일 분석시에 사용
+  }),
 };
