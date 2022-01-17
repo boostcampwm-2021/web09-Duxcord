@@ -3,37 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.4.0",
-    "@reduxjs/toolkit": "^1.6.2",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3",
-    "@types/jest": "^26.0.24",
-    "@types/node": "^12.20.36",
-    "@types/react": "^17.0.33",
-    "@types/react-dom": "^17.0.10",
-    "@types/react-redux": "^7.1.20",
-    "@types/styled-components": "^5.1.15",
-    "@types/w3c-image-capture": "^1.0.5",
-    "http-proxy-middleware": "^2.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-redux": "^7.2.6",
     "react-router-dom": "^5.3.0",
-    "react-scripts": "4.0.3",
     "redux": "^4.1.2",
+    "react-redux": "^7.2.6",
+    "@reduxjs/toolkit": "^1.6.2",
     "socket.io-client": "^4.3.2",
     "styled-components": "^5.3.3",
     "styled-reset": "^4.3.4",
-    "swr": "^1.0.1",
-    "typescript": "^4.4.4",
-    "web-vitals": "^1.1.2"
+    "swr": "^1.0.1"
   },
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+    "test": "craco test"
   },
   "eslintConfig": {
     "extends": [
@@ -54,18 +38,29 @@
     ]
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-react": "^7.16.0",
-    "@types/jest-plugin-context": "^2.9.4",
-    "@types/react-router-dom": "^5.3.2",
-    "@vitejs/plugin-react": "^1.1.4",
+    "react-scripts": "4.0.3",
+    "@craco/craco": "^6.4.0",
+    "craco-alias": "^3.0.1",
     "vite": "^2.7.10",
     "vite-plugin-svgr": "^1.0.1",
     "vite-tsconfig-paths": "^3.3.17",
-    "craco-alias": "^3.0.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "given2": "^2.1.7",
+    "@vitejs/plugin-react": "^1.1.4",
     "jest-plugin-context": "^2.9.0",
-    "prettier": "^2.4.1"
+    "@types/jest-plugin-context": "^2.9.4",
+    "given2": "^2.1.7",
+    "prettier": "^2.4.1",
+    "eslint-plugin-prettier": "^4.0.0",
+    "typescript": "^4.5.4",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^11.2.7",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^12.20.36",
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@types/react-router-dom": "^5.3.2",
+    "@types/react-redux": "^7.1.20",
+    "@types/styled-components": "^5.1.15",
+    "@types/w3c-image-capture": "^1.0.5"
   }
 }
