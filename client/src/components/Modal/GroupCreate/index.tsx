@@ -41,7 +41,7 @@ function GroupCreateModal({
     switch (response.status) {
       case 200:
         const group = await response.json();
-        mutate([...groups, group], false);
+        mutate([...(groups ?? []), group], false);
         dispatch(resetSelectedChat());
         dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));

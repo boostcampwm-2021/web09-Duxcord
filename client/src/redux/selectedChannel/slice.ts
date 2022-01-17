@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initState = {
+interface SelectedChannel {
+  type: ChannelType | '';
+  id: number | null;
+  name: string;
+}
+
+const initState: SelectedChannel = {
   type: '',
   id: null,
   name: '',

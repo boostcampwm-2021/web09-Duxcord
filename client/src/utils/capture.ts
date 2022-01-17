@@ -82,6 +82,7 @@ const capture = async () => {
 
     canvas.toBlob(
       (blob) => {
+        if (blob === null) return;
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = URL.createObjectURL(blob);

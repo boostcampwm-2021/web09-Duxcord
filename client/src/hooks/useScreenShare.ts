@@ -8,14 +8,15 @@ export const useScreenShare = (
   const myScreenStreamRef = useRef<MediaStream>();
   const getMyScreen = useCallback(async () => {
     try {
-      const myScreen = await navigator.mediaDevices.getDisplayMedia({
+      // TODO global declaration 을 사용해 처리하도록 수정해야함!!!
+      const myScreen = await (navigator.mediaDevices as any).getDisplayMedia({
         audio: true,
         video: true,
       });
 
       if (myScreenRef.current) myScreenRef.current.srcObject = myScreen;
 
-      myScreen.getTracks().forEach((track) => {
+      myScreen.getTracks().forEach((track: MediaStreamTrack) => {
         track.onended = () => setScreenShare(false);
         Object.values(peerConnections.current).forEach((pc) => pc.addTrack(track, myScreen));
       });

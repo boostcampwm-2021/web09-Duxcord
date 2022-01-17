@@ -4,7 +4,7 @@ describe('selectedUser slice', () => {
   describe('reducer', () => {
     it('setSelectedChat', () => {
       const initialState = {
-        id: '',
+        id: null,
         loginID: '',
         username: '',
         thumbnail: null,

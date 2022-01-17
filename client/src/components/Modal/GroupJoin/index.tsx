@@ -32,7 +32,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
     switch (response.status) {
       case 200:
         const group = await response.json();
-        mutate([...groups, group], false);
+        mutate([...(groups ?? []), group], false);
         dispatch(resetSelectedChannel());
         dispatch(resetSelectedChat());
         dispatch(setSelectedGroup(group));

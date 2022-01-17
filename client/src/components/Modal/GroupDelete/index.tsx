@@ -27,7 +27,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
         case 200:
           socket.emit(SOCKET.GROUP_EVENT.DELETE_GROUP, selectedGroup.code);
           mutateGroups(
-            groups.filter((group: GroupData) => group.id !== selectedGroup.id),
+            (groups ?? []).filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
           history.replace(URL.GROUP());

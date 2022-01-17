@@ -36,7 +36,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
             type: selectedChannel.type,
           });
           mutateGroups(
-            groups.map((group: GroupData) => {
+            (groups ?? []).map((group: GroupData) => {
               if (group.id !== selectedGroup.id) return group;
               else {
                 const tempGroup = group;

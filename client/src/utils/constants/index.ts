@@ -3,3 +3,4 @@ export * from './MESSAGE';
 export * from './SOCKET_EVENT';
 export * from './STATUS_CODES';
 export * from './URL';
+export * from './CHANNEL_TYPE';

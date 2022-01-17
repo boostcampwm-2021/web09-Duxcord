@@ -13,10 +13,10 @@ import { UserImageWrapper, UserGridWrapper, UserName, UserBio, InputImage } from
 export default function UserEditModal({ controller }: { controller: ModalController }) {
   const { userdata, mutate: mutateUserdata } = useUserdata();
   const selectedUser = useSelectedUser();
-  const [newUserName, setNewUserName] = useState(userdata.username);
-  const [newBio, setNewBio] = useState(userdata.bio ?? '');
+  const [newUserName, setNewUserName] = useState(userdata?.username ?? '');
+  const [newBio, setNewBio] = useState(userdata?.bio ?? '');
 
-  const [thumbnail, setThumbnail] = useState<string | null>(userdata.thumbnail);
+  const [thumbnail, setThumbnail] = useState<string | null>(userdata?.thumbnail ?? null);
   const inputImage = useRef<HTMLDivElement>(null);
 
   const dispatch = useDispatch();
@@ -49,6 +49,7 @@ export default function UserEditModal({ controller }: { controller: ModalControl
 
   const editProfile = async () => {
     try {
+      if (userdata === undefined) return;
       await patchUserdata({ username: newUserName, bio: newBio, thumbnail: thumbnail });
       mutateUserdata({ ...userdata, username: newUserName, bio: newBio, thumbnail: thumbnail });
       dispatch(
@@ -87,13 +88,13 @@ export default function UserEditModal({ controller }: { controller: ModalControl
             setNewUserName(e.target.value);
           }}
         />
-        <div>({userdata.loginID})</div>
+        <div>({userdata?.loginID})</div>
       </UserGridWrapper>
       <UserBio
         onChange={(e) => {
           setNewBio(e.target.value);
         }}
-        defaultValue={userdata.bio}
+        defaultValue={userdata?.bio}
       />
     </>
   );

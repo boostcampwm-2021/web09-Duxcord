@@ -1,10 +1,11 @@
+import { CHANNEL_TYPE } from '@constants/CHANNEL_TYPE';
 import reducer, { setSelectedChannel, resetSelectedChannel } from './slice';
 
 describe('selectedChannel slice', () => {
   describe('reducer', () => {
     it('setSelectedChannel', () => {
       const initialState = {
-        type: '',
+        type: '' as '',
         id: null,
         name: '',
       };
@@ -21,7 +22,7 @@ describe('selectedChannel slice', () => {
 
     it('resetSelectedChannel', () => {
       const state = {
-        type: 'meetingChannel',
+        type: CHANNEL_TYPE.MEETING,
         id: null,
         name: 'typeScript강의하는 곳',
       };

@@ -69,7 +69,7 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_GROUP, (code) => {
       mutateGroups(
-        groups.filter((group: GroupData) => group.id !== selectedGroup.id),
+        (groups ?? []).filter((group: GroupData) => group.id !== selectedGroup.id),
         false,
       );
       if (code === selectedGroup?.code) {
@@ -91,7 +91,7 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_CHANNEL, ({ code, id, type }) => {
       mutateGroups(
-        groups.map((group: GroupData) => {
+        (groups ?? []).map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           else {
             const tempGroup = group;

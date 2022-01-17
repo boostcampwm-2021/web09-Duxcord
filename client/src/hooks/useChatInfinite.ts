@@ -15,7 +15,8 @@ export const useChatInfinite = (chatListRef: React.RefObject<HTMLDivElement>) =>
   isValidatingRef.current = isValidating;
   const isEmpty = !chats?.length;
   const isReachingEnd = useRef(false);
-  isReachingEnd.current = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
+  isReachingEnd.current =
+    (isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE)) ?? false;
   const observedTarget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
