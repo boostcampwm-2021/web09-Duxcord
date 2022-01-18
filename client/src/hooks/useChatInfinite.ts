@@ -1,6 +1,6 @@
 import { useRef, useEffect, useCallback, useLayoutEffect } from 'react';
 import { useScroll, useSelectedChannel, useChats } from '.';
-import { getChatsHeight } from '@utils/index';
+import { getChatsHeight, makeChatSection } from '@utils/index';
 
 const PAGE_SIZE = 20;
 const OBSERVER_ROOT_MARGIN = '300px 0px 0px 0px';
@@ -21,7 +21,10 @@ export const useChatInfinite = (chatListRef: React.RefObject<HTMLDivElement>) =>
     if (isValidating) return;
     (async () => {
       if (chats) {
-        const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
+        const height = await getChatsHeight(
+          chatListRef,
+          Object.keys(makeChatSection(chats[chats.length - 1])).length,
+        );
         scrollTo({ top: height });
       }
     })();

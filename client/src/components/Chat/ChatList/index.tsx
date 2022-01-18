@@ -1,16 +1,23 @@
-import React, { RefObject, useEffect } from 'react';
+import React, { RefObject, useEffect, useMemo } from 'react';
 import { makeChatSection } from '@utils/index';
 import ChatItem from './ChatItem';
 import { Chats, Section, StickyWrapper } from './style';
 
 interface Props {
-  chats: ChatData[] | undefined;
+  chats: ChatData[][] | undefined;
   chatListRef: RefObject<HTMLDivElement>;
   observedTarget: RefObject<HTMLDivElement>;
   onMount: () => void;
 }
 
 function ChatList({ chats, chatListRef, observedTarget, onMount }: Props) {
+  const isNewFetched = useMemo(() => {
+    const IDMap: { [key: number]: boolean } = {};
+    chats?.[chats.length - 1].forEach((chat) => (IDMap[chat.id] = true));
+
+    return IDMap;
+  }, [chats]);
+
   useEffect(() => {
     onMount();
   }, []);
@@ -24,7 +31,7 @@ function ChatList({ chats, chatListRef, observedTarget, onMount }: Props) {
             <button>{day}</button>
           </StickyWrapper>
           {dayChats.map((chat: ChatData) => (
-            <ChatItem key={chat.id} chatData={chat} />
+            <ChatItem key={chat.id} chatData={chat} newFetched={isNewFetched?.[chat.id] ?? false} />
           ))}
         </Section>
       ))}

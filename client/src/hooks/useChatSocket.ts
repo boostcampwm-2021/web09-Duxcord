@@ -12,8 +12,9 @@ export const useChatSocket = (chatListRef: React.RefObject<HTMLDivElement>) => {
   const onChat = useCallback(
     async (chat: ChatData) => {
       await mutate((chats) => {
-        if (!chats) return [chat];
-        return [chat, ...chats];
+        if (!chats) return [[chat]];
+        chats[0].unshift(chat);
+        return [...chats];
       }, false);
       if (chatListRef.current === null) return;
       const { scrollTop, clientHeight, scrollHeight } = chatListRef.current;
