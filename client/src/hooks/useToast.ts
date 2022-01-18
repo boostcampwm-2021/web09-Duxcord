@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '@redux/store';
 import { addToast, popToast } from '@redux/toast/slice';
+import { Buffer } from 'buffer';
 
 export const useToast = () => {
   const dispatch = useDispatch();
