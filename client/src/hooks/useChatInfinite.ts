@@ -1,4 +1,4 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useLayoutEffect } from 'react';
 import { useScroll, useSelectedChannel, useChats } from '.';
 import { getChatsHeight } from '@utils/index';
 
@@ -8,9 +8,7 @@ const OBSERVER_ROOT_MARGIN = '300px 0px 0px 0px';
 export const useChatInfinite = (chatListRef: React.RefObject<HTMLDivElement>) => {
   const { scrollTo } = useScroll(chatListRef);
   const { id } = useSelectedChannel();
-  const { chats, setSize, isValidating } = useChats(id, {
-    suspense: true,
-  });
+  const { chats, setSize, isValidating } = useChats(id);
   const isValidatingRef = useRef(false);
   isValidatingRef.current = isValidating;
   const isEmpty = !chats?.length;
