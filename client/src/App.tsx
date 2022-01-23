@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { useSocket } from '@hooks/index';
 import Loading from '@pages/Loading';
 import NotFound from '@pages/NotFound';
 import GlobalStyle from '@styles/GlobalStyle';
-import RestrictedRoute from '@components/common/RestrictedRoute';
+import Restricted from '@components/common/Restricted';
 import Toast from '@components/common/Toast';
 
 const Main = React.lazy(() => import('@pages/Main'));
@@ -22,12 +22,33 @@ function App() {
       <GlobalStyle />
       <Toast />
       <Suspense fallback={<Loading />}>
-        <Switch>
-          <RestrictedRoute signIn={false} redirectPath="/main" exact path="/" component={SignIn} />
-          <RestrictedRoute signIn={false} redirectPath="/" path="/signup" component={SignUp} />
-          <RestrictedRoute signIn={true} redirectPath="/" path="/main" component={Main} />
-          <Route path="*" component={NotFound} />
-        </Switch>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Restricted signIn={false} redirectPath="/main">
+                <SignIn />
+              </Restricted>
+            }
+          />
+          <Route
+            path="/signup"
+            element={
+              <Restricted signIn={false} redirectPath="/">
+                <SignUp />
+              </Restricted>
+            }
+          />
+          <Route
+            path="/main"
+            element={
+              <Restricted signIn={true} redirectPath="/">
+                <Main />
+              </Restricted>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </Suspense>
     </div>
   );

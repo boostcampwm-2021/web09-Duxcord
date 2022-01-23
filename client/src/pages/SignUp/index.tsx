@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Navigate, Link } from 'react-router-dom';
 
 import {
   validateID,
@@ -87,7 +87,7 @@ function SignUp() {
   };
 
   if (status === 200) {
-    return <Redirect to="/" />;
+    return <Navigate to="/" replace />;
   }
 
   return (

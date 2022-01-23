@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useToast } from '@hooks/index';
@@ -24,12 +24,12 @@ function MeetButton({
 }) {
   const selectedGroup = useSelectedGroup();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { fireToast } = useToast();
 
   const onMeetingStopClick = () => {
     dispatch(resetSelectedChannel());
-    history.replace(URL.GROUP(selectedGroup.id));
+    navigate(URL.GROUP(selectedGroup.id), { replace: true });
   };
 
   const onMeetingCaptureClick = async () => {
