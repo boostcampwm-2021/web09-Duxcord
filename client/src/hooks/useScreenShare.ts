@@ -8,8 +8,7 @@ export const useScreenShare = (
   const myScreenStreamRef = useRef<MediaStream>();
   const getMyScreen = useCallback(async () => {
     try {
-      // TODO global declaration 을 사용해 처리하도록 수정해야함!!!
-      const myScreen = await (navigator.mediaDevices as any).getDisplayMedia({
+      const myScreen = await navigator.mediaDevices.getDisplayMedia({
         audio: true,
         video: true,
       });
