@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useSelectedChannel, useUserdata } from '@hooks/index';
@@ -29,13 +29,13 @@ function ChannelListItem({
   const selectedGroup = useSelectedGroup();
   const { userdata } = useUserdata();
   const { id: selectedChannelID, type: selectedChannelType } = useSelectedChannel();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLeader = selectedGroup?.leader?.loginID === userdata?.loginID;
 
   const joinChannel = () => {
     if (meetingUserCount >= MAX_MEETING_USER_COUNT && channelType === 'meeting') return;
-    history.replace(URL.CHANNEL(selectedGroup?.id, channelType, id));
+    navigate(URL.CHANNEL(selectedGroup?.id, channelType, id), { replace: true });
     dispatch(setSelectedChannel({ type: channelType, id, name }));
   };
 

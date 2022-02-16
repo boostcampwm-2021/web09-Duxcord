@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { resetSelectedGroup } from '@redux/selectedGroup/slice';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
@@ -17,7 +17,7 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
   const selectedGroup = useSelectedGroup();
   const { groups, mutate: mutateGroups } = useGroups();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { fireToast } = useToast();
 
   const deleteCurrentGroup = async () => {
@@ -27,10 +27,10 @@ function GroupDeleteModal({ controller: { hide, show } }: { controller: ModalCon
         case 200:
           socket.emit(SOCKET.GROUP_EVENT.DELETE_GROUP, selectedGroup.code);
           mutateGroups(
-            groups.filter((group: GroupData) => group.id !== selectedGroup.id),
+            (groups ?? []).filter((group: GroupData) => group.id !== selectedGroup.id),
             false,
           );
-          history.replace(URL.GROUP());
+          navigate(URL.GROUP(), { replace: true });
           dispatch(resetSelectedGroup());
           dispatch(resetSelectedChannel());
           dispatch(resetSelectedChat());

@@ -15,7 +15,7 @@ export const useScreenShare = (
 
       if (myScreenRef.current) myScreenRef.current.srcObject = myScreen;
 
-      myScreen.getTracks().forEach((track) => {
+      myScreen.getTracks().forEach((track: MediaStreamTrack) => {
         track.onended = () => setScreenShare(false);
         Object.values(peerConnections.current).forEach((pc) => pc.addTrack(track, myScreen));
       });

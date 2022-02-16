@@ -1,9 +1,9 @@
 interface UserData {
+  id?: number;
   loginID: string;
   username: string;
-  thumbnail?: string;
+  thumbnail?: string | null;
   bio?: string;
-  id?: number;
 }
 
 interface MeetingUserData extends UserData {

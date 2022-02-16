@@ -1,6 +1,6 @@
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect, useCallback, useLayoutEffect } from 'react';
 import { useScroll, useSelectedChannel, useChats } from '.';
-import { getChatsHeight } from '@utils/index';
+import { getChatsHeight, makeChatSection } from '@utils/index';
 
 const PAGE_SIZE = 20;
 const OBSERVER_ROOT_MARGIN = '300px 0px 0px 0px';
@@ -8,21 +8,23 @@ const OBSERVER_ROOT_MARGIN = '300px 0px 0px 0px';
 export const useChatInfinite = (chatListRef: React.RefObject<HTMLDivElement>) => {
   const { scrollTo } = useScroll(chatListRef);
   const { id } = useSelectedChannel();
-  const { chats, setSize, isValidating } = useChats(id, {
-    suspense: true,
-  });
+  const { chats, setSize, isValidating } = useChats(id);
   const isValidatingRef = useRef(false);
   isValidatingRef.current = isValidating;
   const isEmpty = !chats?.length;
   const isReachingEnd = useRef(false);
-  isReachingEnd.current = isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE);
+  isReachingEnd.current =
+    (isEmpty || (chats && chats[chats.length - 1]?.length < PAGE_SIZE)) ?? false;
   const observedTarget = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isValidating) return;
     (async () => {
       if (chats) {
-        const height = await getChatsHeight(chatListRef, chats[chats.length - 1]?.length);
+        const height = await getChatsHeight(
+          chatListRef,
+          Object.keys(makeChatSection(chats[chats.length - 1])).length,
+        );
         scrollTo({ top: height });
       }
     })();

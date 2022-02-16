@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { SIGN_IN_ERROR_MESSAGE, URL, STATUS_CODES } from '@constants/index';
 import { checkLogin } from '@utils/index';
@@ -19,7 +19,7 @@ import {
 const { ID_EMPTY_ERROR, PASSWORD_EMPTY_ERROR } = SIGN_IN_ERROR_MESSAGE;
 
 function SignIn() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [inputState, setInputState] = useState({ ID: '', password: '' });
   const [responseState, setResponseState] = useState({ status: 0, responseText: '' });
   const { ID, password } = inputState;
@@ -47,7 +47,7 @@ function SignIn() {
     try {
       const loginResponse = await postSignIn(ID, password);
       setResponseState({ ...responseState, ...loginResponse });
-      if (loginResponse.status === STATUS_CODES.OK) history.replace(URL.GROUP());
+      if (loginResponse.status === STATUS_CODES.OK) navigate(URL.GROUP(), { replace: true });
     } catch (error) {
       console.log(error);
     }

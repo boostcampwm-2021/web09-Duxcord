@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 import { mutate } from 'swr';
 
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
@@ -32,7 +32,7 @@ function GroupNav() {
   const selectedGroup = useSelectedGroup();
   const selectedChannel = useSelectedChannel();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [selectedModal, setSelectedModal] = useState('');
   const groupJoinModalControl: ModalController = {
@@ -53,13 +53,13 @@ function GroupNav() {
   const selectGroup = useCallback(
     (group: GroupData) => () => {
       if (selectedGroup?.id === group.id) return;
-      history.replace(URL.GROUP(group.id));
+      navigate(URL.GROUP(group.id), { replace: true });
       dispatch(resetSelectedChannel());
       dispatch(resetSelectedChat());
       dispatch(setSelectedGroup(group));
       socket.emit(SOCKET.GROUP_EVENT.GROUP_ID, group.code);
     },
-    [dispatch, history, selectedGroup?.id],
+    [dispatch, navigate, selectedGroup?.id],
   );
 
   useEffect(() => {
@@ -69,14 +69,14 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_GROUP, (code) => {
       mutateGroups(
-        groups.filter((group: GroupData) => group.id !== selectedGroup.id),
+        (groups ?? []).filter((group: GroupData) => group.id !== selectedGroup.id),
         false,
       );
       if (code === selectedGroup?.code) {
         dispatch(resetSelectedGroup());
         dispatch(resetSelectedChannel());
         dispatch(resetSelectedChat());
-        history.replace(URL.GROUP());
+        navigate(URL.GROUP(), { replace: true });
       }
     });
 
@@ -91,7 +91,7 @@ function GroupNav() {
 
     socket.on(SOCKET.GROUP_EVENT.DELETE_CHANNEL, ({ code, id, type }) => {
       mutateGroups(
-        groups.map((group: GroupData) => {
+        (groups ?? []).map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           else {
             const tempGroup = group;
@@ -107,7 +107,7 @@ function GroupNav() {
         if (id === selectedChannel.id && type === selectedChannel.type) {
           dispatch(resetSelectedChannel());
           dispatch(resetSelectedChat());
-          history.replace(URL.GROUP(selectedGroup.id));
+          navigate(URL.GROUP(selectedGroup.id), { replace: true });
         }
     });
 

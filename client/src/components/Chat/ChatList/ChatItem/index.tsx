@@ -12,7 +12,7 @@ import ChatReaction from './ChatReaction';
 import FileItem from '../../FileItem';
 import { ChatWrapper, UserImage, FileWrapper, ChatHeader, ChatContent } from './style';
 
-function ChatItem({ chatData }: { chatData: ChatData }) {
+function ChatItem({ chatData, newFetched }: { chatData: ChatData; newFetched: boolean }) {
   const {
     id: chatID,
     user,
@@ -45,7 +45,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
   };
 
   const onUserSelected = () => {
-    if (user.id === userdata.id) {
+    if (user.id === userdata?.id) {
       dispatch(setSelectedUser({ ...userdata, isOnline: true, isEditable: true }));
     } else {
       dispatch(setSelectedUser({ ...user, isOnline: null, isEditable: false }));
@@ -58,7 +58,7 @@ function ChatItem({ chatData }: { chatData: ChatData }) {
 
   return (
     <ChatWrapper
-      className="ChatItem"
+      className={newFetched ? 'newFetched' : ''}
       onMouseEnter={() => setIsFocused(true)}
       onMouseLeave={() => setIsFocused(false)}
     >

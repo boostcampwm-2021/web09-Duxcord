@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { useGroups, useToast } from '@hooks/index';
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
@@ -16,7 +16,7 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
   const [groupCode, setGroupCode] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { fireToast } = useToast();
   const updateGroupCode = (newGroupCode: string) => {
     setGroupCode(newGroupCode);
@@ -32,12 +32,12 @@ function GroupJoinModal({ controller: { hide, show, previous } }: { controller: 
     switch (response.status) {
       case 200:
         const group = await response.json();
-        mutate([...groups, group], false);
+        mutate([...(groups ?? []), group], false);
         dispatch(resetSelectedChannel());
         dispatch(resetSelectedChat());
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.GROUP(group.id));
+        navigate(URL.GROUP(group.id), { replace: true });
         fireToast({ message: TOAST_MESSAGE.SUCCESS.GROUP_INVITATION, type: 'success' });
         break;
       case 400:

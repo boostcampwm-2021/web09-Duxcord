@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { useGroups, useSelectedGroup, useSelectedChannel, useToast } from '@hooks/index';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
@@ -18,7 +18,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
   const { groups, mutate: mutateGroups } = useGroups();
   const { fireToast } = useToast();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const deleteCurrentChannel = async () => {
     if (!selectedChannel.id) return;
@@ -36,7 +36,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
             type: selectedChannel.type,
           });
           mutateGroups(
-            groups.map((group: GroupData) => {
+            (groups ?? []).map((group: GroupData) => {
               if (group.id !== selectedGroup.id) return group;
               else {
                 const tempGroup = group;
@@ -55,7 +55,7 @@ export default function ChannelDeleteModal({ controller }: { controller: ModalCo
           dispatch(resetSelectedChannel());
           dispatch(resetSelectedChat());
           controller.hide();
-          history.replace(URL.GROUP(selectedGroup.id));
+          navigate(URL.GROUP(selectedGroup.id), { replace: true });
           fireToast({ message: TOAST_MESSAGE.SUCCESS.CHANNEL_DELETE, type: 'success' });
           break;
         case 400:

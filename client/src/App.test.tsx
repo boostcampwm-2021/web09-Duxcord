@@ -4,7 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import { Provider } from 'react-redux';
 import store from '@redux/store';
-import { useToasts, useSocket, useAccessControl, useGroups } from './__mocks__/@hooks';
+import { useToasts, useSocket } from './__mocks__/@hooks';
 
 interface Path {
   path: string;

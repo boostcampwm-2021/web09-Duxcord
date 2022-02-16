@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
 import Colors from '@styles/Colors';
-import { TOAST_MESSAGE, URL } from '@constants/index';
+import { CHANNEL_TYPE, TOAST_MESSAGE, URL } from '@constants/index';
 import { postCreateChannel } from '@api/index';
 import { ChannelChattingIcon, ChannelMeetingIcon } from '@components/common/Icons';
 import ChannelTypeItem from './ChannelTypeItem';
@@ -16,13 +16,13 @@ export default function ChannelCreateModal({
   initialChannelType,
   controller,
 }: {
-  initialChannelType: 'chatting' | 'meeting';
+  initialChannelType: ChannelType;
   controller: ModalController;
 }) {
   const [channelType, setChannelType] = useState(initialChannelType);
   const [channelName, setChannelName] = useState('');
   const selectedGroup = useSelectedGroup();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate: mutateGroups } = useGroups();
 
@@ -40,20 +40,22 @@ export default function ChannelCreateModal({
       return fireToast({ message: TOAST_MESSAGE.ERROR.CHANNEL_CREATE, type: 'warning' });
     try {
       const createdChannel = await response.json();
-      mutateGroups((groups: GroupData[]) => {
-        return groups.map((group: GroupData) => {
+      mutateGroups((groups) => {
+        return (groups as GroupData[]).map((group: GroupData) => {
           if (group.id !== selectedGroup.id) return group;
           const tempGroup = group;
-          tempGroup[`${channelType}Channels`] = [
-            ...tempGroup[`${channelType}Channels`],
-            createdChannel,
-          ];
+          if (channelType === CHANNEL_TYPE.CHATTING) {
+            tempGroup.chattingChannels = [...tempGroup.chattingChannels, createdChannel];
+          } else if (channelType === CHANNEL_TYPE.MEETING) {
+            tempGroup.meetingChannels = [...tempGroup.meetingChannels, createdChannel];
+          }
+
           return tempGroup;
         });
       }, false);
       controller.hide();
-      if (channelType === 'chatting') {
-        history.replace(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id));
+      if (channelType === CHANNEL_TYPE.CHATTING) {
+        navigate(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id), { replace: true });
         dispatch(
           setSelectedChannel({
             type: channelType,
@@ -72,16 +74,16 @@ export default function ChannelCreateModal({
       <Label>채널 유형</Label>
       <ChannelTypeItem
         setChannelType={setChannelType}
-        channelType="chatting"
-        isSelected={channelType === 'chatting'}
+        channelType={CHANNEL_TYPE.CHATTING}
+        isSelected={channelType === CHANNEL_TYPE.CHATTING}
         icon={<ChannelChattingIcon />}
         title="채팅 채널"
         subTitle="메시지를 보내고 파일을 공유해요"
       />
       <ChannelTypeItem
         setChannelType={setChannelType}
-        channelType="meeting"
-        isSelected={channelType === 'meeting'}
+        channelType={CHANNEL_TYPE.MEETING}
+        isSelected={channelType === CHANNEL_TYPE.MEETING}
         icon={<ChannelMeetingIcon />}
         title="화상 채널"
         subTitle="회의 합시다!"

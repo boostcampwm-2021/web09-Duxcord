@@ -1,0 +1,1 @@
+type ChannelType = 'chatting' | 'meeting';

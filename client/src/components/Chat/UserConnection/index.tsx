@@ -18,7 +18,7 @@ function UserConnection() {
   const dispatch = useDispatch();
 
   const onUserSelected = (user: UserData, isOnline: boolean) => {
-    if (user.loginID === userdata.loginID) {
+    if (user.loginID === userdata?.loginID) {
       dispatch(setSelectedUser({ ...userdata, isOnline, isEditable: true }));
     } else {
       dispatch(setSelectedUser({ ...user, isOnline, isEditable: false }));
