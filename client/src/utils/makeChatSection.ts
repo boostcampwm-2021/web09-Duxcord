@@ -1,4 +1,4 @@
-const makeChatSection = (chats: ChatData[] | undefined) => {
+const makeChatSection = (chats: ChatData[][] | undefined) => {
   const chatSection: { [key: string]: ChatData[] } = {};
   chats
     ?.flat()

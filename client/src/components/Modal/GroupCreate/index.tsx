@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { setSelectedGroup } from '@redux/selectedGroup/slice';
 import { resetSelectedChannel } from '@redux/selectedChannel/slice';
@@ -22,7 +22,7 @@ function GroupCreateModal({
   const [groupName, setGroupName] = useState('');
   const { groups, mutate } = useGroups();
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const updateGroupName = (newGroupName: string) => {
     setGroupName(newGroupName);
   };
@@ -46,7 +46,7 @@ function GroupCreateModal({
         dispatch(resetSelectedChannel());
         dispatch(setSelectedGroup(group));
         finishModal();
-        history.replace(URL.GROUP(group.id));
+        navigate(URL.GROUP(group.id), { replace: true });
         fireToast({ message: '그룹 생성에 성공하셨습니다', type: 'success' });
         break;
       case 400:

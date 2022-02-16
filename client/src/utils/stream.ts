@@ -24,8 +24,7 @@ const getMyStream = async ({ video, audio }: { video: boolean; audio: boolean })
     });
   } catch (e) {
     const canvas = document.createElement('canvas');
-    //TODO 여기도 마찬가지로 너무 구린 방법... global declaration 으로 inteface 정의 할 것
-    myStream = (canvas as any).captureStream(0);
+    myStream = canvas.captureStream(0);
   }
 
   applyDeviceStatus({ stream: myStream, video, audio });
