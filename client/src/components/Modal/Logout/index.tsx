@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { useToast } from '@hooks/index';
 import { TOAST_MESSAGE, URL } from '@constants/index';
@@ -9,12 +9,12 @@ import Modal from '..';
 import { MiddlePart } from './style';
 
 function LogoutModal({ controller: { hide, show } }: { controller: ModalController }) {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { fireToast } = useToast();
   const logOut = async () => {
     const isSuccess = await postLogout();
     if (isSuccess) {
-      history.replace(URL.LOGIN);
+      navigate(URL.LOGIN, { replace: true });
       window.location.reload();
     } else {
       fireToast({ message: TOAST_MESSAGE.ERROR.COMMON, type: 'warning' });

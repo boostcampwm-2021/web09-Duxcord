@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 import { setSelectedChannel } from '@redux/selectedChannel/slice';
 import { useSelectedGroup, useGroups, useToast } from '@hooks/index';
@@ -22,7 +22,7 @@ export default function ChannelCreateModal({
   const [channelType, setChannelType] = useState(initialChannelType);
   const [channelName, setChannelName] = useState('');
   const selectedGroup = useSelectedGroup();
-  const history = useHistory();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { mutate: mutateGroups } = useGroups();
 
@@ -55,7 +55,7 @@ export default function ChannelCreateModal({
       }, false);
       controller.hide();
       if (channelType === CHANNEL_TYPE.CHATTING) {
-        history.replace(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id));
+        navigate(URL.CHANNEL(selectedGroup.id, channelType, createdChannel.id), { replace: true });
         dispatch(
           setSelectedChannel({
             type: channelType,
