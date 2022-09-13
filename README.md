@@ -9,7 +9,7 @@
 
 > 정식 버전 : [https://duxcord.kro.kr/](https://duxcord.kro.kr/)
 
-> 개발 버전(dev 브랜치) : [https://duxcord-dev.kro.kr/](https://duxcord-dev.kro.kr/)
+> ~개발 버전(dev 브랜치) : [https://duxcord-dev.kro.kr/](https://duxcord-dev.kro.kr/)~
 
 ## 🐤 데모 영상
 
