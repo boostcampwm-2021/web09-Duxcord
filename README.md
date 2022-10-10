@@ -7,7 +7,7 @@
 
 ## 🐤 배포 주소
 
-> 정식 버전 : [https://duxcord.kro.kr/](https://duxcord.kro.kr/)
+> ~정식 버전 : [https://duxcord.kro.kr/](https://duxcord.kro.kr/)~
 
 > ~개발 버전(dev 브랜치) : [https://duxcord-dev.kro.kr/](https://duxcord-dev.kro.kr/)~
 
